@@ -1,13 +1,66 @@
 class EoH_AIBDynamicGenerator
 {
+    // Generated-only output for debugging / inspection.
     protected static const string EOH_AIB_GENERATED_FILE = "$profile:EoH\\WorldState\\EoH_DynamicAIB_Generated.json";
 
+    // Live AI Bandits file. Adjust this path if your AI Bandits DynamicAIB.json lives somewhere else.
+    protected static const string EOH_AIB_LIVE_FILE = "$profile:DynamicAIB.json";
+
+    // Safety backup written before the merged live file is saved.
+    protected static const string EOH_AIB_BACKUP_FILE = "$profile:EoH\\WorldState\\DynamicAIB_Backup_Before_EoH_Merge.json";
+
     static void GenerateFromWorldState(EoH_WorldStateData state)
+    {
+        EoH_AIBDynamicConfig generated = BuildGeneratedConfig(state);
+        if (!generated)
+            return;
+
+        JsonFileLoader<EoH_AIBDynamicConfig>.JsonSaveFile(EOH_AIB_GENERATED_FILE, generated);
+        Print("[EoH_AIBGenerator] Generated AI Bandits config: " + EOH_AIB_GENERATED_FILE);
+    }
+
+    static void GenerateAndMergeIntoLiveDynamicAIB(EoH_WorldStateData state)
+    {
+        EoH_AIBDynamicConfig generated = BuildGeneratedConfig(state);
+        if (!generated)
+            return;
+
+        JsonFileLoader<EoH_AIBDynamicConfig>.JsonSaveFile(EOH_AIB_GENERATED_FILE, generated);
+
+        EoH_AIBDynamicConfig live = new EoH_AIBDynamicConfig();
+
+        if (FileExist(EOH_AIB_LIVE_FILE))
+        {
+            JsonFileLoader<EoH_AIBDynamicConfig>.JsonLoadFile(EOH_AIB_LIVE_FILE, live);
+
+            if (!live)
+            {
+                Print("[EoH_AIBGenerator] Existing DynamicAIB.json failed to load. Aborting merge to protect live config.");
+                return;
+            }
+
+            JsonFileLoader<EoH_AIBDynamicConfig>.JsonSaveFile(EOH_AIB_BACKUP_FILE, live);
+            Print("[EoH_AIBGenerator] Backed up live DynamicAIB before merge: " + EOH_AIB_BACKUP_FILE);
+        }
+        else
+        {
+            Print("[EoH_AIBGenerator] Live DynamicAIB.json not found. Creating new merged file at: " + EOH_AIB_LIVE_FILE);
+        }
+
+        EnsureConfigValid(live);
+        RemoveOldEoHGeneratedEntries(live);
+        MergeGeneratedEntries(live, generated);
+
+        JsonFileLoader<EoH_AIBDynamicConfig>.JsonSaveFile(EOH_AIB_LIVE_FILE, live);
+        Print("[EoH_AIBGenerator] Merged EoH AI into live DynamicAIB.json: " + EOH_AIB_LIVE_FILE);
+    }
+
+    protected static EoH_AIBDynamicConfig BuildGeneratedConfig(EoH_WorldStateData state)
     {
         if (!state || !state.Towns)
         {
             Print("[EoH_AIBGenerator] No world state available. Skipping generation.");
-            return;
+            return null;
         }
 
         MakeDirectory("$profile:EoH");
@@ -30,8 +83,78 @@ class EoH_AIBDynamicGenerator
                 AddTownSniper(cfg, town);
         }
 
-        JsonFileLoader<EoH_AIBDynamicConfig>.JsonSaveFile(EOH_AIB_GENERATED_FILE, cfg);
-        Print("[EoH_AIBGenerator] Generated AI Bandits config: " + EOH_AIB_GENERATED_FILE);
+        return cfg;
+    }
+
+    protected static void EnsureConfigValid(EoH_AIBDynamicConfig cfg)
+    {
+        if (!cfg.GroupLocations)
+            cfg.GroupLocations = new array<ref EoH_AIBGroupLocation>();
+
+        if (!cfg.SniperLocations)
+            cfg.SniperLocations = new array<ref EoH_AIBSniperLocation>();
+
+        if (!cfg.PredefinedWeapons)
+            cfg.PredefinedWeapons = new array<ref EoH_AIBPredefinedWeapon>();
+
+        if (cfg.version <= 0)
+            cfg.version = 2;
+
+        if (cfg.crashsitegroup == "")
+            cfg.crashsitegroup = "Random";
+    }
+
+    protected static void RemoveOldEoHGeneratedEntries(EoH_AIBDynamicConfig cfg)
+    {
+        for (int i = cfg.GroupLocations.Count() - 1; i >= 0; i--)
+        {
+            EoH_AIBGroupLocation group = cfg.GroupLocations.Get(i);
+            if (group && IsEoHGeneratedName(group.name))
+                cfg.GroupLocations.Remove(i);
+        }
+
+        for (int s = cfg.SniperLocations.Count() - 1; s >= 0; s--)
+        {
+            EoH_AIBSniperLocation sniper = cfg.SniperLocations.Get(s);
+            if (sniper && IsEoHGeneratedName(sniper.name))
+                cfg.SniperLocations.Remove(s);
+        }
+
+        for (int w = cfg.PredefinedWeapons.Count() - 1; w >= 0; w--)
+        {
+            EoH_AIBPredefinedWeapon weapon = cfg.PredefinedWeapons.Get(w);
+            if (weapon && IsEoHGeneratedName(weapon.name))
+                cfg.PredefinedWeapons.Remove(w);
+        }
+    }
+
+    protected static bool IsEoHGeneratedName(string name)
+    {
+        if (name.Length() < 4)
+            return false;
+
+        return name.Substring(0, 4) == "EoH_";
+    }
+
+    protected static void MergeGeneratedEntries(EoH_AIBDynamicConfig live, EoH_AIBDynamicConfig generated)
+    {
+        foreach (EoH_AIBPredefinedWeapon weapon : generated.PredefinedWeapons)
+        {
+            if (weapon)
+                live.PredefinedWeapons.Insert(weapon);
+        }
+
+        foreach (EoH_AIBGroupLocation group : generated.GroupLocations)
+        {
+            if (group)
+                live.GroupLocations.Insert(group);
+        }
+
+        foreach (EoH_AIBSniperLocation sniper : generated.SniperLocations)
+        {
+            if (sniper)
+                live.SniperLocations.Insert(sniper);
+        }
     }
 
     protected static void AddTownGroup(EoH_AIBDynamicConfig cfg, EoH_WorldStateTownState town)
@@ -72,10 +195,27 @@ class EoH_AIBDynamicGenerator
 
     protected static void AddDefaultWeapons(EoH_AIBDynamicConfig cfg)
     {
-        AddWeapon(cfg, "EoH_Low_AKM", "AKM", {"Mag_AKM_30Rnd", "AK_WoodHndgrd", "AK_WoodBttstck"});
-        AddWeapon(cfg, "EoH_Mid_M4", "M4A1", {"Mag_STANAG_30Rnd", "M4_PlasticHndgrd", "M4_OEBttstck"});
-        AddWeapon(cfg, "EoH_High_AK74", "AK74", {"Mag_AK74_30Rnd", "AK74_Hndgrd", "AK74_WoodBttstck"});
-        AddWeapon(cfg, "EoH_Sniper_Mosin", "Mosin9130", {"Ammo_762x54"});
+        TStringArray akmAttachments = new TStringArray;
+        akmAttachments.Insert("Mag_AKM_30Rnd");
+        akmAttachments.Insert("AK_WoodHndgrd");
+        akmAttachments.Insert("AK_WoodBttstck");
+        AddWeapon(cfg, "EoH_Low_AKM", "AKM", akmAttachments);
+
+        TStringArray m4Attachments = new TStringArray;
+        m4Attachments.Insert("Mag_STANAG_30Rnd");
+        m4Attachments.Insert("M4_PlasticHndgrd");
+        m4Attachments.Insert("M4_OEBttstck");
+        AddWeapon(cfg, "EoH_Mid_M4", "M4A1", m4Attachments);
+
+        TStringArray ak74Attachments = new TStringArray;
+        ak74Attachments.Insert("Mag_AK74_30Rnd");
+        ak74Attachments.Insert("AK74_Hndgrd");
+        ak74Attachments.Insert("AK74_WoodBttstck");
+        AddWeapon(cfg, "EoH_High_AK74", "AK74", ak74Attachments);
+
+        TStringArray mosinAttachments = new TStringArray;
+        mosinAttachments.Insert("Ammo_762x54");
+        AddWeapon(cfg, "EoH_Sniper_Mosin", "Mosin9130", mosinAttachments);
     }
 
     protected static void AddWeapon(EoH_AIBDynamicConfig cfg, string name, string weapon, TStringArray attachments)
@@ -108,8 +248,7 @@ class EoH_AIBDynamicGenerator
 
     protected static int GetDogForTier(int tier)
     {
-        if (tier <= 1) return 0;
-        if (tier == 2) return 0;
+        if (tier <= 2) return 0;
         return 1;
     }
 
@@ -220,6 +359,7 @@ class EoH_AIBDynamicGenerator
             return;
         }
 
+        // Unknown town fallback. This should be replaced with exact coordinates before production.
         waypoints.Insert("0 0 0");
     }
 
@@ -239,6 +379,7 @@ class EoH_AIBDynamicGenerator
             return;
         }
 
+        // Unknown town fallback. This should be replaced with exact coordinates before production.
         positions.Insert("0 0 0");
     }
 };
