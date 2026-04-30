@@ -2,10 +2,15 @@ class CfgPatches
 {
     class EoH_WorldState
     {
-        units[] = {};
+        units[] = {"EoH_CaptureRelay_Base"};
         weapons[] = {};
         requiredVersion = 0.1;
-        requiredAddons[] = {"DZ_Data"};
+        requiredAddons[] =
+        {
+            "DZ_Data",
+            "DZ_Scripts",
+            "DayZExpansion_Groups_Scripts"
+        };
     };
 };
 
@@ -42,5 +47,21 @@ class CfgMods
                 files[] = {"EoH_WorldState/scripts/5_Mission"};
             };
         };
+    };
+};
+
+class CfgVehicles
+{
+    class Inventory_Base;
+
+    class EoH_CaptureRelay_Base: Inventory_Base
+    {
+        scope = 2;
+        displayName = "EoH Radio Relay";
+        descriptionShort = "A damaged radio relay used to project group influence across the region.";
+        model = "\dz\gear\radio\unitra_wilga.p3d";
+        weight = 5000;
+        itemSize[] = {4, 4};
+        physLayer = "item_large";
     };
 };
