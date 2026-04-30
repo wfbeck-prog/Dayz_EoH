@@ -19,6 +19,9 @@ class EoH_AIManager
 
     void LoadConfig()
     {
+        MakeDirectory("$profile:EoH");
+        MakeDirectory("$profile:EoH\\WorldState");
+
         string path = "$profile:EoH/WorldState/EoH_AIConfig.json";
 
         if (FileExist(path))
@@ -30,6 +33,17 @@ class EoH_AIManager
             m_Config = new EoH_AITownSystemConfig();
             JsonFileLoader<EoH_AITownSystemConfig>.JsonSaveFile(path, m_Config);
         }
+
+        if (!m_Config)
+        {
+            m_Config = new EoH_AITownSystemConfig();
+            JsonFileLoader<EoH_AITownSystemConfig>.JsonSaveFile(path, m_Config);
+        }
+    }
+
+    void GenerateAIBConfigFromCurrentWorldState()
+    {
+        EoH_AIBDynamicGenerator.GenerateFromWorldState(EoH_WorldStateManager.Get().GetState());
     }
 
     void OnTownCaptured(string townName, int tier)
@@ -54,6 +68,8 @@ class EoH_AIManager
                 SpawnAssaultAI(townName);
                 break;
         }
+
+        GenerateAIBConfigFromCurrentWorldState();
     }
 
     void SpawnDefensiveAI(string town)
