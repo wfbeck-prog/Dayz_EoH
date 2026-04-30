@@ -1,12 +1,10 @@
 class EoH_AIBDynamicGenerator
 {
-    // Generated-only output for debugging / inspection.
     protected static const string EOH_AIB_GENERATED_FILE = "$profile:EoH\\WorldState\\EoH_DynamicAIB_Generated.json";
 
-    // Live AI Bandits file. Adjust this path if your AI Bandits DynamicAIB.json lives somewhere else.
-    protected static const string EOH_AIB_LIVE_FILE = "$profile:DynamicAIB.json";
+    // Your AI Bandits config folder from HostHavoc: profile/AI_Bandits/DynamicAIB.json
+    protected static const string EOH_AIB_LIVE_FILE = "$profile:AI_Bandits\\DynamicAIB.json";
 
-    // Safety backup written before the merged live file is saved.
     protected static const string EOH_AIB_BACKUP_FILE = "$profile:EoH\\WorldState\\DynamicAIB_Backup_Before_EoH_Merge.json";
 
     static void GenerateFromWorldState(EoH_WorldStateData state)
@@ -65,6 +63,7 @@ class EoH_AIBDynamicGenerator
 
         MakeDirectory("$profile:EoH");
         MakeDirectory("$profile:EoH\\WorldState");
+        MakeDirectory("$profile:AI_Bandits");
 
         EoH_AIBDynamicConfig cfg = new EoH_AIBDynamicConfig();
         AddDefaultWeapons(cfg);
@@ -90,16 +89,12 @@ class EoH_AIBDynamicGenerator
     {
         if (!cfg.GroupLocations)
             cfg.GroupLocations = new array<ref EoH_AIBGroupLocation>();
-
         if (!cfg.SniperLocations)
             cfg.SniperLocations = new array<ref EoH_AIBSniperLocation>();
-
         if (!cfg.PredefinedWeapons)
             cfg.PredefinedWeapons = new array<ref EoH_AIBPredefinedWeapon>();
-
         if (cfg.version <= 0)
             cfg.version = 2;
-
         if (cfg.crashsitegroup == "")
             cfg.crashsitegroup = "Random";
     }
@@ -132,7 +127,6 @@ class EoH_AIBDynamicGenerator
     {
         if (name.Length() < 4)
             return false;
-
         return name.Substring(0, 4) == "EoH_";
     }
 
@@ -143,13 +137,11 @@ class EoH_AIBDynamicGenerator
             if (weapon)
                 live.PredefinedWeapons.Insert(weapon);
         }
-
         foreach (EoH_AIBGroupLocation group : generated.GroupLocations)
         {
             if (group)
                 live.GroupLocations.Insert(group);
         }
-
         foreach (EoH_AIBSniperLocation sniper : generated.SniperLocations)
         {
             if (sniper)
@@ -223,10 +215,8 @@ class EoH_AIBDynamicGenerator
         EoH_AIBPredefinedWeapon w = new EoH_AIBPredefinedWeapon();
         w.name = name;
         w.weapon = weapon;
-
         foreach (string item : attachments)
             w.attachments.Insert(item);
-
         cfg.PredefinedWeapons.Insert(w);
     }
 
@@ -252,19 +242,30 @@ class EoH_AIBDynamicGenerator
         return 1;
     }
 
+    protected static int GetAIGroupCountForTier(int tier)
+    {
+        if (tier <= 1) return 3;   // small towns: light defensive team
+        if (tier == 2) return 5;   // mid towns: proper patrol group
+        if (tier == 3) return 7;   // cities: outward pressure group
+        return 10;                 // military: assault-level squad
+    }
+
     protected static void AddNPCClassesForTier(array<string> npcclasses, int tier)
     {
-        npcclasses.Insert("BanditAI_Keiko");
-        npcclasses.Insert("BanditAI_Linda");
+        TStringArray pool = new TStringArray;
+        pool.Insert("BanditAI_Keiko");
+        pool.Insert("BanditAI_Linda");
+        pool.Insert("BanditAI_Rolf");
+        pool.Insert("BanditAI_Denis");
+        pool.Insert("BanditAI_Mirek");
 
-        if (tier >= 2)
-            npcclasses.Insert("BanditAI_Rolf");
+        int count = GetAIGroupCountForTier(tier);
 
-        if (tier >= 3)
-            npcclasses.Insert("BanditAI_Denis");
-
-        if (tier >= 4)
-            npcclasses.Insert("BanditAI_Mirek");
+        for (int i = 0; i < count; i++)
+        {
+            int index = i % pool.Count();
+            npcclasses.Insert(pool.Get(index));
+        }
     }
 
     protected static void AddWeaponsForTier(array<string> weaponpool, int tier)
@@ -274,21 +275,18 @@ class EoH_AIBDynamicGenerator
             weaponpool.Insert("EoH_Low_AKM");
             return;
         }
-
         if (tier == 2)
         {
             weaponpool.Insert("EoH_Low_AKM");
             weaponpool.Insert("EoH_Mid_M4");
             return;
         }
-
         if (tier == 3)
         {
             weaponpool.Insert("EoH_Mid_M4");
             weaponpool.Insert("EoH_High_AK74");
             return;
         }
-
         weaponpool.Insert("EoH_Mid_M4");
         weaponpool.Insert("EoH_High_AK74");
         weaponpool.Insert("EoH_Sniper_Mosin");
@@ -333,7 +331,6 @@ class EoH_AIBDynamicGenerator
             waypoints.Insert("3900 0 9000");
             return;
         }
-
         if (townName == "Stary Sobor")
         {
             waypoints.Insert("6200 0 7800");
@@ -341,7 +338,6 @@ class EoH_AIBDynamicGenerator
             waypoints.Insert("6400 0 8000");
             return;
         }
-
         if (townName == "Elektro")
         {
             waypoints.Insert("10500 0 2250");
@@ -349,7 +345,6 @@ class EoH_AIBDynamicGenerator
             waypoints.Insert("9800 0 2400");
             return;
         }
-
         if (townName == "NWAF")
         {
             waypoints.Insert("4800 0 9600");
@@ -358,8 +353,6 @@ class EoH_AIBDynamicGenerator
             waypoints.Insert("5000 0 10200");
             return;
         }
-
-        // Unknown town fallback. This should be replaced with exact coordinates before production.
         waypoints.Insert("0 0 0");
     }
 
@@ -371,15 +364,12 @@ class EoH_AIBDynamicGenerator
             positions.Insert("11000 0 2500");
             return;
         }
-
         if (townName == "NWAF")
         {
             positions.Insert("5000 0 10200");
             positions.Insert("4700 0 9200");
             return;
         }
-
-        // Unknown town fallback. This should be replaced with exact coordinates before production.
         positions.Insert("0 0 0");
     }
 };
