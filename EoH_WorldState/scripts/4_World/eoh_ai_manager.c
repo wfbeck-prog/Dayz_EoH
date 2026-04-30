@@ -43,7 +43,7 @@ class EoH_AIManager
 
     void GenerateAIBConfigFromCurrentWorldState()
     {
-        EoH_AIBDynamicGenerator.GenerateFromWorldState(EoH_WorldStateManager.Get().GetState());
+        EoH_AIBDynamicGenerator.GenerateAndMergeIntoLiveDynamicAIB(EoH_WorldStateManager.Get().GetState());
     }
 
     void OnTownCaptured(string townName, int tier)
