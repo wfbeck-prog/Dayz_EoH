@@ -8,6 +8,10 @@ modded class MissionServer
 
         EoH_WorldStateManager.Get();
         EoH_CaptureManager.Get();
+        EoH_AIManager.Get();
+
+        // Generate AI config on server start (persistent world sync)
+        EoH_AIManager.Get().GenerateAIBConfigFromCurrentWorldState();
 
         m_EoH_LastCaptureTick = 0;
 
@@ -20,7 +24,6 @@ modded class MissionServer
 
         int now = GetGame().GetTime();
 
-        // Run capture tick every 5 seconds
         if (now - m_EoH_LastCaptureTick > 5000)
         {
             EoH_CaptureManager.Get().Tick();
