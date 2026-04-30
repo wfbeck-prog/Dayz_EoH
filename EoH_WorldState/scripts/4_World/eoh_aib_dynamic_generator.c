@@ -2,7 +2,7 @@ class EoH_AIBDynamicGenerator
 {
     protected static const string EOH_AIB_GENERATED_FILE = "$profile:EoH\\WorldState\\EoH_DynamicAIB_Generated.json";
 
-    // Your AI Bandits config folder from HostHavoc: profile/AI_Bandits/DynamicAIB.json
+    // HostHavoc/profile AI Bandits folder: profile/AI_Bandits/DynamicAIB.json
     protected static const string EOH_AIB_LIVE_FILE = "$profile:AI_Bandits\\DynamicAIB.json";
 
     protected static const string EOH_AIB_BACKUP_FILE = "$profile:EoH\\WorldState\\DynamicAIB_Backup_Before_EoH_Merge.json";
@@ -76,13 +76,44 @@ class EoH_AIBDynamicGenerator
             if (town.OwnerGroupID == "" || town.OwnerGroupName == "Unclaimed")
                 continue;
 
-            AddTownGroup(cfg, town);
+            int ownerTownCount = GetOwnedTownCount(state, town.OwnerGroupID);
+            AddTownGroups(cfg, town, ownerTownCount);
 
             if (town.Tier >= 3)
                 AddTownSniper(cfg, town);
         }
 
         return cfg;
+    }
+
+    protected static int GetOwnedTownCount(EoH_WorldStateData state, string ownerGroupID)
+    {
+        int count = 0;
+
+        if (!state || !state.Towns || ownerGroupID == "")
+            return count;
+
+        foreach (EoH_WorldStateTownState town : state.Towns)
+        {
+            if (town && town.OwnerGroupID == ownerGroupID && town.OwnerGroupName != "Unclaimed")
+                count++;
+        }
+
+        return count;
+    }
+
+    protected static int GetPressureBonus(int ownerTownCount)
+    {
+        if (ownerTownCount >= 5)
+            return 3;
+
+        if (ownerTownCount >= 3)
+            return 2;
+
+        if (ownerTownCount >= 2)
+            return 1;
+
+        return 0;
     }
 
     protected static void EnsureConfigValid(EoH_AIBDynamicConfig cfg)
@@ -149,19 +180,38 @@ class EoH_AIBDynamicGenerator
         }
     }
 
-    protected static void AddTownGroup(EoH_AIBDynamicConfig cfg, EoH_WorldStateTownState town)
+    protected static void AddTownGroups(EoH_AIBDynamicConfig cfg, EoH_WorldStateTownState town, int ownerTownCount)
+    {
+        int pressureBonus = GetPressureBonus(ownerTownCount);
+
+        if (town.Tier >= 4)
+        {
+            AddTownGroupCustom(cfg, town, "_Patrol", 4 + pressureBonus, 0);
+            AddTownGroupCustom(cfg, town, "_Defense", 5 + pressureBonus, 1);
+            AddTownGroupCustom(cfg, town, "_Assault", 5 + pressureBonus, 2);
+            return;
+        }
+
+        int count = GetAIGroupCountForTier(town.Tier) + pressureBonus;
+        AddTownGroupCustom(cfg, town, "_T" + town.Tier.ToString(), count, 0);
+
+        if (ownerTownCount >= 4 && town.Tier >= 3)
+            AddTownGroupCustom(cfg, town, "_Pressure", 3 + pressureBonus, 2);
+    }
+
+    protected static void AddTownGroupCustom(EoH_AIBDynamicConfig cfg, EoH_WorldStateTownState town, string suffix, int aiCount, int routeMode)
     {
         EoH_AIBGroupLocation group = new EoH_AIBGroupLocation();
-        group.name = "EoH_" + town.Name + "_T" + town.Tier.ToString();
+        group.name = "EoH_" + town.Name + suffix;
         group.faction = "Bandits";
         group.accuracy = GetAccuracyForTier(town.Tier);
         group.grenadechance = GetGrenadeChanceForTier(town.Tier);
         group.dog = GetDogForTier(town.Tier);
 
-        AddNPCClassesForTier(group.npcclasses, town.Tier);
+        AddNPCClassesByCount(group.npcclasses, aiCount);
         AddWeaponsForTier(group.weaponpool, town.Tier);
         AddNPCPropertiesForTier(group.npcproperties, town.Tier);
-        AddWaypointsForTown(group.waypoints, town.Name, town.Tier);
+        AddWaypointsForTownRoute(group.waypoints, town.Name, town.Tier, routeMode);
 
         cfg.GroupLocations.Insert(group);
     }
@@ -244,13 +294,13 @@ class EoH_AIBDynamicGenerator
 
     protected static int GetAIGroupCountForTier(int tier)
     {
-        if (tier <= 1) return 3;   // small towns: light defensive team
-        if (tier == 2) return 5;   // mid towns: proper patrol group
-        if (tier == 3) return 7;   // cities: outward pressure group
-        return 10;                 // military: assault-level squad
+        if (tier <= 1) return 3;
+        if (tier == 2) return 5;
+        if (tier == 3) return 7;
+        return 10;
     }
 
-    protected static void AddNPCClassesForTier(array<string> npcclasses, int tier)
+    protected static void AddNPCClassesByCount(array<string> npcclasses, int count)
     {
         TStringArray pool = new TStringArray;
         pool.Insert("BanditAI_Keiko");
@@ -258,8 +308,6 @@ class EoH_AIBDynamicGenerator
         pool.Insert("BanditAI_Rolf");
         pool.Insert("BanditAI_Denis");
         pool.Insert("BanditAI_Mirek");
-
-        int count = GetAIGroupCountForTier(tier);
 
         for (int i = 0; i < count; i++)
         {
@@ -322,6 +370,79 @@ class EoH_AIBDynamicGenerator
         }
     }
 
+    protected static void AddWaypointsForTownRoute(array<string> waypoints, string townName, int tier, int routeMode)
+    {
+        if (townName == "NWAF")
+        {
+            if (routeMode == 1)
+            {
+                waypoints.Insert("4800 0 9600");
+                waypoints.Insert("4700 0 9200");
+                waypoints.Insert("5000 0 9500");
+                return;
+            }
+            if (routeMode == 2)
+            {
+                waypoints.Insert("5200 0 9800");
+                waypoints.Insert("5000 0 10200");
+                waypoints.Insert("4500 0 9400");
+                return;
+            }
+            waypoints.Insert("4800 0 9600");
+            waypoints.Insert("4500 0 9400");
+            waypoints.Insert("5200 0 9800");
+            waypoints.Insert("5000 0 10200");
+            return;
+        }
+
+        if (townName == "Tisy")
+        {
+            if (routeMode == 1)
+            {
+                waypoints.Insert("1700 0 13800");
+                waypoints.Insert("1600 0 13900");
+                waypoints.Insert("1900 0 14000");
+                return;
+            }
+            if (routeMode == 2)
+            {
+                waypoints.Insert("1500 0 13600");
+                waypoints.Insert("1900 0 14000");
+                waypoints.Insert("1600 0 13900");
+                return;
+            }
+            waypoints.Insert("1700 0 13800");
+            waypoints.Insert("1500 0 13600");
+            waypoints.Insert("1900 0 14000");
+            waypoints.Insert("1600 0 13900");
+            return;
+        }
+
+        if (townName == "Pavlovo Military")
+        {
+            if (routeMode == 1)
+            {
+                waypoints.Insert("2100 0 3300");
+                waypoints.Insert("1900 0 3200");
+                waypoints.Insert("2300 0 3500");
+                return;
+            }
+            if (routeMode == 2)
+            {
+                waypoints.Insert("2300 0 3500");
+                waypoints.Insert("2100 0 3300");
+                waypoints.Insert("1900 0 3200");
+                return;
+            }
+            waypoints.Insert("2100 0 3300");
+            waypoints.Insert("1900 0 3200");
+            waypoints.Insert("2300 0 3500");
+            return;
+        }
+
+        AddWaypointsForTown(waypoints, townName, tier);
+    }
+
     protected static void AddWaypointsForTown(array<string> waypoints, string townName, int tier)
     {
         if (townName == "Vybor")
@@ -329,6 +450,7 @@ class EoH_AIBDynamicGenerator
             waypoints.Insert("3700 0 8800");
             waypoints.Insert("3500 0 8700");
             waypoints.Insert("3900 0 9000");
+            waypoints.Insert("3600 0 8600");
             return;
         }
         if (townName == "Stary Sobor")
@@ -336,6 +458,7 @@ class EoH_AIBDynamicGenerator
             waypoints.Insert("6200 0 7800");
             waypoints.Insert("6000 0 7700");
             waypoints.Insert("6400 0 8000");
+            waypoints.Insert("6100 0 7900");
             return;
         }
         if (townName == "Elektro")
@@ -343,14 +466,36 @@ class EoH_AIBDynamicGenerator
             waypoints.Insert("10500 0 2250");
             waypoints.Insert("11000 0 2500");
             waypoints.Insert("9800 0 2400");
+            waypoints.Insert("10200 0 2000");
             return;
         }
-        if (townName == "NWAF")
+        if (townName == "Zelenogorsk")
         {
-            waypoints.Insert("4800 0 9600");
-            waypoints.Insert("4500 0 9400");
-            waypoints.Insert("5200 0 9800");
-            waypoints.Insert("5000 0 10200");
+            waypoints.Insert("2800 0 5300");
+            waypoints.Insert("2600 0 5200");
+            waypoints.Insert("3000 0 5500");
+            waypoints.Insert("2700 0 5000");
+            return;
+        }
+        if (townName == "Berezino")
+        {
+            waypoints.Insert("12000 0 9000");
+            waypoints.Insert("11800 0 8800");
+            waypoints.Insert("12200 0 9200");
+            waypoints.Insert("11900 0 8600");
+            return;
+        }
+        if (townName == "Chernogorsk")
+        {
+            waypoints.Insert("6600 0 2600");
+            waypoints.Insert("6200 0 2400");
+            waypoints.Insert("7000 0 2800");
+            waypoints.Insert("6400 0 3000");
+            return;
+        }
+        if (townName == "NWAF" || townName == "Tisy" || townName == "Pavlovo Military")
+        {
+            AddWaypointsForTownRoute(waypoints, townName, tier, 0);
             return;
         }
         waypoints.Insert("0 0 0");
@@ -368,6 +513,18 @@ class EoH_AIBDynamicGenerator
         {
             positions.Insert("5000 0 10200");
             positions.Insert("4700 0 9200");
+            return;
+        }
+        if (townName == "Tisy")
+        {
+            positions.Insert("1900 0 14000");
+            positions.Insert("1600 0 13900");
+            return;
+        }
+        if (townName == "Pavlovo Military")
+        {
+            positions.Insert("2300 0 3500");
+            positions.Insert("1900 0 3200");
             return;
         }
         positions.Insert("0 0 0");
