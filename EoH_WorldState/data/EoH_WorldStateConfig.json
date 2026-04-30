@@ -1,0 +1,32 @@
+{
+  "Towns": [
+    {
+      "Name": "Vybor",
+      "Tier": 2,
+      "Radius": 250,
+      "CaptureTime": 1200,
+      "Position": [3700, 0, 8800]
+    },
+    {
+      "Name": "Stary Sobor",
+      "Tier": 2,
+      "Radius": 260,
+      "CaptureTime": 1320,
+      "Position": [6200, 0, 7800]
+    },
+    {
+      "Name": "NWAF",
+      "Tier": 4,
+      "Radius": 500,
+      "CaptureTime": 2100,
+      "Position": [4800, 0, 9600]
+    },
+    {
+      "Name": "Elektro",
+      "Tier": 3,
+      "Radius": 400,
+      "CaptureTime": 1800,
+      "Position": [10500, 0, 2250]
+    }
+  ]
+}
