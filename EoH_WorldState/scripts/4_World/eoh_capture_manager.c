@@ -149,7 +149,10 @@ class EoH_CaptureManager
         string groupName = GetPlayerGroupName(player);
 
         if (groupID == "")
+        {
+            Print("[EoH_Capture] Capture denied. Player is not in an Expansion group.");
             return;
+        }
 
         if (!m_ActiveCaptures.Contains(townName))
         {
@@ -240,6 +243,9 @@ class EoH_CaptureManager
 
             string playerGroupID = GetPlayerGroupID(player);
 
+            if (playerGroupID == "")
+                continue;
+
             if (playerGroupID == session.AttackingGroupID)
             {
                 session.AttackersNearby++;
@@ -273,21 +279,12 @@ class EoH_CaptureManager
 
     protected string GetPlayerGroupID(PlayerBase player)
     {
-        // Temporary fallback until Expansion Groups API is wired in.
-        // This makes each player act as their own group for now.
-        if (!player || !player.GetIdentity())
-            return "";
-
-        return player.GetIdentity().GetId();
+        return EoH_GroupHelper.GetGroupID(player);
     }
 
     protected string GetPlayerGroupName(PlayerBase player)
     {
-        // Temporary fallback until Expansion Groups API is wired in.
-        if (!player || !player.GetIdentity())
-            return "Unknown";
-
-        return player.GetIdentity().GetName();
+        return EoH_GroupHelper.GetGroupName(player);
     }
 
     void CompleteCapture(EoH_CaptureSession session)
