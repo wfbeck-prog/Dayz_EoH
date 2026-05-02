@@ -208,6 +208,9 @@ class EoH_WorldStateManager
 
         EoH_AIManager.Get().OnTownCaptured(townName, town.Tier);
 
+        // NEW: update map marker
+        EoH_TownMarkerManager.UpdateTownMarker(townName, groupName);
+
         SaveState();
     }
 
@@ -223,6 +226,9 @@ class EoH_WorldStateManager
         town.LastChangedUnix = GetGame().GetTime();
 
         Print("[EoH_WorldState] Town cleared: " + townName);
+
+        EoH_TownMarkerManager.RemoveMarkerFromAll(EoH_TownMarkerManager.GetMarkerId(townName));
+
         SaveState();
     }
 
