@@ -1,0 +1,16 @@
+{
+    "compress": {
+        "exclude": [],
+        "include": []
+    },
+    "headers": [
+        {
+            "name": "product",
+            "value": "dayz ugc"
+        },
+        {
+            "name": "prefix",
+            "value": "EoH_MenuTheme"
+        }
+    ]
+}

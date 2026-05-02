@@ -1,0 +1,9 @@
+name = "EoH Roaming Trader";
+picture = "";
+logo = "";
+logoSmall = "";
+logoOver = "";
+tooltip = "EoH Roaming Trader";
+overview = "Dynamic roaming traders for DayZ 1.29 with Expansion Market and AI integration hooks.";
+author = "EoH";
+version = "1.0";
