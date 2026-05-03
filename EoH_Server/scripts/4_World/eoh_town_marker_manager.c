@@ -132,21 +132,21 @@ modded class PlayerBase
 
         if (rpc_type == EoH_TownMarkerRPC.ADD_OR_UPDATE_TOWN_MARKER)
         {
-            Param1<ref EoH_TownMarkerData> param;
-            if (!ctx.Read(param) || !param || !param.param1)
+            Param1<ref EoH_TownMarkerData> paramAdd;
+            if (!ctx.Read(paramAdd) || !paramAdd || !paramAdd.param1)
                 return;
 
-            EoH_TownMarkerClientManager.Get().SetMarker(param.param1);
+            EoH_TownMarkerClientManager.Get().SetMarker(paramAdd.param1);
             return;
         }
 
         if (rpc_type == EoH_TownMarkerRPC.REMOVE_TOWN_MARKER)
         {
-            Param1<string> param;
-            if (!ctx.Read(param) || !param)
+            Param1<string> paramRemove;
+            if (!ctx.Read(paramRemove) || !paramRemove)
                 return;
 
-            EoH_TownMarkerClientManager.Get().RemoveMarker(param.param1);
+            EoH_TownMarkerClientManager.Get().RemoveMarker(paramRemove.param1);
             return;
         }
     }
