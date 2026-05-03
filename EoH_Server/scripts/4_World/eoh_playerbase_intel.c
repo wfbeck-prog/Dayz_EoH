@@ -1,8 +1,8 @@
 modded class PlayerBase
 {
-    void OnKilled(Object killer)
+    override void EEKilled(Object killer)
     {
-        super.OnKilled(killer);
+        super.EEKilled(killer);
 
         if (!GetIdentity())
             return;
