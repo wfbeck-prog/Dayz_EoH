@@ -19,7 +19,10 @@ class ActionUseIntel: ActionInteractBase
     override void OnExecuteServer(ActionData action_data)
     {
         PlayerBase player = action_data.m_Player;
-        EoH_IntelManager.Get().RevealIntel(player);
+
+        // FIX: RevealIntel no longer exists
+        EoH_IntelManager.Get().RevealTownIntel(player);
+
         action_data.m_MainItem.Delete();
     }
 };
