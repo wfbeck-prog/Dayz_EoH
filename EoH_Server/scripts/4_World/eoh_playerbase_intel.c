@@ -1,8 +1,8 @@
 modded class PlayerBase
 {
-    override void OnPlayerKilled(Object killer)
+    override void EEOnDeath(EntityAI killer)
     {
-        super.OnPlayerKilled(killer);
+        super.EEOnDeath(killer);
 
         if (!GetIdentity())
             return;
