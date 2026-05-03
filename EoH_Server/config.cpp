@@ -9,12 +9,12 @@ class CfgPatches
         {
             "DZ_Data",
             "DZ_Scripts",
-            "JM_CF_Scripts",
-            "DayZExpansion_Core_Scripts",
-            "DayZExpansion_Navigation_Scripts",
-            "DayZExpansion_Groups_Scripts",
-            "Dogtags_Scripts",
-            "TerjeSkills_Scripts"
+            "CF",
+            "DayZExpansion_Core",
+            "DayZExpansion_Navigation",
+            "DayZExpansion_Groups",
+            "Dogtags",
+            "TerjeSkills"
         };
     };
 };
