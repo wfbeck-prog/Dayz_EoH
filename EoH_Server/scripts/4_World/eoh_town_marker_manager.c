@@ -2,6 +2,9 @@ class EoH_TownMarkerManager
 {
     static int GetGroupColor(string groupName)
     {
+        if (groupName == "")
+            return ARGB(255, 200, 200, 200);
+
         int len = groupName.Length();
 
         switch (len % 8)
@@ -15,6 +18,8 @@ class EoH_TownMarkerManager
             case 6: return ARGB(255, 255, 120, 200);
             default: return ARGB(255, 200, 200, 200);
         }
+
+        return ARGB(255, 200, 200, 200);
     }
 
     static void SendMarkerToAll(EoH_TownMarkerData data)
