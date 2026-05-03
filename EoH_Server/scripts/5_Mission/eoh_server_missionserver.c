@@ -29,6 +29,9 @@ modded class MissionServer
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
 
+        // NEW: Initialize faint town markers at startup
+        EoH_InitTownMarkers();
+
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Server_Tick, 1000, true);
 
         m_EoH_ServerInitialized = true;
@@ -90,5 +93,43 @@ modded class MissionServer
             return;
 
         player.ReplaceDogtag(desired);
+    }
+
+    void EoH_InitTownMarkers()
+    {
+        if (!GetGame() || !GetGame().IsServer())
+            return;
+
+        Print("[EoH] Initializing base town markers...");
+
+        EoH_CaptureManager captureManager = EoH_CaptureManager.Get();
+        if (!captureManager)
+            return;
+
+        array<string> towns = captureManager.GetAllTownNames();
+
+        foreach (string townName : towns)
+        {
+            string owner = captureManager.GetTownOwner(townName);
+
+            if (owner == "")
+            {
+                EoH_TownMarkerData data = new EoH_TownMarkerData(
+                    EoH_TownMarkerManager.GetMarkerId(townName),
+                    townName,
+                    "",
+                    EoH_TownMarkerManager.GetTownPosition(townName)
+                );
+
+                data.Color = ARGB(80, 150, 150, 150);
+                data.BaseColor = data.Color;
+
+                EoH_TownMarkerManager.SendMarkerToAll(data);
+            }
+            else
+            {
+                EoH_TownMarkerManager.UpdateTownMarker(townName, owner);
+            }
+        }
     }
 };
