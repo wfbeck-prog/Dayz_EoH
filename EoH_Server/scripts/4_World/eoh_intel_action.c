@@ -1,4 +1,4 @@
-class ActionUseIntel: ActionInteractBase
+class ActionUseIntel: ActionSingleUseBase
 {
     void ActionUseIntel()
     {
@@ -20,7 +20,6 @@ class ActionUseIntel: ActionInteractBase
     {
         PlayerBase player = action_data.m_Player;
 
-        // FIX: RevealIntel no longer exists
         EoH_IntelManager.Get().RevealTownIntel(player);
 
         action_data.m_MainItem.Delete();
