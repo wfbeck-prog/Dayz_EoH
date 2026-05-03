@@ -10,7 +10,6 @@ modded class MissionServer
         EoH_Server_Init();
         EoH_DT_StartLiveUpdates();
 
-        // Phase 4: Radio intel loop
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Radio_Tick, 120000, true);
     }
 
@@ -34,11 +33,31 @@ modded class MissionServer
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
+
+        // FIX: ensure markers initialize
         EoH_InitTownMarkers();
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Server_Tick, 1000, true);
 
         m_EoH_ServerInitialized = true;
+    }
+
+    // FIX: missing function
+    void EoH_InitTownMarkers()
+    {
+        EoH_CaptureManager cap = EoH_CaptureManager.Get();
+        if (!cap)
+            return;
+
+        array<string> towns = cap.GetAllTownNames();
+
+        foreach (string town : towns)
+        {
+            string owner = cap.GetTownOwner(town);
+
+            if (owner != "")
+                EoH_TownMarkerManager.UpdateTownMarker(town, owner);
+        }
     }
 
     protected void EoH_DT_StartLiveUpdates()
