@@ -15,7 +15,7 @@ class EoH_IntelManager
         return s_Instance;
     }
 
-    void RevealIntel(PlayerBase player)
+    void RevealTownIntel(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
             return;
@@ -28,7 +28,7 @@ class EoH_IntelManager
             string owner = cap.GetTownOwner(town);
 
             EoH_TownMarkerData data = new EoH_TownMarkerData();
-            data.Id = EoH_TownMarkerManager.GetMarkerId(town);
+            data.Id = "EoH_INTEL_" + town;
             data.Name = town;
             data.Position = EoH_TownMarkerManager.GetTownPosition(town);
 
@@ -46,14 +46,59 @@ class EoH_IntelManager
             EoH_TownMarkerManager.SendMarkerToPlayer(player, data);
         }
 
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ClearIntel, m_Config.RevealDurationSeconds * 1000, false, player);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ClearTownIntel, m_Config.RevealDurationSeconds * 1000, false, player);
     }
 
-    void ClearIntel(PlayerBase player)
+    void RevealHighValuePlayers(PlayerBase player)
     {
-        if (!player || !player.GetIdentity())
-            return;
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
 
-        EoH_TownMarkerManager.ResetPlayerMarkers(player);
+        foreach (Man man : players)
+        {
+            PlayerBase target = PlayerBase.Cast(man);
+            if (!target || !target.GetIdentity() || !target.IsAlive())
+                continue;
+
+            int exp = EoH_DT_TerjeAdapter.GetBestSkillScore(target);
+            if (exp < 2000)
+                continue;
+
+            EoH_TownMarkerData data = new EoH_TownMarkerData();
+            data.Id = "EoH_INTEL_PLAYER_" + target.GetIdentity().GetId();
+            data.Name = "High Value Target";
+            data.Position = target.GetPosition();
+            data.Color = ARGB(255, 255, 50, 50);
+
+            EoH_TownMarkerManager.SendMarkerToPlayer(player, data);
+        }
+
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ClearPlayerIntel, m_Config.RevealDurationSeconds * 1000, false, player);
+    }
+
+    void ClearTownIntel(PlayerBase player)
+    {
+        EoH_CaptureManager cap = EoH_CaptureManager.Get();
+        array<string> towns = cap.GetAllTownNames();
+
+        foreach (string town : towns)
+        {
+            EoH_TownMarkerManager.RemoveMarkerFromPlayer(player, "EoH_INTEL_" + town);
+        }
+    }
+
+    void ClearPlayerIntel(PlayerBase player)
+    {
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase target = PlayerBase.Cast(man);
+            if (!target || !target.GetIdentity())
+                continue;
+
+            EoH_TownMarkerManager.RemoveMarkerFromPlayer(player, "EoH_INTEL_PLAYER_" + target.GetIdentity().GetId());
+        }
     }
 };
