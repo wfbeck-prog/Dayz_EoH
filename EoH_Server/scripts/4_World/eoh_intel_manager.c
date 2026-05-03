@@ -3,9 +3,14 @@ class EoH_IntelManager
     static ref EoH_IntelManager s_Instance;
     ref EoH_IntelConfig m_Config;
 
+    ref map<string, int> m_LastUseTime;
+    ref map<string, int> m_UsesThisLife;
+
     void EoH_IntelManager()
     {
         m_Config = new EoH_IntelConfig();
+        m_LastUseTime = new map<string, int>();
+        m_UsesThisLife = new map<string, int>();
     }
 
     static EoH_IntelManager Get()
@@ -15,10 +20,54 @@ class EoH_IntelManager
         return s_Instance;
     }
 
-    void RevealTownIntel(PlayerBase player)
+    bool CanUseIntel(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
+            return false;
+
+        string id = player.GetIdentity().GetId();
+        int now = GetGame().GetTime();
+
+        if (m_LastUseTime.Contains(id))
+        {
+            int last = m_LastUseTime.Get(id);
+            if ((now - last) < (m_Config.CooldownSeconds * 1000))
+                return false;
+        }
+
+        if (m_UsesThisLife.Contains(id))
+        {
+            if (m_UsesThisLife.Get(id) >= m_Config.MaxUsesPerLife)
+                return false;
+        }
+
+        return true;
+    }
+
+    void RegisterUse(PlayerBase player)
+    {
+        string id = player.GetIdentity().GetId();
+
+        m_LastUseTime.Set(id, GetGame().GetTime());
+
+        int count = 0;
+        if (m_UsesThisLife.Contains(id))
+            count = m_UsesThisLife.Get(id);
+
+        m_UsesThisLife.Set(id, count + 1);
+    }
+
+    void ResetPlayerIntelUsage(string id)
+    {
+        m_UsesThisLife.Remove(id);
+    }
+
+    void RevealTownIntel(PlayerBase player)
+    {
+        if (!CanUseIntel(player))
             return;
+
+        RegisterUse(player);
 
         EoH_CaptureManager cap = EoH_CaptureManager.Get();
         array<string> towns = cap.GetAllTownNames();
@@ -51,6 +100,11 @@ class EoH_IntelManager
 
     void RevealHighValuePlayers(PlayerBase player)
     {
+        if (!CanUseIntel(player))
+            return;
+
+        RegisterUse(player);
+
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
 
