@@ -22,7 +22,34 @@ class EoH_TownMarkerManager
         return ARGB(255, 200, 200, 200);
     }
 
-    // NEW: contested marker support
+    // FIX: restore base town marker update
+    static void UpdateTownMarker(string townName, string owner)
+    {
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        int color = GetGroupColor(owner);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.GetIdentity())
+                continue;
+
+            EoH_TownMarkerData data = new EoH_TownMarkerData();
+            data.Id = GetMarkerId(townName);
+            data.Name = townName;
+            data.Owner = owner;
+            data.Position = GetTownPosition(townName);
+            data.Color = color;
+            data.BaseColor = color;
+            data.IsContested = 0;
+            data.Pulse = 0;
+
+            SendMarkerToPlayer(player, data);
+        }
+    }
+
     static void UpdateContestedMarker(string townName, string owner)
     {
         array<Man> players = new array<Man>();
