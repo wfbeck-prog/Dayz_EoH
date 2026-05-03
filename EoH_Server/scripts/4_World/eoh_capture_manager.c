@@ -260,14 +260,14 @@ class EoH_CaptureManager
         if (m_Config.PauseWhenContested && session.EnemiesNearby > 0)
             session.IsContested = true;
 
-if (session.IsContested)
-{
-    EoH_TownMarkerManager.UpdateContestedMarker(session.TownName, session.AttackingGroupName);
-}
-else
-{
-    EoH_TownMarkerManager.ClearContestedMarker(session.TownName);
-}
+        if (session.IsContested)
+        {
+            EoH_TownMarkerManager.UpdateContestedMarker(session.TownName, session.AttackingGroupName);
+        }
+        else
+        {
+            EoH_TownMarkerManager.ClearContestedMarker(session.TownName);
+        }
     }
 
     protected bool CanProgress(EoH_CaptureSession session, EoH_CaptureTownConfig townCfg)
