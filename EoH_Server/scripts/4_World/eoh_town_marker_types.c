@@ -11,8 +11,11 @@ class EoH_TownMarkerData
     string OwnerGroupName;
     vector Position;
     int Color;
+    int BaseColor;
     string Icon;
     int Is3D;
+    int IsContested;
+    int Pulse;
 
     void EoH_TownMarkerData(string markerId = "", string townName = "", string ownerGroupName = "", vector position = "0 0 0")
     {
@@ -21,12 +24,23 @@ class EoH_TownMarkerData
         OwnerGroupName = ownerGroupName;
         Position = position;
         Color = ARGB(255, 80, 180, 255);
+        BaseColor = Color;
         Icon = "Flag";
         Is3D = 0;
+        IsContested = 0;
+        Pulse = 0;
     }
 
     string GetLabel()
     {
+        if (IsContested == 1)
+        {
+            if (OwnerGroupName != "" && OwnerGroupName != "Unclaimed")
+                return "CONTESTED: " + TownName + " - " + OwnerGroupName;
+
+            return "CONTESTED: " + TownName;
+        }
+
         if (OwnerGroupName != "" && OwnerGroupName != "Unclaimed")
             return TownName + " - " + OwnerGroupName;
 
