@@ -9,12 +9,12 @@ class CfgPatches
         {
             "DZ_Data",
             "DZ_Scripts",
-            "CF",
-            "DayZ-Expansion-Core",
-            "DayZ-Expansion-Navigation",
-            "DayZ-Expansion-Groups",
-            "AIB_Unleashed",
-            "Terje-Skills"
+            "JM_CF_Scripts",
+            "DayZExpansion_Core_Scripts",
+            "DayZExpansion_Navigation_Scripts",
+            "DayZExpansion_Groups_Scripts",
+            "Dogtags_Scripts",
+            "TerjeSkills_Scripts"
         };
     };
 };
@@ -36,10 +36,19 @@ class CfgMods
         extra = 0;
         type = "mod";
 
-        dependencies[] = {"World", "Mission"};
+        dependencies[] = {"Game", "World", "Mission"};
 
         class defs
         {
+            class gameScriptModule
+            {
+                value = "";
+                files[] =
+                {
+                    "EoH_Server/scripts/3_Game"
+                };
+            };
+
             class worldScriptModule
             {
                 value = "";
