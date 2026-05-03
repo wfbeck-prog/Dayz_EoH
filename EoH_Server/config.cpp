@@ -9,10 +9,12 @@ class CfgPatches
         {
             "DZ_Data",
             "DZ_Scripts",
-            "JM_CF_Scripts",
-            "DayZExpansion_Core_Scripts",
-            "DayZExpansion_Navigation_Scripts",
-            "DayZExpansion_Groups_Scripts"
+            "CF",
+            "DayZ-Expansion-Core",
+            "DayZ-Expansion-Navigation",
+            "DayZ-Expansion-Groups",
+            "AIB_Unleashed",
+            "Terje-Skills"
         };
     };
 };
