@@ -31,11 +31,12 @@ class EoH_TownMarkerData
 
     void Normalize()
     {
-        if (MarkerId == "")
-            MarkerId = Id;
-
-        if (Id == "")
+        // Enforce unified ID system
+        if (Id == "" && MarkerId != "")
             Id = MarkerId;
+
+        if (MarkerId == "" && Id != "")
+            MarkerId = Id;
 
         if (TownName == "")
             TownName = Name;
