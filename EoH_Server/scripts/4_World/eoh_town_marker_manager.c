@@ -22,7 +22,6 @@ class EoH_TownMarkerManager
         return ARGB(255, 200, 200, 200);
     }
 
-    // FIX: restore base town marker update
     static void UpdateTownMarker(string townName, string owner)
     {
         array<Man> players = new array<Man>();
@@ -77,6 +76,12 @@ class EoH_TownMarkerManager
 
     static void ClearContestedMarker(string townName)
     {
+        RemoveMarkerFromAll(GetMarkerId(townName));
+    }
+
+    // FIX: add missing global remove
+    static void RemoveMarkerFromAll(string markerId)
+    {
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
 
@@ -86,7 +91,7 @@ class EoH_TownMarkerManager
             if (!player || !player.GetIdentity())
                 continue;
 
-            RemoveMarkerFromPlayer(player, GetMarkerId(townName));
+            RemoveMarkerFromPlayer(player, markerId);
         }
     }
 
