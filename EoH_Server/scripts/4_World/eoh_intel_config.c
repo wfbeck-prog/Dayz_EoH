@@ -1,13 +1,21 @@
 class EoH_IntelConfig
 {
     int RevealDurationSeconds;
-    bool ShowOwnership;
-    bool ShowContested;
+
+    int CooldownSeconds;
+    int MaxUsesPerLife;
+
+    bool RequireItem;
+    bool AllowPlayerTracking;
 
     void EoH_IntelConfig()
     {
         RevealDurationSeconds = 300;
-        ShowOwnership = true;
-        ShowContested = true;
+
+        CooldownSeconds = 180;
+        MaxUsesPerLife = 3;
+
+        RequireItem = true;
+        AllowPlayerTracking = true;
     }
 };
