@@ -4,6 +4,7 @@ class EoH_SCB_Config
     int ContainerSize;
     bool PersistOnDeath;
     int RestoreDelayMs;
+    bool Level4x4;
 
     void EoH_SCB_Config()
     {
@@ -11,5 +12,6 @@ class EoH_SCB_Config
         ContainerSize = 4;
         PersistOnDeath = true;
         RestoreDelayMs = 5000;
+        Level4x4 = true;
     }
 };
