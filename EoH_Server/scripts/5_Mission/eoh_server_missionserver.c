@@ -9,12 +9,20 @@ modded class MissionServer
 
         EoH_Server_Init();
         EoH_DT_StartLiveUpdates();
+
+        // Phase 4: Radio intel loop
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Radio_Tick, 120000, true);
+    }
+
+    void EoH_Radio_Tick()
+    {
+        EoH_RadioIntel.Get().BroadcastFromTower("7075 0 7700".ToVector(), 2000);
+        EoH_RadioIntel.Get().BroadcastFromTower("4800 0 9600".ToVector(), 2500);
     }
 
     override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
     {
         super.InvokeOnConnect(player, identity);
-
         EoH_DT_UpdatePlayerDogtag(player);
     }
 
@@ -23,20 +31,14 @@ modded class MissionServer
         if (m_EoH_ServerInitialized)
             return;
 
-        Print("[EoH_Server] Initializing core systems...");
-
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
-
-        // Initialize faint town markers
         EoH_InitTownMarkers();
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Server_Tick, 1000, true);
 
         m_EoH_ServerInitialized = true;
-
-        Print("[EoH_Server] Core systems initialized.");
     }
 
     protected void EoH_DT_StartLiveUpdates()
@@ -49,8 +51,6 @@ modded class MissionServer
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_DT_UpdateAllPlayerDogtags, 60000, true);
         m_EoH_DT_LiveUpdatesStarted = true;
-
-        Print("[EoH_DogtagBridge] Live dogtag updates active.");
     }
 
     void EoH_Server_Tick()
@@ -65,9 +65,6 @@ modded class MissionServer
 
     void EoH_DT_UpdateAllPlayerDogtags()
     {
-        if (!GetGame() || !GetGame().IsServer())
-            return;
-
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
 
@@ -83,53 +80,10 @@ modded class MissionServer
 
     void EoH_DT_UpdatePlayerDogtag(PlayerBase player)
     {
-        if (!player || !player.GetIdentity())
-            return;
-
         int score = EoH_DT_TerjeAdapter.GetBestSkillScore(player);
         string desired = EoH_DT_Core.ResolveDogtagClass(score);
 
-        if (desired == "")
-            return;
-
-        player.ReplaceDogtag(desired);
-    }
-
-    void EoH_InitTownMarkers()
-    {
-        if (!GetGame() || !GetGame().IsServer())
-            return;
-
-        Print("[EoH] Initializing base town markers...");
-
-        EoH_CaptureManager captureManager = EoH_CaptureManager.Get();
-        if (!captureManager)
-            return;
-
-        array<string> towns = captureManager.GetAllTownNames();
-
-        foreach (string townName : towns)
-        {
-            string owner = captureManager.GetTownOwner(townName);
-
-            if (owner == "")
-            {
-                EoH_TownMarkerData data = new EoH_TownMarkerData();
-
-                data.Id = EoH_TownMarkerManager.GetMarkerId(townName);
-                data.Name = townName;
-                data.Owner = "";
-                data.Position = EoH_TownMarkerManager.GetTownPosition(townName);
-
-                data.Color = ARGB(80, 150, 150, 150);
-                data.BaseColor = data.Color;
-
-                EoH_TownMarkerManager.SendMarkerToAll(data);
-            }
-            else
-            {
-                EoH_TownMarkerManager.UpdateTownMarker(townName, owner);
-            }
-        }
+        if (desired != "")
+            player.ReplaceDogtag(desired);
     }
 };
