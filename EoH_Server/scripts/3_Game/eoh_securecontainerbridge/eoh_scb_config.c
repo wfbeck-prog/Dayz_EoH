@@ -5,6 +5,7 @@ class EoH_SCB_Config
     bool PersistOnDeath;
     int RestoreDelayMs;
     bool Level4x4;
+    bool Tier4x4;
 
     void EoH_SCB_Config()
     {
@@ -13,5 +14,6 @@ class EoH_SCB_Config
         PersistOnDeath = true;
         RestoreDelayMs = 5000;
         Level4x4 = true;
+        Tier4x4 = true;
     }
 };
