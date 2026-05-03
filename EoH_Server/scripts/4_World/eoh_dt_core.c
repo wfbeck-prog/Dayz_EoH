@@ -1,17 +1,17 @@
 class EoH_DT_Core
 {
-    static string ResolveDogtagClass(int score)
+    static string ResolveDogtagClass(int exp)
     {
-        if (score >= 100)
+        if (exp >= 2000)
             return "Dogtag_Hero";
 
-        if (score >= 75)
+        if (exp >= 1500)
             return "Dogtag_Cobalt";
 
-        if (score >= 50)
+        if (exp >= 1000)
             return "Dogtag_Granite";
 
-        if (score >= 25)
+        if (exp >= 500)
             return "Dogtag_Silver";
 
         return "Dogtag_Survivor";
