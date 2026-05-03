@@ -116,6 +116,31 @@ class EoH_CaptureManager
         m_Config.Towns.Insert(town);
     }
 
+    array<string> GetAllTownNames()
+    {
+        array<string> towns = new array<string>();
+
+        if (!m_Config || !m_Config.Towns)
+            return towns;
+
+        foreach (EoH_CaptureTownConfig town : m_Config.Towns)
+        {
+            if (town && town.Name != "")
+                towns.Insert(town.Name);
+        }
+
+        return towns;
+    }
+
+    string GetTownOwner(string townName)
+    {
+        EoH_WorldStateTownState state = EoH_WorldStateManager.Get().GetTownState(townName);
+        if (!state || state.OwnerGroupID == "")
+            return "";
+
+        return state.OwnerGroupName;
+    }
+
     EoH_CaptureTownConfig GetTownConfig(string townName)
     {
         if (!m_Config || !m_Config.Towns)
