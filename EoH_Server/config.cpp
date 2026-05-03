@@ -2,7 +2,7 @@ class CfgPatches
 {
     class EoH_Server
     {
-        units[] = {"EoH_CaptureRelay_Base"};
+        units[] = {"EoH_CaptureRelay_Base", "EoH_Intel_Document"};
         weapons[] = {};
         requiredVersion = 0.1;
         requiredAddons[] =
@@ -83,5 +83,13 @@ class CfgVehicles
         weight = 5000;
         itemSize[] = {4, 4};
         physLayer = "item_large";
+    };
+
+    class EoH_Intel_Document: Inventory_Base
+    {
+        scope = 2;
+        displayName = "Intel Document";
+        descriptionShort = "Contains real reconnaissance data about territorial control.";
+        model = "\dz\gear\books\book_kniga.p3d";
     };
 };
