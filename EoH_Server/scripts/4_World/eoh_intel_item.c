@@ -1,4 +1,4 @@
-modded class EoH_Intel_Document
+class EoH_Intel_Document : Inventory_Base
 {
     override void SetActions()
     {
