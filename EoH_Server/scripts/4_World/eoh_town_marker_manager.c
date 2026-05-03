@@ -1,6 +1,22 @@
 class EoH_TownMarkerManager
 {
-    // SERVER: broadcast marker
+    static int GetGroupColor(string groupName)
+    {
+        int len = groupName.Length();
+
+        switch (len % 8)
+        {
+            case 0: return ARGB(255, 255, 80, 80);
+            case 1: return ARGB(255, 80, 160, 255);
+            case 2: return ARGB(255, 80, 255, 120);
+            case 3: return ARGB(255, 255, 200, 80);
+            case 4: return ARGB(255, 180, 80, 255);
+            case 5: return ARGB(255, 80, 255, 220);
+            case 6: return ARGB(255, 255, 120, 200);
+            default: return ARGB(255, 200, 200, 200);
+        }
+    }
+
     static void SendMarkerToAll(EoH_TownMarkerData data)
     {
         if (!GetGame() || !GetGame().IsServer())
@@ -46,6 +62,13 @@ class EoH_TownMarkerManager
         return id;
     }
 
+    static string GetContestedMarkerId(string townName)
+    {
+        string id = "EoH_CONTESTED_" + townName;
+        id.Replace(" ", "_");
+        return id;
+    }
+
     static vector GetTownPosition(string townName)
     {
         EoH_CaptureTownConfig cfg = EoH_CaptureManager.Get().GetTownConfig(townName);
@@ -64,12 +87,35 @@ class EoH_TownMarkerManager
         string id = GetMarkerId(townName);
 
         EoH_TownMarkerData data = new EoH_TownMarkerData(id, townName, ownerGroupName, pos);
+        data.Color = GetGroupColor(ownerGroupName);
+        data.BaseColor = data.Color;
 
         SendMarkerToAll(data);
     }
+
+    static void UpdateContestedMarker(string townName, string attackingGroup)
+    {
+        vector pos = GetTownPosition(townName);
+        if (pos == "0 0 0")
+            return;
+
+        string id = GetContestedMarkerId(townName);
+
+        EoH_TownMarkerData data = new EoH_TownMarkerData(id, townName, attackingGroup, pos);
+        data.Color = ARGB(255, 255, 50, 50);
+        data.BaseColor = data.Color;
+        data.IsContested = 1;
+        data.Pulse = 1;
+
+        SendMarkerToAll(data);
+    }
+
+    static void ClearContestedMarker(string townName)
+    {
+        RemoveMarkerFromAll(GetContestedMarkerId(townName));
+    }
 };
 
-// CLIENT SIDE HANDLING
 modded class PlayerBase
 {
     override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
@@ -105,10 +151,21 @@ class EoH_TownMarkerClientManager
 {
     private static ref EoH_TownMarkerClientManager s_Instance;
     protected ref map<string, ref EoH_TownMarkerData> m_Markers;
+    protected float m_PulseTime;
 
     void EoH_TownMarkerClientManager()
     {
         m_Markers = new map<string, ref EoH_TownMarkerData>();
+        m_PulseTime = 0;
+
+        if (!GetGame().IsDedicatedServer())
+            GetGame().GetUpdateQueue(CALL_CATEGORY_GAMEPLAY).Insert(OnUpdate);
+    }
+
+    void ~EoH_TownMarkerClientManager()
+    {
+        if (!GetGame().IsDedicatedServer())
+            GetGame().GetUpdateQueue(CALL_CATEGORY_GAMEPLAY).Remove(OnUpdate);
     }
 
     static EoH_TownMarkerClientManager Get()
@@ -125,7 +182,11 @@ class EoH_TownMarkerClientManager
             return;
 
         m_Markers.Set(data.MarkerId, data);
+        ApplyMarker(data);
+    }
 
+    void ApplyMarker(EoH_TownMarkerData data)
+    {
         ExpansionMarkerModule markerModule;
         CF_Modules<ExpansionMarkerModule>.Get(markerModule);
 
@@ -148,8 +209,33 @@ class EoH_TownMarkerClientManager
         markerModule.Refresh();
     }
 
+    void OnUpdate(float timeslice)
+    {
+        m_PulseTime += timeslice;
+
+        foreach (string id, EoH_TownMarkerData data : m_Markers)
+        {
+            if (!data || data.Pulse != 1)
+                continue;
+
+            float wave = Math.AbsFloat(Math.Sin(m_PulseTime * 5.0));
+
+            if (wave > 0.5)
+                data.Color = ARGB(255, 255, 255, 255);
+            else
+                data.Color = data.BaseColor;
+
+            ApplyMarker(data);
+        }
+    }
+
     void RemoveMarker(string id)
     {
+        if (id == "")
+            return;
+
+        m_Markers.Remove(id);
+
         ExpansionMarkerModule markerModule;
         CF_Modules<ExpansionMarkerModule>.Get(markerModule);
 
