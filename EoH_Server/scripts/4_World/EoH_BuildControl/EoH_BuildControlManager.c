@@ -14,13 +14,21 @@ class EoH_BuildControlManager
         if (cfg.IsAdmin(steamId))
             return true;
 
+        // Require group (your rule)
+        string groupID = EoH_GroupHelper.GetGroupID(player);
+        if (groupID == "")
+        {
+            Notify(player, "You must be in a group to build. Create one even if solo.");
+            return false;
+        }
+
         if (IsBlacklisted(cfg, itemType))
         {
             Notify(player, cfg.BlacklistMessage);
             return false;
         }
 
-        bool inTerritory = IsInsideTerritory(cfg, position);
+        bool inTerritory = IsInsideOwnedTerritory(cfg, player, position);
 
         EoH_BuildControlRule rule = cfg.FindRule(itemType);
 
@@ -34,7 +42,7 @@ class EoH_BuildControlManager
         {
             if (!rule || !rule.IgnoreTerritoryCheck)
             {
-                Notify(player, cfg.TerritoryRequiredMessage);
+                Notify(player, "Your group does not control this territory.");
                 return false;
             }
         }
@@ -47,7 +55,7 @@ class EoH_BuildControlManager
 
         if (cfg.EnforcePerPlayerLimits && rule && rule.MaxPlacedPerPlayer > -1)
         {
-            int count = CountNearby(player, itemType, position, rule.CountRadius);
+            int count = CountGroupObjects(player, itemType, position, rule.CountRadius);
             if (count >= rule.MaxPlacedPerPlayer)
             {
                 Notify(player, cfg.LimitReachedMessage);
@@ -69,18 +77,18 @@ class EoH_BuildControlManager
         return cfg.BuildBlacklist.Find(typeName) >= 0;
     }
 
-    static bool IsInsideTerritory(EoH_BuildControlConfig cfg, vector pos)
+    static bool IsInsideOwnedTerritory(EoH_BuildControlConfig cfg, PlayerBase player, vector pos)
     {
         array<Object> objects = new array<Object>();
         GetGame().GetObjectsAtPosition(pos, cfg.TerritoryRadiusMeters, objects, null);
 
+        string groupID = EoH_GroupHelper.GetGroupID(player);
+
         foreach (Object obj : objects)
         {
-            foreach (string cls : cfg.TerritoryAnchorClasses)
-            {
-                if (obj && obj.IsKindOf(cls))
-                    return true;
-            }
+            TerritoryFlag flag = TerritoryFlag.Cast(obj);
+            if (flag && flag.GetEoHOwner() == groupID)
+                return true;
         }
 
         return false;
@@ -96,26 +104,31 @@ class EoH_BuildControlManager
 
         foreach (Object obj : objects)
         {
-            foreach (string cls : cfg.TerritoryAnchorClasses)
-            {
-                if (obj && obj.IsKindOf(cls))
-                    return false;
-            }
+            TerritoryFlag flag = TerritoryFlag.Cast(obj);
+            if (flag)
+                return false;
         }
 
         return true;
     }
 
-    static int CountNearby(PlayerBase player, string typeName, vector pos, float radius)
+    static int CountGroupObjects(PlayerBase player, string typeName, vector pos, float radius)
     {
+        string groupID = EoH_GroupHelper.GetGroupID(player);
+
         array<Object> objects = new array<Object>();
         GetGame().GetObjectsAtPosition(pos, radius, objects, null);
 
         int count = 0;
+
         foreach (Object obj : objects)
         {
             if (obj && obj.GetType() == typeName)
-                count++;
+            {
+                TerritoryFlag flag = TerritoryFlag.Cast(obj);
+                if (flag && flag.GetEoHOwner() == groupID)
+                    count++;
+            }
         }
 
         return count;
