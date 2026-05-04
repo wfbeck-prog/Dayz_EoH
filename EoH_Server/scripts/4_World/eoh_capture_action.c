@@ -20,7 +20,8 @@ class EoH_ActionCaptureRelay : ActionInteractBase
         if (!relay)
             return false;
 
-        return true;
+        // enforce radius lock
+        return relay.IsInsideTownRadius();
     }
 
     override void OnStartServer(ActionData action_data)
@@ -34,6 +35,11 @@ class EoH_ActionCaptureRelay : ActionInteractBase
         string town = relay.GetEoHTownName();
         if (town == "")
             return;
+
+        Print("[EoH] Player " + player.GetIdentity().GetName() + " started capture at " + town);
+
+        // simple UI feedback
+        GetGame().RPCSingleParam(player, ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>("Capture Started: " + town), true, player.GetIdentity());
 
         EoH_CaptureManager.Get().StartCapture(town, player);
     }
