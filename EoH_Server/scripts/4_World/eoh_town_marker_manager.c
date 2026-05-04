@@ -49,6 +49,34 @@ class EoH_TownMarkerManager
         }
     }
 
+    // NEW: capturing state (pulsing faction color)
+    static void UpdateCapturingMarker(string townName, string owner)
+    {
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        int color = GetGroupColor(owner);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.GetIdentity())
+                continue;
+
+            EoH_TownMarkerData data = new EoH_TownMarkerData();
+            data.Id = GetMarkerId(townName);
+            data.Name = townName;
+            data.Owner = owner;
+            data.Position = GetTownPosition(townName);
+            data.Color = color;
+            data.BaseColor = color;
+            data.IsContested = 0;
+            data.Pulse = 1;
+
+            SendMarkerToPlayer(player, data);
+        }
+    }
+
     static void UpdateContestedMarker(string townName, string owner)
     {
         array<Man> players = new array<Man>();
@@ -79,7 +107,6 @@ class EoH_TownMarkerManager
         RemoveMarkerFromAll(GetMarkerId(townName));
     }
 
-    // FIX: add missing global remove
     static void RemoveMarkerFromAll(string markerId)
     {
         array<Man> players = new array<Man>();
