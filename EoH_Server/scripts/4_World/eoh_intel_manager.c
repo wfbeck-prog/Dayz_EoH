@@ -62,6 +62,7 @@ class EoH_IntelManager
         m_UsesThisLife.Remove(id);
     }
 
+    // UPDATED: trader-style marker system
     void RevealTownIntel(PlayerBase player)
     {
         if (!CanUseIntel(player))
@@ -69,33 +70,37 @@ class EoH_IntelManager
 
         RegisterUse(player);
 
+        // clear existing intel markers first
+        GetGame().RPCSingleParam(
+            player,
+            777002,
+            new Param1<int>(0),
+            true,
+            player.GetIdentity()
+        );
+
         EoH_CaptureManager cap = EoH_CaptureManager.Get();
         array<string> towns = cap.GetAllTownNames();
 
         foreach (string town : towns)
         {
-            string owner = cap.GetTownOwner(town);
+            EoH_CaptureTownConfig cfg = cap.GetTownConfig(town);
+            if (!cfg)
+                continue;
 
-            EoH_TownMarkerData data = new EoH_TownMarkerData();
-            data.Id = "EoH_INTEL_" + town;
-            data.Name = town;
-            data.Position = EoH_TownMarkerManager.GetTownPosition(town);
+            vector pos = cfg.GetRelayVector();
 
-            if (owner != "")
-            {
-                data.Owner = owner;
-                data.Color = ARGB(255, 0, 200, 0);
-            }
-            else
-            {
-                data.Owner = "Unclaimed";
-                data.Color = ARGB(120, 150, 150, 150);
-            }
-
-            EoH_TownMarkerManager.SendMarkerToPlayer(player, data);
+            // send marker to client (trader-style system)
+            GetGame().RPCSingleParam(
+                player,
+                777001,
+                new Param2<vector, string>(pos, town),
+                true,
+                player.GetIdentity()
+            );
         }
 
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ClearTownIntel, m_Config.RevealDurationSeconds * 1000, false, player);
+        Print("[EoH_Intel] Sent intel markers to player: " + player.GetIdentity().GetName());
     }
 
     void RevealHighValuePlayers(PlayerBase player)
@@ -104,6 +109,9 @@ class EoH_IntelManager
             return;
 
         RegisterUse(player);
+
+        // clear markers
+        GetGame().RPCSingleParam(player, 777002, new Param1<int>(0), true, player.GetIdentity());
 
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
@@ -118,41 +126,18 @@ class EoH_IntelManager
             if (exp < 2000)
                 continue;
 
-            EoH_TownMarkerData data = new EoH_TownMarkerData();
-            data.Id = "EoH_INTEL_PLAYER_" + target.GetIdentity().GetId();
-            data.Name = "High Value Target";
-            data.Position = target.GetPosition();
-            data.Color = ARGB(255, 255, 50, 50);
-
-            EoH_TownMarkerManager.SendMarkerToPlayer(player, data);
+            GetGame().RPCSingleParam(
+                player,
+                777001,
+                new Param2<vector, string>(target.GetPosition(), "High Value Target"),
+                true,
+                player.GetIdentity()
+            );
         }
 
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ClearPlayerIntel, m_Config.RevealDurationSeconds * 1000, false, player);
+        Print("[EoH_Intel] Sent HVT intel markers");
     }
 
-    void ClearTownIntel(PlayerBase player)
-    {
-        EoH_CaptureManager cap = EoH_CaptureManager.Get();
-        array<string> towns = cap.GetAllTownNames();
-
-        foreach (string town : towns)
-        {
-            EoH_TownMarkerManager.RemoveMarkerFromPlayer(player, "EoH_INTEL_" + town);
-        }
-    }
-
-    void ClearPlayerIntel(PlayerBase player)
-    {
-        array<Man> players = new array<Man>();
-        GetGame().GetPlayers(players);
-
-        foreach (Man man : players)
-        {
-            PlayerBase target = PlayerBase.Cast(man);
-            if (!target || !target.GetIdentity())
-                continue;
-
-            EoH_TownMarkerManager.RemoveMarkerFromPlayer(player, "EoH_INTEL_PLAYER_" + target.GetIdentity().GetId());
-        }
-    }
+    void ClearTownIntel(PlayerBase player) {}
+    void ClearPlayerIntel(PlayerBase player) {}
 };
