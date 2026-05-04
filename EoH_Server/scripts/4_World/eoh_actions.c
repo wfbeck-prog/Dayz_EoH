@@ -4,7 +4,7 @@ modded class ActionConstructor
     {
         super.RegisterActions(actions);
 
-        actions.Insert(ActionUseIntel);
-        actions.Insert(ActionUseRelay);
+        actions.Insert(ActionUseIntel);          // intel
+        actions.Insert(EoH_ActionCaptureRelay);  // ✅ FIXED
     }
 };
