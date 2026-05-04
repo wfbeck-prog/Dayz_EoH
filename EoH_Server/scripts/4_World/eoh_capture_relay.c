@@ -68,7 +68,7 @@ class EoH_CaptureRelay_Base extends Inventory_Base
             return false;
 
         float dist = vector.Distance(GetPosition(), cfg.GetRelayVector());
-        return dist <= cfg.GetRadius();
+        return dist <= cfg.Radius;
     }
 
     override void SetActions()
