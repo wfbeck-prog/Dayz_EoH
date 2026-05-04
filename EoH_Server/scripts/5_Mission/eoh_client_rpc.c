@@ -1,6 +1,6 @@
 modded class MissionGameplay
 {
-    override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
+    void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
     {
         super.OnRPC(sender, target, rpc_type, ctx);
 
