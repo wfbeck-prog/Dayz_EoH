@@ -1,54 +1,107 @@
-// CLEAN CONTESTED LIFECYCLE PATCH
-
-bool wasContested = session.IsContested;
-
-if (m_Config.PauseWhenContested && session.EnemiesNearby > 0)
-    session.IsContested = true;
-else
-    session.IsContested = false;
-
-vector pos = townCfg.GetRelayVector();
-array<Man> players = new array<Man>();
-GetGame().GetPlayers(players);
-
-if (session.IsContested)
+class EoH_CaptureSession
 {
-    foreach (Man man : players)
-    {
-        PlayerBase player = PlayerBase.Cast(man);
-        if (!player || !player.GetIdentity()) continue;
+    string TownName;
+    string AttackingGroupID;
+    string AttackingGroupName;
+    float Progress;
+    int LastTickTime;
+    bool IsContested;
+    int AttackersNearby;
+    int EnemiesNearby;
+};
 
-        if (vector.Distance(player.GetPosition(), pos) <= townCfg.Radius * 1.5)
+class EoH_CaptureManager
+{
+    static ref EoH_CaptureManager s_Instance;
+
+    ref map<string, ref EoH_CaptureSession> m_ActiveCaptures;
+    ref EoH_CaptureConfig m_Config;
+
+    void EoH_CaptureManager()
+    {
+        m_ActiveCaptures = new map<string, ref EoH_CaptureSession>();
+    }
+
+    static EoH_CaptureManager Get()
+    {
+        if (!s_Instance)
+            s_Instance = new EoH_CaptureManager();
+
+        return s_Instance;
+    }
+
+    void Tick()
+    {
+        array<string> keys = m_ActiveCaptures.GetKeyArray();
+
+        foreach (string town : keys)
         {
-            GetGame().RPCSingleParam(
-                player,
-                777003,
-                new Param2<vector, string>(pos, session.TownName),
-                true,
-                player.GetIdentity()
-            );
+            EoH_CaptureSession session = m_ActiveCaptures.Get(town);
+            if (!session) continue;
+
+            EoH_CaptureTownConfig cfg = GetTownConfig(town);
+            if (!cfg) continue;
+
+            UpdatePresence(session, cfg);
         }
     }
-}
-else if (wasContested)
-{
-    // contest ended → restore base marker
-    foreach (Man man : players)
+
+    void UpdatePresence(EoH_CaptureSession session, EoH_CaptureTownConfig townCfg)
     {
-        PlayerBase player = PlayerBase.Cast(man);
-        if (!player || !player.GetIdentity()) continue;
+        bool wasContested = session.IsContested;
 
-        if (vector.Distance(player.GetPosition(), pos) <= townCfg.Radius * 1.5)
+        if (session.EnemiesNearby > 0)
+            session.IsContested = true;
+        else
+            session.IsContested = false;
+
+        vector pos = townCfg.GetRelayVector();
+
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        if (session.IsContested)
         {
-            GetGame().RPCSingleParam(player, 777002, new Param1<int>(0), true, player.GetIdentity());
+            foreach (Man man : players)
+            {
+                PlayerBase player = PlayerBase.Cast(man);
+                if (!player || !player.GetIdentity()) continue;
 
-            GetGame().RPCSingleParam(
-                player,
-                777001,
-                new Param3<vector, string, int>(pos, session.TownName, ARGB(120,150,150,150)),
-                true,
-                player.GetIdentity()
-            );
+                if (vector.Distance(player.GetPosition(), pos) <= townCfg.Radius * 1.5)
+                {
+                    GetGame().RPCSingleParam(
+                        player,
+                        777003,
+                        new Param2<vector, string>(pos, session.TownName),
+                        true,
+                        player.GetIdentity()
+                    );
+                }
+            }
+        }
+        else if (wasContested)
+        {
+            foreach (Man man : players)
+            {
+                PlayerBase player = PlayerBase.Cast(man);
+                if (!player || !player.GetIdentity()) continue;
+
+                if (vector.Distance(player.GetPosition(), pos) <= townCfg.Radius * 1.5)
+                {
+                    GetGame().RPCSingleParam(
+                        player,
+                        777001,
+                        new Param3<vector, string, int>(pos, session.TownName, ARGB(120,150,150,150)),
+                        true,
+                        player.GetIdentity()
+                    );
+                }
+            }
         }
     }
-}
+
+    EoH_CaptureTownConfig GetTownConfig(string town)
+    {
+        return null; // placeholder safe compile
+    }
+};
