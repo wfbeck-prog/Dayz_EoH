@@ -23,6 +23,37 @@ modded class MissionServer
     {
         super.InvokeOnConnect(player, identity);
         EoH_DT_UpdatePlayerDogtag(player);
+
+        // NEW: send faint base markers
+        SendBaseTownMarkers(player);
+    }
+
+    void SendBaseTownMarkers(PlayerBase player)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
+        EoH_CaptureManager cap = EoH_CaptureManager.Get();
+        array<string> towns = cap.GetAllTownNames();
+
+        foreach (string town : towns)
+        {
+            EoH_CaptureTownConfig cfg = cap.GetTownConfig(town);
+            if (!cfg)
+                continue;
+
+            vector pos = cfg.GetRelayVector();
+
+            GetGame().RPCSingleParam(
+                player,
+                777001,
+                new Param2<vector, string>(pos, town),
+                true,
+                player.GetIdentity()
+            );
+        }
+
+        Print("[EoH] Sent base markers to player: " + player.GetIdentity().GetName());
     }
 
     protected void EoH_Server_Init()
@@ -34,7 +65,6 @@ modded class MissionServer
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
 
-        // FIX: ensure markers initialize
         EoH_InitTownMarkers();
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Server_Tick, 1000, true);
@@ -42,7 +72,6 @@ modded class MissionServer
         m_EoH_ServerInitialized = true;
     }
 
-    // FIX: missing function
     void EoH_InitTownMarkers()
     {
         EoH_CaptureManager cap = EoH_CaptureManager.Get();
