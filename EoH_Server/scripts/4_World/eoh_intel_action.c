@@ -17,11 +17,11 @@ class ActionUseIntel: ActionSingleUseBase
     }
 
     override void OnExecuteServer(ActionData action_data)
-    {
-        PlayerBase player = action_data.m_Player;
+{
+    PlayerBase player = action_data.m_Player;
 
-        EoH_IntelManager.Get().RevealTownIntel(player);
+    EoH_IntelManager.Get().RevealTownIntel(player);
 
-        action_data.m_MainItem.Delete();
-    }
+    action_data.m_MainItem.Delete();
+}
 };
