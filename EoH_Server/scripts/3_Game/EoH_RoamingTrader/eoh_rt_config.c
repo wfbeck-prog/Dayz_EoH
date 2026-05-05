@@ -47,6 +47,7 @@ class EoH_RT_GlobalConfig
 		EoH_RT_TraderProfile drug = new EoH_RT_TraderProfile();
 		drug.TraderId = "eoh_drug_trader";
 		drug.DisplayName = "Drug Trader";
+		drug.TraderNPCClassname = "ExpansionTraderChem";
 		drug.ExpansionTraderUID = "exp_drug_trader";
 		drug.MarkerLabel = "Drug Trader";
 		drug.AnnouncementTemplate = "Word is the %TRADER% was seen near %LOCATION%.";
@@ -68,6 +69,7 @@ class EoH_RT_GlobalConfig
 		EoH_RT_TraderProfile black = new EoH_RT_TraderProfile();
 		black.TraderId = "eoh_black_market";
 		black.DisplayName = "Black Market Trader";
+		black.TraderNPCClassname = "ExpansionTraderBroker";
 		black.ExpansionTraderUID = "exp_black_market";
 		black.MarkerLabel = "Black Market Trader";
 		black.AnnouncementTemplate = "The %TRADER% has changed location near %LOCATION%.";
