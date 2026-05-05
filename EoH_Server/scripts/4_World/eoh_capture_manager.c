@@ -132,26 +132,26 @@ class EoH_CaptureManager
     }
 
     void SendRPC(string town, int rpcId)
+{
+    vector pos = GetTownPos(town);
+
+    array<Man> players = new array<Man>();
+    GetGame().GetPlayers(players);
+
+    int i;
+    for (i = 0; i < players.Count(); i++)
     {
-        vector pos = GetTownPos(town);
+        PlayerBase player = PlayerBase.Cast(players[i]);
 
-        array<Man> players = new array<Man>();
-        GetGame().GetPlayers(players);
+        if (!player)
+            continue;
 
-        foreach (Man m : players)
-        {
-            PlayerBase p = PlayerBase.Cast(m);
-            if (!p || !p.GetIdentity()) continue;
+        if (!player.GetIdentity())
+            continue;
 
-            Param2<vector, string> data = new Param2<vector, string>(pos, town);
+        Param2<vector, string> data = new Param2<vector, string>(pos, town);
 
-            GetGame().RPCSingleParam(
-                p,
-                rpcId,
-                data,
-                true,
-                p.GetIdentity()
-            );
-        }
+        GetGame().RPCSingleParam(player, rpcId, data, true, player.GetIdentity());
     }
+}
 };
