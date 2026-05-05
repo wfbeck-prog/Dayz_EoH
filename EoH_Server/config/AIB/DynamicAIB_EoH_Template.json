@@ -1,0 +1,245 @@
+{
+    "version": 2,
+    "showtriggers": 0,
+    "cleanzerovector": 0,
+    "crashsitegroup": "Random",
+    "cardamage": 1,
+    "GroupLocations": [
+        {
+            "name": "EoH_EXAMPLE_CustomPatrol_Manual",
+            "faction": "Bandits",
+            "waypoints": [
+                "5237.821777 9.568775 2157.804199",
+                "4887.835449 9.560701 2578.265625",
+                "4917.622559 9.539299 2599.980469"
+            ],
+            "npcclasses": [
+                "BanditAI_Keiko",
+                "BanditAI_Linda",
+                "BanditAI_Rolf",
+                "BanditAI_Denis",
+                "BanditAI_Mirek"
+            ],
+            "accuracy": 75.0,
+            "grenadechance": 0.0,
+            "dog": 1,
+            "weaponpool": [
+                "Predefined_AKM"
+            ],
+            "npcproperties": {
+                "headgear": [],
+                "masks": [],
+                "vests": [],
+                "backpacks": [
+                    "HuntingBag"
+                ],
+                "bodywear": [
+                    "HuntingJacket_Brown"
+                ],
+                "belts": [],
+                "pants": [
+                    "HunterPants_Brown"
+                ],
+                "shoes": [
+                    "CombatBoots_Black"
+                ],
+                "gloves": [],
+                "armband": [],
+                "loot": [
+                    "Rag",
+                    "Apple"
+                ]
+            }
+        },
+        {
+            "name": "EoH_TRADER_DrugTraderGuards_TEMPLATE",
+            "faction": "Bandits",
+            "waypoints": [
+                "7500 0 7500",
+                "7510 0 7510",
+                "7490 0 7490"
+            ],
+            "npcclasses": [
+                "BanditAI_Keiko",
+                "BanditAI_Linda",
+                "BanditAI_Rolf"
+            ],
+            "accuracy": 70.0,
+            "grenadechance": 0.0,
+            "dog": 0,
+            "weaponpool": [
+                "EoH_Predefined_AKM_Basic",
+                "EoH_Predefined_SKS_Basic"
+            ],
+            "npcproperties": {
+                "headgear": ["BandanaMask_RedPattern"],
+                "masks": [],
+                "vests": ["HuntingVest"],
+                "backpacks": ["HuntingBag"],
+                "bodywear": ["HuntingJacket_Brown", "HuntingJacket_Autumn"],
+                "belts": [],
+                "pants": ["HunterPants_Brown", "HunterPants_Autumn"],
+                "shoes": ["CombatBoots_Black"],
+                "gloves": ["WorkingGloves_Brown"],
+                "armband": [],
+                "loot": ["Rag", "BandageDressing", "Ammo_762x39"]
+            }
+        },
+        {
+            "name": "EoH_TRADER_BlackMarketGuards_TEMPLATE",
+            "faction": "Bandits",
+            "waypoints": [
+                "4500 0 10200",
+                "4515 0 10210",
+                "4485 0 10190"
+            ],
+            "npcclasses": [
+                "BanditAI_Denis",
+                "BanditAI_Mirek",
+                "BanditAI_Rolf"
+            ],
+            "accuracy": 82.0,
+            "grenadechance": 10.0,
+            "dog": 0,
+            "weaponpool": [
+                "EoH_Predefined_AKM_Heavy",
+                "EoH_Predefined_M4_Heavy"
+            ],
+            "npcproperties": {
+                "headgear": ["Mich2001Helmet", "BallisticHelmet_Black"],
+                "masks": ["BalaclavaMask_Black"],
+                "vests": ["PlateCarrierVest_Black"],
+                "backpacks": ["TacticalBag_Black"],
+                "bodywear": ["BDUJacket", "TacticalShirt_Black"],
+                "belts": ["MilitaryBelt"],
+                "pants": ["BDUPants", "CargoPants_Black"],
+                "shoes": ["MilitaryBoots_Black"],
+                "gloves": ["TacticalGloves_Black"],
+                "armband": [],
+                "loot": ["Rag", "BandageDressing", "Ammo_556x45", "Ammo_762x39"]
+            }
+        },
+        {
+            "name": "EoH_TOWN_Pustoshka_T1_TEMPLATE",
+            "faction": "Bandits",
+            "waypoints": [
+                "3060 0 7870",
+                "3100 0 7900",
+                "3025 0 7840"
+            ],
+            "npcclasses": [
+                "BanditAI_Keiko",
+                "BanditAI_Linda",
+                "BanditAI_Mirek"
+            ],
+            "accuracy": 65.0,
+            "grenadechance": 0.0,
+            "dog": 0,
+            "weaponpool": [
+                "EoH_Predefined_SKS_Basic",
+                "Predefined_AKM"
+            ],
+            "npcproperties": {
+                "headgear": ["BaseballCap_Olive"],
+                "masks": [],
+                "vests": ["HuntingVest"],
+                "backpacks": ["HuntingBag"],
+                "bodywear": ["HuntingJacket_Brown"],
+                "belts": [],
+                "pants": ["HunterPants_Brown"],
+                "shoes": ["CombatBoots_Black"],
+                "gloves": [],
+                "armband": [],
+                "loot": ["Rag", "Apple", "BandageDressing"]
+            }
+        }
+    ],
+    "SniperLocations": [
+        {
+            "name": "EoH_EXAMPLE_CustomSniper_Manual",
+            "positions": [
+                "5237.821777 9.568775 2157.804199",
+                "4887.835449 9.560701 2578.265625",
+                "4917.622559 9.539299 2599.980469"
+            ],
+            "npcclass": "BanditAI_Keiko",
+            "accuracy": 75.0,
+            "fixedpos": 0,
+            "triggerpos": "5237.821777 9.568775 2157.804199",
+            "weaponpool": [
+                "Predefined_AKM"
+            ],
+            "npcproperties": {
+                "headgear": [],
+                "masks": [],
+                "vests": [],
+                "backpacks": [
+                    "HuntingBag"
+                ],
+                "bodywear": [
+                    "HuntingJacket_Brown"
+                ],
+                "belts": [],
+                "pants": [
+                    "HunterPants_Brown"
+                ],
+                "shoes": [
+                    "CombatBoots_Black"
+                ],
+                "gloves": [],
+                "armband": [],
+                "loot": [
+                    "Rag",
+                    "Apple"
+                ]
+            }
+        }
+    ],
+    "PredefinedWeapons": [
+        {
+            "name": "Predefined_AKM",
+            "weapon": "AKM",
+            "attachments": [
+                "Mag_AKM_30Rnd",
+                "AK_WoodHndgrd",
+                "AK_WoodBttstck"
+            ]
+        },
+        {
+            "name": "EoH_Predefined_AKM_Basic",
+            "weapon": "AKM",
+            "attachments": [
+                "Mag_AKM_30Rnd",
+                "AK_WoodHndgrd",
+                "AK_WoodBttstck"
+            ]
+        },
+        {
+            "name": "EoH_Predefined_SKS_Basic",
+            "weapon": "SKS",
+            "attachments": [
+                "Ammo_762x39"
+            ]
+        },
+        {
+            "name": "EoH_Predefined_AKM_Heavy",
+            "weapon": "AKM",
+            "attachments": [
+                "Mag_AKM_30Rnd",
+                "AK_PlasticHndgrd",
+                "AK_PlasticBttstck",
+                "PSO1Optic"
+            ]
+        },
+        {
+            "name": "EoH_Predefined_M4_Heavy",
+            "weapon": "M4A1",
+            "attachments": [
+                "Mag_STANAG_30Rnd",
+                "M4_RISHndgrd",
+                "M4_MPBttstck",
+                "ACOGOptic"
+            ]
+        }
+    ]
+}
