@@ -13,9 +13,8 @@ modded class TerritoryFlagKit extends KitBase
 
         string groupID = EoH_GroupHelper.GetGroupID(playerBase);
 
-        Object placed = GetGame().GetObjectByNetworkId(GetNetworkIDLow(), GetNetworkIDHigh());
-        TerritoryFlag flag = TerritoryFlag.Cast(placed);
-        Flag_Base flagBase = Flag_Base.Cast(placed);
+        TerritoryFlag flag = FindPlacedFlag(position);
+        Flag_Base flagBase = Flag_Base.Cast(flag);
 
         if (!flag || !flagBase)
             return;
@@ -37,5 +36,22 @@ modded class TerritoryFlagKit extends KitBase
         flagBase.SetEoHOwner(groupID);
 
         playerBase.MessageStatus("Territory claimed.");
+    }
+
+    TerritoryFlag FindPlacedFlag(vector position)
+    {
+        array<Object> objects = new array<Object>();
+        array<CargoBase> proxy = new array<CargoBase>();
+
+        GetGame().GetObjectsAtPosition3D(position, 5.0, objects, proxy);
+
+        foreach (Object obj : objects)
+        {
+            TerritoryFlag flag = TerritoryFlag.Cast(obj);
+            if (flag)
+                return flag;
+        }
+
+        return null;
     }
 }
