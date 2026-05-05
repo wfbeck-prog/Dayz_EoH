@@ -19,7 +19,7 @@ class CfgPatches
             "DZ_Data",
             "DZ_Scripts",
             "DZ_Gear_Camping",
-            "DZ_Gear_Books",
+            "DZ_Gear_Consumables",
             "CF",
             "DayZExpansion_Core",
             "DayZExpansion_Navigation",
@@ -114,9 +114,13 @@ class CfgVehicles
         scope = 2;
         displayName = "Intel Document";
         descriptionShort = "Contains real reconnaissance data about territorial control.";
-        model = "\\dz\\gear\\books\\book_kniga.p3d";
-        weight = 100;
+        model = "\\dz\\gear\\consumables\\Paper.p3d";
+        weight = 20;
         itemSize[] = {1, 1};
+        varQuantityInit = 1;
+        varQuantityMin = 0;
+        varQuantityMax = 1;
+        rotationFlags = 16;
     };
 
     class EoH_TownIntel: EoH_Intel_Document
