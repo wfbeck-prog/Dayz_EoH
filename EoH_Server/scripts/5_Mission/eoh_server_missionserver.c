@@ -23,8 +23,6 @@ modded class MissionServer
     {
         super.InvokeOnConnect(player, identity);
         EoH_DT_UpdatePlayerDogtag(player);
-
-        // NEW: send faint base markers
         SendBaseTownMarkers(player);
     }
 
@@ -42,15 +40,17 @@ modded class MissionServer
             if (!cfg)
                 continue;
 
-            vector pos = cfg.GetRelayVector();
+            EoH_MarkerData data = new EoH_MarkerData("EoH_TOWN_BASE_" + town, town, cfg.GetRelayVector());
+            data.Category = EoH_MarkerCategory.TOWN;
+            data.State = EoH_MarkerState.NORMAL;
+            data.Icon = "Flag";
+            data.Is3D = 0;
+            data.Pulse = 0;
+            data.Color = ARGB(120, 150, 150, 150);
+            data.BaseColor = data.Color;
+            data.Normalize();
 
-            GetGame().RPCSingleParam(
-                player,
-                777001,
-                new Param2<vector, string>(pos, town),
-                true,
-                player.GetIdentity()
-            );
+            EoH_MarkerService.SendToPlayer(player, data);
         }
 
         Print("[EoH] Sent base markers to player: " + player.GetIdentity().GetName());
@@ -64,6 +64,7 @@ modded class MissionServer
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
+        EoH_RT_TraderManager.Get().Initialize();
 
         EoH_InitTownMarkers();
 
@@ -109,6 +110,10 @@ modded class MissionServer
         EoH_CaptureManager captureManager = EoH_CaptureManager.Get();
         if (captureManager)
             captureManager.Tick();
+
+        EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
+        if (traderManager)
+            traderManager.Update();
     }
 
     void EoH_DT_UpdateAllPlayerDogtags()
