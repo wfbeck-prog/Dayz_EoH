@@ -2,7 +2,13 @@ class CfgPatches
 {
     class EoH_Server
     {
-        units[] = {"EoH_CaptureRelay_Base", "EoH_Intel_Document"};
+        units[] =
+        {
+            "EoH_CaptureRelay_Base",
+            "EoH_Intel_Document",
+            "ExpansionTraderChem",
+            "ExpansionTraderBroker"
+        };
         weapons[] = {};
         requiredVersion = 0.1;
         requiredAddons[] =
@@ -13,8 +19,10 @@ class CfgPatches
             "DayZExpansion_Core",
             "DayZExpansion_Navigation",
             "DayZExpansion_Groups",
+            "DayZExpansion_Market",
             "Dogtags",
-            "TerjeSkills"
+            "TerjeSkills",
+            "CBD_LootRoomsSystem"
         };
     };
 };
@@ -73,13 +81,15 @@ class CfgMods
 class CfgVehicles
 {
     class Inventory_Base;
+    class ExpansionTraderMirek;
+    class ExpansionTraderBoris;
 
     class EoH_CaptureRelay_Base: Inventory_Base
     {
         scope = 2;
         displayName = "EoH Radio Relay";
         descriptionShort = "A damaged radio relay used to project group influence across the region.";
-        model = "\dz\gear\radio\unitra_wilga.p3d";
+        model = "\\dz\\gear\\radio\\unitra_wilga.p3d";
         weight = 5000;
         itemSize[] = {4, 4};
         physLayer = "item_large";
@@ -90,6 +100,18 @@ class CfgVehicles
         scope = 2;
         displayName = "Intel Document";
         descriptionShort = "Contains real reconnaissance data about territorial control.";
-        model = "\dz\gear\books\book_kniga.p3d";
+        model = "\\dz\\gear\\books\\book_kniga.p3d";
+    };
+
+    class ExpansionTraderChem: ExpansionTraderMirek
+    {
+        scope = 2;
+        displayName = "Expansion Trader Chem";
+    };
+
+    class ExpansionTraderBroker: ExpansionTraderBoris
+    {
+        scope = 2;
+        displayName = "Expansion Trader Broker";
     };
 };
