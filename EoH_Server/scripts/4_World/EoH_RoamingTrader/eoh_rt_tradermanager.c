@@ -246,6 +246,46 @@ class EoH_RT_TraderManager
 		BroadcastMarker(profile, runtime.TraderObject.GetPosition());
 	}
 
+	bool RevealNearestHiddenTraderToPlayer(PlayerBase player)
+	{
+		if (!GetGame().IsServer() || !player || !player.GetIdentity())
+			return false;
+
+		if (!m_Initialized)
+			Initialize();
+
+		float bestDistance = 999999.0;
+		EoH_RT_TraderProfile bestProfile = NULL;
+		EoH_RT_TraderRuntime bestRuntime = NULL;
+
+		foreach (string traderId, EoH_RT_TraderRuntime runtime : m_Runtimes)
+		{
+			if (!runtime || !runtime.IsSpawned || !runtime.TraderObject)
+				continue;
+
+			bool alreadyRevealed = false;
+			m_RevealedMarkers.Find(traderId, alreadyRevealed);
+			if (alreadyRevealed)
+				continue;
+
+			float dist = vector.Distance(player.GetPosition(), runtime.TraderObject.GetPosition());
+			if (dist < bestDistance)
+			{
+				bestDistance = dist;
+				bestRuntime = runtime;
+				bestProfile = m_Config.FindProfile(traderId);
+			}
+		}
+
+		if (!bestProfile || !bestRuntime || !bestRuntime.TraderObject)
+			return false;
+
+		m_RevealedMarkers.Set(bestProfile.TraderId, true);
+		EoH_MarkerData data = BuildTraderMarkerData(bestProfile, bestRuntime.TraderObject.GetPosition());
+		EoH_MarkerService.SendToPlayer(player, data);
+		return true;
+	}
+
 	void SendAllMarkersToPlayer(PlayerBase player)
 	{
 		if (!GetGame().IsServer() || !player || !player.GetIdentity())
