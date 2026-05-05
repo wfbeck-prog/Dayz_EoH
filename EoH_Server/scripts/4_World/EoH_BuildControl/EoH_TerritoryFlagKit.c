@@ -14,9 +14,7 @@ modded class TerritoryFlagKit extends KitBase
         string groupID = EoH_GroupHelper.GetGroupID(playerBase);
 
         TerritoryFlag flag = FindPlacedFlag(position);
-        Flag_Base flagBase = Flag_Base.Cast(flag);
-
-        if (!flag || !flagBase)
+        if (!flag)
             return;
 
         flag.GetConstruction().BuildPartServer(playerBase, "base", AT_BUILD_PART);
@@ -33,7 +31,7 @@ modded class TerritoryFlagKit extends KitBase
 
         flag.GetConstruction().BuildPartServer(playerBase, "flag", AT_BUILD_PART);
 
-        flagBase.SetEoHOwner(groupID);
+        EoH_TerritoryOwnershipRegistry.SetOwnerAtPosition(flag.GetPosition(), groupID);
 
         playerBase.MessageStatus("Territory claimed.");
     }
