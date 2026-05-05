@@ -63,7 +63,8 @@ class EoH_CaptureManager
 
         m_Sessions.Set(town, s);
 
-        SendMarker(town, 777004);
+        // Capturing (yellow)
+        SendRPC(town, 777004);
     }
 
     void Tick()
@@ -81,7 +82,7 @@ class EoH_CaptureManager
             {
                 s.Progress += delta;
 
-                if (s.Progress > 600000)
+                if (s.Progress > 600000) // 10 min
                 {
                     CompleteCapture(s);
                 }
@@ -112,21 +113,25 @@ class EoH_CaptureManager
 
         if (s.IsContested)
         {
-            SendMarker(s.TownName, 777003);
+            // Flashing red
+            SendRPC(s.TownName, 777003);
         }
         else if (wasContested)
         {
-            SendMarker(s.TownName, 777004);
+            // Back to capturing (yellow)
+            SendRPC(s.TownName, 777004);
         }
     }
 
     void CompleteCapture(EoH_CaptureSession s)
     {
-        SendMarker(s.TownName, 777005);
+        // Owned (green)
+        SendRPC(s.TownName, 777005);
+
         m_Sessions.Remove(s.TownName);
     }
 
-    void SendMarker(string town, int rpcId)
+    void SendRPC(string town, int rpcId)
     {
         vector pos = GetTownPos(town);
 
