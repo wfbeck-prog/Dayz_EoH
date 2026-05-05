@@ -61,6 +61,15 @@ class EoH_CaptureManager
         return "0 0 0".ToVector();
     }
 
+    string GetTownOwner(string town)
+    {
+        EoH_WorldStateTownState state = EoH_WorldStateManager.Get().GetTownState(town);
+        if (!state)
+            return "";
+
+        return state.OwnerGroupName;
+    }
+
     array<string> GetAllTownNames()
     {
         array<string> names = new array<string>();
