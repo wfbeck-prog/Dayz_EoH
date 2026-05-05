@@ -14,7 +14,6 @@ class EoH_BuildControlManager
         if (cfg.IsAdmin(steamId))
             return true;
 
-        // Require group (your rule)
         string groupID = EoH_GroupHelper.GetGroupID(player);
         if (groupID == "")
         {
@@ -86,7 +85,7 @@ class EoH_BuildControlManager
 
         foreach (Object obj : objects)
         {
-            TerritoryFlag flag = TerritoryFlag.Cast(obj);
+            Flag_Base flag = Flag_Base.Cast(obj);
             if (flag && flag.GetEoHOwner() == groupID)
                 return true;
         }
@@ -104,7 +103,7 @@ class EoH_BuildControlManager
 
         foreach (Object obj : objects)
         {
-            TerritoryFlag flag = TerritoryFlag.Cast(obj);
+            Flag_Base flag = Flag_Base.Cast(obj);
             if (flag)
                 return false;
         }
@@ -123,12 +122,12 @@ class EoH_BuildControlManager
 
         foreach (Object obj : objects)
         {
-            if (obj && obj.GetType() == typeName)
-            {
-                TerritoryFlag flag = TerritoryFlag.Cast(obj);
-                if (flag && flag.GetEoHOwner() == groupID)
-                    count++;
-            }
+            if (!obj || obj.GetType() != typeName)
+                continue;
+
+            Flag_Base flag = Flag_Base.Cast(obj);
+            if (flag && flag.GetEoHOwner() == groupID)
+                count++;
         }
 
         return count;
