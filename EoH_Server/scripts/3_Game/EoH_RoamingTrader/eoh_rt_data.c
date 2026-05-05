@@ -53,7 +53,7 @@ class EoH_RT_TraderProfile
 	{
 		TraderId = "";
 		DisplayName = "Roaming Trader";
-		TraderNPCClassname = "EoH_RT_TraderNPC";
+		TraderNPCClassname = "ExpansionTraderBroker";
 		ExpansionTraderUID = "";
 		MarkerLabel = "Roaming Trader";
 		AnnouncementTemplate = "%TRADER% was seen near %LOCATION%.";
