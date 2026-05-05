@@ -18,6 +18,8 @@ class CfgPatches
         {
             "DZ_Data",
             "DZ_Scripts",
+            "DZ_Gear_Camping",
+            "DZ_Gear_Books",
             "CF",
             "DayZExpansion_Core",
             "DayZExpansion_Navigation",
@@ -84,10 +86,12 @@ class CfgMods
 class CfgVehicles
 {
     class Inventory_Base;
+    class Transmitter_Base;
+    class Paper;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
-    class EoH_CaptureRelay_Base: Inventory_Base
+    class EoH_CaptureRelay_Base: Transmitter_Base
     {
         scope = 2;
         displayName = "EoH Radio Relay";
@@ -105,7 +109,7 @@ class CfgVehicles
         descriptionShort = "A damaged radio relay used to broadcast nearby town intel.";
     };
 
-    class EoH_Intel_Document: Inventory_Base
+    class EoH_Intel_Document: Paper
     {
         scope = 2;
         displayName = "Intel Document";
