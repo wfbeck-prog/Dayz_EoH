@@ -5,7 +5,10 @@ class CfgPatches
         units[] =
         {
             "EoH_CaptureRelay_Base",
+            "EoH_RadioRelay",
             "EoH_Intel_Document",
+            "EoH_TownIntel",
+            "EoH_TraderIntel",
             "ExpansionTraderChem",
             "ExpansionTraderBroker"
         };
@@ -95,12 +98,35 @@ class CfgVehicles
         physLayer = "item_large";
     };
 
+    class EoH_RadioRelay: EoH_CaptureRelay_Base
+    {
+        scope = 2;
+        displayName = "EoH Radio Relay";
+        descriptionShort = "A damaged radio relay used to broadcast nearby town intel.";
+    };
+
     class EoH_Intel_Document: Inventory_Base
     {
         scope = 2;
         displayName = "Intel Document";
         descriptionShort = "Contains real reconnaissance data about territorial control.";
         model = "\\dz\\gear\\books\\book_kniga.p3d";
+        weight = 100;
+        itemSize[] = {1, 1};
+    };
+
+    class EoH_TownIntel: EoH_Intel_Document
+    {
+        scope = 2;
+        displayName = "Town Intel";
+        descriptionShort = "Reveals nearby town control intel.";
+    };
+
+    class EoH_TraderIntel: EoH_Intel_Document
+    {
+        scope = 2;
+        displayName = "Trader Intel";
+        descriptionShort = "Contains information about roaming trader activity.";
     };
 
     class ExpansionTraderChem: ExpansionTraderMirek
