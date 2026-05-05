@@ -40,7 +40,16 @@ class EoH_ActionReadIntel : ActionInteractBase
         PlayerBase player = action_data.m_Player;
         ItemBase item = action_data.m_MainItem;
 
-        EoH_IntelManager.Get().RevealIntel(player);
+        string type = item.GetType();
+
+        if (type == "EoH_TownIntel" || type == "EoH_Intel_Document")
+        {
+            EoH_IntelManager.Get().RevealTownIntel(player);
+        }
+        else if (type == "EoH_TraderIntel")
+        {
+            EoH_IntelManager.Get().RevealTraderIntel(player);
+        }
 
         item.Delete();
     }
