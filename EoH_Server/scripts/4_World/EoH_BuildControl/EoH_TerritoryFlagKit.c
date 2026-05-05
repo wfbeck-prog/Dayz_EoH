@@ -20,8 +20,9 @@ modded class TerritoryFlagKit extends KitBase
 
         Object flagObject = GetGame().CreateObjectEx("TerritoryFlag", position, ECE_PLACE_ON_SURFACE);
         TerritoryFlag placedFlag = TerritoryFlag.Cast(flagObject);
+        Flag_Base placedFlagBase = Flag_Base.Cast(flagObject);
 
-        if (!placedFlag)
+        if (!placedFlag || !placedFlagBase)
             return;
 
         placedFlag.SetPosition(position);
@@ -44,7 +45,7 @@ modded class TerritoryFlagKit extends KitBase
 
         placedFlag.GetConstruction().BuildPartServer(playerBase, "flag", AT_BUILD_PART);
 
-        placedFlag.SetEoHOwner(groupID);
+        placedFlagBase.SetEoHOwner(groupID);
 
         playerBase.MessageStatus("Territory claimed for your group.");
     }
