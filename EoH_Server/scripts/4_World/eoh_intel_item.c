@@ -1,4 +1,4 @@
-class EoH_Intel_Document : ItemBase
+class EoH_Intel_Document : Paper
 {
     override void SetActions()
     {
