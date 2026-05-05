@@ -2,7 +2,7 @@ class EoH_TownMarkerManager
 {
     static int GetGroupColor(string groupName)
     {
-        if (groupName == "")
+        if (groupName == "" || groupName == "Unclaimed")
             return ARGB(255, 200, 200, 200);
 
         int len = groupName.Length();
@@ -24,82 +24,20 @@ class EoH_TownMarkerManager
 
     static void UpdateTownMarker(string townName, string owner)
     {
-        array<Man> players = new array<Man>();
-        GetGame().GetPlayers(players);
-
-        int color = GetGroupColor(owner);
-
-        foreach (Man man : players)
-        {
-            PlayerBase player = PlayerBase.Cast(man);
-            if (!player || !player.GetIdentity())
-                continue;
-
-            EoH_TownMarkerData data = new EoH_TownMarkerData();
-            data.Id = GetMarkerId(townName);
-            data.Name = townName;
-            data.Owner = owner;
-            data.Position = GetTownPosition(townName);
-            data.Color = color;
-            data.BaseColor = color;
-            data.IsContested = 0;
-            data.Pulse = 0;
-
-            SendMarkerToPlayer(player, data);
-        }
+        EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.OWNED, 0, GetGroupColor(owner));
+        EoH_MarkerService.Broadcast(data);
     }
 
-    // NEW: capturing state (pulsing faction color)
     static void UpdateCapturingMarker(string townName, string owner)
     {
-        array<Man> players = new array<Man>();
-        GetGame().GetPlayers(players);
-
-        int color = GetGroupColor(owner);
-
-        foreach (Man man : players)
-        {
-            PlayerBase player = PlayerBase.Cast(man);
-            if (!player || !player.GetIdentity())
-                continue;
-
-            EoH_TownMarkerData data = new EoH_TownMarkerData();
-            data.Id = GetMarkerId(townName);
-            data.Name = townName;
-            data.Owner = owner;
-            data.Position = GetTownPosition(townName);
-            data.Color = color;
-            data.BaseColor = color;
-            data.IsContested = 0;
-            data.Pulse = 1;
-
-            SendMarkerToPlayer(player, data);
-        }
+        EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.CAPTURING, 1, GetGroupColor(owner));
+        EoH_MarkerService.Broadcast(data);
     }
 
     static void UpdateContestedMarker(string townName, string owner)
     {
-        array<Man> players = new array<Man>();
-        GetGame().GetPlayers(players);
-
-        foreach (Man man : players)
-        {
-            PlayerBase player = PlayerBase.Cast(man);
-            if (!player || !player.GetIdentity())
-                continue;
-
-            EoH_TownMarkerData data = new EoH_TownMarkerData();
-            data.Id = GetMarkerId(townName);
-            data.Name = townName;
-            data.Owner = owner;
-            data.Position = GetTownPosition(townName);
-            data.Color = ARGB(255, 255, 50, 50);
-            data.BaseColor = data.Color;
-            data.IsContested = 1;
-            data.Pulse = 1;
-
-            SendMarkerToPlayer(player, data);
-        }
+        EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.CONTESTED, 1, ARGB(255, 255, 50, 50));
+        EoH_MarkerService.Broadcast(data);
     }
 
     static void ClearContestedMarker(string townName)
@@ -109,37 +47,33 @@ class EoH_TownMarkerManager
 
     static void RemoveMarkerFromAll(string markerId)
     {
-        array<Man> players = new array<Man>();
-        GetGame().GetPlayers(players);
-
-        foreach (Man man : players)
-        {
-            PlayerBase player = PlayerBase.Cast(man);
-            if (!player || !player.GetIdentity())
-                continue;
-
-            RemoveMarkerFromPlayer(player, markerId);
-        }
-    }
-
-    static void SendMarkerToPlayer(PlayerBase player, EoH_TownMarkerData data)
-    {
-        if (!GetGame() || !GetGame().IsServer() || !player || !player.GetIdentity())
-            return;
-
-        data.Normalize();
-
-        Param1<ref EoH_TownMarkerData> param = new Param1<ref EoH_TownMarkerData>(data);
-        GetGame().RPCSingleParam(player, EoH_TownMarkerRPC.ADD_OR_UPDATE_TOWN_MARKER, param, true, player.GetIdentity());
+        EoH_MarkerService.RemoveFromAll(markerId);
     }
 
     static void RemoveMarkerFromPlayer(PlayerBase player, string markerId)
     {
-        if (!GetGame() || !GetGame().IsServer() || !player || !player.GetIdentity())
-            return;
+        EoH_MarkerService.RemoveFromPlayer(player, markerId);
+    }
 
-        Param1<string> param = new Param1<string>(markerId);
-        GetGame().RPCSingleParam(player, EoH_TownMarkerRPC.REMOVE_TOWN_MARKER, param, true, player.GetIdentity());
+    static void SendMarkerToPlayer(PlayerBase player, EoH_MarkerData data)
+    {
+        EoH_MarkerService.SendToPlayer(player, data);
+    }
+
+    static EoH_MarkerData BuildTownMarker(string townName, string owner, string state, int pulse, int color)
+    {
+        EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(townName), townName, GetTownPosition(townName));
+        data.Category = EoH_MarkerCategory.TOWN;
+        data.State = state;
+        data.Owner = owner;
+        data.Color = color;
+        data.BaseColor = color;
+        data.Pulse = pulse;
+        data.Is3D = 0;
+        data.Icon = "Flag";
+        data.Visible = 1;
+        data.Normalize();
+        return data;
     }
 
     static string GetMarkerId(string townName)
