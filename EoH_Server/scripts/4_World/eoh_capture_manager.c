@@ -63,8 +63,7 @@ class EoH_CaptureManager
 
         m_Sessions.Set(town, s);
 
-        // Yellow = capturing
-        SendMarker(town, ARGB(255, 255, 220, 80));
+        SendMarker(town, 777004);
     }
 
     void Tick()
@@ -82,7 +81,7 @@ class EoH_CaptureManager
             {
                 s.Progress += delta;
 
-                if (s.Progress > 600000) // 10 minutes
+                if (s.Progress > 600000)
                 {
                     CompleteCapture(s);
                 }
@@ -113,25 +112,21 @@ class EoH_CaptureManager
 
         if (s.IsContested)
         {
-            // Flashing red
-            SendContested(s.TownName);
+            SendMarker(s.TownName, 777003);
         }
         else if (wasContested)
         {
-            // Back to yellow
-            SendMarker(s.TownName, ARGB(255, 255, 220, 80));
+            SendMarker(s.TownName, 777004);
         }
     }
 
     void CompleteCapture(EoH_CaptureSession s)
     {
-        // Green = owned
-        SendMarker(s.TownName, ARGB(255, 80, 255, 120));
-
+        SendMarker(s.TownName, 777005);
         m_Sessions.Remove(s.TownName);
     }
 
-    void SendMarker(string town, int color)
+    void SendMarker(string town, int rpcId)
     {
         vector pos = GetTownPos(town);
 
@@ -143,37 +138,11 @@ class EoH_CaptureManager
             PlayerBase p = PlayerBase.Cast(m);
             if (!p || !p.GetIdentity()) continue;
 
-            // 🔥 FIXED: no inline generics
-            Param3<vector, string, int> data = new Param3<vector, string, int>(pos, town, color);
-
-            GetGame().RPCSingleParam(
-                p,
-                777001,
-                data,
-                true,
-                p.GetIdentity()
-            );
-        }
-    }
-
-    void SendContested(string town)
-    {
-        vector pos = GetTownPos(town);
-
-        array<Man> players = new array<Man>();
-        GetGame().GetPlayers(players);
-
-        foreach (Man m : players)
-        {
-            PlayerBase p = PlayerBase.Cast(m);
-            if (!p || !p.GetIdentity()) continue;
-
-            // 🔥 FIXED: no inline generics
             Param2<vector, string> data = new Param2<vector, string>(pos, town);
 
             GetGame().RPCSingleParam(
                 p,
-                777003,
+                rpcId,
                 data,
                 true,
                 p.GetIdentity()
