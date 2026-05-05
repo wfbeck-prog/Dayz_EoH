@@ -2,6 +2,8 @@ modded class TerritoryFlagKit extends KitBase
 {
     override void OnPlacementComplete(Man player, vector position = "0 0 0", vector orientation = "0 0 0")
     {
+        super.OnPlacementComplete(player, position, orientation);
+
         if (!GetGame().IsServer())
             return;
 
@@ -33,18 +35,18 @@ modded class TerritoryFlagKit extends KitBase
         placedFlag.GetConstruction().BuildPartServer(playerBase, "support", AT_BUILD_PART);
         placedFlag.GetConstruction().BuildPartServer(playerBase, "pole", AT_BUILD_PART);
 
+        // 🔥 FIXED BLOCK
         int slotId = InventorySlots.GetSlotIdFromString("material_fpole_flag");
+        EntityAI attachment = placedFlag.GetInventory().FindAttachment(slotId);
 
-EntityAI attachment = placedFlag.GetInventory().FindAttachment(slotId);
-
-if (!attachment)
-{
-    placedFlag.GetInventory().CreateAttachment("Flag_DayZ");
-}
+        if (!attachment)
+        {
+            placedFlag.GetInventory().CreateAttachment("Flag_DayZ");
+        }
 
         placedFlag.GetConstruction().BuildPartServer(playerBase, "flag", AT_BUILD_PART);
 
-        // 🔥 Ownership assignment (critical)
+        // 🔥 Ownership assignment
         placedFlag.SetEoHOwner(groupID);
 
         playerBase.MessageStatus("Territory claimed for your group.");
