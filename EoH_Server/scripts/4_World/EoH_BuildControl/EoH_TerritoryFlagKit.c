@@ -33,11 +33,14 @@ modded class TerritoryFlagKit extends KitBase
         placedFlag.GetConstruction().BuildPartServer(playerBase, "support", AT_BUILD_PART);
         placedFlag.GetConstruction().BuildPartServer(playerBase, "pole", AT_BUILD_PART);
 
-        if (!placedFlag.GetInventory().FindAttachment(
-            InventorySlots.GetSlotIdFromString("material_fpole_flag")))
-        {
-            placedFlag.GetInventory().CreateAttachment("Flag_DayZ");
-        }
+        int slotId = InventorySlots.GetSlotIdFromString("material_fpole_flag");
+
+EntityAI attachment = placedFlag.GetInventory().FindAttachment(slotId);
+
+if (!attachment)
+{
+    placedFlag.GetInventory().CreateAttachment("Flag_DayZ");
+}
 
         placedFlag.GetConstruction().BuildPartServer(playerBase, "flag", AT_BUILD_PART);
 
