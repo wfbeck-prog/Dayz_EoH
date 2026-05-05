@@ -60,7 +60,7 @@ class CfgMods
                 {
                     "EoH_Server/scripts/3_Game"
                 };
-            };
+            }
 
             class worldScriptModule
             {
@@ -69,7 +69,7 @@ class CfgMods
                 {
                     "EoH_Server/scripts/4_World"
                 };
-            };
+            }
 
             class missionScriptModule
             {
@@ -78,7 +78,7 @@ class CfgMods
                 {
                     "EoH_Server/scripts/5_Mission"
                 };
-            };
+            }
         };
     };
 };
@@ -95,18 +95,19 @@ class CfgVehicles
     {
         scope = 2;
         displayName = "EoH Radio Relay";
-        descriptionShort = "A damaged radio relay used to project group influence across the region.";
-        model = "\\dz\\gear\\radio\\unitra_wilga.p3d";
-        weight = 5000;
-        itemSize[] = {4, 4};
-        physLayer = "item_large";
+        descriptionShort = "A damaged walkie-talkie used to project group influence across the region.";
+        model = "\\dz\\gear\\radio\\WalkieTalkie.p3d";
+        weight = 750;
+        itemSize[] = {2, 3};
+        physLayer = "item_small";
+        rotationFlags = 17;
     };
 
     class EoH_RadioRelay: EoH_CaptureRelay_Base
     {
         scope = 2;
         displayName = "EoH Radio Relay";
-        descriptionShort = "A damaged radio relay used to broadcast nearby town intel.";
+        descriptionShort = "A damaged walkie-talkie used to broadcast nearby town intel.";
     };
 
     class EoH_Intel_Document: Paper
