@@ -36,6 +36,11 @@ class EoH_IntelManager
         m_PlayerIntelUses.Remove(playerId);
     }
 
+    void RevealTownIntel(PlayerBase player)
+    {
+        RevealIntel(player);
+    }
+
     void RevealIntel(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
