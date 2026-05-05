@@ -12,29 +12,51 @@ modded class MissionGameplay
 
         int id = rpc.GetID();
 
-        if (id == 777001)
+        Param2<vector, string> p;
+        if (!rpc.GetReadContext().Read(p))
+            return;
+
+        vector pos = p.param1;
+        string markerId = p.param2;
+
+        // Remove marker
+        if (id == 777099)
         {
-            Param3<vector, string, int> p;
-            if (rpc.GetReadContext().Read(p))
-            {
-                // FIX: use town as ID
-                EoH_ClientMarkers.Add(p.param2, p.param1, p.param2, p.param3, false);
-            }
+            EoH_ClientMarkers.Remove(markerId);
+            return;
         }
 
-        if (id == 777002)
+        int color = ARGB(255,255,255,255);
+        bool pulse = false;
+
+        switch (id)
         {
-            // NOTE: no longer used globally, but kept for compatibility
+            case 777001: // base
+                color = ARGB(120,150,150,150);
+                break;
+
+            case 777002: // intel reveal
+                color = ARGB(255,255,255,255);
+                break;
+
+            case 777003: // contested
+                color = ARGB(255,255,50,50);
+                pulse = true;
+                break;
+
+            case 777004: // capturing
+                color = ARGB(255,255,220,80);
+                break;
+
+            case 777005: // owned
+                color = ARGB(255,80,255,120);
+                break;
+
+            case 777010: // trader
+                color = ARGB(255,80,150,255);
+                break;
         }
 
-        if (id == 777003)
-        {
-            Param2<vector, string> p2;
-            if (rpc.GetReadContext().Read(p2))
-            {
-                // FIX: contested uses same ID, enables pulse
-                EoH_ClientMarkers.Add(p2.param2, p2.param1, p2.param2, ARGB(255,255,50,50), true);
-            }
-        }
+        EoH_ClientMarkers.Add(markerId, pos, markerId, color, pulse);
     }
-};
+}
