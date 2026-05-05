@@ -63,7 +63,7 @@ class EoH_CaptureManager
 
         m_Sessions.Set(town, s);
 
-        SendMarker(town, ARGB(255,255,220,80)); // yellow
+        SendMarker(town, ARGB(255,255,220,80));
     }
 
     void Tick()
@@ -122,7 +122,7 @@ class EoH_CaptureManager
 
     void CompleteCapture(EoH_CaptureSession s)
     {
-        SendMarker(s.TownName, ARGB(255,80,255,120)); // green
+        SendMarker(s.TownName, ARGB(255,80,255,120));
         m_Sessions.Remove(s.TownName);
     }
 
@@ -141,7 +141,7 @@ class EoH_CaptureManager
             GetGame().RPCSingleParam(
                 p,
                 777001,
-                new Param3<vector,string,int>(pos, town, color),
+                new Param3<vector, string, int>(pos, town, color),
                 true,
                 p.GetIdentity()
             );
@@ -163,7 +163,7 @@ class EoH_CaptureManager
             GetGame().RPCSingleParam(
                 p,
                 777003,
-                new Param2<vector,string>(pos, town),
+                new Param2<vector, string>(pos, town),
                 true,
                 p.GetIdentity()
             );
