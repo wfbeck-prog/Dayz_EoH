@@ -12,41 +12,30 @@ modded class TerritoryFlagKit extends KitBase
             return;
 
         string groupID = EoH_GroupHelper.GetGroupID(playerBase);
-        if (groupID == "")
-        {
-            playerBase.MessageStatus("You must be in a group to place a territory flag.");
-            return;
-        }
 
-        Object flagObject = GetGame().CreateObjectEx("TerritoryFlag", position, ECE_PLACE_ON_SURFACE);
-        TerritoryFlag placedFlag = TerritoryFlag.Cast(flagObject);
-        Flag_Base placedFlagBase = Flag_Base.Cast(flagObject);
+        Object placed = GetGame().GetObjectByNetworkId(GetNetworkIDLow(), GetNetworkIDHigh());
+        TerritoryFlag flag = TerritoryFlag.Cast(placed);
+        Flag_Base flagBase = Flag_Base.Cast(placed);
 
-        if (!placedFlag || !placedFlagBase)
+        if (!flag || !flagBase)
             return;
 
-        placedFlag.SetPosition(position);
-        placedFlag.SetOrientation(orientation);
-
-        HideAllSelections();
-        SetIsDeploySound(true);
-
-        placedFlag.GetConstruction().BuildPartServer(playerBase, "base", AT_BUILD_PART);
-        placedFlag.GetConstruction().BuildPartServer(playerBase, "support", AT_BUILD_PART);
-        placedFlag.GetConstruction().BuildPartServer(playerBase, "pole", AT_BUILD_PART);
+        flag.GetConstruction().BuildPartServer(playerBase, "base", AT_BUILD_PART);
+        flag.GetConstruction().BuildPartServer(playerBase, "support", AT_BUILD_PART);
+        flag.GetConstruction().BuildPartServer(playerBase, "pole", AT_BUILD_PART);
 
         int slotId = InventorySlots.GetSlotIdFromString("material_fpole_flag");
-        EntityAI attachment = placedFlag.GetInventory().FindAttachment(slotId);
+        EntityAI attachment = flag.GetInventory().FindAttachment(slotId);
 
         if (!attachment)
         {
-            placedFlag.GetInventory().CreateAttachment("Flag_DayZ");
+            flag.GetInventory().CreateAttachment("Flag_DayZ");
         }
 
-        placedFlag.GetConstruction().BuildPartServer(playerBase, "flag", AT_BUILD_PART);
+        flag.GetConstruction().BuildPartServer(playerBase, "flag", AT_BUILD_PART);
 
-        placedFlagBase.SetEoHOwner(groupID);
+        flagBase.SetEoHOwner(groupID);
 
-        playerBase.MessageStatus("Territory claimed for your group.");
+        playerBase.MessageStatus("Territory claimed.");
     }
 }
