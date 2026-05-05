@@ -1,12 +1,17 @@
 class EoH_CaptureSession
 {
     string TownName;
+    string CapturingGroupID;
+    string CapturingGroupName;
     float Progress;
     int LastTick;
     bool IsContested;
 
     void EoH_CaptureSession()
     {
+        TownName = "";
+        CapturingGroupID = "";
+        CapturingGroupName = "";
         Progress = 0;
         LastTick = 0;
         IsContested = false;
@@ -49,7 +54,40 @@ class EoH_CaptureManager
         if (m_Towns.Contains(town))
             return m_Towns.Get(town);
 
+        EoH_CaptureTownConfig cfg = GetTownConfig(town);
+        if (cfg)
+            return cfg.GetRelayVector();
+
         return "0 0 0".ToVector();
+    }
+
+    array<string> GetAllTownNames()
+    {
+        array<string> names = new array<string>();
+
+        foreach (string town, vector pos : m_Towns)
+        {
+            names.Insert(town);
+        }
+
+        return names;
+    }
+
+    EoH_CaptureTownConfig GetTownConfig(string town)
+    {
+        if (!m_Towns.Contains(town))
+            return null;
+
+        EoH_CaptureTownConfig cfg = new EoH_CaptureTownConfig();
+        cfg.Name = town;
+        cfg.RelayPosition.Clear();
+
+        vector pos = m_Towns.Get(town);
+        cfg.RelayPosition.Insert(pos[0]);
+        cfg.RelayPosition.Insert(pos[1]);
+        cfg.RelayPosition.Insert(pos[2]);
+
+        return cfg;
     }
 
     void StartCapture(string town, PlayerBase player)
@@ -57,14 +95,25 @@ class EoH_CaptureManager
         if (m_Sessions.Contains(town))
             return;
 
+        if (!player)
+            return;
+
+        string groupID = EoH_GroupHelper.GetGroupID(player);
+        if (groupID == "")
+        {
+            player.MessageStatus("You must be in a group to capture a town.");
+            return;
+        }
+
         EoH_CaptureSession s = new EoH_CaptureSession();
         s.TownName = town;
+        s.CapturingGroupID = groupID;
+        s.CapturingGroupName = EoH_GroupHelper.GetGroupName(player);
         s.LastTick = GetGame().GetTime();
 
         m_Sessions.Set(town, s);
 
-        // Capturing (yellow)
-        SendRPC(town, 777004);
+        EoH_TownMarkerManager.UpdateCapturingMarker(town, s.CapturingGroupName);
     }
 
     void Tick()
@@ -97,61 +146,41 @@ class EoH_CaptureManager
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
 
-        int count = 0;
+        bool enemyPresent = false;
 
         foreach (Man m : players)
         {
             PlayerBase p = PlayerBase.Cast(m);
-            if (!p || !p.GetIdentity()) continue;
+            if (!p || !p.GetIdentity())
+                continue;
 
-            if (vector.Distance(p.GetPosition(), pos) < 150)
-                count++;
+            if (vector.Distance(p.GetPosition(), pos) >= 150)
+                continue;
+
+            string otherGroupID = EoH_GroupHelper.GetGroupID(p);
+            if (otherGroupID != "" && otherGroupID != s.CapturingGroupID)
+            {
+                enemyPresent = true;
+                break;
+            }
         }
 
         bool wasContested = s.IsContested;
-        s.IsContested = count > 1;
+        s.IsContested = enemyPresent;
 
         if (s.IsContested)
         {
-            // Flashing red
-            SendRPC(s.TownName, 777003);
+            EoH_TownMarkerManager.UpdateContestedMarker(s.TownName, s.CapturingGroupName);
         }
         else if (wasContested)
         {
-            // Back to capturing (yellow)
-            SendRPC(s.TownName, 777004);
+            EoH_TownMarkerManager.UpdateCapturingMarker(s.TownName, s.CapturingGroupName);
         }
     }
 
     void CompleteCapture(EoH_CaptureSession s)
     {
-        // Owned (green)
-        SendRPC(s.TownName, 777005);
-
+        EoH_WorldStateManager.Get().SetTownOwner(s.TownName, s.CapturingGroupID, s.CapturingGroupName);
         m_Sessions.Remove(s.TownName);
     }
-
-    void SendRPC(string town, int rpcId)
-{
-    vector pos = GetTownPos(town);
-
-    array<Man> players = new array<Man>();
-    GetGame().GetPlayers(players);
-
-    int i;
-    for (i = 0; i < players.Count(); i++)
-    {
-        PlayerBase player = PlayerBase.Cast(players[i]);
-
-        if (!player)
-            continue;
-
-        if (!player.GetIdentity())
-            continue;
-
-        Param2<vector, string> data = new Param2<vector, string>(pos, town);
-
-        GetGame().RPCSingleParam(player, rpcId, data, true, player.GetIdentity());
-    }
-}
 };
