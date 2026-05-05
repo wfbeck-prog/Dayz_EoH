@@ -22,10 +22,17 @@ class EoH_IntelManager
 
     void InitIntel()
     {
-        m_IntelLocations.Set("Pustoshka", "3060 0 7870".ToVector());
-        m_IntelLocations.Set("Mogilevka", "7600 0 5100".ToVector());
-        m_IntelLocations.Set("Guglovo", "8500 0 6600".ToVector());
-        m_IntelLocations.Set("Novy Sobor", "7000 0 7600".ToVector());
+        m_IntelLocations.Clear();
+
+        EoH_CaptureManager cap = EoH_CaptureManager.Get();
+        if (!cap)
+            return;
+
+        array<string> towns = cap.GetAllTownNames();
+        foreach (string town : towns)
+        {
+            m_IntelLocations.Set(town, cap.GetTownPos(town));
+        }
     }
 
     void ResetPlayerIntelUsage(string playerId)
@@ -36,29 +43,27 @@ class EoH_IntelManager
         m_PlayerIntelUses.Remove(playerId);
     }
 
-    void RevealTownIntel(PlayerBase player)
+    void RevealIntel(PlayerBase player)
     {
-        RevealIntel(player);
+        RevealTownIntel(player);
     }
 
-    void RevealIntel(PlayerBase player)
+    void RevealTownIntel(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
             return;
 
-        string playerId = player.GetIdentity().GetId();
-        int used = 0;
-        m_PlayerIntelUses.Find(playerId, used);
-        m_PlayerIntelUses.Set(playerId, used + 1);
+        TrackIntelUse(player);
 
         vector playerPos = player.GetPosition();
+        int revealed = 0;
 
         foreach (string name, vector pos : m_IntelLocations)
         {
-            if (vector.Distance(playerPos, pos) > 3000)
+            if (vector.Distance(playerPos, pos) > 5000)
                 continue;
 
-            EoH_MarkerData data = new EoH_MarkerData("EoH_INTEL_" + name, "Intel: " + name, pos);
+            EoH_MarkerData data = new EoH_MarkerData("EoH_INTEL_TOWN_" + name, "Town Intel: " + name, pos);
             data.Category = EoH_MarkerCategory.INTEL;
             data.State = EoH_MarkerState.NORMAL;
             data.Icon = "Info";
@@ -69,6 +74,34 @@ class EoH_IntelManager
             data.Normalize();
 
             EoH_MarkerService.SendToPlayer(player, data);
+            revealed++;
         }
+
+        player.MessageStatus("Intel decoded. Nearby town activity marked: " + revealed.ToString());
+    }
+
+    void RevealTraderIntel(PlayerBase player)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
+        TrackIntelUse(player);
+
+        bool revealed = EoH_RT_TraderManager.Get().RevealNearestHiddenTraderToPlayer(player);
+        if (revealed)
+            player.MessageStatus("Trader intel decoded. A roaming trader location was marked.");
+        else
+            player.MessageStatus("Trader intel decoded, but no hidden trader signal was found.");
+    }
+
+    void TrackIntelUse(PlayerBase player)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
+        string playerId = player.GetIdentity().GetId();
+        int used = 0;
+        m_PlayerIntelUses.Find(playerId, used);
+        m_PlayerIntelUses.Set(playerId, used + 1);
     }
 };
