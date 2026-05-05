@@ -43,7 +43,7 @@ modded class MissionServer
             EoH_MarkerData data = new EoH_MarkerData("EoH_TOWN_BASE_" + town, town, cfg.GetRelayVector());
             data.Category = EoH_MarkerCategory.TOWN;
             data.State = EoH_MarkerState.NORMAL;
-            data.Icon = "Flag";
+            data.Icon = "Territory";
             data.Is3D = 0;
             data.Pulse = 0;
             data.Color = ARGB(120, 150, 150, 150);
@@ -61,6 +61,7 @@ modded class MissionServer
         if (m_EoH_ServerInitialized)
             return;
 
+        GetEoHBuildControlConfig();
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
