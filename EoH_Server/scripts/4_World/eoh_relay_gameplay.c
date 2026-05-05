@@ -52,11 +52,20 @@ class EoH_RelayGameplay
 
     static void BroadcastRelayActivation(PlayerBase activator, string town, vector pos)
     {
-        string name = "Unknown Survivor";
-        if (activator && activator.GetIdentity())
-            name = activator.GetIdentity().GetName();
+        string groupName = "Unknown Group";
 
-        string msg = "Radio relay activated near " + town + " by " + name + ".";
+        if (activator)
+            groupName = EoH_GroupHelper.GetGroupName(activator);
+
+        if (groupName == "" || groupName == "No Group" || groupName == "Unknown")
+        {
+            if (activator && activator.GetIdentity())
+                groupName = "Solo - " + activator.GetIdentity().GetName();
+            else
+                groupName = "Unknown Group";
+        }
+
+        string msg = "Radio relay activated near " + town + " by " + groupName + ".";
 
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
