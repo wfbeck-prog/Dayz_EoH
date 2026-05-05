@@ -5,17 +5,23 @@ modded class PunchedCard : Paper
         super.SetActions();
         AddAction(ActionUseUndergroundPanel);
     }
+}
 
-    override void OnActionCompleted(ActionData action_data)
+modded class ActionUseUndergroundPanel
+{
+    override void OnFinishProgressServer(ActionData action_data)
     {
-        super.OnActionCompleted(action_data);
+        super.OnFinishProgressServer(action_data);
 
         if (!action_data || !action_data.m_MainItem)
             return;
 
-        if (action_data.m_Action && action_data.m_Action.IsKindOf(ActionUseUndergroundPanel))
-        {
-            AddHealthLevel(4);
-        }
+        PunchedCard card = PunchedCard.Cast(action_data.m_MainItem);
+        if (!card)
+            return;
+
+        card.AddHealthLevel(4);
+
+        EoH_WorldStateManager.Get().TriggerBunkerOpened();
     }
 }
