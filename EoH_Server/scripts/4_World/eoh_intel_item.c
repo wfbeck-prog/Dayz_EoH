@@ -5,9 +5,19 @@ class EoH_Intel_Document : ItemBase
         super.SetActions();
         AddAction(EoH_ActionReadIntel);
     }
+
+    override bool CanPutInCargo(EntityAI parent)
+    {
+        return true;
+    }
+
+    override bool CanPutIntoHands(EntityAI parent)
+    {
+        return true;
+    }
 }
 
-class EoH_TownIntel : ItemBase
+class EoH_TownIntel : EoH_Intel_Document
 {
     override void SetActions()
     {
@@ -16,7 +26,7 @@ class EoH_TownIntel : ItemBase
     }
 }
 
-class EoH_TraderIntel : ItemBase
+class EoH_TraderIntel : EoH_Intel_Document
 {
     override void SetActions()
     {
