@@ -1,0 +1,66 @@
+{
+    "m_Version": 12,
+    "DisplayName": "Vests High",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 35.0,
+    "Items": [
+        {
+            "ClassName": "ukassvest_black",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 540,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "ukassvest_khaki",
+                "ukassvest_olive",
+                "ukassvest_camo",
+                "ukassvest_winter"
+            ]
+        },
+        {
+            "ClassName": "smershvest",
+            "MaxPriceThreshold": 2200,
+            "MinPriceThreshold": 1320,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "highcapacityvest_black",
+            "MaxPriceThreshold": 3200,
+            "MinPriceThreshold": 1920,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "highcapacityvest_olive"
+            ]
+        },
+        {
+            "ClassName": "platecarriervest",
+            "MaxPriceThreshold": 4200,
+            "MinPriceThreshold": 2520,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "platecarriervest_green",
+                "platecarriervest_black",
+                "platecarriervest_camo",
+                "platecarriervest_winter"
+            ]
+        }
+    ]
+}

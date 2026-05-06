@@ -1,0 +1,54 @@
+{
+    "m_Version": 12,
+    "DisplayName": "Weapons SNAFU Mid",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 40.0,
+    "Items": [
+        {
+            "ClassName": "SNAFU_SKS",
+            "MaxPriceThreshold": 3200,
+            "MinPriceThreshold": 1900,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 30,
+            "MinStockThreshold": 3,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "SNAFU_M14",
+            "MaxPriceThreshold": 5500,
+            "MinPriceThreshold": 3300,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 18,
+            "MinStockThreshold": 2,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "SNAFU_M76",
+            "MaxPriceThreshold": 5200,
+            "MinPriceThreshold": 3100,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 18,
+            "MinStockThreshold": 2,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "SNAFU_FRF2",
+            "MaxPriceThreshold": 6000,
+            "MinPriceThreshold": 3600,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 12,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        }
+    ]
+}

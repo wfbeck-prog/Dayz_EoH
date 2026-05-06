@@ -1,0 +1,43 @@
+{
+    "m_Version": 12,
+    "DisplayName": "Muzzles High",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 20.0,
+    "Items": [
+        {
+            "ClassName": "m4_suppressor",
+            "MaxPriceThreshold": 2200,
+            "MinPriceThreshold": 1320,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ak_suppressor",
+            "MaxPriceThreshold": 2200,
+            "MinPriceThreshold": 1320,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "pistolsuppressor",
+            "MaxPriceThreshold": 1400,
+            "MinPriceThreshold": 840,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "m_Version": 12,
+    "DisplayName": "Magazines High",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 20.0,
+    "Items": [
+        {
+            "ClassName": "mag_saiga_drum20rnd",
+            "MaxPriceThreshold": 1200,
+            "MinPriceThreshold": 720,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 30,
+            "MinStockThreshold": 2,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "mag_akm_drum75rnd",
+            "MaxPriceThreshold": 1600,
+            "MinPriceThreshold": 960,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 20,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "mag_stanag_60rnd",
+            "MaxPriceThreshold": 1400,
+            "MinPriceThreshold": 840,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 25,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "mag_pp19_64rnd",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 540,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 25,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        }
+    ]
+}

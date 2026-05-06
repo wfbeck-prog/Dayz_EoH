@@ -1,0 +1,21 @@
+{
+    "m_Version": 12,
+    "DisplayName": "Ammo Restricted",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 10.0,
+    "Items": [
+        {
+            "ClassName": "ammo_40mm_explosive",
+            "MaxPriceThreshold": 4500,
+            "MinPriceThreshold": 2800,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 20,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        }
+    ]
+}

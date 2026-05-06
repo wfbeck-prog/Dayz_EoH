@@ -1,0 +1,175 @@
+{
+    "m_Version": 12,
+    "DisplayName": "CEM Buy",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 0.0,
+    "Items": [
+         {
+            "ClassName": "im7s_Brick_Gelato",
+            "MaxPriceThreshold": 5600,
+            "MinPriceThreshold": 3400,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 45,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_Barney",
+            "MaxPriceThreshold": 5200,
+            "MinPriceThreshold": 3100,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 50,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_BlueCookies",
+            "MaxPriceThreshold": 5800,
+            "MinPriceThreshold": 3500,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 40,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_Champagne",
+            "MaxPriceThreshold": 6200,
+            "MinPriceThreshold": 3700,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 35,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_CheetahPiss",
+            "MaxPriceThreshold": 6000,
+            "MinPriceThreshold": 3600,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 40,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_Paragon",
+            "MaxPriceThreshold": 6500,
+            "MinPriceThreshold": 3900,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 30,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_BabyBatter",
+            "MaxPriceThreshold": 6800,
+            "MinPriceThreshold": 4100,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 30,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_Coke",
+            "MaxPriceThreshold": 18000,
+            "MinPriceThreshold": 11000,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 25,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_Brown",
+            "MaxPriceThreshold": 14500,
+            "MinPriceThreshold": 8500,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 25,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Brick_BlackTar",
+            "MaxPriceThreshold": 17000,
+            "MinPriceThreshold": 10000,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 20,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Psilocybin_BlueVeils",
+            "MaxPriceThreshold": 7800,
+            "MinPriceThreshold": 4600,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 35,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Psilocybin_GhostCaps",
+            "MaxPriceThreshold": 8200,
+            "MinPriceThreshold": 4900,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 30,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Psilocybin_Sunspores",
+            "MaxPriceThreshold": 7600,
+            "MinPriceThreshold": 4500,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 35,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Psilocybin_GoldenTeacher",
+            "MaxPriceThreshold": 8000,
+            "MinPriceThreshold": 4800,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 30,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "iM7s_Psilocybin_MysticVoid",
+            "MaxPriceThreshold": 9000,
+            "MinPriceThreshold": 5400,
+            "SellPricePercent": 1.0,
+            "MaxStockThreshold": 25,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        }
+    ]
+}

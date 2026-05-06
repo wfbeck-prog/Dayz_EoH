@@ -1,0 +1,647 @@
+{
+    "m_Version": 12,
+    "DisplayName": "RagsCarsParts",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 75.0,
+    "Items": [
+        {
+            "ClassName": "rag_landrover_110_hood",
+            "MaxPriceThreshold": 800,
+            "MinPriceThreshold": 300,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "rag_landrover_110_hood_olive",
+                "rag_landrover_110_hood_grey",
+				"rag_landrover_110_hood_red",
+				"rag_landrover_110_hood_un",
+				"rag_landrover_110_hood_black",
+				"rag_landrover_110_hood_pink"
+            ]
+        },
+        {
+            "ClassName": "rag_landrover_110_wheel",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 550,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_landrover_110_wheel_olive",
+                "rag_landrover_110_wheel_grey",
+				"rag_landrover_110_wheel_red",
+				"rag_landrover_110_wheel_un",
+				"rag_landrover_110_wheel_black",
+				"rag_landrover_110_wheel_pink"
+			
+			]
+        },
+        {
+            "ClassName": "rag_landrover_110_driverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "rag_landrover_110_driverdoor_olive",
+                "rag_landrover_110_driverdoor_grey",
+				"rag_landrover_110_driverdoor_red",
+				"rag_landrover_110_driverdoor_un",
+				"rag_landrover_110_driverdoor_black",
+				"rag_landrover_110_driverdoor_pink"
+            ]
+        },
+        {
+            "ClassName": "rag_landrover_110_codriverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "rag_landrover_110_codriverdoor_olive",
+                "rag_landrover_110_codriverdoor_grey",
+				"rag_landrover_110_codriverdoor_red",
+				"rag_landrover_110_codriverdoor_un",
+				"rag_landrover_110_codriverdoor_black",
+				"rag_landrover_110_codriverdoor_pink"
+            ]
+        },
+        {
+            "ClassName": "rag_landrover_110_cargo1",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_landrover_110_cargo1_olive",
+                "rag_landrover_110_cargo1_grey",
+				"rag_landrover_110_cargo1_red",
+				"rag_landrover_110_cargo1_un",
+				"rag_landrover_110_cargo1_black",
+				"rag_landrover_110_cargo1_pink"
+			
+			]
+        },
+        {
+            "ClassName": "rag_landrover_110_cargo2",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "rag_landrover_110_cargo2_olive",
+                "rag_landrover_110_cargo2_grey",
+				"rag_landrover_110_cargo2_red",
+				"rag_landrover_110_cargo2_un",
+				"rag_landrover_110_cargo2_black",
+				"rag_landrover_110_cargo2_pink"
+            ]
+        },
+        {
+            "ClassName": "rag_landrover_110_cargo3",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+                "rag_landrover_110_cargo3_olive",
+                "rag_landrover_110_cargo3_grey",
+				"rag_landrover_110_cargo3_red",
+				"rag_landrover_110_cargo3_un",
+				"rag_landrover_110_cargo3_black",
+				"rag_landrover_110_cargo3_pink"
+            ]
+        },
+        {
+            "ClassName": "rag_mtvr_wheel",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_door_1_1",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_door_1_2",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_hood",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_cargo1door",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_schoolbus_wheel",
+            "MaxPriceThreshold": 800,
+            "MinPriceThreshold": 400,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_schoolbus_wheel_double",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_schoolbus_hood",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_zil_130_wheel",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_zil_130_wheel_double",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_zil_130_driverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_zil_130_codriverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_zil_130_trunk",
+            "MaxPriceThreshold": 600,
+            "MinPriceThreshold": 300,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_zil_130_hood",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_wheel_snow",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_door_snow_1_1",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_door_snow_1_2",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_hood_snow",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_mtvr_cargo1door_snow",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_hummer_wheel",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_hummer_door_1",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_hummer_door_winter_1",
+				"rag_hummer_door_olive_1",
+				"rag_hummer_door_tan_1",
+				"rag_hummer_door_camo_1",
+				"rag_hummer_door_purple_1",
+				"rag_hummer_door_red_1",
+				"rag_hummer_door_anarchy_1",
+				"rag_hummer_door_gold_1"
+			
+			]
+        },
+        {
+            "ClassName": "rag_hummer_door_2",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_hummer_door_winter_2",
+				"rag_hummer_door_olive_2",
+				"rag_hummer_door_tan_2",
+				"rag_hummer_door_camo_2",
+				"rag_hummer_door_purple_2",
+				"rag_hummer_door_red_2",
+				"rag_hummer_door_anarchy_2",
+				"rag_hummer_door_gold_2"
+			
+			]
+        },
+        {
+            "ClassName": "rag_hummer_door_3",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 600,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_hummer_door_winter_3",
+				"rag_hummer_door_olive_3",
+				"rag_hummer_door_tan_3",
+				"rag_hummer_door_camo_3",
+				"rag_hummer_door_purple_3",
+				"rag_hummer_door_red_3",
+				"rag_hummer_door_anarchy_3",
+				"rag_hummer_door_gold_3"
+			
+			]
+        },
+        {
+            "ClassName": "rag_hummer_door_4",
+            "MaxPriceThreshold": 1000,
+			"MinPriceThreshold": 600,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_hummer_door_winter_4",
+				"rag_hummer_door_olive_4",
+				"rag_hummer_door_tan_4",
+				"rag_hummer_door_camo_4",
+				"rag_hummer_door_purple_4",
+				"rag_hummer_door_red_4",
+				"rag_hummer_door_anarchy_4",
+				"rag_hummer_door_gold_4"
+			
+			]
+        },
+        {
+            "ClassName": "rag_hummer_hood",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_hummer_hood_winter",
+				"rag_hummer_hood_olive",
+				"rag_hummer_hood_tan",
+				"rag_hummer_hood_camo",
+				"rag_hummer_hood_purple",
+				"rag_hummer_hood_red",
+				"rag_hummer_hood_anarchy",
+				"rag_hummer_hood_gold"
+			
+			]
+        },
+        {
+            "ClassName": "rag_hummer_trunk",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_hummer_trunk_winter",
+				"rag_hummer_trunk_olive",
+				"rag_hummer_trunk_tan",
+				"rag_hummer_trunk_camo",
+				"rag_hummer_trunk_purple",
+				"rag_hummer_trunk_red",
+				"rag_hummer_trunk_anarchy",
+				"rag_hummer_trunk_gold"
+			
+			]
+        },
+        {
+            "ClassName": "rag_gaz69_wheel",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_gaz69_driverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_gaz69_codriverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_gaz69_hood",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 450,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_gaz69_trunk",
+            "MaxPriceThreshold": 1000,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_derby_car_wheel",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_derby_car_driverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_derby_car_codriverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_baja_wheel",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_baja_wheel_big",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "rag_baja_driverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_baja_driverdoor_green",
+				"rag_baja_driverdoor_ryg",
+				"rag_baja_driverdoor_camo"
+			
+			]
+        },
+        {
+            "ClassName": "rag_baja_codriverdoor",
+            "MaxPriceThreshold": 900,
+            "MinPriceThreshold": 500,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": [
+			
+				"rag_baja_codriverdoor_green",
+				"rag_baja_codriverdoor_ryg",
+				"rag_baja_codriverdoor_camo"
+			
+			]
+        },
+        {
+            "ClassName": "rag_atv_wheel",
+            "MaxPriceThreshold": 500,
+            "MinPriceThreshold": 200,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 100,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        }
+    ]
+}

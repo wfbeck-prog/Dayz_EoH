@@ -1,0 +1,120 @@
+{
+    "m_Version": 12,
+    "DisplayName": "Ammo Boxes High",
+    "Icon": "Deliver",
+    "Color": "FBFCFEFF",
+    "IsExchange": 0,
+    "InitStockPercent": 30.0,
+    "Items": [
+        {
+            "ClassName": "ammobox_308win_20rnd",
+            "MaxPriceThreshold": 360,
+            "MinPriceThreshold": 215,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 120,
+            "MinStockThreshold": 3,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_308wintracer_20rnd",
+            "MaxPriceThreshold": 520,
+            "MinPriceThreshold": 310,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 50,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_545x39_20rnd",
+            "MaxPriceThreshold": 300,
+            "MinPriceThreshold": 180,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 180,
+            "MinStockThreshold": 5,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_545x39tracer_20rnd",
+            "MaxPriceThreshold": 420,
+            "MinPriceThreshold": 250,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 60,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_556x45tracer_20rnd",
+            "MaxPriceThreshold": 420,
+            "MinPriceThreshold": 250,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 60,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_762x39tracer_20rnd",
+            "MaxPriceThreshold": 460,
+            "MinPriceThreshold": 275,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 60,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_762x54_20rnd",
+            "MaxPriceThreshold": 460,
+            "MinPriceThreshold": 275,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 120,
+            "MinStockThreshold": 3,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_762x54tracer_20rnd",
+            "MaxPriceThreshold": 620,
+            "MinPriceThreshold": 370,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 40,
+            "MinStockThreshold": 1,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_9x39_20rnd",
+            "MaxPriceThreshold": 520,
+            "MinPriceThreshold": 310,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 80,
+            "MinStockThreshold": 2,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        },
+        {
+            "ClassName": "ammobox_9x39ap_20rnd",
+            "MaxPriceThreshold": 780,
+            "MinPriceThreshold": 465,
+            "SellPricePercent": -1.0,
+            "MaxStockThreshold": 30,
+            "MinStockThreshold": 0,
+            "QuantityPercent": -1,
+            "SpawnAttachments": [],
+            "Variants": []
+        }
+    ]
+}
