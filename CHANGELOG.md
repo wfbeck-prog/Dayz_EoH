@@ -2,6 +2,43 @@
 
 All notable EoH_Server repository changes are tracked here.
 
+## 2026-05-06
+
+### Added
+- Added Terje StartScreen/EoH territory respawn foundation:
+  - `EoH_TerritorySpawnBridge.c`
+  - `EoH_TerjeTerritoryRespawnHandler.c`
+  - `EoH_TerjeTownRespawnHandler.c`
+- Added support for owned territory flag respawns through Terje respawn objects.
+- Added support for controlled town relay respawns through `EoH_RadioRelay` as the physical Terje respawn object.
+- Added `EoH_Server/config/Terje/EoH_TerjeRespawns_Example.xml` with example Terje XML blocks for:
+  - `eoh_town_relay`
+  - `eoh_territory_flag`
+- Added controlled-town spawn export support to `EoH_TerritorySpawnBridge`.
+- Added `EoH_TerjeRespawnCooldowns.c` helper, but Terje native `<Timeout>` is now the preferred cooldown method.
+
+### Changed
+- Changed EoH Terje town respawn design to use the existing `EoH_RadioRelay` object instead of a separate town terminal object.
+- Updated Terje respawn design so cooldowns are configured in Terje XML using native `<Timeout id="..." minutes="..." />` conditions.
+- Updated relay activation broadcasts to use group names via `EoH_GroupHelper.GetGroupName()` instead of individual player names.
+- Changed relay auto-spawn config default to opt-in by setting `SpawnRelaysOnServerStart = false` in `Relays.json` generation.
+- Updated intel item script inheritance to avoid direct `BookDeadSouls` script dependency.
+- Updated intel item actions so `EoH_TownIntel` and `EoH_TraderIntel` attach `EoH_ActionReadIntel` directly.
+- Updated BuildControl placement validation so `TerritoryFlagKit` skips expensive world scans during hologram preview.
+
+### Fixed
+- Fixed severe lag/stutter while preview-placing TerritoryFlagKit by removing repeated large-radius object scans during placement preview.
+- Fixed `eoh_intel_item.c(19): Unknown type 'BookDeadSouls'` by making trader intel inherit from the stable EoH intel document script base.
+- Fixed intel item action registration after switching to concrete vanilla/admin-visible item classes.
+- Fixed EoH item stability by moving physical relay/intel items toward vanilla-safe inventory bases.
+- Fixed relay/town respawn validation so players cannot use respawn points unless their group controls the town or owns the flag.
+
+### Notes
+- Terje XML should use `handler="EoH_TerjeTownRespawnHandler"` for `EoH_RadioRelay` town relay respawns.
+- Terje XML should use `handler="EoH_TerjeTerritoryRespawnHandler"` for owned `TerritoryFlag` respawns.
+- Terje native `<Timeout>` should control cooldowns instead of custom EoH cooldown attributes.
+- Relay auto-spawn remains disabled by default until physical relay/item stability and placement behavior are fully validated.
+
 ## 2026-05-05
 
 ### Added
