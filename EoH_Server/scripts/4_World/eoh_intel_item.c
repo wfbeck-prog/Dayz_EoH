@@ -1,4 +1,4 @@
-class EoH_Intel_Document : BookAVoyageToArcturus
+class EoH_Intel_Document : ItemBase
 {
     override void SetActions()
     {
@@ -7,7 +7,7 @@ class EoH_Intel_Document : BookAVoyageToArcturus
     }
 }
 
-class EoH_TownIntel : EoH_Intel_Document
+class EoH_TownIntel : ItemBase
 {
     override void SetActions()
     {
@@ -16,7 +16,7 @@ class EoH_TownIntel : EoH_Intel_Document
     }
 }
 
-class EoH_TraderIntel : EoH_Intel_Document
+class EoH_TraderIntel : ItemBase
 {
     override void SetActions()
     {
