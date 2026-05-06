@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400116,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Elektro for black market movement.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        10450.0,
+        0.0,
+        2200.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Whisper Network 1",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

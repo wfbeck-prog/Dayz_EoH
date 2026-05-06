@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400009,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Novaya Petrovka for signs of encrypted trader traffic.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        3400.0,
+        0.0,
+        13000.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Signal Trace 9",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

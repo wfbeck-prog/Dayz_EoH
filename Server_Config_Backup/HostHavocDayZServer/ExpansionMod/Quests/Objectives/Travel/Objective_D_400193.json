@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400193,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Locate the forgotten cache area near Severograd.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        8050.0,
+        0.0,
+        12600.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Forgotten Cache - Severograd",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

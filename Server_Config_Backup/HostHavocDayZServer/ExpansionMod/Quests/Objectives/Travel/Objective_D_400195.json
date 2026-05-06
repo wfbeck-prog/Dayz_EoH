@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400195,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Locate the forgotten cache area near Stary Sobor.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        6150.0,
+        0.0,
+        7750.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Forgotten Cache - Stary Sobor",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

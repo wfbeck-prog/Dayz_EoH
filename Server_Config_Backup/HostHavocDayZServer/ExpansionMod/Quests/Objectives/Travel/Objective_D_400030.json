@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400030,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Prison Island for signs of encrypted trader traffic.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        2700.0,
+        0.0,
+        1300.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Signal Trace 30",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

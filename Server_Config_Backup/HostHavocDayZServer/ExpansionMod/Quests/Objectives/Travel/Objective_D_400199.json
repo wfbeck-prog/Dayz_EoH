@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400199,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Locate the forgotten cache area near Krasnostav.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        11200.0,
+        0.0,
+        12300.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Forgotten Cache - Krasnostav",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

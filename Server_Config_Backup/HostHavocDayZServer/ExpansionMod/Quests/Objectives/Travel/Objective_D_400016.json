@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400016,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Elektro for signs of encrypted trader traffic.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        10450.0,
+        0.0,
+        2200.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Signal Trace 16",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400119,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Kamenka for black market movement.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        1850.0,
+        0.0,
+        2250.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Whisper Network 4",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400125,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Solnichniy for black market movement.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        13300.0,
+        0.0,
+        6250.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Whisper Network 10",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

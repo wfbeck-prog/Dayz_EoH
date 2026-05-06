@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400024,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Polana for signs of encrypted trader traffic.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        10700.0,
+        0.0,
+        8100.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Signal Trace 24",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}

@@ -1,0 +1,18 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400019,
+    "ObjectiveType": 3,
+    "ObjectiveText": "Search Kamenka for signs of encrypted trader traffic.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Position": [
+        1850.0,
+        0.0,
+        2250.0
+    ],
+    "MaxDistance": 60.0,
+    "MarkerName": "Signal Trace 19",
+    "ShowDistance": 1,
+    "TriggerOnEnter": 1,
+    "TriggerOnExit": 0
+}
