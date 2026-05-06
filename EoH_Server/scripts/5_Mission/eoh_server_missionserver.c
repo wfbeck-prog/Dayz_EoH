@@ -2,6 +2,7 @@ modded class MissionServer
 {
     protected bool m_EoH_ServerInitialized;
     protected bool m_EoH_DT_LiveUpdatesStarted;
+    protected bool m_EoH_RelaysSpawned;
 
     override void OnInit()
     {
@@ -62,16 +63,69 @@ modded class MissionServer
             return;
 
         GetEoHBuildControlConfig();
+        GetEoHRelayConfig();
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
         EoH_RT_TraderManager.Get().Initialize();
 
         EoH_InitTownMarkers();
+        EoH_SpawnRelaysFromConfig();
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Server_Tick, 1000, true);
 
         m_EoH_ServerInitialized = true;
+    }
+
+    void EoH_SpawnRelaysFromConfig()
+    {
+        if (m_EoH_RelaysSpawned)
+            return;
+
+        EoH_RelayConfig cfg = GetEoHRelayConfig();
+        if (!cfg || !cfg.Enabled || !cfg.SpawnRelaysOnServerStart)
+            return;
+
+        foreach (EoH_RelayLocation relay : cfg.Relays)
+        {
+            if (!relay || !relay.Enabled)
+                continue;
+
+            vector pos = relay.GetPosition();
+            if (pos == "0 0 0".ToVector())
+                continue;
+
+            pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.2;
+
+            if (EoH_RelayAlreadyExists(pos, 2.0))
+                continue;
+
+            Object obj = GetGame().CreateObjectEx("EoH_RadioRelay", pos, ECE_PLACE_ON_SURFACE);
+            if (!obj)
+            {
+                Print("[EoH] Failed to spawn relay for " + relay.TownName + " at " + pos.ToString());
+                continue;
+            }
+
+            obj.SetOrientation(Vector(relay.Orientation, 0, 0));
+            Print("[EoH] Spawned relay for " + relay.TownName + " at " + pos.ToString());
+        }
+
+        m_EoH_RelaysSpawned = true;
+    }
+
+    bool EoH_RelayAlreadyExists(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        GetGame().GetObjectsAtPosition3D(pos, radius, objects, null);
+
+        foreach (Object obj : objects)
+        {
+            if (obj && obj.GetType() == "EoH_RadioRelay")
+                return true;
+        }
+
+        return false;
     }
 
     void EoH_InitTownMarkers()
