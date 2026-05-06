@@ -1,0 +1,20 @@
+{
+    "LoadoutName": "EoH_AI_Industrial_Defenders",
+    "Note": "Template loadout list. Replace/add exact SNAFU and My Delta Force Gear classnames from your installed versions.",
+    "PrimaryPool": [
+        "SKS",
+        "BK_43",
+        "Repeater",
+        "Magnum",
+        "ConstructionHelmet_Yellow"
+    ],
+    "ExtraMags": 2,
+    "Medical": [
+        "BandageDressing",
+        "Morphine"
+    ],
+    "Food": [
+        "TacticalBaconCan"
+    ],
+    "AccuracyModifier": "Hardcore"
+}

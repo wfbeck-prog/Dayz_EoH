@@ -1,0 +1,38 @@
+{
+    "m_Name": "DF_Medium",
+    "m_Weapons": [
+        "SNAFU_SCAR_L_Black",
+        "SNAFU_MCX_Black",
+        "SNAFU_MK18_Mod1"
+    ],
+    "m_Magazines": [
+        "SNAFU_SCAR_L_30RndMag",
+        "SNAFU_MCX_30RndMag",
+        "SNAFU_MK18_30RndMag"
+    ],
+    "m_Clothing": [
+        "My_DF_Gear_Armors_HT",
+        "My_DF_Gear_Armors_Motorcycle",
+        "My_DF_Gear_Armors_Marksman",
+        "My_DF_Gear_Armors_Hvk",
+        "My_DF_Gear_Armors_MK2",
+        "My_DF_Gear_Rigs_Assault",
+        "My_DF_Gear_Rigs_BlackHawk",
+        "My_DF_Gear_Rigs_D01",
+        "My_DF_Gear_Heads_DAS",
+        "My_DF_Gear_Heads_MC201",
+        "My_DF_Gear_Heads_Scout",
+        "My_DF_Gear_Heads_H07",
+        "My_DF_Gear_Heads_GT1"
+    ],
+    "m_Backpacks": [
+        "AssaultBag_Black",
+        "AssaultBag_Green",
+        "MountainBag_Black"
+    ],
+    "m_Items": [
+        "BandageDressing",
+        "Canteen",
+        "TacticalBaconCan"
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "LoadoutName": "EoH_AI_Utility_Raiders",
+    "Note": "Template loadout list. Replace/add exact SNAFU and My Delta Force Gear classnames from your installed versions.",
+    "PrimaryPool": [
+        "AKS74U",
+        "CZ61",
+        "BK_133",
+        "PoliceVest",
+        "Ammo_380"
+    ],
+    "ExtraMags": 2,
+    "Medical": [
+        "BandageDressing",
+        "Morphine"
+    ],
+    "Food": [
+        "TacticalBaconCan"
+    ],
+    "AccuracyModifier": "Hardcore"
+}

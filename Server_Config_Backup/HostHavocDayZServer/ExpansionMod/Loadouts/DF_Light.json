@@ -1,0 +1,39 @@
+{
+    "m_Name": "DF_Light",
+    "m_Weapons": [
+        "SNAFU_HoneyBadger",
+        "SNAFU_SCAR_L_Black",
+        "SNAFU_MCX_Black",
+        "SNAFU_MK18_Mod1"
+    ],
+    "m_Magazines": [
+        "SNAFU_HoneyBadger_Mag",
+        "SNAFU_SCAR_L_30RndMag",
+        "SNAFU_MCX_30RndMag",
+        "SNAFU_MK18_30RndMag"
+    ],
+    "m_Clothing": [
+        "My_DF_Gear_Armors_light",
+        "My_DF_Gear_Armors_Nylon",
+        "My_DF_Gear_Armors_Simple",
+        "My_DF_Gear_Armors_Security",
+        "My_DF_Gear_Armors_Standard",
+        "My_DF_Gear_Rigs_Assault",
+        "My_DF_Gear_Rigs_D01",
+        "My_DF_Gear_Heads_Benny",
+        "My_DF_Gear_Heads_Old",
+        "My_DF_Gear_Heads_Outdoor",
+        "My_DF_Gear_Heads_Safety",
+        "My_DF_Gear_Heads_Vintage"
+    ],
+    "m_Backpacks": [
+        "AssaultBag_Black",
+        "AssaultBag_Green",
+        "HuntingBag"
+    ],
+    "m_Items": [
+        "BandageDressing",
+        "WaterBottle",
+        "Canteen"
+    ]
+}

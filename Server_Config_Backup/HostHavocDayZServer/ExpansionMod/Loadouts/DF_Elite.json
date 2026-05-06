@@ -1,0 +1,35 @@
+{
+    "m_Name": "DF_Elite",
+    "m_Weapons": [
+        "SNAFU_MK18_Mod1",
+        "SNAFU_MCX_Black",
+        "SNAFU_SCAR_L_Black"
+    ],
+    "m_Magazines": [
+        "SNAFU_MK18_30RndMag",
+        "SNAFU_MCX_30RndMag",
+        "SNAFU_SCAR_L_30RndMag"
+    ],
+    "m_Clothing": [
+        "My_DF_Gear_Armors_Diamond",
+        "My_DF_Gear_Armors_HA2",
+        "My_DF_Gear_Armors_Titan",
+        "My_DF_Gear_Armors_Trick",
+        "My_DF_Gear_Rigs_DAR",
+        "My_DF_Gear_Rigs_DRC",
+        "My_DF_Gear_Rigs_DSA",
+        "My_DF_Gear_Heads_DICH9",
+        "My_DF_Gear_Heads_H70",
+        "My_DF_Gear_Heads_Heavy",
+        "My_DF_Gear_Heads_Heavy_Visor"
+    ],
+    "m_Backpacks": [
+        "MountainBag_Black"
+    ],
+    "m_Items": [
+        "BandageDressing",
+        "Canteen",
+        "CombatKnife",
+        "TacticalBaconCan"
+    ]
+}

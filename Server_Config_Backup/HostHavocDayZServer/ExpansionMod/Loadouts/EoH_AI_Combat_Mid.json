@@ -1,0 +1,21 @@
+{
+    "LoadoutName": "EoH_AI_Combat_Mid",
+    "Note": "Template loadout list. Replace/add exact SNAFU and My Delta Force Gear classnames from your installed versions.",
+    "PrimaryPool": [
+        "AK74",
+        "M16A2",
+        "SKS",
+        "Mosin9130",
+        "Mag_AK74_30Rnd",
+        "Ammo_762x39"
+    ],
+    "ExtraMags": 2,
+    "Medical": [
+        "BandageDressing",
+        "Morphine"
+    ],
+    "Food": [
+        "TacticalBaconCan"
+    ],
+    "AccuracyModifier": "Hardcore"
+}

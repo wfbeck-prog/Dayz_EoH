@@ -1,0 +1,20 @@
+{
+    "LoadoutName": "EoH_AI_PvP_Hard",
+    "Note": "Template loadout list. Replace/add exact SNAFU and My Delta Force Gear classnames from your installed versions.",
+    "PrimaryPool": [
+        "M4A1",
+        "AKM",
+        "VSS",
+        "PlateCarrierVest",
+        "NVGoggles"
+    ],
+    "ExtraMags": 2,
+    "Medical": [
+        "BandageDressing",
+        "Morphine"
+    ],
+    "Food": [
+        "TacticalBaconCan"
+    ],
+    "AccuracyModifier": "Hardcore"
+}

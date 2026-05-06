@@ -1,0 +1,21 @@
+{
+    "LoadoutName": "EoH_AI_Drug_SMGS",
+    "Note": "Template loadout list. Replace/add exact SNAFU and My Delta Force Gear classnames from your installed versions.",
+    "PrimaryPool": [
+        "SG5K",
+        "UMP45",
+        "Mp133Shotgun",
+        "BK_133",
+        "Mag_UMP_25Rnd",
+        "Ammo_12gaPellets"
+    ],
+    "ExtraMags": 2,
+    "Medical": [
+        "BandageDressing",
+        "Morphine"
+    ],
+    "Food": [
+        "TacticalBaconCan"
+    ],
+    "AccuracyModifier": "Hardcore"
+}

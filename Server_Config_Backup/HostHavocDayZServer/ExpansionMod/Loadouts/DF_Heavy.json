@@ -1,0 +1,40 @@
+{
+    "m_Name": "DF_Heavy",
+    "m_Weapons": [
+        "SNAFU_MCX_Black",
+        "SNAFU_MK18_Mod1",
+        "SNAFU_SCAR_L_Black"
+    ],
+    "m_Magazines": [
+        "SNAFU_MCX_30RndMag",
+        "SNAFU_MK18_30RndMag",
+        "SNAFU_SCAR_L_30RndMag"
+    ],
+    "m_Clothing": [
+        "My_DF_Gear_Armors_Elite",
+        "My_DF_Gear_Armors_FS",
+        "My_DF_Gear_Armors_Heavy_assault",
+        "My_DF_Gear_Armors_HMP",
+        "My_DF_Gear_Armors_Hvk2",
+        "My_DF_Gear_Rigs_BlackHawk",
+        "My_DF_Gear_Rigs_DRC",
+        "My_DF_Gear_Rigs_DSA",
+        "My_DF_Gear_Heads_D6",
+        "My_DF_Gear_Heads_D6_Visor",
+        "My_DF_Gear_Heads_DICH",
+        "My_DF_Gear_Heads_DICH1",
+        "My_DF_Gear_Heads_GT5",
+        "My_DF_Gear_Heads_H09",
+        "My_DF_Gear_Heads_H09_Visor"
+    ],
+    "m_Backpacks": [
+        "MountainBag_Black",
+        "MountainBag_Green"
+    ],
+    "m_Items": [
+        "BandageDressing",
+        "Canteen",
+        "TacticalBaconCan",
+        "CombatKnife"
+    ]
+}
