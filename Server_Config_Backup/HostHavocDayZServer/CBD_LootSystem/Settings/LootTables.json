@@ -1,0 +1,472 @@
+{
+    "T1_Global": [
+        {
+            "chance": 0.35,
+            "className": "BS_greenkey1",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.3,
+            "className": "CBD_LootRoomKey_Silver",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.45,
+            "className": "MakarovIJ70",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "CZ75",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.3,
+            "className": "SawedoffIzh18",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.2,
+            "className": "BK_133",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.65,
+            "className": "Mag_IJ70_8Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.55,
+            "className": "Mag_CZ75_15Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.7,
+            "className": "Ammo_380",
+            "quantity": 20,
+            "attachments": []
+        },
+        {
+            "chance": 0.55,
+            "className": "Ammo_9x19",
+            "quantity": 20,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "Ammo_12gaPellets",
+            "quantity": 10,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "BandageDressing",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.25,
+            "className": "TacticalBaconCan",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.25,
+            "className": "SewingKit",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.2,
+            "className": "CombatKnife",
+            "quantity": 1,
+            "attachments": []
+        }
+    ],
+    "T2_Global": [
+        {
+            "chance": 0.22,
+            "className": "BS_yellowkey1",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.2,
+            "className": "CBD_LootRoomKey_Gold",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "AKS74U",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_AK74_30Rnd",
+                    "attachmentQuantity": 30
+                }
+            ]
+        },
+        {
+            "chance": 0.3,
+            "className": "SKS",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.25,
+            "className": "MP5K",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_MP5_30Rnd",
+                    "attachmentQuantity": 30
+                }
+            ]
+        },
+        {
+            "chance": 0.25,
+            "className": "USG45",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_UMP_25Rnd",
+                    "attachmentQuantity": 25
+                }
+            ]
+        },
+        {
+            "chance": 0.65,
+            "className": "Mag_AK74_30Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.5,
+            "className": "Mag_MP5_30Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.45,
+            "className": "Mag_UMP_25Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.8,
+            "className": "Ammo_545x39",
+            "quantity": 40,
+            "attachments": []
+        },
+        {
+            "chance": 0.65,
+            "className": "Ammo_762x39",
+            "quantity": 40,
+            "attachments": []
+        },
+        {
+            "chance": 0.55,
+            "className": "Ammo_45ACP",
+            "quantity": 30,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "CombatKnife",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "WeaponCleaningKit",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.25,
+            "className": "PlateCarrierVest",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.25,
+            "className": "TacticalGloves_Black",
+            "quantity": 1,
+            "attachments": []
+        }
+    ],
+    "T3_Global": [
+        {
+            "chance": 0.12,
+            "className": "BS_keycard_lab_black",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "AK74",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_AK74_30Rnd",
+                    "attachmentQuantity": 30
+                },
+                {
+                    "attachmentClassname": "KobraOptic",
+                    "attachmentQuantity": 1
+                }
+            ]
+        },
+        {
+            "chance": 0.3,
+            "className": "AKM",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_AKM_30Rnd",
+                    "attachmentQuantity": 30
+                }
+            ]
+        },
+        {
+            "chance": 0.25,
+            "className": "AK101",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_AK101_30Rnd",
+                    "attachmentQuantity": 30
+                }
+            ]
+        },
+        {
+            "chance": 0.22,
+            "className": "M16A2",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.75,
+            "className": "Mag_AK74_30Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.7,
+            "className": "Mag_AKM_30Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.65,
+            "className": "Mag_AK101_30Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.85,
+            "className": "Ammo_545x39",
+            "quantity": 60,
+            "attachments": []
+        },
+        {
+            "chance": 0.8,
+            "className": "Ammo_762x39",
+            "quantity": 60,
+            "attachments": []
+        },
+        {
+            "chance": 0.75,
+            "className": "Ammo_556x45",
+            "quantity": 60,
+            "attachments": []
+        },
+        {
+            "chance": 0.3,
+            "className": "AK_Suppressor",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.28,
+            "className": "M4_Suppressor",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "PSO1Optic",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "KobraOptic",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.25,
+            "className": "PlateCarrierVest",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.3,
+            "className": "TacticalHelmet_Black",
+            "quantity": 1,
+            "attachments": []
+        }
+    ],
+    "T4_Global": [
+        {
+            "chance": 0.08,
+            "className": "PunchCard",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.25,
+            "className": "M4A1",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_STANAG_30Rnd",
+                    "attachmentQuantity": 30
+                },
+                {
+                    "attachmentClassname": "ACOGOptic",
+                    "attachmentQuantity": 1
+                }
+            ]
+        },
+        {
+            "chance": 0.25,
+            "className": "AK101",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_AK101_30Rnd",
+                    "attachmentQuantity": 30
+                },
+                {
+                    "attachmentClassname": "KobraOptic",
+                    "attachmentQuantity": 1
+                }
+            ]
+        },
+        {
+            "chance": 0.2,
+            "className": "SVD",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_SVD_10Rnd",
+                    "attachmentQuantity": 10
+                },
+                {
+                    "attachmentClassname": "PSO1Optic",
+                    "attachmentQuantity": 1
+                }
+            ]
+        },
+        {
+            "chance": 0.18,
+            "className": "FAL",
+            "quantity": 1,
+            "attachments": [
+                {
+                    "attachmentClassname": "Mag_FAL_20Rnd",
+                    "attachmentQuantity": 20
+                }
+            ]
+        },
+        {
+            "chance": 0.85,
+            "className": "Mag_STANAG_30Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.75,
+            "className": "Mag_AK101_30Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.65,
+            "className": "Mag_SVD_10Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.6,
+            "className": "Mag_FAL_20Rnd",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.9,
+            "className": "Ammo_556x45",
+            "quantity": 80,
+            "attachments": []
+        },
+        {
+            "chance": 0.75,
+            "className": "Ammo_762x54",
+            "quantity": 40,
+            "attachments": []
+        },
+        {
+            "chance": 0.65,
+            "className": "Ammo_308Win",
+            "quantity": 40,
+            "attachments": []
+        },
+        {
+            "chance": 0.4,
+            "className": "M4_Suppressor",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "AK_Suppressor",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.45,
+            "className": "ACOGOptic",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "NVGoggles",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.4,
+            "className": "PlateCarrierVest",
+            "quantity": 1,
+            "attachments": []
+        },
+        {
+            "chance": 0.35,
+            "className": "TacticalHelmet_Black",
+            "quantity": 1,
+            "attachments": []
+        }
+    ]
+}

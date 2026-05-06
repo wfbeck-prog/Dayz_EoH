@@ -1,0 +1,64 @@
+Loot System Logs Active: 2026_5_5-17_39_4
+17_39_4 | INFO | Deleted old log file: $profile:CBD_LootSystem\Logging\Logs\/2026_5_4-3_1_27.log
+17_40_42 | INFO | Loot System has started
+17_40_42 | INFO | Room settings loaded successfully.
+17_40_42 | INFO | Box settings loaded successfully.
+17_40_42 | INFO | LockAllLootRooms called
+17_40_42 | INFO | Locking room: T2_Door_Land_Camp_House_white_0_1092_6647
+17_40_42 | INFO | Locking room: T1_Door_Land_Church3_0_10584_2506
+17_40_42 | INFO | Locking room: T2_Door_Land_Church3_0_4550_6395
+17_40_42 | INFO | Locking room: T3_Door_Land_City_FireStation_7_12183_13864
+17_40_42 | INFO | Locking room: T3_Door_Land_City_FireStation_7_7632_12642
+17_40_42 | INFO | Locking room: T2_Door_Land_City_PoliceStation_5_2730_5374
+17_40_42 | INFO | Locking room: T1_Door_Land_Container_1Aoh_0_7608_3000
+17_40_42 | INFO | Locking room: T4_Door_Land_Garage_Office_1_1032_13910
+17_40_42 | INFO | Locking room: T4_Door_Land_Garage_Office_1_1566_14038
+17_40_42 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_14007_13097
+17_40_42 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_5596_2696
+17_40_42 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_6509_2722
+17_40_42 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_9564_1978
+17_40_42 | INFO | Locking room: T2_Door_Land_Garage_Row_Small_1_11041_12472
+17_40_42 | INFO | Locking room: T2_Door_Land_Garage_Row_Small_1_4508_9674
+17_40_42 | INFO | Locking room: T3_Door_Land_Garage_Row_Small_1_8081_12834
+17_40_42 | INFO | Locking room: T3_Door_Land_HouseBlock_1F1_2_3432_13120
+17_40_42 | INFO | Locking room: T1_Door_Land_House_1B01_Pub_0_12153_9602
+17_40_42 | INFO | Locking room: T2_Door_Land_House_1B01_Pub_0_2007_7353
+17_40_42 | INFO | Locking room: T1_Door_Land_House_1B01_Pub_1_10015_10349
+17_40_42 | INFO | Locking room: T2_Door_Land_House_1B01_Pub_1_12104_13561
+17_40_42 | INFO | Locking room: T3_Door_Land_House_2B03_3_2233_11105
+17_40_42 | INFO | Locking room: T1_Door_Land_House_2W03_Brown_0_12933_8007
+17_40_42 | INFO | Locking room: T2_Door_Land_Mil_Airfield_HQ_9_4924_10410
+17_40_42 | INFO | Locking room: T1_Door_Land_Mil_Barracks2_4_2141_3384
+17_40_42 | INFO | Locking room: T4_Door_Land_Mil_Barracks2_5_1636_14354
+17_40_42 | INFO | Locking room: T3_Door_Land_Mil_Barracks4_3_4957_12966
+17_40_42 | INFO | Locking room: T4_Door_Land_Mil_Barracks5_1_1693_14179
+17_40_42 | INFO | Locking room: T4_Door_Land_Mil_Barracks_Round_0_1668_14392
+17_40_42 | INFO | Locking room: T4_Door_Land_Office1_7_506_11098
+17_40_42 | INFO | Locking room: T1_Door_Land_Rail_Station_Small_0_1884_2174
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_M1_0_10737_8082
+17_40_42 | INFO | Locking room: T3_Door_Land_Shed_M1_0_12322_14359
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_M1_0_3315_3981
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_M1_0_4518_2427
+17_40_42 | INFO | Locking room: T2_Door_Land_Shed_M1_0_6527_6072
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_M3_0_11298_6589
+17_40_42 | INFO | Locking room: T2_Door_Land_Shed_M3_0_9992_10379
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_W1_0_11979_9095
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_W1_0_7524_5129
+17_40_42 | INFO | Locking room: T2_Door_Land_Shed_W1_0_8465_6652
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_W2_0_10138_1810
+17_40_42 | INFO | Locking room: T1_Door_Land_Shed_W2_0_4878_2842
+17_40_42 | INFO | Locking room: T2_Door_Land_Shed_W5_0_9316_13616
+17_40_42 | INFO | Locking room: T4_Door_Land_Tisy_Garages_2_1540_14176
+17_40_42 | INFO | Locking room: T4_Door_Land_Tisy_HQ_15_1688_14213
+17_40_42 | INFO | Locking room: T4_Door_Land_Tisy_HQ_4_1688_14213
+17_40_42 | INFO | Locking room: T1_Door_Land_Village_HealthCare_4_13387_6315
+17_40_42 | INFO | Locking room: T3_Door_Land_Village_HealthCare_4_3455_13163
+17_40_42 | INFO | Locking room: T1_Door_Land_Village_HealthCare_5_13876_13118
+17_40_42 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_12_10158_5530
+17_40_42 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_12_6202_2921
+17_40_42 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_6_12058_3608
+17_40_42 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_7_3570_2431
+17_40_42 | INFO | Locking room: T2_Door_Land_Village_PoliceStation_7_9530_8799
+17_40_42 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_8_12927_10183
+17_40_42 | INFO | Locking room: T1_Door_Land_Wreck_Caravan_WGreen_0_5811_4020
+17_41_22 | INFO | Player and identity are valid on connect.

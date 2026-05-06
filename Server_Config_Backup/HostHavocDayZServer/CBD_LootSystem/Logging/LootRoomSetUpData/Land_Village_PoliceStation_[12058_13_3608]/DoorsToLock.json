@@ -1,0 +1,12 @@
+{
+    "LootRoomDoorsToLock": [
+        {
+            "LootRoomPosition": [
+                12058,
+                13,
+                3608
+            ],
+            "LootRoomDoorIndex": 6
+        }
+    ]
+}

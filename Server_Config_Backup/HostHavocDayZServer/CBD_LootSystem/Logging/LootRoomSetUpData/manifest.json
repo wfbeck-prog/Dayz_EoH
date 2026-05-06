@@ -1,0 +1,800 @@
+[
+    {
+        "sourceFile": "Land_Camp_House_white_Door0_1093.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Camp_House_white",
+        "cbdFolder": "Land_Camp_House_white_[1092_152_6647]",
+        "LootRoomPosition": [
+            1092,
+            152,
+            6647
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Church3_Door0_10591.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Church3",
+        "cbdFolder": "Land_Church3_[10584_49_2506]",
+        "LootRoomPosition": [
+            10584,
+            49,
+            2506
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Church3_Door0_4542.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Church3",
+        "cbdFolder": "Land_Church3_[4550_304_6395]",
+        "LootRoomPosition": [
+            4550,
+            304,
+            6395
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_City_FireStation_Door7_12175.json",
+        "tier": "T3",
+        "buildingClassName": "Land_City_FireStation",
+        "cbdFolder": "Land_City_FireStation_[12183_93_13864]",
+        "LootRoomPosition": [
+            12183,
+            93,
+            13864
+        ],
+        "LootRoomDoorIndex": 7,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_City_FireStation_Door7_7623.json",
+        "tier": "T3",
+        "buildingClassName": "Land_City_FireStation",
+        "cbdFolder": "Land_City_FireStation_[7632_120_12642]",
+        "LootRoomPosition": [
+            7632,
+            120,
+            12642
+        ],
+        "LootRoomDoorIndex": 7,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_City_PoliceStation_Door5_2734.json",
+        "tier": "T2",
+        "buildingClassName": "Land_City_PoliceStation",
+        "cbdFolder": "Land_City_PoliceStation_[2730_213_5374]",
+        "LootRoomPosition": [
+            2730,
+            213,
+            5374
+        ],
+        "LootRoomDoorIndex": 5,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Container_1Aoh_Door0_7611.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Container_1Aoh",
+        "cbdFolder": "Land_Container_1Aoh_[7608_7_3000]",
+        "LootRoomPosition": [
+            7608,
+            7,
+            3000
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Office_Door1_1031.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Garage_Office",
+        "cbdFolder": "Land_Garage_Office_[1032_474_13910]",
+        "LootRoomPosition": [
+            1032,
+            474,
+            13910
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Office_Door1_1568.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Garage_Office",
+        "cbdFolder": "Land_Garage_Office_[1566_456_14038]",
+        "LootRoomPosition": [
+            1566,
+            456,
+            14038
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Row_Small_Door0_14013.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Garage_Row_Small",
+        "cbdFolder": "Land_Garage_Row_Small_[14007_15_13097]",
+        "LootRoomPosition": [
+            14007,
+            15,
+            13097
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Row_Small_Door0_5595.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Garage_Row_Small",
+        "cbdFolder": "Land_Garage_Row_Small_[5596_69_2696]",
+        "LootRoomPosition": [
+            5596,
+            69,
+            2696
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Row_Small_Door0_6511.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Garage_Row_Small",
+        "cbdFolder": "Land_Garage_Row_Small_[6509_11_2722]",
+        "LootRoomPosition": [
+            6509,
+            11,
+            2722
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Row_Small_Door0_9569.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Garage_Row_Small",
+        "cbdFolder": "Land_Garage_Row_Small_[9564_8_1978]",
+        "LootRoomPosition": [
+            9564,
+            8,
+            1978
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Row_Small_Door1_11042.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Garage_Row_Small",
+        "cbdFolder": "Land_Garage_Row_Small_[11041_229_12472]",
+        "LootRoomPosition": [
+            11041,
+            229,
+            12472
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Row_Small_Door1_4509.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Garage_Row_Small",
+        "cbdFolder": "Land_Garage_Row_Small_[4508_341_9674]",
+        "LootRoomPosition": [
+            4508,
+            341,
+            9674
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Garage_Row_Small_Door1_8082.json",
+        "tier": "T3",
+        "buildingClassName": "Land_Garage_Row_Small",
+        "cbdFolder": "Land_Garage_Row_Small_[8081_120_12834]",
+        "LootRoomPosition": [
+            8081,
+            120,
+            12834
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_HouseBlock_1F1_Door2_3429.json",
+        "tier": "T3",
+        "buildingClassName": "Land_HouseBlock_1F1",
+        "cbdFolder": "Land_HouseBlock_1F1_[3432_202_13120]",
+        "LootRoomPosition": [
+            3432,
+            202,
+            13120
+        ],
+        "LootRoomDoorIndex": 2,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_House_1B01_Pub_Door0_12160.json",
+        "tier": "T1",
+        "buildingClassName": "Land_House_1B01_Pub",
+        "cbdFolder": "Land_House_1B01_Pub_[12153_19_9602]",
+        "LootRoomPosition": [
+            12153,
+            19,
+            9602
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_House_1B01_Pub_Door0_2000.json",
+        "tier": "T2",
+        "buildingClassName": "Land_House_1B01_Pub",
+        "cbdFolder": "Land_House_1B01_Pub_[2007_257_7353]",
+        "LootRoomPosition": [
+            2007,
+            257,
+            7353
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_House_1B01_Pub_Door1_10021.json",
+        "tier": "T1",
+        "buildingClassName": "Land_House_1B01_Pub",
+        "cbdFolder": "Land_House_1B01_Pub_[10015_155_10349]",
+        "LootRoomPosition": [
+            10015,
+            155,
+            10349
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_House_1B01_Pub_Door1_12106.json",
+        "tier": "T2",
+        "buildingClassName": "Land_House_1B01_Pub",
+        "cbdFolder": "Land_House_1B01_Pub_[12104_101_13561]",
+        "LootRoomPosition": [
+            12104,
+            101,
+            13561
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_House_2B03_Door3_2234.json",
+        "tier": "T3",
+        "buildingClassName": "Land_House_2B03",
+        "cbdFolder": "Land_House_2B03_[2233_271_11105]",
+        "LootRoomPosition": [
+            2233,
+            271,
+            11105
+        ],
+        "LootRoomDoorIndex": 3,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_House_2W03_Brown_Door0_12934.json",
+        "tier": "T1",
+        "buildingClassName": "Land_House_2W03_Brown",
+        "cbdFolder": "Land_House_2W03_Brown_[12933_30_8007]",
+        "LootRoomPosition": [
+            12933,
+            30,
+            8007
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Mil_Airfield_HQ_Door9_4916.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Mil_Airfield_HQ",
+        "cbdFolder": "Land_Mil_Airfield_HQ_[4924_340_10410]",
+        "LootRoomPosition": [
+            4924,
+            340,
+            10410
+        ],
+        "LootRoomDoorIndex": 9,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Mil_Barracks2_Door4_2145.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Mil_Barracks2",
+        "cbdFolder": "Land_Mil_Barracks2_[2141_93_3384]",
+        "LootRoomPosition": [
+            2141,
+            93,
+            3384
+        ],
+        "LootRoomDoorIndex": 4,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Mil_Barracks2_Door5_1633.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Mil_Barracks2",
+        "cbdFolder": "Land_Mil_Barracks2_[1636_453_14354]",
+        "LootRoomPosition": [
+            1636,
+            453,
+            14354
+        ],
+        "LootRoomDoorIndex": 5,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Mil_Barracks4_Door3_4962.json",
+        "tier": "T3",
+        "buildingClassName": "Land_Mil_Barracks4",
+        "cbdFolder": "Land_Mil_Barracks4_[4957_172_12966]",
+        "LootRoomPosition": [
+            4957,
+            172,
+            12966
+        ],
+        "LootRoomDoorIndex": 3,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_Mil_Barracks5_Door1_1693.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Mil_Barracks5",
+        "cbdFolder": "Land_Mil_Barracks5_[1693_457_14179]",
+        "LootRoomPosition": [
+            1693,
+            457,
+            14179
+        ],
+        "LootRoomDoorIndex": 1,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Mil_Barracks_Round_Door0_1670.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Mil_Barracks_Round",
+        "cbdFolder": "Land_Mil_Barracks_Round_[1668_453_14392]",
+        "LootRoomPosition": [
+            1668,
+            453,
+            14392
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Office1_Door7_509.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Office1",
+        "cbdFolder": "Land_Office1_[506_427_11098]",
+        "LootRoomPosition": [
+            506,
+            427,
+            11098
+        ],
+        "LootRoomDoorIndex": 7,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Rail_Station_Small_Door0_1885.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Rail_Station_Small",
+        "cbdFolder": "Land_Rail_Station_Small_[1884_8_2174]",
+        "LootRoomPosition": [
+            1884,
+            8,
+            2174
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_M1_Door0_10736.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_M1",
+        "cbdFolder": "Land_Shed_M1_[10737_216_8082]",
+        "LootRoomPosition": [
+            10737,
+            216,
+            8082
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_M1_Door0_12322.json",
+        "tier": "T3",
+        "buildingClassName": "Land_Shed_M1",
+        "cbdFolder": "Land_Shed_M1_[12322_23_14359]",
+        "LootRoomPosition": [
+            12322,
+            23,
+            14359
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_M1_Door0_3316.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_M1",
+        "cbdFolder": "Land_Shed_M1_[3315_188_3981]",
+        "LootRoomPosition": [
+            3315,
+            188,
+            3981
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_M1_Door0_4518.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_M1",
+        "cbdFolder": "Land_Shed_M1_[4518_4_2427]",
+        "LootRoomPosition": [
+            4518,
+            4,
+            2427
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_M1_Door0_6527.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Shed_M1",
+        "cbdFolder": "Land_Shed_M1_[6527_323_6072]",
+        "LootRoomPosition": [
+            6527,
+            323,
+            6072
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_M3_Door0_11298.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_M3",
+        "cbdFolder": "Land_Shed_M3_[11298_76_6589]",
+        "LootRoomPosition": [
+            11298,
+            76,
+            6589
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_M3_Door0_9991.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Shed_M3",
+        "cbdFolder": "Land_Shed_M3_[9992_154_10379]",
+        "LootRoomPosition": [
+            9992,
+            154,
+            10379
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_W1_Door0_11978.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_W1",
+        "cbdFolder": "Land_Shed_W1_[11979_55_9095]",
+        "LootRoomPosition": [
+            11979,
+            55,
+            9095
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_W1_Door0_7525.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_W1",
+        "cbdFolder": "Land_Shed_W1_[7524_215_5129]",
+        "LootRoomPosition": [
+            7524,
+            215,
+            5129
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_W1_Door0_8466.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Shed_W1",
+        "cbdFolder": "Land_Shed_W1_[8465_361_6652]",
+        "LootRoomPosition": [
+            8465,
+            361,
+            6652
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_W2_Door0_10138.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_W2",
+        "cbdFolder": "Land_Shed_W2_[10138_6_1810]",
+        "LootRoomPosition": [
+            10138,
+            6,
+            1810
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_W2_Door0_4877.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Shed_W2",
+        "cbdFolder": "Land_Shed_W2_[4878_27_2842]",
+        "LootRoomPosition": [
+            4878,
+            27,
+            2842
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Shed_W5_Door0_9317.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Shed_W5",
+        "cbdFolder": "Land_Shed_W5_[9316_79_13616]",
+        "LootRoomPosition": [
+            9316,
+            79,
+            13616
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Tisy_Garages_Door2_1539.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Tisy_Garages",
+        "cbdFolder": "Land_Tisy_Garages_[1540_456_14176]",
+        "LootRoomPosition": [
+            1540,
+            456,
+            14176
+        ],
+        "LootRoomDoorIndex": 2,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Tisy_HQ_Door15_1680.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Tisy_HQ",
+        "cbdFolder": "Land_Tisy_HQ_[1688_455_14213]",
+        "LootRoomPosition": [
+            1688,
+            455,
+            14213
+        ],
+        "LootRoomDoorIndex": 15,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Tisy_HQ_Door4_1684.json",
+        "tier": "T4",
+        "buildingClassName": "Land_Tisy_HQ",
+        "cbdFolder": "Land_Tisy_HQ_[1688_455_14213]",
+        "LootRoomPosition": [
+            1688,
+            455,
+            14213
+        ],
+        "LootRoomDoorIndex": 4,
+        "oldRequiredKey": "BS_blackkey1",
+        "oldLootPool": "Tier4_Global"
+    },
+    {
+        "sourceFile": "Land_Village_HealthCare_Door4_13385.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Village_HealthCare",
+        "cbdFolder": "Land_Village_HealthCare_[13387_10_6315]",
+        "LootRoomPosition": [
+            13387,
+            10,
+            6315
+        ],
+        "LootRoomDoorIndex": 4,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Village_HealthCare_Door4_3460.json",
+        "tier": "T3",
+        "buildingClassName": "Land_Village_HealthCare",
+        "cbdFolder": "Land_Village_HealthCare_[3455_200_13163]",
+        "LootRoomPosition": [
+            3455,
+            200,
+            13163
+        ],
+        "LootRoomDoorIndex": 4,
+        "oldRequiredKey": "BS_yellowkey1",
+        "oldLootPool": "Tier3_Global"
+    },
+    {
+        "sourceFile": "Land_Village_HealthCare_Door5_13870.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Village_HealthCare",
+        "cbdFolder": "Land_Village_HealthCare_[13876_24_13118]",
+        "LootRoomPosition": [
+            13876,
+            24,
+            13118
+        ],
+        "LootRoomDoorIndex": 5,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Village_PoliceStation_Door12_10156.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Village_PoliceStation",
+        "cbdFolder": "Land_Village_PoliceStation_[10158_251_5530]",
+        "LootRoomPosition": [
+            10158,
+            251,
+            5530
+        ],
+        "LootRoomDoorIndex": 12,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Village_PoliceStation_Door12_6201.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Village_PoliceStation",
+        "cbdFolder": "Land_Village_PoliceStation_[6202_33_2921]",
+        "LootRoomPosition": [
+            6202,
+            33,
+            2921
+        ],
+        "LootRoomDoorIndex": 12,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Village_PoliceStation_Door6_12050.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Village_PoliceStation",
+        "cbdFolder": "Land_Village_PoliceStation_[12058_13_3608]",
+        "LootRoomPosition": [
+            12058,
+            13,
+            3608
+        ],
+        "LootRoomDoorIndex": 6,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Village_PoliceStation_Door7_3570.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Village_PoliceStation",
+        "cbdFolder": "Land_Village_PoliceStation_[3570_13_2431]",
+        "LootRoomPosition": [
+            3570,
+            13,
+            2431
+        ],
+        "LootRoomDoorIndex": 7,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Village_PoliceStation_Door7_9531.json",
+        "tier": "T2",
+        "buildingClassName": "Land_Village_PoliceStation",
+        "cbdFolder": "Land_Village_PoliceStation_[9530_310_8799]",
+        "LootRoomPosition": [
+            9530,
+            310,
+            8799
+        ],
+        "LootRoomDoorIndex": 7,
+        "oldRequiredKey": "BS_greenkey1",
+        "oldLootPool": "Tier2_Global"
+    },
+    {
+        "sourceFile": "Land_Village_PoliceStation_Door8_12920.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Village_PoliceStation",
+        "cbdFolder": "Land_Village_PoliceStation_[12927_13_10183]",
+        "LootRoomPosition": [
+            12927,
+            13,
+            10183
+        ],
+        "LootRoomDoorIndex": 8,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    },
+    {
+        "sourceFile": "Land_Wreck_Caravan_WGreen_Door0_5809.json",
+        "tier": "T1",
+        "buildingClassName": "Land_Wreck_Caravan_WGreen",
+        "cbdFolder": "Land_Wreck_Caravan_WGreen_[5811_78_4020]",
+        "LootRoomPosition": [
+            5811,
+            78,
+            4020
+        ],
+        "LootRoomDoorIndex": 0,
+        "oldRequiredKey": "BS_redkey1",
+        "oldLootPool": "Tier1_Global"
+    }
+]

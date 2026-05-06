@@ -1,0 +1,63 @@
+Loot System Logs Active: 2026_5_6-3_1_21
+3_1_21 | INFO | Deleted old log file: $profile:CBD_LootSystem\Logging\Logs\/2026_5_5-10_56_29.log
+3_3_10 | INFO | Loot System has started
+3_3_10 | INFO | Room settings loaded successfully.
+3_3_10 | INFO | Box settings loaded successfully.
+3_3_10 | INFO | LockAllLootRooms called
+3_3_10 | INFO | Locking room: T2_Door_Land_Camp_House_white_0_1092_6647
+3_3_10 | INFO | Locking room: T1_Door_Land_Church3_0_10584_2506
+3_3_10 | INFO | Locking room: T2_Door_Land_Church3_0_4550_6395
+3_3_10 | INFO | Locking room: T3_Door_Land_City_FireStation_7_12183_13864
+3_3_10 | INFO | Locking room: T3_Door_Land_City_FireStation_7_7632_12642
+3_3_10 | INFO | Locking room: T2_Door_Land_City_PoliceStation_5_2730_5374
+3_3_10 | INFO | Locking room: T1_Door_Land_Container_1Aoh_0_7608_3000
+3_3_10 | INFO | Locking room: T4_Door_Land_Garage_Office_1_1032_13910
+3_3_10 | INFO | Locking room: T4_Door_Land_Garage_Office_1_1566_14038
+3_3_10 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_14007_13097
+3_3_10 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_5596_2696
+3_3_10 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_6509_2722
+3_3_10 | INFO | Locking room: T1_Door_Land_Garage_Row_Small_0_9564_1978
+3_3_10 | INFO | Locking room: T2_Door_Land_Garage_Row_Small_1_11041_12472
+3_3_10 | INFO | Locking room: T2_Door_Land_Garage_Row_Small_1_4508_9674
+3_3_10 | INFO | Locking room: T3_Door_Land_Garage_Row_Small_1_8081_12834
+3_3_10 | INFO | Locking room: T3_Door_Land_HouseBlock_1F1_2_3432_13120
+3_3_10 | INFO | Locking room: T1_Door_Land_House_1B01_Pub_0_12153_9602
+3_3_10 | INFO | Locking room: T2_Door_Land_House_1B01_Pub_0_2007_7353
+3_3_10 | INFO | Locking room: T1_Door_Land_House_1B01_Pub_1_10015_10349
+3_3_10 | INFO | Locking room: T2_Door_Land_House_1B01_Pub_1_12104_13561
+3_3_10 | INFO | Locking room: T3_Door_Land_House_2B03_3_2233_11105
+3_3_10 | INFO | Locking room: T1_Door_Land_House_2W03_Brown_0_12933_8007
+3_3_10 | INFO | Locking room: T2_Door_Land_Mil_Airfield_HQ_9_4924_10410
+3_3_10 | INFO | Locking room: T1_Door_Land_Mil_Barracks2_4_2141_3384
+3_3_10 | INFO | Locking room: T4_Door_Land_Mil_Barracks2_5_1636_14354
+3_3_10 | INFO | Locking room: T3_Door_Land_Mil_Barracks4_3_4957_12966
+3_3_10 | INFO | Locking room: T4_Door_Land_Mil_Barracks5_1_1693_14179
+3_3_10 | INFO | Locking room: T4_Door_Land_Mil_Barracks_Round_0_1668_14392
+3_3_10 | INFO | Locking room: T4_Door_Land_Office1_7_506_11098
+3_3_10 | INFO | Locking room: T1_Door_Land_Rail_Station_Small_0_1884_2174
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_M1_0_10737_8082
+3_3_10 | INFO | Locking room: T3_Door_Land_Shed_M1_0_12322_14359
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_M1_0_3315_3981
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_M1_0_4518_2427
+3_3_10 | INFO | Locking room: T2_Door_Land_Shed_M1_0_6527_6072
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_M3_0_11298_6589
+3_3_10 | INFO | Locking room: T2_Door_Land_Shed_M3_0_9992_10379
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_W1_0_11979_9095
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_W1_0_7524_5129
+3_3_10 | INFO | Locking room: T2_Door_Land_Shed_W1_0_8465_6652
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_W2_0_10138_1810
+3_3_10 | INFO | Locking room: T1_Door_Land_Shed_W2_0_4878_2842
+3_3_10 | INFO | Locking room: T2_Door_Land_Shed_W5_0_9316_13616
+3_3_10 | INFO | Locking room: T4_Door_Land_Tisy_Garages_2_1540_14176
+3_3_10 | INFO | Locking room: T4_Door_Land_Tisy_HQ_15_1688_14213
+3_3_10 | INFO | Locking room: T4_Door_Land_Tisy_HQ_4_1688_14213
+3_3_10 | INFO | Locking room: T1_Door_Land_Village_HealthCare_4_13387_6315
+3_3_10 | INFO | Locking room: T3_Door_Land_Village_HealthCare_4_3455_13163
+3_3_10 | INFO | Locking room: T1_Door_Land_Village_HealthCare_5_13876_13118
+3_3_10 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_12_10158_5530
+3_3_10 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_12_6202_2921
+3_3_10 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_6_12058_3608
+3_3_10 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_7_3570_2431
+3_3_10 | INFO | Locking room: T2_Door_Land_Village_PoliceStation_7_9530_8799
+3_3_10 | INFO | Locking room: T1_Door_Land_Village_PoliceStation_8_12927_10183
+3_3_10 | INFO | Locking room: T1_Door_Land_Wreck_Caravan_WGreen_0_5811_4020

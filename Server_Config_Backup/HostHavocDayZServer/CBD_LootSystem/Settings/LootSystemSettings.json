@@ -1,0 +1,2918 @@
+[
+    {
+        "LootRoomName": "T2_Door_Land_Camp_House_white_0_1092_6647",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1092,
+            152,
+            6647
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    1068.39,
+                    153.156,
+                    6643.375
+                ],
+                "LootBoxOrientation": [
+                    -81,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Church3_0_10584_2506",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            10584,
+            49,
+            2506
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    10581.344,
+                    34.298,
+                    2500.17
+                ],
+                "LootBoxOrientation": [
+                    -62.264,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Church3_0_4550_6395",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            4550,
+            304,
+            6395
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    4554.377,
+                    289.275,
+                    6389.564
+                ],
+                "LootBoxOrientation": [
+                    -123.405,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T3_Door_Land_City_FireStation_7_12183_13864",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            12183,
+            93,
+            13864
+        ],
+        "LootRoomDoorIndex": 7,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    12174.055,
+                    99.462,
+                    13877.064
+                ],
+                "LootBoxOrientation": [
+                    99,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T3_Door_Land_City_FireStation_7_7632_12642",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            7632,
+            120,
+            12642
+        ],
+        "LootRoomDoorIndex": 7,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    7617.893,
+                    126.112,
+                    12650.082
+                ],
+                "LootBoxOrientation": [
+                    71.43,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T2_Door_Land_City_PoliceStation_5_2730_5374",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            2730,
+            213,
+            5374
+        ],
+        "LootRoomDoorIndex": 5,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    2734.743,
+                    206.83,
+                    5376.403
+                ],
+                "LootBoxOrientation": [
+                    -165.838,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Container_1Aoh_0_7608_3000",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            7608,
+            7,
+            3000
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    7609.692,
+                    5.811,
+                    2999.999
+                ],
+                "LootBoxOrientation": [
+                    135,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Garage_Office_1_1032_13910",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1032,
+            474,
+            13910
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1032,
+                    474,
+                    13910
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Garage_Office_1_1566_14038",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1566,
+            456,
+            14038
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1566,
+                    456,
+                    14038
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Garage_Row_Small_0_14007_13097",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            14007,
+            15,
+            13097
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    14007,
+                    15,
+                    13097
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Garage_Row_Small_0_5596_2696",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            5596,
+            69,
+            2696
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    5596,
+                    69,
+                    2696
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Garage_Row_Small_0_6509_2722",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            6509,
+            11,
+            2722
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    6509,
+                    11,
+                    2722
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Garage_Row_Small_0_9564_1978",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            9564,
+            8,
+            1978
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    9564,
+                    8,
+                    1978
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Garage_Row_Small_1_11041_12472",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            11041,
+            229,
+            12472
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    11041,
+                    229,
+                    12472
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Garage_Row_Small_1_4508_9674",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            4508,
+            341,
+            9674
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    4508,
+                    341,
+                    9674
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T3_Door_Land_Garage_Row_Small_1_8081_12834",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            8081,
+            120,
+            12834
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    8081,
+                    120,
+                    12834
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T3_Door_Land_HouseBlock_1F1_2_3432_13120",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            3432,
+            202,
+            13120
+        ],
+        "LootRoomDoorIndex": 2,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    3432,
+                    202,
+                    13120
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T1_Door_Land_House_1B01_Pub_0_12153_9602",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            12153,
+            19,
+            9602
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    12153,
+                    19,
+                    9602
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_House_1B01_Pub_0_2007_7353",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            2007,
+            257,
+            7353
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    2007,
+                    257,
+                    7353
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_House_1B01_Pub_1_10015_10349",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            10015,
+            155,
+            10349
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    10015,
+                    155,
+                    10349
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_House_1B01_Pub_1_12104_13561",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            12104,
+            101,
+            13561
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    12104,
+                    101,
+                    13561
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T3_Door_Land_House_2B03_3_2233_11105",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            2233,
+            271,
+            11105
+        ],
+        "LootRoomDoorIndex": 3,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    2233,
+                    271,
+                    11105
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T1_Door_Land_House_2W03_Brown_0_12933_8007",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            12933,
+            30,
+            8007
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    12933,
+                    30,
+                    8007
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Mil_Airfield_HQ_9_4924_10410",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            4924,
+            340,
+            10410
+        ],
+        "LootRoomDoorIndex": 9,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    4924,
+                    340,
+                    10410
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Mil_Barracks2_4_2141_3384",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            2141,
+            93,
+            3384
+        ],
+        "LootRoomDoorIndex": 4,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    2141,
+                    93,
+                    3384
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Mil_Barracks2_5_1636_14354",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1636,
+            453,
+            14354
+        ],
+        "LootRoomDoorIndex": 5,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1636,
+                    453,
+                    14354
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T3_Door_Land_Mil_Barracks4_3_4957_12966",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            4957,
+            172,
+            12966
+        ],
+        "LootRoomDoorIndex": 3,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    4957,
+                    172,
+                    12966
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Mil_Barracks5_1_1693_14179",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1693,
+            457,
+            14179
+        ],
+        "LootRoomDoorIndex": 1,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1693,
+                    457,
+                    14179
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Mil_Barracks_Round_0_1668_14392",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1668,
+            453,
+            14392
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1668,
+                    453,
+                    14392
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Office1_7_506_11098",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            506,
+            427,
+            11098
+        ],
+        "LootRoomDoorIndex": 7,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    506,
+                    427,
+                    11098
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Rail_Station_Small_0_1884_2174",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1884,
+            8,
+            2174
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    1884,
+                    8,
+                    2174
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_M1_0_10737_8082",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            10737,
+            216,
+            8082
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    10737,
+                    216,
+                    8082
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T3_Door_Land_Shed_M1_0_12322_14359",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            12322,
+            23,
+            14359
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    12322,
+                    23,
+                    14359
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_M1_0_3315_3981",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            3315,
+            188,
+            3981
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    3315,
+                    188,
+                    3981
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_M1_0_4518_2427",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            4518,
+            4,
+            2427
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    4518,
+                    4,
+                    2427
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Shed_M1_0_6527_6072",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            6527,
+            323,
+            6072
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    6527,
+                    323,
+                    6072
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_M3_0_11298_6589",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            11298,
+            76,
+            6589
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    11298,
+                    76,
+                    6589
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Shed_M3_0_9992_10379",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            9992,
+            154,
+            10379
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    9992,
+                    154,
+                    10379
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_W1_0_11979_9095",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            11979,
+            55,
+            9095
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    11979,
+                    55,
+                    9095
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_W1_0_7524_5129",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            7524,
+            215,
+            5129
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    7524,
+                    215,
+                    5129
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Shed_W1_0_8465_6652",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            8465,
+            361,
+            6652
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    8465,
+                    361,
+                    6652
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_W2_0_10138_1810",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            10138,
+            6,
+            1810
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    10138,
+                    6,
+                    1810
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Shed_W2_0_4878_2842",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            4878,
+            27,
+            2842
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    4878,
+                    27,
+                    2842
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Shed_W5_0_9316_13616",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            9316,
+            79,
+            13616
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    9316,
+                    79,
+                    13616
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Tisy_Garages_2_1540_14176",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1540,
+            456,
+            14176
+        ],
+        "LootRoomDoorIndex": 2,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1540,
+                    456,
+                    14176
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Tisy_HQ_15_1688_14213",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1688,
+            455,
+            14213
+        ],
+        "LootRoomDoorIndex": 15,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1688,
+                    455,
+                    14213
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T4_Door_Land_Tisy_HQ_4_1688_14213",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Black"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            1688,
+            455,
+            14213
+        ],
+        "LootRoomDoorIndex": 4,
+        "LootRoomCooldownTime": 3600,
+        "LootRoomDoorOpenTime": 15,
+        "LootRoomDoorCloseTime": 900,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootSafe",
+                "LootBoxPosition": [
+                    1688,
+                    455,
+                    14213
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 5,
+                "MaxLootRewards": 8,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T4_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Woodland",
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_CommercialPilotOld_Olive"
+        ],
+        "DefendersToSpawnAmount": 6,
+        "DefendersSpawnRadius": 14
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Village_HealthCare_4_13387_6315",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            13387,
+            10,
+            6315
+        ],
+        "LootRoomDoorIndex": 4,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    13387,
+                    10,
+                    6315
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T3_Door_Land_Village_HealthCare_4_3455_13163",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Gold"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            3455,
+            200,
+            13163
+        ],
+        "LootRoomDoorIndex": 4,
+        "LootRoomCooldownTime": 1800,
+        "LootRoomDoorOpenTime": 12,
+        "LootRoomDoorCloseTime": 600,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Brown",
+                "LootBoxPosition": [
+                    3455,
+                    200,
+                    13163
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 4,
+                "MaxLootRewards": 7,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T3_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PatrolNormal_Autumn",
+            "ZmbM_SoldierNormal",
+            "ZmbM_usSoldier_normal_Desert"
+        ],
+        "DefendersToSpawnAmount": 4,
+        "DefendersSpawnRadius": 10
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Village_HealthCare_5_13876_13118",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            13876,
+            24,
+            13118
+        ],
+        "LootRoomDoorIndex": 5,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    13876,
+                    24,
+                    13118
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Village_PoliceStation_12_10158_5530",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            10158,
+            251,
+            5530
+        ],
+        "LootRoomDoorIndex": 12,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    10158,
+                    251,
+                    5530
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Village_PoliceStation_12_6202_2921",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            6202,
+            33,
+            2921
+        ],
+        "LootRoomDoorIndex": 12,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    6202,
+                    33,
+                    2921
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Village_PoliceStation_6_12058_3608",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            12058,
+            13,
+            3608
+        ],
+        "LootRoomDoorIndex": 6,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    12058,
+                    13,
+                    3608
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Village_PoliceStation_7_3570_2431",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            3570,
+            13,
+            2431
+        ],
+        "LootRoomDoorIndex": 7,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    3570,
+                    13,
+                    2431
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T2_Door_Land_Village_PoliceStation_7_9530_8799",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Silver"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            9530,
+            310,
+            8799
+        ],
+        "LootRoomDoorIndex": 7,
+        "LootRoomCooldownTime": 1200,
+        "LootRoomDoorOpenTime": 10,
+        "LootRoomDoorCloseTime": 420,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCrates_Large_Tan",
+                "LootBoxPosition": [
+                    9530,
+                    310,
+                    8799
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 3,
+                "MaxLootRewards": 6,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T2_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_PolicemanFat",
+            "ZmbF_PoliceWomanNormal",
+            "ZmbM_ParamedicNormal_Blue"
+        ],
+        "DefendersToSpawnAmount": 3,
+        "DefendersSpawnRadius": 7
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Village_PoliceStation_8_12927_10183",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            12927,
+            13,
+            10183
+        ],
+        "LootRoomDoorIndex": 8,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    12927,
+                    13,
+                    10183
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    },
+    {
+        "LootRoomName": "T1_Door_Land_Wreck_Caravan_WGreen_0_5811_4020",
+        "LootRoomSound": 1,
+        "LootRoomSoundActiveTime": 20,
+        "ServerMessageType": 1,
+        "RequiredEntryItem": [
+            "CBD_LootRoomKey_Bronze"
+        ],
+        "DestroyEntryItem": 1,
+        "RequiredEntryItemDamage": 0,
+        "LootRoomPosition": [
+            5811,
+            78,
+            4020
+        ],
+        "LootRoomDoorIndex": 0,
+        "LootRoomCooldownTime": 600,
+        "LootRoomDoorOpenTime": 8,
+        "LootRoomDoorCloseTime": 300,
+        "LootRoomDoorCloseWarningFrom": 30,
+        "LootRoomDoorsToLock": [],
+        "RewardBoxes": [
+            {
+                "LootBoxClassName": "CBD_LootCratesSmall_Grey",
+                "LootBoxPosition": [
+                    5811,
+                    78,
+                    4020
+                ],
+                "LootBoxOrientation": [
+                    0,
+                    0,
+                    0
+                ],
+                "MinLootRewards": 2,
+                "MaxLootRewards": 5,
+                "UseLootTableFileForLootRewards": 1,
+                "LootTableName": [
+                    "T1_Global"
+                ],
+                "LootRewards": []
+            }
+        ],
+        "Defenders": [
+            "ZmbM_CitizenASkinny_Blue",
+            "ZmbF_CitizenANormal_Brown",
+            "ZmbM_HermitSkinny_Black"
+        ],
+        "DefendersToSpawnAmount": 2,
+        "DefendersSpawnRadius": 5
+    }
+]
