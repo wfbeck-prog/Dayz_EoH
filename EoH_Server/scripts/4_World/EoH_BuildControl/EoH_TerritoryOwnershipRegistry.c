@@ -90,6 +90,27 @@ class EoH_TerritoryOwnershipRegistry
         return GetOwnerAtPosition(obj.GetPosition());
     }
 
+    static ref array<ref EoH_TerritoryOwnershipEntry> GetAllTerritories()
+    {
+        Ensure();
+
+        array<ref EoH_TerritoryOwnershipEntry> result = new array<ref EoH_TerritoryOwnershipEntry>();
+
+        foreach (string key, string owner : s_FlagOwners)
+        {
+            EoH_TerritoryOwnershipEntry entry = new EoH_TerritoryOwnershipEntry();
+            entry.Key = key;
+            entry.OwnerGroupID = owner;
+
+            if (s_FlagPositions.Contains(key))
+                entry.SetPosition(s_FlagPositions.Get(key));
+
+            result.Insert(entry);
+        }
+
+        return result;
+    }
+
     static void Load()
     {
         if (!s_FlagOwners)
