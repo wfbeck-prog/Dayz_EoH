@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    EoH Terje StartScreen respawn examples.
+
+    Add these Respawn blocks to your Terje StartScreen respawn XML.
+    Terje handles cooldowns through <Conditions><Timeout ... /></Conditions>.
+    EoH validates ownership through the handler classes.
+-->
+<Respawns>
+    <!--
+        Controlled town relay respawn.
+        Player must set this respawn on an EoH_RadioRelay object.
+        EoH_TerjeTownRespawnHandler validates that the player's Expansion/EoH group controls the relay's town.
+        Timeout is controlled directly here by Terje.
+    -->
+    <Respawn id="eoh_town_relay" displayName="Respawn on controlled town relay">
+        <Options>
+            <MapRender zoom="0.25" showMarker="always" allowInteraction="1" />
+        </Options>
+        <Objects>
+            <Object classname="EoH_RadioRelay" singleBind="1" handler="EoH_TerjeTownRespawnHandler" />
+        </Objects>
+        <Conditions>
+            <Timeout id="eoh_town_relay" minutes="60" />
+        </Conditions>
+    </Respawn>
+
+    <!--
+        Owned territory flag respawn.
+        Player must set this respawn on a TerritoryFlag object.
+        EoH_TerjeTerritoryRespawnHandler validates that the player's group owns the flag.
+        Timeout is controlled directly here by Terje.
+    -->
+    <Respawn id="eoh_territory_flag" displayName="Respawn on owned territory flag">
+        <Options>
+            <MapRender zoom="0.25" showMarker="always" allowInteraction="1" />
+        </Options>
+        <Objects>
+            <Object classname="TerritoryFlag" singleBind="1" handler="EoH_TerjeTerritoryRespawnHandler" />
+        </Objects>
+        <Conditions>
+            <Timeout id="eoh_territory_flag" minutes="60" />
+        </Conditions>
+    </Respawn>
+</Respawns>
