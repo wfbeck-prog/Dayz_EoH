@@ -7,7 +7,7 @@ class EoH_Intel_Document : BookAVoyageToArcturus
     }
 }
 
-class EoH_TownIntel : BookAVoyageToArcturus
+class EoH_TownIntel : EoH_Intel_Document
 {
     override void SetActions()
     {
@@ -16,7 +16,7 @@ class EoH_TownIntel : BookAVoyageToArcturus
     }
 }
 
-class EoH_TraderIntel : BookDeadSouls
+class EoH_TraderIntel : EoH_Intel_Document
 {
     override void SetActions()
     {
