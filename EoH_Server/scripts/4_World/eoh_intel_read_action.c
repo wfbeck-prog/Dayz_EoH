@@ -1,8 +1,8 @@
-class EoH_ActionReadIntel : ActionInteractBase
+class EoH_ActionReadIntel : ActionSingleUseBase
 {
     void EoH_ActionReadIntel()
     {
-        m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_PICKUP_HANDS;
+        m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_VIEWCOMPASS;
         m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT;
         m_Text = "Read Intel";
     }
@@ -10,7 +10,7 @@ class EoH_ActionReadIntel : ActionInteractBase
     override void CreateConditionComponents()
     {
         m_ConditionItem = new CCINonRuined;
-        m_ConditionTarget = new CCTSelf;
+        m_ConditionTarget = new CCTNone;
     }
 
     override bool HasTarget()
@@ -30,10 +30,8 @@ class EoH_ActionReadIntel : ActionInteractBase
         return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel";
     }
 
-    override void OnStartServer(ActionData action_data)
+    override void OnExecuteServer(ActionData action_data)
     {
-        super.OnStartServer(action_data);
-
         if (!action_data || !action_data.m_Player || !action_data.m_MainItem)
             return;
 
