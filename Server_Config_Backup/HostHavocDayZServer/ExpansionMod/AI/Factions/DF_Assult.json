@@ -1,0 +1,8 @@
+{
+  "m_Name": "DF_Assault",
+  "m_Loadouts": ["DF_Medium", "DF_Heavy"],
+  "m_MinAccuracy": 0.30,
+  "m_MaxAccuracy": 0.55,
+  "m_MinThreatDistance": 50,
+  "m_MaxThreatDistance": 200
+}

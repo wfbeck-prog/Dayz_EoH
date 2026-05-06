@@ -1,0 +1,37 @@
+{
+    "m_Version": 13,
+    "DisplayName": "Black Market",
+    "MinRequiredReputation": 0,
+    "MaxRequiredReputation": 2147483647,
+    "TraderIcon": "Skull",
+    "Currencies": [
+      "Money_Dollar1",
+      "Money_Dollar2",
+      "Money_Dollar5",
+      "Money_Dollar10",
+      "Money_Dollar20",
+      "Money_Dollar50",
+      "Money_Dollar100"
+    ],
+    "Categories": [
+        "Ammo_High",
+        "AmmoBoxes_High",
+        "Magazines_High",
+        "Optics_High",
+        "Muzzles_High",
+        "Snafu_Ammo",
+        "Snafu_Mags",
+        "Snafu_Scopes",
+        "Snafu_Suppressors",
+        "Snafu_Bipods",
+        "Snafu_Grips",
+        "Snafu_Stocks",
+        "Snafu_Handguards",
+        "Snafu_Extras",
+        "Delta_Gear_High",
+        "Vests_High",
+        "Helmets",
+        "Masks",
+        "Explosives_And_Grenades"
+    ]
+}

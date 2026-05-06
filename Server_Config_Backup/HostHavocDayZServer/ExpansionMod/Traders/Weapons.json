@@ -1,0 +1,30 @@
+{
+    "m_Version": 13,
+    "DisplayName": "Weapons Trader",
+    "MinRequiredReputation": 0,
+    "MaxRequiredReputation": 2147483647,
+    "TraderIcon": "Gun",
+    "Currencies": [
+      "Money_Dollar1",
+      "Money_Dollar2",
+      "Money_Dollar5",
+      "Money_Dollar10",
+      "Money_Dollar20",
+      "Money_Dollar50",
+      "Money_Dollar100"
+    ],
+    "Categories": [
+        "Pistols",
+        "Rifles",
+        "Shotguns",
+        "Submachine_Guns",
+        "Assault_Rifles",
+        "Weapons_SNAFU_Mid",
+        "Ammo_Low",
+        "AmmoBoxes_Low",
+        "Magazines_Low",
+        "Bayonets",
+        "Knifes",
+        "Melee_Weapons"
+    ]
+}

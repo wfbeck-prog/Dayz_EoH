@@ -1,0 +1,8 @@
+{
+  "m_Name": "DF_Elite",
+  "m_Loadouts": ["DF_Heavy", "DF_Elite"],
+  "m_MinAccuracy": 0.45,
+  "m_MaxAccuracy": 0.75,
+  "m_MinThreatDistance": 75,
+  "m_MaxThreatDistance": 250
+}

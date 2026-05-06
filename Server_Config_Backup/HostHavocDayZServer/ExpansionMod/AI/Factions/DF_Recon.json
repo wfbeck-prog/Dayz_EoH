@@ -1,0 +1,8 @@
+{
+  "m_Name": "DF_Recon",
+  "m_Loadouts": ["DF_Light", "DF_Medium"],
+  "m_MinAccuracy": 0.20,
+  "m_MaxAccuracy": 0.35,
+  "m_MinThreatDistance": 50,
+  "m_MaxThreatDistance": 150
+}

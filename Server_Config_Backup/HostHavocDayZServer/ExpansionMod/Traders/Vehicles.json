@@ -1,0 +1,22 @@
+{
+    "m_Version": 13,
+    "DisplayName": "Car Trader",
+    "MinRequiredReputation": 0,
+    "MaxRequiredReputation": 2147483647,
+    "TraderIcon": "Car",
+    "Currencies": [
+      "Money_Dollar1",
+      "Money_Dollar2",
+      "Money_Dollar5",
+      "Money_Dollar10",
+      "Money_Dollar20",
+      "Money_Dollar50",
+      "Money_Dollar100"
+    ],
+    "Categories": [
+        "Cars",
+      "CarParts",
+        "Batteries",
+        "Liquids"
+    ]
+}

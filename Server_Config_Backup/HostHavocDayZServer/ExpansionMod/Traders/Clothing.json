@@ -1,0 +1,35 @@
+{
+    "m_Version": 13,
+    "DisplayName": "Gear Trader",
+    "MinRequiredReputation": 0,
+    "MaxRequiredReputation": 2147483647,
+    "TraderIcon": "Backpack",
+    "Currencies": [
+      "Money_Dollar1",
+      "Money_Dollar2",
+      "Money_Dollar5",
+      "Money_Dollar10",
+      "Money_Dollar20",
+      "Money_Dollar50",
+      "Money_Dollar100"
+    ],
+    "Categories": [
+        "Shirts_And_TShirts",
+        "Sweaters_And_Hoodies",
+        "Blouses_And_Suits",
+        "Coats_And_Jackets",
+        "Pants_And_Shorts",
+        "Skirts_And_Dresses",
+        "Boots_And_Shoes",
+        "Caps",
+        "Hats_And_Hoods",
+        "Eyewear",
+        "Bandanas",
+        "Armbands",
+        "Belts",
+        "Vests_Low",
+        "Backpacks",
+        "Holsters_And_Pouches",
+        "Delta_Gear_Low"
+    ]
+}

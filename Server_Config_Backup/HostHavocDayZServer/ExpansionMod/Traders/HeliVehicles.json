@@ -1,0 +1,24 @@
+{
+    "m_Version": 13,
+    "DisplayName": "Helicopter Trader",
+    "MinRequiredReputation": 0,
+    "MaxRequiredReputation": 2147483647,
+    "TraderIcon": "Helicopter",
+    "Currencies": [
+      "Money_Dollar1",
+      "Money_Dollar2",
+      "Money_Dollar5",
+      "Money_Dollar10",
+      "Money_Dollar20",
+      "Money_Dollar50",
+      "Money_Dollar100"
+    ],
+    "Categories": [
+        "RFFS_HELIS",
+      "RFFS_HELIS_PARTS",
+      "Navigation",
+        "Electronics",
+        "Batteries",
+        "Liquids"
+    ]
+}
