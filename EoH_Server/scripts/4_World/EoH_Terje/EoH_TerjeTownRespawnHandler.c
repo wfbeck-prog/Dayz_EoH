@@ -5,7 +5,11 @@ class EoH_TerjeTownRespawnHandler : TerjeRespawnObjectHandler
         if (!object || !player)
             return false;
 
-        string town = ResolveTownName(object, xmlObject);
+        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(object);
+        if (!relay)
+            return false;
+
+        string town = relay.GetEoHTownName();
         if (town == "")
             return false;
 
@@ -25,32 +29,14 @@ class EoH_TerjeTownRespawnHandler : TerjeRespawnObjectHandler
         if (!IsObjectValid(object, player, respawnId, xmlObject))
             return false;
 
-        string town = ResolveTownName(object, xmlObject);
-        vector townPos = EoH_CaptureManager.Get().GetTownPos(town);
-        if (townPos == "0 0 0".ToVector())
-            return false;
-
-        playerPos = EoH_TerritorySpawnBridge.SafeSpawnPosition(townPos, 12.0);
+        vector relayPos = object.GetPosition();
+        playerPos = EoH_TerritorySpawnBridge.SafeSpawnPosition(relayPos, 6.0);
         playerOri = "0 0 0".ToVector();
         return true;
     }
 
     override string GetFailMessage(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject)
     {
-        return "Your group no longer controls this town.";
-    }
-
-    string ResolveTownName(Object object, TerjeXmlObject xmlObject)
-    {
-        string town = "";
-
-        if (xmlObject && xmlObject.FindAttribute("town", town) && town != "")
-            return town;
-
-        EoH_TownRespawnTerminal terminal = EoH_TownRespawnTerminal.Cast(object);
-        if (terminal)
-            return terminal.GetEoHTownName();
-
-        return "";
+        return "Your group no longer controls this town relay.";
     }
 }
