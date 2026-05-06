@@ -1,4 +1,4 @@
-class EoH_CaptureRelay_Base extends Inventory_Base
+class EoH_CaptureRelay_Base extends Radio
 {
     protected string m_EoH_TownName;
 
