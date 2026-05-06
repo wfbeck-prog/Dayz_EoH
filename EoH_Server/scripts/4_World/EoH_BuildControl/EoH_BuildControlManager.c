@@ -27,8 +27,6 @@ class EoH_BuildControlManager
             return false;
         }
 
-        bool inTerritory = IsInsideOwnedTerritory(cfg, player, position);
-
         EoH_BuildControlRule rule = cfg.FindRule(itemType);
 
         if (rule && rule.BlockPlacement)
@@ -36,6 +34,16 @@ class EoH_BuildControlManager
             Notify(player, rule.DenyMessage);
             return false;
         }
+
+        // IMPORTANT PERFORMANCE NOTE:
+        // CanPlace can be called repeatedly while a hologram/kit is being previewed.
+        // Large GetObjectsAtPosition scans here cause severe placement lag.
+        // Expensive territory conflict and placed-object limit checks are intentionally
+        // handled by final placement hooks/config workflows instead of every preview tick.
+        if (itemType == "TerritoryFlagKit")
+            return true;
+
+        bool inTerritory = IsInsideOwnedTerritory(cfg, player, position);
 
         if (cfg.RequireTerritoryForBuilding && !inTerritory)
         {
@@ -62,10 +70,38 @@ class EoH_BuildControlManager
             }
         }
 
+        return true;
+    }
+
+    static bool CanFinalizePlace(PlayerBase player, string itemType, vector position)
+    {
+        EoH_BuildControlConfig cfg = GetEoHBuildControlConfig();
+
+        if (!cfg || !cfg.Enabled)
+            return true;
+
+        string steamId = "";
+        if (player && player.GetIdentity())
+            steamId = player.GetIdentity().GetPlainId();
+
+        if (cfg.IsAdmin(steamId))
+            return true;
+
         if (!CheckTerritoryConflict(cfg, itemType, position))
         {
             Notify(player, cfg.TerritoryConflictMessage);
             return false;
+        }
+
+        EoH_BuildControlRule rule = cfg.FindRule(itemType);
+        if (cfg.EnforcePerPlayerLimits && rule && rule.MaxPlacedPerPlayer > -1)
+        {
+            int count = CountGroupObjects(player, itemType, position, rule.CountRadius);
+            if (count >= rule.MaxPlacedPerPlayer)
+            {
+                Notify(player, cfg.LimitReachedMessage);
+                return false;
+            }
         }
 
         return true;
@@ -78,15 +114,21 @@ class EoH_BuildControlManager
 
     static bool IsInsideOwnedTerritory(EoH_BuildControlConfig cfg, PlayerBase player, vector pos)
     {
+        // Uses persisted EoH ownership positions instead of repeatedly scanning/casting flags.
+        string groupID = EoH_GroupHelper.GetGroupID(player);
+        if (groupID == "")
+            return false;
+
         array<Object> objects = new array<Object>();
         GetGame().GetObjectsAtPosition(pos, cfg.TerritoryRadiusMeters, objects, null);
 
-        string groupID = EoH_GroupHelper.GetGroupID(player);
-
         foreach (Object obj : objects)
         {
-            Flag_Base flag = Flag_Base.Cast(obj);
-            if (flag && flag.GetEoHOwner() == groupID)
+            if (!obj)
+                continue;
+
+            string owner = EoH_TerritoryOwnershipRegistry.GetOwnerForObject(obj);
+            if (owner == groupID)
                 return true;
         }
 
@@ -103,8 +145,10 @@ class EoH_BuildControlManager
 
         foreach (Object obj : objects)
         {
-            Flag_Base flag = Flag_Base.Cast(obj);
-            if (flag)
+            if (!obj)
+                continue;
+
+            if (obj.GetType() == "TerritoryFlag" || obj.GetType() == "TerritoryFlagKit")
                 return false;
         }
 
@@ -114,6 +158,8 @@ class EoH_BuildControlManager
     static int CountGroupObjects(PlayerBase player, string typeName, vector pos, float radius)
     {
         string groupID = EoH_GroupHelper.GetGroupID(player);
+        if (groupID == "")
+            return 0;
 
         array<Object> objects = new array<Object>();
         GetGame().GetObjectsAtPosition(pos, radius, objects, null);
@@ -125,8 +171,8 @@ class EoH_BuildControlManager
             if (!obj || obj.GetType() != typeName)
                 continue;
 
-            Flag_Base flag = Flag_Base.Cast(obj);
-            if (flag && flag.GetEoHOwner() == groupID)
+            string owner = EoH_TerritoryOwnershipRegistry.GetOwnerForObject(obj);
+            if (owner == groupID)
                 count++;
         }
 
