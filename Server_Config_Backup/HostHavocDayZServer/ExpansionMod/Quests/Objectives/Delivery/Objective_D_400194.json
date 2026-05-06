@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400194,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver recovered contraband item: CP_PlasticWrapper.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "CP_PlasticWrapper",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Contraband Drop"
+}

@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400055,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver Battery9V to the secure contact near Prison Island.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "Battery9V",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Supply Contact - Prison Island"
+}

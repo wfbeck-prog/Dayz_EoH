@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400046,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver CP_Bagger to the secure contact near Myshkino.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "CP_Bagger",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Supply Contact - Myshkino"
+}

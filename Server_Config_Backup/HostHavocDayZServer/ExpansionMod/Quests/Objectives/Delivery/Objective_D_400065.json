@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400065,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver NailBox to the secure contact near Stary Sobor.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "NailBox",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Supply Contact - Stary Sobor"
+}

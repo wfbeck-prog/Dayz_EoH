@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400061,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver CP_DryPost_Kit to the secure contact near Tisy Military.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "CP_DryPost_Kit",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Supply Contact - Tisy Military"
+}

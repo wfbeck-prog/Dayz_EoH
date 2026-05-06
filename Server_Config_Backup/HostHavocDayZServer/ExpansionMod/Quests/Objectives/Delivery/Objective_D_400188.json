@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400188,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver recovered contraband item: cocaine_brick.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "cocaine_brick",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Contraband Drop"
+}

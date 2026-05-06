@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400056,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver SewingKit to the secure contact near Green Mountain.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "SewingKit",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Supply Contact - Green Mountain"
+}

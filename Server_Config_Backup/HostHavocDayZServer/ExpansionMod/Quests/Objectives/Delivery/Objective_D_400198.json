@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400198,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver recovered contraband item: BandageDressing.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "BandageDressing",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Contraband Drop"
+}

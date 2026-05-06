@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400142,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Hand over heroin_brick at the black market contact.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "heroin_brick",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Black Market Contact"
+}

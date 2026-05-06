@@ -1,0 +1,20 @@
+{
+    "ConfigVersion": 28,
+    "ID": 400045,
+    "ObjectiveType": 5,
+    "ObjectiveText": "Deliver CP_Workbench_Kit to the secure contact near Pavlovo Military.",
+    "TimeLimit": -1,
+    "Active": 1,
+    "Collections": [
+        {
+            "Amount": 1,
+            "ClassName": "CP_Workbench_Kit",
+            "QuantityPercent": -1,
+            "MinQuantityPercent": -1
+        }
+    ],
+    "ShowDistance": 1,
+    "AddItemsToNearbyMarketZone": 0,
+    "MaxDistance": 20,
+    "MarkerName": "Supply Contact - Pavlovo Military"
+}
