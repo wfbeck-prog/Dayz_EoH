@@ -86,6 +86,8 @@ modded class MissionServer
         if (!cfg || !cfg.Enabled || !cfg.SpawnRelaysOnServerStart)
             return;
 
+        ref set<string> spawnedKeys = new set<string>();
+
         foreach (EoH_RelayLocation relay : cfg.Relays)
         {
             if (!relay || !relay.Enabled)
@@ -96,9 +98,20 @@ modded class MissionServer
                 continue;
 
             pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.2;
+            string key = EoH_RelaySpawnKey(pos);
 
-            if (EoH_RelayAlreadyExists(pos, 2.0))
+            if (spawnedKeys.Find(key) != -1)
+            {
+                Print("[EoH] Skipping duplicate relay config position for " + relay.TownName + " at " + pos.ToString());
                 continue;
+            }
+
+            if (EoH_RelayAlreadyExists(pos, 10.0))
+            {
+                Print("[EoH] Relay already exists near " + relay.TownName + " at " + pos.ToString());
+                spawnedKeys.Insert(key);
+                continue;
+            }
 
             Object obj = GetGame().CreateObjectEx("EoH_RadioRelay", pos, ECE_PLACE_ON_SURFACE);
             if (!obj)
@@ -108,10 +121,18 @@ modded class MissionServer
             }
 
             obj.SetOrientation(Vector(relay.Orientation, 0, 0));
+            spawnedKeys.Insert(key);
             Print("[EoH] Spawned relay for " + relay.TownName + " at " + pos.ToString());
         }
 
         m_EoH_RelaysSpawned = true;
+    }
+
+    string EoH_RelaySpawnKey(vector pos)
+    {
+        int x = Math.Round(pos[0]);
+        int z = Math.Round(pos[2]);
+        return x.ToString() + "_" + z.ToString();
     }
 
     bool EoH_RelayAlreadyExists(vector pos, float radius)
