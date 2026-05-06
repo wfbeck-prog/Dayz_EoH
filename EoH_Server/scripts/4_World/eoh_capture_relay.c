@@ -71,9 +71,31 @@ class EoH_CaptureRelay_Base extends Radio
         return dist <= cfg.Radius;
     }
 
+    override bool CanPutInCargo(EntityAI parent)
+    {
+        return false;
+    }
+
+    override bool CanPutIntoHands(EntityAI parent)
+    {
+        return false;
+    }
+
+    override bool CanReceiveItemIntoCargo(EntityAI item)
+    {
+        return false;
+    }
+
+    override bool CanReleaseCargo(EntityAI attachment)
+    {
+        return false;
+    }
+
     override void SetActions()
     {
         super.SetActions();
+        RemoveAction(ActionTakeItem);
+        RemoveAction(ActionTakeItemToHands);
         AddAction(EoH_ActionCaptureRelay);
     }
 };
