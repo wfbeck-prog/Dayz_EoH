@@ -1,6 +1,6 @@
 class EoH_TerjeTownRespawnHandler : TerjeRespawnObjectHandler
 {
-    override bool IsObjectValid(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject)
+    bool EoH_IsObjectValid(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject)
     {
         if (!object || !player)
             return false;
@@ -24,9 +24,9 @@ class EoH_TerjeTownRespawnHandler : TerjeRespawnObjectHandler
         return state.OwnerGroupID == playerGroupID;
     }
 
-    override bool GetPlayerSpawnPos(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject, out vector playerPos, out vector playerOri)
+    bool EoH_GetPlayerSpawnPos(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject, out vector playerPos, out vector playerOri)
     {
-        if (!IsObjectValid(object, player, respawnId, xmlObject))
+        if (!EoH_IsObjectValid(object, player, respawnId, xmlObject))
             return false;
 
         vector relayPos = object.GetPosition();
@@ -35,7 +35,7 @@ class EoH_TerjeTownRespawnHandler : TerjeRespawnObjectHandler
         return true;
     }
 
-    override string GetFailMessage(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject)
+    string EoH_GetFailMessage(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject)
     {
         return "Your group no longer controls this town relay.";
     }
