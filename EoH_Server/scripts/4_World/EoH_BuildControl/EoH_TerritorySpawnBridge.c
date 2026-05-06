@@ -45,6 +45,14 @@ class EoH_TerritorySpawnBridge
         if (groupID == "")
             return result;
 
+        AddFlagSpawns(player, groupID, result);
+        AddControlledTownSpawns(player, groupID, result);
+
+        return result;
+    }
+
+    static void AddFlagSpawns(PlayerBase player, string groupID, array<ref EoH_TerritorySpawnPoint> result)
+    {
         array<ref EoH_TerritoryOwnershipEntry> entries = EoH_TerritoryOwnershipRegistry.GetAllTerritories();
         foreach (EoH_TerritoryOwnershipEntry entry : entries)
         {
@@ -54,20 +62,45 @@ class EoH_TerritorySpawnBridge
             EoH_TerritorySpawnPoint sp = new EoH_TerritorySpawnPoint();
             sp.Name = "Territory Flag";
             sp.OwnerGroupID = entry.OwnerGroupID;
-            sp.SetPosition(SafeSpawnPosition(entry.GetPosition()));
+            sp.SetPosition(SafeSpawnPosition(entry.GetPosition(), 3.0));
             sp.Radius = 30.0;
             sp.Enabled = true;
             result.Insert(sp);
         }
-
-        return result;
     }
 
-    static vector SafeSpawnPosition(vector flagPos)
+    static void AddControlledTownSpawns(PlayerBase player, string groupID, array<ref EoH_TerritorySpawnPoint> result)
     {
-        vector pos = flagPos;
-        pos[0] = pos[0] + 3.0;
-        pos[2] = pos[2] + 3.0;
+        EoH_CaptureManager cap = EoH_CaptureManager.Get();
+        if (!cap)
+            return;
+
+        array<string> towns = cap.GetAllTownNames();
+        foreach (string town : towns)
+        {
+            EoH_WorldStateTownState state = EoH_WorldStateManager.Get().GetTownState(town);
+            if (!state || state.OwnerGroupID != groupID)
+                continue;
+
+            vector townPos = cap.GetTownPos(town);
+            if (townPos == "0 0 0".ToVector())
+                continue;
+
+            EoH_TerritorySpawnPoint sp = new EoH_TerritorySpawnPoint();
+            sp.Name = "Controlled Town - " + town;
+            sp.OwnerGroupID = groupID;
+            sp.SetPosition(SafeSpawnPosition(townPos, 12.0));
+            sp.Radius = 50.0;
+            sp.Enabled = true;
+            result.Insert(sp);
+        }
+    }
+
+    static vector SafeSpawnPosition(vector basePos, float offset)
+    {
+        vector pos = basePos;
+        pos[0] = pos[0] + offset;
+        pos[2] = pos[2] + offset;
         pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.2;
         return pos;
     }
