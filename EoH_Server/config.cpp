@@ -60,7 +60,7 @@ class CfgMods
                 {
                     "EoH_Server/scripts/3_Game"
                 };
-            }
+            };
 
             class worldScriptModule
             {
@@ -69,7 +69,7 @@ class CfgMods
                 {
                     "EoH_Server/scripts/4_World"
                 };
-            }
+            };
 
             class missionScriptModule
             {
@@ -78,36 +78,30 @@ class CfgMods
                 {
                     "EoH_Server/scripts/5_Mission"
                 };
-            }
+            };
         };
     };
 };
 
 class CfgVehicles
 {
-    class Inventory_Base;
-    class Transmitter_Base;
+    class PersonalRadio;
     class Paper;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
-    class EoH_CaptureRelay_Base: Transmitter_Base
+    class EoH_CaptureRelay_Base: PersonalRadio
     {
         scope = 2;
         displayName = "EoH Radio Relay";
-        descriptionShort = "A damaged walkie-talkie used to project group influence across the region.";
-        model = "\\dz\\gear\\radio\\WalkieTalkie.p3d";
-        weight = 750;
-        itemSize[] = {2, 3};
-        physLayer = "item_small";
-        rotationFlags = 17;
+        descriptionShort = "A modified handheld radio used to project group influence across the region.";
     };
 
     class EoH_RadioRelay: EoH_CaptureRelay_Base
     {
         scope = 2;
         displayName = "EoH Radio Relay";
-        descriptionShort = "A damaged walkie-talkie used to broadcast nearby town intel.";
+        descriptionShort = "A modified handheld radio used to broadcast nearby town intel.";
     };
 
     class EoH_Intel_Document: Paper
@@ -115,13 +109,6 @@ class CfgVehicles
         scope = 2;
         displayName = "Intel Document";
         descriptionShort = "Contains real reconnaissance data about territorial control.";
-        model = "\\dz\\gear\\consumables\\Paper.p3d";
-        weight = 20;
-        itemSize[] = {1, 1};
-        varQuantityInit = 1;
-        varQuantityMin = 0;
-        varQuantityMax = 1;
-        rotationFlags = 16;
     };
 
     class EoH_TownIntel: EoH_Intel_Document
