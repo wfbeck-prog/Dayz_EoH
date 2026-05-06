@@ -1,6 +1,16 @@
 class EoH_TerjeTerritoryRespawnHandler : TerjeRespawnObjectHandler
 {
-    override bool IsObjectValid(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject)
+    override bool SetAsRespawnObject(PlayerBase player, Object object, string respawnId)
+    {
+        return EoH_IsObjectValid(object, player, respawnId);
+    }
+
+    override bool RespawnOnObject(PlayerBase player, Object object, string respawnId)
+    {
+        return EoH_IsObjectValid(object, player, respawnId);
+    }
+
+    bool EoH_IsObjectValid(Object object, PlayerBase player, string respawnId)
     {
         if (!object || !player)
             return false;
@@ -14,21 +24,5 @@ class EoH_TerjeTerritoryRespawnHandler : TerjeRespawnObjectHandler
             return false;
 
         return ownerGroupID == playerGroupID;
-    }
-
-    override bool GetPlayerSpawnPos(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject, out vector playerPos, out vector playerOri)
-    {
-        if (!IsObjectValid(object, player, respawnId, xmlObject))
-            return false;
-
-        vector basePos = object.GetPosition();
-        playerPos = EoH_TerritorySpawnBridge.SafeSpawnPosition(basePos, 4.0);
-        playerOri = "0 0 0".ToVector();
-        return true;
-    }
-
-    override string GetFailMessage(Object object, PlayerBase player, string respawnId, TerjeXmlObject xmlObject)
-    {
-        return "Your group no longer controls this territory.";
     }
 }
