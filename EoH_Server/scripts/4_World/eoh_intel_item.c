@@ -1,4 +1,4 @@
-class EoH_Intel_Document : Paper
+class EoH_Intel_Document : BookAVoyageToArcturus
 {
     override void SetActions()
     {
@@ -7,10 +7,20 @@ class EoH_Intel_Document : Paper
     }
 }
 
-class EoH_TownIntel : EoH_Intel_Document
+class EoH_TownIntel : BookAVoyageToArcturus
 {
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(EoH_ActionReadIntel);
+    }
 }
 
-class EoH_TraderIntel : EoH_Intel_Document
+class EoH_TraderIntel : BookDeadSouls
 {
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(EoH_ActionReadIntel);
+    }
 }
