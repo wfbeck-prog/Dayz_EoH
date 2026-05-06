@@ -45,13 +45,15 @@ class EoH_RelayConfig
     {
         Version = 1;
         Enabled = true;
-        SpawnRelaysOnServerStart = true;
+        SpawnRelaysOnServerStart = false;
         DeleteExistingEoHRelaysBeforeSpawn = false;
         Relays = new array<ref EoH_RelayLocation>();
     }
 
     void Defaults()
     {
+        SpawnRelaysOnServerStart = false;
+        DeleteExistingEoHRelaysBeforeSpawn = false;
         Relays.Clear();
         AddRelay("Pustoshka", "3060 0 7870".ToVector(), 0);
         AddRelay("Mogilevka", "7600 0 5100".ToVector(), 0);
