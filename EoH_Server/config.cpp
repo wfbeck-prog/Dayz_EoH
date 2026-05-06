@@ -19,6 +19,7 @@ class CfgPatches
             "DZ_Data",
             "DZ_Scripts",
             "DZ_Gear_Camping",
+            "DZ_Gear_Books",
             "DZ_Gear_Consumables",
             "CF",
             "DayZExpansion_Core",
@@ -85,26 +86,28 @@ class CfgMods
 
 class CfgVehicles
 {
-    class PersonalRadio;
-    class Paper;
+    class Radio;
+    class BaseRadio;
+    class BookAVoyageToArcturus;
+    class BookDeadSouls;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
-    class EoH_CaptureRelay_Base: PersonalRadio
+    class EoH_CaptureRelay_Base: Radio
     {
         scope = 2;
         displayName = "EoH Radio Relay";
-        descriptionShort = "A modified handheld radio used to project group influence across the region.";
+        descriptionShort = "A modified radio used to project group influence across the region.";
     };
 
     class EoH_RadioRelay: EoH_CaptureRelay_Base
     {
         scope = 2;
         displayName = "EoH Radio Relay";
-        descriptionShort = "A modified handheld radio used to broadcast nearby town intel.";
+        descriptionShort = "A modified radio used to broadcast nearby town intel.";
     };
 
-    class EoH_Intel_Document: Paper
+    class EoH_Intel_Document: BookAVoyageToArcturus
     {
         scope = 2;
         displayName = "Intel Document";
@@ -118,7 +121,7 @@ class CfgVehicles
         descriptionShort = "Reveals nearby town control intel.";
     };
 
-    class EoH_TraderIntel: EoH_Intel_Document
+    class EoH_TraderIntel: BookDeadSouls
     {
         scope = 2;
         displayName = "Trader Intel";
