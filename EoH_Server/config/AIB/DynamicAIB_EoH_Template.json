@@ -4,7 +4,7 @@
   "cleanzerovector": 0,
   "crashsitegroup": "Random",
   "cardamage": 1,
-  "notes": "EoH town AI template. Uses My Delta Force gear and confirmed-compatible non-epic SNAFU/vanilla weapon families. Tier4/GCGN epic weapons from SNAFU_types are intentionally excluded and reserved for bunker/endgame loot. AI loot includes spare magazines/ammo, 0.1 intel drop chance, 0.2 T1 key drop chance, and 0.06 T2 key drop chance.",
+  "notes": "EoH town AI template. Uses My Delta Force gear and confirmed-compatible non-epic SNAFU/vanilla weapon families. Tier4/GCGN epic weapons from SNAFU_types are intentionally excluded from town AI and reserved for bunker/endgame loot. AI loot includes spare magazines/ammo, 0.1 intel drop chance, 0.2 T1 key drop chance, and 0.06 T2 key drop chance. Bunker AI entries use hard Tier3/Tier3.5 weapons but do not carry bunker-only epic weapons such as SNAFUAlligator, GCGN_M82_Barret, or GCGN_M700.",
   "GroupLocations": [
     {
       "name": "EoH_TOWN_Pustoshka_BanditPatrol",
@@ -71,6 +71,28 @@
       "dog": 0,
       "weaponpool": ["EoH_T3_M4_Rifle", "EoH_T3_FAL_Rifle"],
       "npcproperties": {"headgear": ["MDF_Helmet_Black"], "masks": ["MDF_Balaclava_Black"], "vests": ["MDF_PlateCarrier_Black"], "backpacks": ["MDF_RaidPack"], "bodywear": ["MDF_CombatJacket_Black"], "belts": ["MDF_BattleBelt"], "pants": ["MDF_CombatPants_Black"], "shoes": ["MDF_CombatBoots_Black"], "gloves": ["MDF_TacticalGloves_Black"], "armband": [], "loot": ["BandageDressing", "Mag_STANAG_30Rnd", "Mag_CMAG_30Rnd", "Mag_Fal_20rnd", "Ammo_556x45", "Ammo_308Win", "EoH_TownIntel", "EoH_TraderIntel", "CBD_LootRoomKey_Bronze", "CBD_LootRoomKey_Silver"], "lootChance": {"EoH_TownIntel": 0.1, "EoH_TraderIntel": 0.1, "CBD_LootRoomKey_Bronze": 0.2, "CBD_LootRoomKey_Silver": 0.06}}
+    },
+    {
+      "name": "EoH_BUNKER_Upper_BanditGuard",
+      "faction": "Bandits",
+      "waypoints": ["13264.932617 34.821518 6121.479980", "13267.500000 34.821518 6125.000000", "13262.500000 34.821518 6118.000000"],
+      "npcclasses": ["BanditAI_Denis", "BanditAI_Mirek"],
+      "accuracy": 90.0,
+      "grenadechance": 10.0,
+      "dog": 0,
+      "weaponpool": ["EoH_BUNKER_M4_Rifle", "EoH_BUNKER_FAL_Rifle"],
+      "npcproperties": {"headgear": ["MDF_Helmet_Black"], "masks": ["MDF_Balaclava_Black"], "vests": ["MDF_PlateCarrier_Black"], "backpacks": ["MDF_RaidPack"], "bodywear": ["MDF_CombatJacket_Black"], "belts": ["MDF_BattleBelt"], "pants": ["MDF_CombatPants_Black"], "shoes": ["MDF_CombatBoots_Black"], "gloves": ["MDF_TacticalGloves_Black"], "armband": [], "loot": ["BandageDressing", "Mag_STANAG_30Rnd", "Mag_CMAG_30Rnd", "Mag_Fal_20rnd", "Ammo_556x45", "Ammo_308Win", "EoH_BunkerIntel", "EoH_TraderIntel"], "lootChance": {"EoH_BunkerIntel": 0.12, "EoH_TraderIntel": 0.08}}
+    },
+    {
+      "name": "EoH_BUNKER_Lower_BanditGuard",
+      "faction": "Bandits",
+      "waypoints": ["13271.162109 19.606733 6084.740234", "13274.500000 19.606733 6088.000000", "13268.500000 19.606733 6081.500000"],
+      "npcclasses": ["BanditAI_Denis", "BanditAI_Mirek", "BanditAI_Rolf"],
+      "accuracy": 92.0,
+      "grenadechance": 12.0,
+      "dog": 0,
+      "weaponpool": ["EoH_BUNKER_M4_Rifle", "EoH_BUNKER_FAL_Rifle", "EoH_BUNKER_AK103_Rifle"],
+      "npcproperties": {"headgear": ["MDF_Helmet_Black"], "masks": ["MDF_Balaclava_Black"], "vests": ["MDF_PlateCarrier_Black"], "backpacks": ["MDF_RaidPack"], "bodywear": ["MDF_CombatJacket_Black"], "belts": ["MDF_BattleBelt"], "pants": ["MDF_CombatPants_Black"], "shoes": ["MDF_CombatBoots_Black"], "gloves": ["MDF_TacticalGloves_Black"], "armband": [], "loot": ["BandageDressing", "Mag_STANAG_30Rnd", "Mag_CMAG_30Rnd", "Mag_Fal_20rnd", "SNAFU_AK103_Mag", "Ammo_556x45", "Ammo_308Win", "Ammo_762x39", "EoH_BunkerIntel", "EoH_TraderIntel"], "lootChance": {"EoH_BunkerIntel": 0.15, "EoH_TraderIntel": 0.08}}
     }
   ],
   "SniperLocations": [],
@@ -80,6 +102,9 @@
     {"name": "EoH_T2_AKM_Rifle", "weapon": "AKM", "attachments": ["Mag_AKM_30Rnd", "AK_PlasticBttstck_Black", "PSO1Optic", "AK_Suppressor"]},
     {"name": "EoH_T2_FAL_Rifle", "weapon": "FAL", "attachments": ["Mag_Fal_20rnd", "SNAFU_Aimpoint_ACO", "SNAFU_Standardized_Suppressor_Black"]},
     {"name": "EoH_T3_M4_Rifle", "weapon": "M4A1", "attachments": ["Mag_STANAG_30Rnd", "M4_MPBttstck_Black", "M68Optic", "M4_Suppressor"]},
-    {"name": "EoH_T3_FAL_Rifle", "weapon": "FAL", "attachments": ["Mag_Fal_20rnd", "SNAFU_Elcan", "SNAFU_Standardized_Suppressor_Black"]}
+    {"name": "EoH_T3_FAL_Rifle", "weapon": "FAL", "attachments": ["Mag_Fal_20rnd", "SNAFU_Elcan", "SNAFU_Standardized_Suppressor_Black"]},
+    {"name": "EoH_BUNKER_M4_Rifle", "weapon": "M4A1", "attachments": ["Mag_STANAG_30Rnd", "M4_MPBttstck_Black", "SNAFU_Elcan", "M4_Suppressor"]},
+    {"name": "EoH_BUNKER_FAL_Rifle", "weapon": "FAL", "attachments": ["Mag_Fal_20rnd", "SNAFU_Elcan", "SNAFU_Standardized_Suppressor_Black"]},
+    {"name": "EoH_BUNKER_AK103_Rifle", "weapon": "SNAFU_AK103A", "attachments": ["SNAFU_AK103_Mag", "SNAFU_AKElcan", "SNAFU_Normalized_Suppressor_Black"]}
   ]
 }
