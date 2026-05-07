@@ -100,7 +100,6 @@ class EoH_BunkerPanelObserver
         if (!panel)
             return false;
 
-        // Conservative generic state checks. DayZ buildings often expose animation phase for doors/panels.
         float phase = panel.GetAnimationPhase("Doors1");
         if (phase > 0.5)
             return true;
@@ -118,23 +117,5 @@ class EoH_BunkerPanelObserver
             return true;
 
         return false;
-    }
-}
-
-modded class MissionServer
-{
-    override void OnInit()
-    {
-        super.OnInit();
-
-        EoH_BunkerPanelObserver.Get().Start();
-        Print("[EoH_BunkerObserver] MissionServer OnInit hook registered");
-    }
-
-    override void OnUpdate(float timeslice)
-    {
-        super.OnUpdate(timeslice);
-
-        EoH_BunkerPanelObserver.Get().Update(timeslice);
     }
 }
