@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "TotalQuestTarget": 200,
+  "DesignRules": {
+    "Tone": "Hardcore Echoes of Humanity survival narrative",
+    "UseObjectiveFolders": ["AICamp", "AIPatrol", "Action", "Collection", "Crafting", "Delivery", "Target", "Travel", "TreasureHunt"],
+    "AvoidObjectiveFolders": ["AIVIP"],
+    "PunchCardRule": "Punch cards are never direct quest rewards. Punch cards only come from Tier 4 CBD loot room drops.",
+    "HighTierNpcId": 1,
+    "StandardNpcId": 3,
+    "BossTargets": ["SKSuperman", "All Out Genius", "DeadlyDead SK"]
+  },
+  "Arcs": [
+    {"Arc": 1, "Name": "EoH Initiation", "QuestRange": "400001-400030", "NpcId": 3, "ObjectiveMix": ["Travel", "Collection", "Delivery", "Action"], "RewardTheme": ["money", "food", "medical", "low ammo", "basic gear"]},
+    {"Arc": 2, "Name": "Intel Network", "QuestRange": "400031-400065", "NpcId": 3, "ObjectiveMix": ["TreasureHunt", "Collection", "Travel", "Delivery"], "RewardTheme": ["intel", "money", "ammo", "attachments", "CBD T1/T2 keys"]},
+    {"Arc": 3, "Name": "Town Warfare", "QuestRange": "400066-400105", "NpcId": 3, "ObjectiveMix": ["AIPatrol", "AICamp", "Target", "Action"], "RewardTheme": ["guns", "ammo", "MDF gear", "CBD keys", "Terje skill points if supported"]},
+    {"Arc": 4, "Name": "Drug Economy and Black Market", "QuestRange": "400106-400145", "NpcId": 3, "ObjectiveMix": ["Delivery", "Collection", "Crafting", "Travel"], "RewardTheme": ["drug bricks", "processing gear", "money", "rare ammo", "black market hints"]},
+    {"Arc": 5, "Name": "Tier 4 Key Room / Punch Card Lead-In", "QuestRange": "400146-400175", "NpcId": 3, "ObjectiveMix": ["TreasureHunt", "Target", "AICamp", "Collection"], "RewardTheme": ["T3/T4 prep", "high ammo", "non-epic SNAFU/MDF gear", "bunker rumors"], "HardRule": "Do not reward punch cards. Guide players toward Tier 4 CBD rooms only."},
+    {"Arc": 6, "Name": "NPC 1 Elite Boss Chain", "QuestRange": "400176-400200", "NpcId": 1, "ObjectiveMix": ["Target", "AICamp", "AIPatrol", "Delivery"], "RewardTheme": ["high money", "high gear", "guns", "ammo", "drugs", "Terje skill points if supported"], "FinalBossQuestIds": {"SKSuperman": 400198, "All Out Genius": 400199, "DeadlyDead SK": 400200}}
+  ]
+}
