@@ -125,13 +125,7 @@ class EoH_BookManager
         if (!entry)
             return;
 
-        NotificationSystem.SendNotificationToPlayerIdentityExtended(
-            player.GetIdentity(),
-            10,
-            "Book Updated",
-            entry.Title,
-            "set:dayz_gui image:icon_info"
-        );
+        player.MessageStatus("Book Updated: " + entry.Title);
 
         Print("[EoH_Book] Unlocked entry " + id + " for " + player.GetIdentity().GetName());
     }
