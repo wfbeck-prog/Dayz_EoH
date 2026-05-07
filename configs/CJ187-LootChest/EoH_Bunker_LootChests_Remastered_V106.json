@@ -1,0 +1,384 @@
+{
+    "EnableDebug": 1,
+    "DeleteLogs": 0,
+    "MaxSpareMags": 3,
+    "RandomQuantity": 0,
+    "LootChestsLocations": [
+        {
+            "name": "EoH Bunker Epic Weapon Crate",
+            "number": 1,
+            "pos": [
+                "13270.373047 19.639738 6123.436523|0 0 0"
+            ],
+            "keyclass": "",
+            "openable": 0,
+            "chest": [
+                "mmg_weapon_crate_wood"
+            ],
+            "lootrandomize": 0.35,
+            "light": 1,
+            "loot": [
+                "LC_Table_EoH_Bunker_Epic_Weapons",
+                "LC_Table_EoH_Bunker_Epic_Mags",
+                "LC_Table_EoH_Bunker_Epic_Ammo",
+                "LC_Table_EoH_Bunker_Epic_Attachments"
+            ],
+            "respawn": 0,
+            "respawn_timer": 1440,
+            "randomize_position": 0
+        },
+        {
+            "name": "EoH Bunker Heavy Sniper Case",
+            "number": 1,
+            "pos": [
+                "13248.200195 19.596457 6104.087891|0 0 0"
+            ],
+            "keyclass": "",
+            "openable": 0,
+            "chest": [
+                "mmg_military_case_green"
+            ],
+            "lootrandomize": 0.30,
+            "light": 1,
+            "loot": [
+                "LC_Table_EoH_Bunker_Apex_Snipers",
+                "LC_Table_EoH_Bunker_Sniper_Mags",
+                "LC_Table_EoH_Bunker_Sniper_Ammo",
+                "LC_Table_EoH_Bunker_Sniper_Optics"
+            ],
+            "respawn": 0,
+            "respawn_timer": 1440,
+            "randomize_position": 0
+        },
+        {
+            "name": "EoH Bunker Ammunition Cache",
+            "number": 1,
+            "pos": [
+                "13249.066406 19.602207 6088.746582|0 0 0"
+            ],
+            "keyclass": "",
+            "openable": 0,
+            "chest": [
+                "mmg_supplycrate_level3"
+            ],
+            "lootrandomize": 0.45,
+            "light": 1,
+            "loot": [
+                "LC_Table_EoH_Bunker_Epic_Ammo",
+                "LC_Table_EoH_Bunker_Epic_Mags",
+                "LC_Table_EoH_Bunker_Sniper_Ammo",
+                "LC_Table_EoH_Bunker_Sniper_Mags"
+            ],
+            "respawn": 0,
+            "respawn_timer": 1440,
+            "randomize_position": 0
+        },
+        {
+            "name": "EoH Bunker Epic Gear Locker",
+            "number": 1,
+            "pos": [
+                "13277.551758 19.606733 6073.354492|0 0 0"
+            ],
+            "keyclass": "",
+            "openable": 0,
+            "chest": [
+                "mmg_equipment_locker_black"
+            ],
+            "lootrandomize": 0.35,
+            "light": 1,
+            "loot": [
+                "LC_Table_EoH_Bunker_Epic_Gear",
+                "LC_Table_EoH_Bunker_Epic_Attachments",
+                "LC_Table_EoH_Bunker_Sniper_Optics"
+            ],
+            "respawn": 0,
+            "respawn_timer": 1440,
+            "randomize_position": 0
+        },
+        {
+            "name": "EoH Bunker Breaching Safe",
+            "number": 1,
+            "pos": [
+                "13267.886719 19.423756 6073.476563|0 0 0"
+            ],
+            "keyclass": "",
+            "openable": 0,
+            "chest": [
+                "mmg_old_safe_green"
+            ],
+            "lootrandomize": 0.30,
+            "light": 1,
+            "loot": [
+                "LC_Table_EoH_Bunker_Breaching_Parts",
+                "LC_Table_EoH_Bunker_Breaching_Rare"
+            ],
+            "respawn": 0,
+            "respawn_timer": 1440,
+            "randomize_position": 0
+        },
+        {
+            "name": "EoH Bunker Explosives Cabinet",
+            "number": 1,
+            "pos": [
+                "13284.039063 9.459151 6101.448730|0 0 0"
+            ],
+            "keyclass": "",
+            "openable": 0,
+            "chest": [
+                "mmg_armored_cabinet_green"
+            ],
+            "lootrandomize": 0.25,
+            "light": 1,
+            "loot": [
+                "LC_Table_EoH_Bunker_Breaching_Parts",
+                "LC_Table_EoH_Bunker_Breaching_Rare",
+                "LC_Table_EoH_Bunker_Epic_Ammo"
+            ],
+            "respawn": 0,
+            "respawn_timer": 1440,
+            "randomize_position": 0
+        },
+        {
+            "name": "EoH Bunker Final Cache",
+            "number": 1,
+            "pos": [
+                "13251.387695 9.547898 6061.763184|0 0 0"
+            ],
+            "keyclass": "",
+            "openable": 0,
+            "chest": [
+                "mmg_armored_cabinet_rusty"
+            ],
+            "lootrandomize": 0.25,
+            "light": 1,
+            "loot": [
+                "LC_Table_EoH_Bunker_Apex_Snipers",
+                "LC_Table_EoH_Bunker_Epic_Weapons",
+                "LC_Table_EoH_Bunker_Epic_Gear",
+                "LC_Table_EoH_Bunker_Breaching_Rare"
+            ],
+            "respawn": 0,
+            "respawn_timer": 1440,
+            "randomize_position": 0
+        }
+    ],
+    "LCPredefinedWeapons": [
+        {
+            "defname": "LC_EoH_Bunker_M82_Barret",
+            "weapon": "GCGN_M82_Barret",
+            "magazine": "GCGN_M82_Mag",
+            "attachments": [
+                ""
+            ],
+            "optic": "SNAFU_Nightforce",
+            "opticbattery": 0
+        },
+        {
+            "defname": "LC_EoH_Bunker_M700",
+            "weapon": "GCGN_M700",
+            "magazine": "GCGN_M700_Mag",
+            "attachments": [
+                ""
+            ],
+            "optic": "SNAFU_Leupold_Mark8",
+            "opticbattery": 0
+        },
+        {
+            "defname": "LC_EoH_Bunker_HK417",
+            "weapon": "SNHK417_Gun",
+            "magazine": "SNHK417_Mag",
+            "attachments": [
+                "SNAFU_SR25_Supp"
+            ],
+            "optic": "SNAFU_Kahles",
+            "opticbattery": 0
+        },
+        {
+            "defname": "LC_EoH_Bunker_FAL_Heavy",
+            "weapon": "FAL",
+            "magazine": "GCGN_Mag_FAL_50Rnd",
+            "attachments": [
+                "Fal_OeBttstck",
+                "SNAFU_SR25_Supp"
+            ],
+            "optic": "SNAFU_Elcan",
+            "opticbattery": 0
+        },
+        {
+            "defname": "LC_EoH_Bunker_M249",
+            "weapon": "GCGN_M249",
+            "magazine": "GCGN_M249_Mag",
+            "attachments": [
+                ""
+            ],
+            "optic": "SNAFU_Elcan",
+            "opticbattery": 0
+        },
+        {
+            "defname": "LC_EoH_Bunker_HK416",
+            "weapon": "GCGN_HK416",
+            "magazine": "GCGN_HK416_Mag",
+            "attachments": [
+                "SNAFU_Standardized_Suppressor_Black"
+            ],
+            "optic": "SNAFU_Elcan",
+            "opticbattery": 0
+        }
+    ],
+    "LootCategories": [
+        {
+            "name": "LC_Table_EoH_Bunker_Apex_Snipers",
+            "Loot": [
+                "LC_EoH_Bunker_M82_Barret",
+                "LC_EoH_Bunker_M700",
+                "LC_EoH_Bunker_HK417",
+                "SNAFUAlligator"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Epic_Weapons",
+            "Loot": [
+                "LC_EoH_Bunker_M82_Barret",
+                "LC_EoH_Bunker_M700",
+                "LC_EoH_Bunker_HK417",
+                "LC_EoH_Bunker_FAL_Heavy",
+                "LC_EoH_Bunker_M249",
+                "LC_EoH_Bunker_HK416",
+                "SNAFUAlligator",
+                "SCAR_Gun",
+                "SNSA58_Gun",
+                "SNAFU_RPK16_Black",
+                "SNAFU_RPK16_Green",
+                "SNAFU_RPK16_Tan",
+                "HK416_Gun",
+                "GCGN_M4A1",
+                "MK18_Gun",
+                "ACR_Gun"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Sniper_Mags",
+            "Loot": [
+                "GCGN_M82_Mag",
+                "GCGN_M700_Mag",
+                "SNHK417_Mag"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Epic_Mags",
+            "Loot": [
+                "GCGN_M82_Mag",
+                "GCGN_M700_Mag",
+                "SNHK417_Mag",
+                "GCGN_Mag_FAL_50Rnd",
+                "SA58_DrumMag",
+                "SA58_30RND_BK",
+                "SA58_30RND_WBK",
+                "SA58_30RND_DT",
+                "GCGN_M249_Mag",
+                "GCGN_HK416_Mag",
+                "SNAFU_AK12_Mag",
+                "SNAFU_AK103_Mag",
+                "Mag_STANAG_60Rnd",
+                "Mag_CMAG_40Rnd_Black",
+                "Mag_AKM_Drum75Rnd_Black"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Sniper_Ammo",
+            "Loot": [
+                "GCGN_Ammo_50Cal",
+                "GCGN_Ammo_408Chey",
+                "GCGN_Ammo_3006",
+                "AmmoBox_308Win_20Rnd",
+                "AmmoBox_762x54_20Rnd"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Epic_Ammo",
+            "Loot": [
+                "GCGN_Ammo_50Cal",
+                "GCGN_Ammo_408Chey",
+                "GCGN_Ammo_3006",
+                "AmmoBox_308Win_20Rnd",
+                "AmmoBox_762x54_20Rnd",
+                "AmmoBox_556x45_20Rnd",
+                "AmmoBox_762x39_20Rnd",
+                "AmmoBox_545x39_20Rnd"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Sniper_Optics",
+            "Loot": [
+                "SNAFU_Nightforce",
+                "SNAFU_Leupold_Mark8",
+                "SNAFU_Kahles",
+                "SNAFU_HNightforce",
+                "SNAFU_HLeupold_Mark8",
+                "SNAFU_HKahles",
+                "SNAFU_MNightforce",
+                "SNAFU_MLeupold_Mark8",
+                "SNAFU_MKahles"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Epic_Attachments",
+            "Loot": [
+                "SNAFU_Nightforce",
+                "SNAFU_Leupold_Mark8",
+                "SNAFU_Kahles",
+                "SNAFU_Elcan",
+                "SNAFU_AKElcan",
+                "SNAFU_AKNightforce",
+                "SNAFU_AKLeupold_Mark8",
+                "SNAFU_AKKahles",
+                "SNAFU_Standardized_Suppressor_Black",
+                "SNAFU_LStandardized_Suppressor_Black",
+                "SNAFU_Normalized_Suppressor_Black",
+                "SNAFU_LNormalized_Suppressor_Black",
+                "SNAFU_SR25_Supp",
+                "Snafu_ScarH_SIL_Black",
+                "SNAFUUniversalLight"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Epic_Gear",
+            "Loot": [
+                "PlateCarrierVest",
+                "PlateCarrierPouches",
+                "PlateCarrierHolster",
+                "BallisticHelmet_Black",
+                "NVGoggles",
+                "NVGHeadstrap",
+                "GhillieSuit_Woodland",
+                "GhillieSuit_Mossy",
+                "GhillieHood_Woodland",
+                "GhillieHood_Mossy"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Breaching_Parts",
+            "Loot": [
+                "HDSN_Charcoal",
+                "HDSN_Sulfur",
+                "HDSN_Gunpowder",
+                "HDSN_Explosive",
+                "BurlapSack",
+                "PersonalRadio",
+                "HDSN_C4Stick",
+                "HDSN_Detonator",
+                "DuctTape",
+                "ElectronicRepairKit"
+            ]
+        },
+        {
+            "name": "LC_Table_EoH_Bunker_Breaching_Rare",
+            "Loot": [
+                "HDSN_BreachingCharge",
+                "HDSN_C4Sticks",
+                "HDSN_C4NoWiring",
+                "HDSN_BreachingChargeHeavy"
+            ]
+        }
+    ]
+}
