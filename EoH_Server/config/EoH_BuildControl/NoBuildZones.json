@@ -1,0 +1,29 @@
+{
+    "ConfigVersion": 1,
+    "Enabled": 1,
+    "DefaultDenyMessage": "You cannot build in this protected EoH zone.",
+    "Zones": [
+        {
+            "Name": "Example_GreenMountain_Trader_NoBuild",
+            "Enabled": 0,
+            "Center": [
+                3714.394531,
+                402.893921,
+                5993.566406
+            ],
+            "Radius": 250.0,
+            "DenyMessage": "You cannot build inside the Green Mountain trader protection zone."
+        },
+        {
+            "Name": "Example_EoH_Bunker_NoBuild",
+            "Enabled": 0,
+            "Center": [
+                13267.886719,
+                19.423756,
+                6073.476563
+            ],
+            "Radius": 150.0,
+            "DenyMessage": "You cannot build inside the bunker conflict zone."
+        }
+    ]
+}
