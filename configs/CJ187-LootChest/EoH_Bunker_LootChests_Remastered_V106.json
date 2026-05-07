@@ -13,7 +13,7 @@
             "keyclass": "",
             "openable": 0,
             "chest": [
-                "mmg_weapon_crate_wood"
+                "CJ_LootChest_Wood_Brown_Large"
             ],
             "lootrandomize": 0.35,
             "light": 1,
@@ -36,7 +36,7 @@
             "keyclass": "",
             "openable": 0,
             "chest": [
-                "mmg_military_case_green"
+                "CJ_LootChest_Wood_Brown_Large"
             ],
             "lootrandomize": 0.30,
             "light": 1,
@@ -59,7 +59,7 @@
             "keyclass": "",
             "openable": 0,
             "chest": [
-                "mmg_supplycrate_level3"
+                "CJ_LootChest_Wood_Brown_Large"
             ],
             "lootrandomize": 0.45,
             "light": 1,
@@ -82,7 +82,7 @@
             "keyclass": "",
             "openable": 0,
             "chest": [
-                "mmg_equipment_locker_black"
+                "CJ_LootChest_Wood_Brown_Large"
             ],
             "lootrandomize": 0.35,
             "light": 1,
@@ -104,7 +104,7 @@
             "keyclass": "",
             "openable": 0,
             "chest": [
-                "mmg_old_safe_green"
+                "CJ_LootChest_Wood_Brown_Large"
             ],
             "lootrandomize": 0.30,
             "light": 1,
@@ -125,7 +125,7 @@
             "keyclass": "",
             "openable": 0,
             "chest": [
-                "mmg_armored_cabinet_green"
+                "CJ_LootChest_Wood_Brown_Large"
             ],
             "lootrandomize": 0.25,
             "light": 1,
@@ -147,7 +147,7 @@
             "keyclass": "",
             "openable": 0,
             "chest": [
-                "mmg_armored_cabinet_rusty"
+                "CJ_LootChest_Wood_Brown_Large"
             ],
             "lootrandomize": 0.25,
             "light": 1,
@@ -162,95 +162,32 @@
             "randomize_position": 0
         }
     ],
-    "LCPredefinedWeapons": [
-        {
-            "defname": "LC_EoH_Bunker_M82_Barret",
-            "weapon": "GCGN_M82_Barret",
-            "magazine": "GCGN_M82_Mag",
-            "attachments": [
-                ""
-            ],
-            "optic": "SNAFU_Nightforce",
-            "opticbattery": 0
-        },
-        {
-            "defname": "LC_EoH_Bunker_M700",
-            "weapon": "GCGN_M700",
-            "magazine": "GCGN_M700_Mag",
-            "attachments": [
-                ""
-            ],
-            "optic": "SNAFU_Leupold_Mark8",
-            "opticbattery": 0
-        },
-        {
-            "defname": "LC_EoH_Bunker_HK417",
-            "weapon": "SNHK417_Gun",
-            "magazine": "SNHK417_Mag",
-            "attachments": [
-                "SNAFU_SR25_Supp"
-            ],
-            "optic": "SNAFU_Kahles",
-            "opticbattery": 0
-        },
-        {
-            "defname": "LC_EoH_Bunker_FAL_Heavy",
-            "weapon": "FAL",
-            "magazine": "GCGN_Mag_FAL_50Rnd",
-            "attachments": [
-                "Fal_OeBttstck",
-                "SNAFU_SR25_Supp"
-            ],
-            "optic": "SNAFU_Elcan",
-            "opticbattery": 0
-        },
-        {
-            "defname": "LC_EoH_Bunker_M249",
-            "weapon": "GCGN_M249",
-            "magazine": "GCGN_M249_Mag",
-            "attachments": [
-                ""
-            ],
-            "optic": "SNAFU_Elcan",
-            "opticbattery": 0
-        },
-        {
-            "defname": "LC_EoH_Bunker_HK416",
-            "weapon": "GCGN_HK416",
-            "magazine": "GCGN_HK416_Mag",
-            "attachments": [
-                "SNAFU_Standardized_Suppressor_Black"
-            ],
-            "optic": "SNAFU_Elcan",
-            "opticbattery": 0
-        }
-    ],
+    "LCPredefinedWeapons": [],
     "LootCategories": [
         {
             "name": "LC_Table_EoH_Bunker_Apex_Snipers",
             "Loot": [
-                "LC_EoH_Bunker_M82_Barret",
-                "LC_EoH_Bunker_M700",
-                "LC_EoH_Bunker_HK417",
+                "GCGN_M82_Barret",
+                "GCGN_M700",
+                "SNHK417_Gun",
                 "SNAFUAlligator"
             ]
         },
         {
             "name": "LC_Table_EoH_Bunker_Epic_Weapons",
             "Loot": [
-                "LC_EoH_Bunker_M82_Barret",
-                "LC_EoH_Bunker_M700",
-                "LC_EoH_Bunker_HK417",
-                "LC_EoH_Bunker_FAL_Heavy",
-                "LC_EoH_Bunker_M249",
-                "LC_EoH_Bunker_HK416",
+                "GCGN_M82_Barret",
+                "GCGN_M700",
+                "SNHK417_Gun",
                 "SNAFUAlligator",
                 "SCAR_Gun",
                 "SNSA58_Gun",
                 "SNAFU_RPK16_Black",
                 "SNAFU_RPK16_Green",
                 "SNAFU_RPK16_Tan",
+                "GCGN_M249",
                 "HK416_Gun",
+                "GCGN_HK416",
                 "GCGN_M4A1",
                 "MK18_Gun",
                 "ACR_Gun"
