@@ -1,10 +1,10 @@
 {
-    "ConfigVersion": 1,
-    "Name": "EoH Bunker AI Positions",
+    "ConfigVersion": 2,
+    "Name": "EoH Bunker AI Bandits Positions",
     "Notes": [
         "These are bunker AI placement positions provided for the EoH bunker.",
-        "Schema is intentionally neutral until the active AI spawn system format is confirmed.",
-        "Recommended use: convert these into Expansion AI patrols/static guards, AIB_Unleashed spawns, or EoH_Server custom AI spawn definitions."
+        "Active AI system direction: AI Bandits / AIB_Unleashed.",
+        "Convert these positions into the active AI Bandits/AIB_Unleashed spawn configuration format used by the server."
     ],
     "BunkerAIPositions": [
         {
@@ -20,8 +20,9 @@
                 0.0
             ],
             "role": "Upper bunker overwatch / guard",
-            "recommendedLoadout": "Tier4_Bunker_Guard",
-            "recommendedFaction": "BunkerHostile"
+            "recommendedLoadout": "Tier4_Bunker_Bandit",
+            "recommendedFaction": "AIB_BunkerHostile",
+            "aiSystem": "AI Bandits / AIB_Unleashed"
         },
         {
             "name": "EoH_Bunker_AI_Lower_Guard_01",
@@ -36,19 +37,22 @@
                 0.0
             ],
             "role": "Lower bunker interior guard",
-            "recommendedLoadout": "Tier4_Bunker_Guard",
-            "recommendedFaction": "BunkerHostile"
+            "recommendedLoadout": "Tier4_Bunker_Bandit",
+            "recommendedFaction": "AIB_BunkerHostile",
+            "aiSystem": "AI Bandits / AIB_Unleashed"
         }
     ],
     "RecommendedBehavior": {
-        "spawnMode": "static_or_triggered_on_bunker_open",
+        "spawnMode": "AI_Bandits_static_or_triggered_on_bunker_open",
         "respawn": false,
         "despawnOnRestart": true,
         "difficulty": "hard",
         "notes": [
-            "Do not use trader guard logic for these AI.",
+            "Use AI Bandits / AIB_Unleashed for these bunker defenders.",
+            "Do not use trader guard logic for bunker AI.",
             "These AI should be killable and hostile.",
-            "Best implementation is triggered bunker defense when the punchcard panel is opened, if supported by EoH_Server scripting."
+            "Preferred EoH behavior: spawn/activate bunker bandits when the punchcard panel is opened, then pair it with the global bunker alert.",
+            "Fallback behavior: static bunker bandits placed at these coordinates if triggered spawning is not supported by the active AI Bandits config."
         ]
     }
 }
