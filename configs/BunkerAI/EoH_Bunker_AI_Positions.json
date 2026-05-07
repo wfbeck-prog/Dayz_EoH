@@ -1,0 +1,54 @@
+{
+    "ConfigVersion": 1,
+    "Name": "EoH Bunker AI Positions",
+    "Notes": [
+        "These are bunker AI placement positions provided for the EoH bunker.",
+        "Schema is intentionally neutral until the active AI spawn system format is confirmed.",
+        "Recommended use: convert these into Expansion AI patrols/static guards, AIB_Unleashed spawns, or EoH_Server custom AI spawn definitions."
+    ],
+    "BunkerAIPositions": [
+        {
+            "name": "EoH_Bunker_AI_Upper_Guard_01",
+            "position": [
+                13264.9326171875,
+                34.82151794433594,
+                6121.47998046875
+            ],
+            "orientation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "role": "Upper bunker overwatch / guard",
+            "recommendedLoadout": "Tier4_Bunker_Guard",
+            "recommendedFaction": "BunkerHostile"
+        },
+        {
+            "name": "EoH_Bunker_AI_Lower_Guard_01",
+            "position": [
+                13271.162109375,
+                19.606733322143556,
+                6084.740234375
+            ],
+            "orientation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "role": "Lower bunker interior guard",
+            "recommendedLoadout": "Tier4_Bunker_Guard",
+            "recommendedFaction": "BunkerHostile"
+        }
+    ],
+    "RecommendedBehavior": {
+        "spawnMode": "static_or_triggered_on_bunker_open",
+        "respawn": false,
+        "despawnOnRestart": true,
+        "difficulty": "hard",
+        "notes": [
+            "Do not use trader guard logic for these AI.",
+            "These AI should be killable and hostile.",
+            "Best implementation is triggered bunker defense when the punchcard panel is opened, if supported by EoH_Server scripting."
+        ]
+    }
+}
