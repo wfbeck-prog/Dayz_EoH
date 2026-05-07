@@ -24,9 +24,7 @@ class EoH_BookManager
         string path = "$profile:EoH_BookEntries.json";
 
         if (!FileExist(path))
-        {
             CreateDefaultConfig(path);
-        }
 
         m_Config = new EoH_BookConfig();
         JsonFileLoader<EoH_BookConfig>.JsonLoadFile(path, m_Config);
@@ -69,39 +67,34 @@ class EoH_BookManager
         cfg.Entries.Insert(bunker);
 
         JsonFileLoader<EoH_BookConfig>.JsonSaveFile(path, cfg);
-
         Print("[EoH_Book] Created default book config");
     }
 
-    bool UnlockEntry(PlayerBase player, string id)
+    bool UnlockEntryByIdentity(PlayerIdentity identity, string id)
     {
-        if (!player || !player.GetIdentity())
+        if (!identity)
             return false;
 
-        string pid = player.GetIdentity().GetPlainId();
+        string pid = identity.GetPlainId();
 
         if (!m_PlayerUnlockedEntries.Contains(pid))
             m_PlayerUnlockedEntries.Insert(pid, new array<string>());
 
         array<string> unlocked = m_PlayerUnlockedEntries.Get(pid);
-
         if (unlocked.Find(id) != -1)
             return false;
 
         unlocked.Insert(id);
-
-        SendUnlockNotification(player, id);
-
+        SendUnlockNotificationByIdentity(identity, id);
         return true;
     }
 
-    bool HasUnlocked(PlayerBase player, string id)
+    bool HasUnlockedByIdentity(PlayerIdentity identity, string id)
     {
-        if (!player || !player.GetIdentity())
+        if (!identity)
             return false;
 
-        string pid = player.GetIdentity().GetPlainId();
-
+        string pid = identity.GetPlainId();
         if (!m_PlayerUnlockedEntries.Contains(pid))
             return false;
 
@@ -119,14 +112,12 @@ class EoH_BookManager
         return null;
     }
 
-    void SendUnlockNotification(PlayerBase player, string id)
+    void SendUnlockNotificationByIdentity(PlayerIdentity identity, string id)
     {
         EoH_BookEntry entry = GetEntry(id);
-        if (!entry)
+        if (!entry || !identity)
             return;
 
-        player.MessageStatus("Book Updated: " + entry.Title);
-
-        Print("[EoH_Book] Unlocked entry " + id + " for " + player.GetIdentity().GetName());
+        Print("[EoH_Book] Unlocked entry " + id + " for " + identity.GetName());
     }
 }
