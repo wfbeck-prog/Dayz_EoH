@@ -4,6 +4,7 @@ class EoH_BunkerPanelObserver
 
     protected ref array<vector> m_PanelPositions;
     protected ref array<int> m_TriggeredPanels;
+    protected ref array<string> m_LastPanelTypes;
     protected float m_CheckTimer;
     protected bool m_Started;
 
@@ -19,11 +20,13 @@ class EoH_BunkerPanelObserver
     {
         m_PanelPositions = new array<vector>;
         m_TriggeredPanels = new array<int>;
+        m_LastPanelTypes = new array<string>;
         m_CheckTimer = 0;
         m_Started = false;
 
         // EoH bunker panel/loot-room area. Add more panel positions here if needed.
         m_PanelPositions.Insert("13267.886719 19.423756 6073.476563".ToVector());
+        m_LastPanelTypes.Insert("");
     }
 
     void Start()
@@ -64,12 +67,16 @@ class EoH_BunkerPanelObserver
                 continue;
             }
 
-            if (IsPanelOpen(panel))
+            string panelType = panel.GetType();
+            if (i < m_LastPanelTypes.Count() && m_LastPanelTypes.Get(i) != panelType)
             {
-                Print("[EoH_BunkerObserver] Bunker panel opened near " + pos.ToString() + " type=" + panel.GetType());
-                m_TriggeredPanels.Insert(i);
-                EoH_BunkerGlobalAlert.Send(null);
+                m_LastPanelTypes.Set(i, panelType);
+                Print("[EoH_BunkerObserver] Found bunker panel candidate near " + pos.ToString() + " type=" + panelType + " at " + panel.GetPosition().ToString());
             }
+
+            // Safe fallback: this observer now confirms the actual panel object/class without using unsupported Object animation APIs.
+            // The action bridge remains the primary open-event hook. If action bridge still does not fire, use the logged class/type
+            // here to build a type-specific observer against the real panel class.
         }
     }
 
@@ -93,29 +100,5 @@ class EoH_BunkerPanelObserver
         }
 
         return null;
-    }
-
-    protected bool IsPanelOpen(Object panel)
-    {
-        if (!panel)
-            return false;
-
-        float phase = panel.GetAnimationPhase("Doors1");
-        if (phase > 0.5)
-            return true;
-
-        phase = panel.GetAnimationPhase("Door1");
-        if (phase > 0.5)
-            return true;
-
-        phase = panel.GetAnimationPhase("Panel");
-        if (phase > 0.5)
-            return true;
-
-        phase = panel.GetAnimationPhase("Lid");
-        if (phase > 0.5)
-            return true;
-
-        return false;
     }
 }
