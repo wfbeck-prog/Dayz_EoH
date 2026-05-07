@@ -1,8 +1,8 @@
 modded class ActionUseUndergroundPanel
 {
-    override void OnFinishProgressServer(ActionData action_data)
+    override void OnStartServer(ActionData action_data)
     {
-        super.OnFinishProgressServer(action_data);
+        super.OnStartServer(action_data);
 
         if (!action_data || !action_data.m_Player)
             return;
