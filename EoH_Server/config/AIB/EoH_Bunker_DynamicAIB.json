@@ -1,0 +1,196 @@
+{
+    "version": 1,
+    "showtriggers": 0,
+    "crashsites": 0,
+    "cardamage": 1,
+    "GroupLocations": [
+        {
+            "name": "EoH_Bunker_Upper_Guard",
+            "faction": "Bandits",
+            "waypoints": [
+                "13264.932617 34.821518 6121.479980",
+                "13267.500000 34.821518 6125.000000",
+                "13262.500000 34.821518 6118.000000"
+            ],
+            "npcclasses": [
+                "BanditAI_Keiko",
+                "BanditAI_Linda",
+                "BanditAI_Rolf"
+            ],
+            "accuracy": 90.0,
+            "dog": 0,
+            "grenadechance": 5,
+            "weaponpool": [
+                "Predefined_EoH_Bunker_M4A1",
+                "Predefined_EoH_Bunker_FAL"
+            ],
+            "npcproperties": {
+                "headgear": [
+                    "BallisticHelmet_Black"
+                ],
+                "masks": [
+                    "BalaclavaMask_Black"
+                ],
+                "vests": [
+                    "PlateCarrierVest"
+                ],
+                "backpacks": [
+                    "HuntingBag"
+                ],
+                "bodywear": [
+                    "BDUJacket"
+                ],
+                "pants": [
+                    "BDUPants"
+                ],
+                "shoes": [
+                    "CombatBoots_Black"
+                ],
+                "loot": [
+                    "BandageDressing",
+                    "Mag_STANAG_30Rnd",
+                    "Mag_Fal_20rnd",
+                    "AmmoBox_556x45_20Rnd",
+                    "AmmoBox_308Win_20Rnd"
+                ]
+            }
+        },
+        {
+            "name": "EoH_Bunker_Lower_Guard",
+            "faction": "Bandits",
+            "waypoints": [
+                "13271.162109 19.606733 6084.740234",
+                "13274.500000 19.606733 6088.000000",
+                "13268.500000 19.606733 6081.500000"
+            ],
+            "npcclasses": [
+                "BanditAI_Denis",
+                "BanditAI_Rolf",
+                "BanditAI_Adam"
+            ],
+            "accuracy": 92.0,
+            "dog": 0,
+            "grenadechance": 8,
+            "weaponpool": [
+                "Predefined_EoH_Bunker_M4A1",
+                "Predefined_EoH_Bunker_FAL",
+                "Predefined_EoH_Bunker_AKM"
+            ],
+            "npcproperties": {
+                "headgear": [
+                    "BallisticHelmet_Black"
+                ],
+                "masks": [
+                    "BalaclavaMask_Black"
+                ],
+                "vests": [
+                    "PlateCarrierVest"
+                ],
+                "backpacks": [
+                    "HuntingBag"
+                ],
+                "bodywear": [
+                    "BDUJacket"
+                ],
+                "pants": [
+                    "BDUPants"
+                ],
+                "shoes": [
+                    "CombatBoots_Black"
+                ],
+                "loot": [
+                    "BandageDressing",
+                    "Mag_STANAG_30Rnd",
+                    "Mag_Fal_20rnd",
+                    "Mag_AKM_30Rnd",
+                    "AmmoBox_556x45_20Rnd",
+                    "AmmoBox_308Win_20Rnd",
+                    "AmmoBox_762x39_20Rnd"
+                ]
+            }
+        }
+    ],
+    "SniperLocations": [
+        {
+            "name": "EoH_Bunker_Overwatch_Sniper",
+            "positions": [
+                "13264.932617 34.821518 6121.479980"
+            ],
+            "npcclass": "BanditAI_Denis",
+            "accuracy": 92.0,
+            "fixedpos": 1,
+            "triggerpos": "13271.162109 19.606733 6084.740234",
+            "weaponpool": [
+                "Predefined_EoH_Bunker_SVD"
+            ],
+            "npcproperties": {
+                "headgear": [
+                    "BallisticHelmet_Black"
+                ],
+                "masks": [
+                    "BalaclavaMask_Black"
+                ],
+                "vests": [
+                    "PlateCarrierVest"
+                ],
+                "backpacks": [
+                    "HuntingBag"
+                ],
+                "bodywear": [
+                    "BDUJacket"
+                ],
+                "pants": [
+                    "BDUPants"
+                ],
+                "shoes": [
+                    "CombatBoots_Black"
+                ],
+                "loot": [
+                    "Mag_SVD_10Rnd",
+                    "AmmoBox_762x54_20Rnd",
+                    "BandageDressing"
+                ]
+            }
+        }
+    ],
+    "PredefinedWeapons": [
+        {
+            "name": "Predefined_EoH_Bunker_M4A1",
+            "weapon": "M4A1",
+            "attachments": [
+                "Mag_STANAG_30Rnd",
+                "M4_MPHndgrd",
+                "M4_CQBBttstck",
+                "ACOGOptic",
+                "M4_Suppressor"
+            ]
+        },
+        {
+            "name": "Predefined_EoH_Bunker_FAL",
+            "weapon": "FAL",
+            "attachments": [
+                "Mag_Fal_20rnd",
+                "ACOGOptic"
+            ]
+        },
+        {
+            "name": "Predefined_EoH_Bunker_AKM",
+            "weapon": "AKM",
+            "attachments": [
+                "Mag_AKM_30Rnd",
+                "AK_WoodHndgrd",
+                "AK_WoodBttstck",
+                "PSO1Optic"
+            ]
+        },
+        {
+            "name": "Predefined_EoH_Bunker_SVD",
+            "weapon": "SVD",
+            "attachments": [
+                "Mag_SVD_10Rnd",
+                "GhillieAtt_Mossy",
+                "PSO11Optic"
+            ]
+        }
+    ]
+}
