@@ -1,17 +1,18 @@
 {
-  "version": 1,
-  "notes": "EoH high-tier tanky AI boss templates for future quest targets. Bosses are intentionally non-epic reward sources for now; quest rewards should be handled later through Expansion Quests/CBD/bunker systems.",
+  "version": 2,
+  "notes": "EoH high-tier tanky AI boss templates for future quest targets. All three bosses are Tier 3.5 difficulty: tougher than normal town/NWAF AI, but still below bunker/endgame epic-tier reward economy. Quest rewards should be handled later through Expansion Quests/CBD/bunker systems.",
+  "BossTier": "T3.5",
   "Bosses": [
     {
       "name": "SKSuperman",
-      "role": "QuestBoss_Tier1",
+      "role": "QuestBoss_Tier3_5",
       "faction": "Bandits",
-      "description": "A brutal front-line enforcer used as the first high-tier quest target.",
+      "description": "Tier 3.5 named boss. Brutal front-line enforcer for the future EoH boss quest chain.",
       "classname": "BanditAI_Denis",
-      "healthMultiplier": 4.0,
-      "accuracy": 78.0,
-      "grenadechance": 5.0,
-      "weaponpool": ["EoH_BOSS_AKM_Tanky"],
+      "healthMultiplier": 6.0,
+      "accuracy": 86.0,
+      "grenadechance": 10.0,
+      "weaponpool": ["EoH_BOSS_T35_AKM", "EoH_BOSS_T35_M4", "EoH_BOSS_T35_FAL"],
       "npcproperties": {
         "headgear": ["MDF_Helmet_Black"],
         "masks": ["MDF_Balaclava_Black"],
@@ -22,23 +23,24 @@
         "pants": ["MDF_CombatPants_Black"],
         "shoes": ["MDF_CombatBoots_Black"],
         "gloves": ["MDF_TacticalGloves_Black"],
-        "loot": ["BandageDressing", "Mag_AKM_30Rnd", "Ammo_762x39", "EoH_TownIntel", "CBD_LootRoomKey_Bronze"],
+        "loot": ["BandageDressing", "Mag_AKM_30Rnd", "Mag_STANAG_30Rnd", "Mag_Fal_20rnd", "Ammo_762x39", "Ammo_556x45", "Ammo_308Win", "EoH_TownIntel", "EoH_TraderIntel", "CBD_LootRoomKey_Silver"],
         "lootChance": {
           "EoH_TownIntel": 0.1,
-          "CBD_LootRoomKey_Bronze": 0.2
+          "EoH_TraderIntel": 0.1,
+          "CBD_LootRoomKey_Silver": 0.06
         }
       }
     },
     {
       "name": "All Out Genius",
-      "role": "QuestBoss_Tier2",
+      "role": "QuestBoss_Tier3_5",
       "faction": "Bandits",
-      "description": "A tactical commander and second boss in the future quest chain.",
+      "description": "Tier 3.5 named boss. Tactical commander for the future EoH boss quest chain.",
       "classname": "BanditAI_Mirek",
-      "healthMultiplier": 5.0,
-      "accuracy": 84.0,
-      "grenadechance": 8.0,
-      "weaponpool": ["EoH_BOSS_M4_Tactical"],
+      "healthMultiplier": 6.0,
+      "accuracy": 86.0,
+      "grenadechance": 10.0,
+      "weaponpool": ["EoH_BOSS_T35_AKM", "EoH_BOSS_T35_M4", "EoH_BOSS_T35_FAL"],
       "npcproperties": {
         "headgear": ["MDF_Helmet_Black"],
         "masks": ["MDF_Balaclava_Black"],
@@ -49,8 +51,9 @@
         "pants": ["MDF_CombatPants_Black"],
         "shoes": ["MDF_CombatBoots_Black"],
         "gloves": ["MDF_TacticalGloves_Black"],
-        "loot": ["BandageDressing", "Mag_STANAG_30Rnd", "Ammo_556x45", "EoH_TraderIntel", "CBD_LootRoomKey_Silver"],
+        "loot": ["BandageDressing", "Mag_AKM_30Rnd", "Mag_STANAG_30Rnd", "Mag_Fal_20rnd", "Ammo_762x39", "Ammo_556x45", "Ammo_308Win", "EoH_TownIntel", "EoH_TraderIntel", "CBD_LootRoomKey_Silver"],
         "lootChance": {
+          "EoH_TownIntel": 0.1,
           "EoH_TraderIntel": 0.1,
           "CBD_LootRoomKey_Silver": 0.06
         }
@@ -58,14 +61,14 @@
     },
     {
       "name": "DeadlyDead SK",
-      "role": "QuestBoss_Tier3",
+      "role": "QuestBoss_Tier3_5",
       "faction": "Bandits",
-      "description": "The final tank boss template for the first EoH boss quest chain.",
+      "description": "Tier 3.5 named boss. Heavy final target for the future EoH boss quest chain.",
       "classname": "BanditAI_Rolf",
-      "healthMultiplier": 6.5,
-      "accuracy": 90.0,
-      "grenadechance": 12.0,
-      "weaponpool": ["EoH_BOSS_FAL_Heavy"],
+      "healthMultiplier": 6.0,
+      "accuracy": 86.0,
+      "grenadechance": 10.0,
+      "weaponpool": ["EoH_BOSS_T35_AKM", "EoH_BOSS_T35_M4", "EoH_BOSS_T35_FAL"],
       "npcproperties": {
         "headgear": ["MDF_Helmet_Black"],
         "masks": ["MDF_Balaclava_Black"],
@@ -76,27 +79,28 @@
         "pants": ["MDF_CombatPants_Black"],
         "shoes": ["MDF_CombatBoots_Black"],
         "gloves": ["MDF_TacticalGloves_Black"],
-        "loot": ["BandageDressing", "Mag_Fal_20rnd", "Ammo_308Win", "EoH_TownIntel", "EoH_TraderIntel"],
+        "loot": ["BandageDressing", "Mag_AKM_30Rnd", "Mag_STANAG_30Rnd", "Mag_Fal_20rnd", "Ammo_762x39", "Ammo_556x45", "Ammo_308Win", "EoH_TownIntel", "EoH_TraderIntel", "CBD_LootRoomKey_Silver"],
         "lootChance": {
           "EoH_TownIntel": 0.1,
-          "EoH_TraderIntel": 0.1
+          "EoH_TraderIntel": 0.1,
+          "CBD_LootRoomKey_Silver": 0.06
         }
       }
     }
   ],
   "PredefinedWeapons": [
     {
-      "name": "EoH_BOSS_AKM_Tanky",
+      "name": "EoH_BOSS_T35_AKM",
       "weapon": "AKM",
       "attachments": ["Mag_AKM_30Rnd", "AK_PlasticBttstck_Black", "PSO1Optic", "AK_Suppressor"]
     },
     {
-      "name": "EoH_BOSS_M4_Tactical",
+      "name": "EoH_BOSS_T35_M4",
       "weapon": "M4A1",
       "attachments": ["Mag_STANAG_30Rnd", "M4_MPBttstck_Black", "M68Optic", "M4_Suppressor"]
     },
     {
-      "name": "EoH_BOSS_FAL_Heavy",
+      "name": "EoH_BOSS_T35_FAL",
       "weapon": "FAL",
       "attachments": ["Mag_Fal_20rnd", "SNAFU_Elcan", "SNAFU_Standardized_Suppressor_Black"]
     }
