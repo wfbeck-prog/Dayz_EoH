@@ -352,16 +352,7 @@ class EoH_RT_TraderManager
 		msg.Replace("%TRADER%", profile.DisplayName);
 		msg.Replace("%LOCATION%", node.Name);
 
-		array<Man> players = new array<Man>();
-		GetGame().GetPlayers(players);
-
-		foreach (Man man : players)
-		{
-			PlayerBase player = PlayerBase.Cast(man);
-			if (!player || !player.GetIdentity())
-				continue;
-
-			player.MessageStatus(msg);
-		}
+		EoH_Notifications.SendToAll("ROAMING TRADER MOVED", msg);
+		Print("[EoH_RT] Move notification sent: " + msg);
 	}
 };
