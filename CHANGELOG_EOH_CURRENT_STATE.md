@@ -173,6 +173,10 @@ Recommended EoH use:
 - Safe recovery AI Bandits config created and validated live.
 - Bunker AI safe groups confirmed spawning on both bunker levels.
 - Green Mountain recovery test group removed from safe recovery config because it violated safe-zone trader gameplay.
+- Tier 1 AI and drug trader guards should use ALV clothing classnames from the ALV clothing list.
+- Drug trader guards should use mid-tier gear/weapons and be stronger than basic Tier 1 town AI.
+- Black market AI should be just below bunker AI: elite-adjacent, dangerous, and well-equipped, but not carrying bunker-only/endgame reward weapons.
+- Bunker AI remains the highest normal AI tier and should use the best verified combat gear/loadouts.
 
 Validated recovery config:
 
@@ -183,6 +187,37 @@ EoH_Server/config/AIB/DynamicAIB_EoH_SAFE_RECOVERY.json
 Important note:
 - Do not restore the old full DynamicAIB config all at once.
 - Rebuild from the safe recovery file in phases with verified classnames.
+
+### AI Difficulty / Loadout Tier Rules
+
+```text
+Tier 1 Town AI
+- ALV civilian/scavenger/light-military clothing
+- light to mid-tier weapons
+- limited armor
+- low grenade chance
+- no bunker-tier weapons
+
+Drug Trader Guards
+- ALV darker/scavenger/militia clothing
+- mid-tier weapons
+- moderate armor
+- slightly harder than Tier 1 town AI
+- not equal to black market guards
+
+Black Market Guards
+- just below bunker AI
+- high accuracy, strong armor, coordinated guard feel
+- mid-high to high-tier weapons only
+- no bunker-exclusive reward weapons
+- no .50 cal / .408 Chey loadouts as normal guard weapons
+
+Bunker AI
+- highest standard AI difficulty
+- bunker/endgame combat gear
+- strongest verified weapons and armor
+- protects epic loot and raid progression resources
+```
 
 ## CBD / Key Rooms
 
@@ -491,6 +526,8 @@ Need to rebuild:
 - roaming trader escorts
 - town/capture AI
 - final bunker AI loadouts
+- drug trader guards using ALV clothing
+- black market guards just below bunker AI
 
 using verified classnames only.
 
