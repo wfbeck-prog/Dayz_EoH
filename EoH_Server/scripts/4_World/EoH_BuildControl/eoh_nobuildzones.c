@@ -95,30 +95,36 @@ class EoH_NoBuildManager
 
         return false;
     }
+
+    static void Notify(PlayerBase player, string message)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
+        Param1<string> msg = new Param1<string>(message);
+        GetGame().RPCSingleParam(player, ERPCs.RPC_USER_ACTION_MESSAGE, msg, true, player.GetIdentity());
+    }
 }
 
-modded class Hologram
+modded class ActionDeployObject
 {
-    override bool IsCollidingBBox()
+    override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
     {
-        bool result = super.IsCollidingBBox();
+        if (!super.ActionCondition(player, target, item))
+            return false;
 
-        vector pos = GetProjectionPosition();
+        if (!player)
+            return true;
 
+        vector pos = player.GetPosition();
         string denyMessage;
+
         if (EoH_NoBuildManager.IsBlocked(pos, denyMessage))
         {
-            PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-
-            if (player && player.GetIdentity())
-            {
-                Param1<string> msg = new Param1<string>(denyMessage);
-                GetGame().RPCSingleParam(player, ERPCs.RPC_USER_ACTION_MESSAGE, msg, true, player.GetIdentity());
-            }
-
-            return true;
+            EoH_NoBuildManager.Notify(player, denyMessage);
+            return false;
         }
 
-        return result;
+        return true;
     }
 }
