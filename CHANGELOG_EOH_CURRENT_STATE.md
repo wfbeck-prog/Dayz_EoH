@@ -173,6 +173,7 @@ Recommended EoH use:
 - Safe recovery AI Bandits config created and validated live.
 - Bunker AI safe groups confirmed spawning on both bunker levels.
 - Green Mountain recovery test group removed from safe recovery config because it violated safe-zone trader gameplay.
+- Town-control gameplay loop remains planned around 4 AI levels/tiers.
 - Tier 1 AI and drug trader guards should use ALV clothing classnames from the ALV clothing list.
 - Drug trader guards should use mid-tier gear/weapons and be stronger than basic Tier 1 town AI.
 - Black market AI should be just below bunker AI: elite-adjacent, dangerous, and well-equipped, but not carrying bunker-only/endgame reward weapons.
@@ -187,6 +188,42 @@ EoH_Server/config/AIB/DynamicAIB_EoH_SAFE_RECOVERY.json
 Important note:
 - Do not restore the old full DynamicAIB config all at once.
 - Rebuild from the safe recovery file in phases with verified classnames.
+
+### Town-Control AI: 4-Level Loop
+
+Town control should use four escalating AI levels tied to town value and capture progression:
+
+```text
+Level 1 - Outer Town Patrols
+- ALV civilian/scavenger/light-military clothing
+- low-mid accuracy
+- light to mid-tier weapons
+- light armor / chest rigs
+- low grenade chance
+- intended for Tier 1 towns and early capture pressure
+
+Level 2 - Armed Town Defenders
+- ALV militia/light military clothing
+- medium accuracy
+- mid-tier rifles
+- moderate armor
+- better loot than Level 1
+- used for stronger towns and contested captures
+
+Level 3 - Veteran Occupation Forces
+- heavier armor and more coordinated patrols
+- mid-high tier weapons
+- higher accuracy
+- controlled grenade chance
+- protects high-value towns and mature captures
+
+Level 4 - Elite Town Command / Boss Defense
+- strongest town-control AI tier
+- boss/commander style presence
+- high accuracy and armor
+- high-tier weapons, but still below bunker-exclusive reward pool
+- should feel like a major objective without replacing bunker/endgame loot progression
+```
 
 ### AI Difficulty / Loadout Tier Rules
 
@@ -528,6 +565,7 @@ Need to rebuild:
 - final bunker AI loadouts
 - drug trader guards using ALV clothing
 - black market guards just below bunker AI
+- four-level town-control AI loop
 
 using verified classnames only.
 
