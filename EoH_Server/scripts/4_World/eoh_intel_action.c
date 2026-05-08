@@ -11,6 +11,11 @@ class ActionUseIntel: ActionSingleUseBase
         return "Use Intel";
     }
 
+    override bool HasTarget()
+    {
+        return false;
+    }
+
     override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
     {
         if (!player || !item)
