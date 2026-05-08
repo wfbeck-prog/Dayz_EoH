@@ -52,20 +52,8 @@ class EoH_CBD_MarkerHelper
 		if (!room || !GetGame().IsServer())
 			return;
 
-		array<Man> players = new array<Man>();
-		GetGame().GetPlayers(players);
-
-		foreach (Man man : players)
-		{
-			PlayerBase player = PlayerBase.Cast(man);
-			if (!player || !player.GetIdentity())
-				continue;
-
-			SendToPlayer(player, room);
-		}
-
 		EoH_Notifications.SendToAll("CBD ROOM BREACHED", room.LootRoomName + " has been opened.");
-		Print("[EoH_CBD] Broadcast flash marker for room " + room.LootRoomName);
+		Print("[EoH_CBD] CBD room opened: " + room.LootRoomName + " at " + room.LootRoomPosition.ToString());
 	}
 
 	static void SendToPlayer(PlayerBase player, LootSystemRoom room)
@@ -73,19 +61,7 @@ class EoH_CBD_MarkerHelper
 		if (!player || !player.GetIdentity() || !room)
 			return;
 
-		int tier = GetTierFromName(room.LootRoomName);
-
-		EoH_RT_MarkerData data = new EoH_RT_MarkerData();
-		data.TraderId = GetMarkerId(room.LootRoomName);
-		data.Label = GetLabel(room);
-		data.Position = room.LootRoomPosition;
-		data.Color = GetColor(tier);
-		data.Pulse = 1;
-		data.Icon = "Danger";
-		data.Is3D = 1;
-
-		Param1<ref EoH_RT_MarkerData> markerParam = new Param1<ref EoH_RT_MarkerData>(data);
-		GetGame().RPCSingleParam(player, EoH_RT_RPC.ADD_OR_UPDATE_KEYROOM_MARKER, markerParam, true, player.GetIdentity());
+		EoH_Notifications.SendToPlayer(player, "CBD ROOM BREACHED", GetLabel(room));
 	}
 
 	static void Clear(LootSystemRoom room)
@@ -98,21 +74,7 @@ class EoH_CBD_MarkerHelper
 
 	static void ClearByName(string roomName)
 	{
-		array<Man> players = new array<Man>();
-		GetGame().GetPlayers(players);
-
 		string markerId = GetMarkerId(roomName);
-
-		foreach (Man man : players)
-		{
-			PlayerBase player = PlayerBase.Cast(man);
-			if (!player || !player.GetIdentity())
-				continue;
-
-			Param1<string> removeParam = new Param1<string>(markerId);
-			GetGame().RPCSingleParam(player, EoH_RT_RPC.REMOVE_KEYROOM_MARKER, removeParam, true, player.GetIdentity());
-		}
-
-		Print("[EoH_CBD] Cleared marker " + markerId);
+		Print("[EoH_CBD] Cleared marker placeholder " + markerId);
 	}
 }
