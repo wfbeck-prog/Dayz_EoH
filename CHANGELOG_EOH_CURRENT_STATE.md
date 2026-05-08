@@ -10,6 +10,46 @@ Current bunker direction is locked: bunker loot is true endgame combat reward lo
 
 ---
 
+# Latest Validation Notes
+
+## AI Bandits Recovery Validation
+
+Confirmed live:
+
+- Safe recovery DynamicAIB schema spawns AI successfully.
+- Initial Green Mountain test patrol spawned and killed the player, proving AI_Bandits/AIB_Unleashed itself is working.
+- Green Mountain test patrol was removed because Green Mountain is a safe-zone trader area.
+- Bunker AI spawned successfully on both bunker levels using the safe recovery config.
+
+Working recovery file:
+
+```text
+EoH_Server/config/AIB/DynamicAIB_EoH_SAFE_RECOVERY.json
+```
+
+Confirmed bunker groups:
+
+```text
+EoH_BUNKER_Upper_BanditGuard_SAFE
+EoH_BUNKER_Lower_BanditGuard_SAFE
+```
+
+Conclusion:
+- AI failure was not caused by AI_Bandits/AIB_Unleashed load order.
+- Previous DynamicAIB issue is most likely invalid classnames, invalid attachment chains, risky custom loot, or unsupported schema fields.
+- Rebuild AI config in phases using verified classnames only.
+
+Next AI rebuild order:
+
+1. Restore roaming trader escorts with vanilla-safe loadouts.
+2. Restore bunker guards with verified SNAFU/GCGN weapons.
+3. Restore town patrols/capture AI.
+4. Reintroduce verified My_DF_Gear classnames from `Delta_Force_Gear_Types`.
+5. Reintroduce EoH intel loot only after item classnames are confirmed in config/mod source.
+6. Reintroduce SNAFU attachments only from verified weapon attachment compatibility data.
+
+---
+
 # Completed / Working Systems
 
 ## EoH Notification Standard
@@ -130,15 +170,19 @@ Recommended EoH use:
   - SKSuperman
   - All Out Genius
   - DeadlyDead SK
-- Bunker AI positions were added using AI Bandits / AIB_Unleashed direction.
-- A dedicated AI Bandits bunker config was generated using the correct version 1 DynamicAIB schema:
+- Safe recovery AI Bandits config created and validated live.
+- Bunker AI safe groups confirmed spawning on both bunker levels.
+- Green Mountain recovery test group removed from safe recovery config because it violated safe-zone trader gameplay.
+
+Validated recovery config:
 
 ```text
-EoH_Server/config/AIB/EoH_Bunker_DynamicAIB.json
+EoH_Server/config/AIB/DynamicAIB_EoH_SAFE_RECOVERY.json
 ```
 
 Important note:
-- The bunker AI config must be merged into or used as the active runtime DynamicAIB file before bunker AI will spawn.
+- Do not restore the old full DynamicAIB config all at once.
+- Rebuild from the safe recovery file in phases with verified classnames.
 
 ## CBD / Key Rooms
 
@@ -183,6 +227,7 @@ Expected logs:
 - Unsafe `Object.GetAnimationPhase()` calls were removed from the panel observer.
 - CJ187-LootChest bunker direction chosen.
 - MMG containers should be treated as visual/decorative bunker props, while CJ187-compatible chest classes handle loot backend.
+- Bunker AI now validated with safe recovery AIB config on both bunker levels.
 - Bunker loot excludes filler categories:
   - no sidearms
   - no general supplies
@@ -438,9 +483,16 @@ Need to verify:
 - no invalid classnames remain
 - no inventory overflow issues occur
 
-## Bunker AI
+## AI Config Rebuild
 
-AI Bandits is loading, but bunker AI will not spawn until the bunker DynamicAIB groups are placed into the active runtime AI Bandits config.
+Safe recovery AIB config is validated. The old full DynamicAIB should not be restored as-is.
+
+Need to rebuild:
+- roaming trader escorts
+- town/capture AI
+- final bunker AI loadouts
+
+using verified classnames only.
 
 ---
 
@@ -503,12 +555,13 @@ Planned future workflow:
 
 # Recommended Next Session Priorities
 
-1. Validate shared EoH notifications in live server.
-2. Validate CBD marker flash after opening a CBD door.
-3. Confirm relay cleanup flag is active in live `$profile:EoH_Server/Relays.json`.
-4. Locate/verify actual relay spawner honors `DeleteExistingEoHRelaysBeforeSpawn`.
-5. Merge bunker AI groups into active AI Bandits runtime file.
-6. Continue bunker loot balance testing.
-7. Remove bunker weapons from trader sell inventories.
-8. Limit bunker ammo and magazines at traders/black market.
-9. Resume high-quality handcrafted quest generation.
+1. Rebuild roaming trader escorts from safe AIB recovery config.
+2. Validate shared EoH notifications in live server.
+3. Validate CBD marker flash after opening a CBD door.
+4. Confirm relay cleanup flag is active in live `$profile:EoH_Server/Relays.json`.
+5. Locate/verify actual relay spawner honors `DeleteExistingEoHRelaysBeforeSpawn`.
+6. Rebuild town/capture AI after capture loop is working.
+7. Continue bunker loot balance testing.
+8. Remove bunker weapons from trader sell inventories.
+9. Limit bunker ammo and magazines at traders/black market.
+10. Resume high-quality handcrafted quest generation.
