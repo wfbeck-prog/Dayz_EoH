@@ -43,12 +43,3 @@ modded class EoH_CaptureRelay_Base
         AddAction(EoH_ActionCaptureRelay);
     }
 };
-
-modded class EoH_RadioRelay
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(EoH_ActionCaptureRelay);
-    }
-};
