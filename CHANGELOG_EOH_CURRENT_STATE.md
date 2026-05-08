@@ -6,11 +6,41 @@ Live gameplay systems stabilization.
 
 Quest system v2 generation paused temporarily while bunker/CBD feedback systems are debugged.
 
-Current bunker direction is now locked: bunker loot should be true endgame combat reward loot, while traders remain useful for limited ammo and magazine support.
+Current bunker direction is locked: bunker loot is true endgame combat reward loot, traders remain useful for limited ammo/magazine support, and raid explosive progression requires repeated bunker runs.
 
 ---
 
 # Completed / Working Systems
+
+## EoH Notification Standard
+
+- Added shared EoH notification helper:
+
+```text
+EoH_Server/scripts/4_World/EoH_Core/eoh_notifications.c
+```
+
+- Standardized global EoH alerts to use the same Expansion notification pattern proven by MerkZone KOTH:
+
+```text
+ExpansionNotification(title, message, "Territory", COLOR_EXPANSION_NOTIFICATION_MISSION, duration).Create();
+```
+
+- EoH systems should now use:
+
+```text
+EoH_Notifications.SendToAll(title, message)
+EoH_Notifications.SendToPlayer(player, title, message)
+```
+
+- Intended for:
+  - bunker alerts
+  - CBD room alerts
+  - town capture alerts
+  - relay alerts
+  - black market movement alerts
+  - roaming trader discovery alerts
+  - future EoH event systems
 
 ## Relay Gameplay System
 
@@ -20,6 +50,64 @@ Current bunker direction is now locked: bunker loot should be true endgame comba
 - Radio-based respawn integration.
 - Town respawn groundwork.
 - Terje StartScreen integration groundwork.
+- Relay startup config now defaults to cleaning existing EoH relays before spawning new relays to prevent restart stacking.
+
+Updated:
+
+```text
+EoH_Server/scripts/3_Game/EoH_CaptureRelay/eoh_relay_config.c
+```
+
+Important config default:
+
+```text
+DeleteExistingEoHRelaysBeforeSpawn = true
+```
+
+Live server note:
+- Existing profile config may still need manual update at:
+
+```text
+$profile:EoH_Server/Relays.json
+```
+
+Set:
+
+```json
+"DeleteExistingEoHRelaysBeforeSpawn": true
+```
+
+## EoH Build Control / No-Build Zones
+
+- Added configurable no-build zone support.
+- Config path:
+
+```text
+$profile:EoH_BuildControl/NoBuildZones.json
+```
+
+- Repo config example added:
+
+```text
+EoH_Server/config/EoH_BuildControl/NoBuildZones.json
+```
+
+- Script added:
+
+```text
+EoH_Server/scripts/4_World/EoH_BuildControl/eoh_nobuildzones.c
+```
+
+- Current implementation blocks deploy/build actions based on player position inside configured radius.
+- Hologram collision override was removed because it was incompatible with the active DayZ 1.29/mod stack.
+
+Recommended EoH use:
+- trader zones
+- bunker conflict zone
+- CBD rooms/event zones
+- capture towns
+- relay objectives
+- black market zones
 
 ## Terje Respawn Integration
 
@@ -42,6 +130,15 @@ Current bunker direction is now locked: bunker loot should be true endgame comba
   - SKSuperman
   - All Out Genius
   - DeadlyDead SK
+- Bunker AI positions were added using AI Bandits / AIB_Unleashed direction.
+- A dedicated AI Bandits bunker config was generated using the correct version 1 DynamicAIB schema:
+
+```text
+EoH_Server/config/AIB/EoH_Bunker_DynamicAIB.json
+```
+
+Important note:
+- The bunker AI config must be merged into or used as the active runtime DynamicAIB file before bunker AI will spawn.
 
 ## CBD / Key Rooms
 
@@ -49,6 +146,29 @@ Current bunker direction is now locked: bunker loot should be true endgame comba
 - Tiered room progression preserved.
 - Punch cards restricted to Tier 4 loot rooms only.
 - Key drop integration started.
+- CBD observer now routes door-open markers through the unified CBD marker helper.
+- CBD marker IDs were normalized to fix add/update/remove mismatch.
+- Door-open behavior now sends:
+  - flashing/pulsing keyroom marker
+  - danger icon
+  - tier-based color
+  - upper-left EoH notification
+- Marker cleanup now uses the same marker ID that was used to create the marker.
+
+Updated:
+
+```text
+EoH_Server/scripts/4_World/eoh_cbd_observer.c
+EoH_Server/scripts/4_World/eoh_cbd_markerhelper.c
+```
+
+Expected logs:
+
+```text
+[EoH_CBD] Door opened:
+[EoH_CBD] Broadcast flash marker
+[EoH_CBD] Cleared marker
+```
 
 ## Bunker Systems
 
@@ -56,9 +176,14 @@ Current bunker direction is now locked: bunker loot should be true endgame comba
 - Bunker global alert framework added.
 - ActionUseUndergroundPanel bridge added.
 - Debug logging added to bunker bridge.
+- Panel observer fallback added to help detect bunker panel object/class safely.
+- Bunker alert was converted to the shared EoH notification helper.
+- Duplicate `EoH_BunkerGlobalAlert` class issue fixed by removing duplicate helper declaration.
+- MissionServer observer hook moved to `5_Mission` where `MissionServer` exists.
+- Unsafe `Object.GetAnimationPhase()` calls were removed from the panel observer.
 - CJ187-LootChest bunker direction chosen.
-- MMG Base Storage deployed containers will be used as the actual CJ187 bunker loot containers.
-- Bunker loot will exclude filler categories:
+- MMG containers should be treated as visual/decorative bunker props, while CJ187-compatible chest classes handle loot backend.
+- Bunker loot excludes filler categories:
   - no sidearms
   - no general supplies
   - no tools
@@ -66,7 +191,7 @@ Current bunker direction is now locked: bunker loot should be true endgame comba
 
 ## Bunker Loot Direction
 
-Bunker loot should focus only on endgame combat and raid progression:
+Bunker loot focuses only on endgame combat and raid progression:
 
 - Epic weapons.
 - High-power sniper rifles.
@@ -116,7 +241,7 @@ SNAFU_Kahles
 
 ## Bunker Container Layout
 
-Seven hand-placed bunker containers are planned through CJ187-LootChest using MMG deployed container classes.
+Seven hand-placed bunker containers are planned through CJ187-LootChest.
 
 Recommended roles:
 
@@ -142,7 +267,7 @@ Reason:
 
 ## Breaching Charge Loot Direction
 
-Bunker loot should include Breaching Charge mod crafting parts and rare completed charge items.
+Bunker loot includes Breaching Charge mod crafting parts and rare completed charge items.
 
 Confirmed breaching-related classnames:
 
@@ -163,6 +288,46 @@ Balance target:
 - Components should be more common than completed breaching charges.
 - Completed breaching charges should be rare.
 - Heavy breaching charges should be very rare.
+- Players should need multiple bunker runs to reliably build raid explosives.
+
+## Expansion Market Updates
+
+### Medical
+
+Updated:
+
+```text
+Server_Config_Backup/HostHavocDayZServer/ExpansionMod/Market/Medical.json
+```
+
+- Added Terje medical-only items:
+  - salves
+  - pills
+  - ampoules
+  - injectors
+  - surgical kits/tools
+  - advanced medkits
+  - diagnostics/tests
+  - syringes
+  - defibrillator
+- Excluded normal-market poison/Novichek-style items.
+- Balance direction:
+  - basic meds common
+  - advanced meds expensive
+  - elite injectors rare
+
+### Furnishings
+
+Updated:
+
+```text
+Server_Config_Backup/HostHavocDayZServer/ExpansionMod/Market/Furnishings.json
+```
+
+- Added Terje sleeping bags:
+  - `TerjeSleepingBag_Blue`
+  - `TerjeSleepingBag_Woodland`
+- Sleeping bags were intentionally placed in Furnishings instead of Medical.
 
 ## Trader Economy Rules
 
@@ -225,47 +390,57 @@ GCGN_Ammo_3006
 
 ---
 
-# Current Known Issues
+# Current Known Issues / Validation Needed
 
-## Bunker Notification Not Firing
+## Relay Stacking
 
-Debug logging now added to:
+Code default has been changed to clean existing relays before spawn, but live server profile config may still need manual update:
 
 ```text
-EoH_Server/scripts/4_World/EoH_Bunker/eoh_actionuseundergroundpanel_bridge.c
+$profile:EoH_Server/Relays.json
 ```
 
-Need to confirm via server logs whether:
-- ActionUseUndergroundPanel bridge fires.
-- Player identity exists.
-- Global alert helper executes.
+Set:
 
-If bridge fails entirely:
-- fallback plan is panel-state observer.
+```json
+"DeleteExistingEoHRelaysBeforeSpawn": true
+```
+
+Need to validate that the actual relay spawner honors this flag.
 
 ## CBD Marker Flash / Global Alerts
 
-Not implemented yet.
+Implemented and needs live validation.
 
-Planned:
-- Hook after successful CBD UnlockLootRoom execution.
-- Send marker pulse/flash.
-- Send global room-open notifications.
-- Add debug logging first.
+Need to confirm:
+- CBD observer detects door open.
+- Marker appears for all players.
+- Marker pulses/flashes.
+- Marker clears on close.
+- EoH notification appears upper-left.
 
-## Bunker Loot Config Not Yet Finalized
+## Bunker Notification
 
-Need to generate/merge final CJ187 JSON tables for:
-- MMG bunker container locations.
-- Epic weapon loot tables.
-- High-power sniper tables.
-- Epic gear tables.
-- Ammo/mag/attachment tables.
-- Breaching charge component tables.
+Bunker notification now uses shared EoH notification helper.
 
-## Trader Config Not Yet Updated
+Need to confirm:
+- notification appears upper-left using Expansion UI
+- no global chat fallback is used when Expansion is active
+- panel observer/action bridge do not double-fire
 
-Expansion Market trader files still need to be located or uploaded before removing bunker weapons from actual trader sell inventories.
+## Bunker Loot Config
+
+CJ187 bunker loot now works but still needs gameplay balance validation.
+
+Need to verify:
+- crate fill quantity feels rewarding but not excessive
+- explosive progression requires repeated bunker runs
+- no invalid classnames remain
+- no inventory overflow issues occur
+
+## Bunker AI
+
+AI Bandits is loading, but bunker AI will not spawn until the bunker DynamicAIB groups are placed into the active runtime AI Bandits config.
 
 ---
 
@@ -328,11 +503,12 @@ Planned future workflow:
 
 # Recommended Next Session Priorities
 
-1. Verify bunker bridge debug logs.
-2. Fix bunker global notifications.
-3. Generate and merge final CJ187 bunker loot config.
-4. Remove bunker weapons from trader sell inventories.
-5. Limit bunker ammo and magazines at traders/black market.
-6. Implement CBD room-open marker flash system.
-7. Validate relay/town gameplay loop.
-8. Resume high-quality handcrafted quest generation.
+1. Validate shared EoH notifications in live server.
+2. Validate CBD marker flash after opening a CBD door.
+3. Confirm relay cleanup flag is active in live `$profile:EoH_Server/Relays.json`.
+4. Locate/verify actual relay spawner honors `DeleteExistingEoHRelaysBeforeSpawn`.
+5. Merge bunker AI groups into active AI Bandits runtime file.
+6. Continue bunker loot balance testing.
+7. Remove bunker weapons from trader sell inventories.
+8. Limit bunker ammo and magazines at traders/black market.
+9. Resume high-quality handcrafted quest generation.
