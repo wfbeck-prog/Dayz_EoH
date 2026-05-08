@@ -35,11 +35,18 @@ class EoH_ActionCaptureRelay : ActionInteractBase
     }
 };
 
-modded class EoH_CaptureRelay_Base
+bool EoH_IsRelayObject(string type)
+{
+    return type == "EoH_CaptureRelay_Base";
+}
+
+modded class ItemBase
 {
     override void SetActions()
     {
         super.SetActions();
-        AddAction(EoH_ActionCaptureRelay);
+
+        if (EoH_IsRelayObject(GetType()))
+            AddAction(EoH_ActionCaptureRelay);
     }
 };
