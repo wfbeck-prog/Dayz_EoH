@@ -38,10 +38,16 @@ class EoH_CBD_Observer
 				wasOpen = false;
 
 			if (isOpen && !wasOpen)
-				BroadcastMarker(room);
+			{
+				Print("[EoH_CBD] Door opened: " + room.LootRoomName);
+				EoH_CBD_MarkerHelper.Broadcast(room);
+			}
 
 			if (!isOpen && wasOpen)
-				ClearMarker(id);
+			{
+				Print("[EoH_CBD] Door closed: " + room.LootRoomName);
+				EoH_CBD_MarkerHelper.Clear(room);
+			}
 
 			m_LastState.Set(id, isOpen);
 		}
@@ -62,164 +68,52 @@ class EoH_CBD_Observer
 				continue;
 
 			if (IsDoorOpen(room))
-				SendMarkerToPlayer(player, room);
+				EoH_CBD_MarkerHelper.SendToPlayer(player, room);
 		}
 	}
 
-bool IsDoorOpen(LootSystemRoom room)
-{
-	if (!room)
-		return false;
-
-	if (room.LootRoomDoorIndex < 0)
-		return false;
-
-	array<Object> objects = new array<Object>();
-	array<CargoBase> cargos = new array<CargoBase>();
-
-	GetGame().GetObjectsAtPosition(room.LootRoomPosition, 2.5, objects, cargos);
-
-	foreach (Object obj : objects)
+	bool IsDoorOpen(LootSystemRoom room)
 	{
-		if (!obj)
-			continue;
+		if (!room)
+			return false;
 
-		Building building = Building.Cast(obj);
-		if (!building)
-			continue;
+		if (room.LootRoomDoorIndex < 0)
+			return false;
 
-		int doorCount = building.GetDoorCount();
+		array<Object> objects = new array<Object>();
+		array<CargoBase> cargos = new array<CargoBase>();
 
-		if (doorCount <= 0)
-			continue;
+		GetGame().GetObjectsAtPosition(room.LootRoomPosition, 2.5, objects, cargos);
 
-		if (room.LootRoomDoorIndex >= doorCount)
+		foreach (Object obj : objects)
 		{
-			Print("[EoH_CBD][WARN] Invalid door index " + room.LootRoomDoorIndex.ToString() + " for room " + room.LootRoomName + " at " + room.LootRoomPosition.ToString() + ". Building has " + doorCount.ToString() + " doors.");
-			continue;
+			if (!obj)
+				continue;
+
+			Building building = Building.Cast(obj);
+			if (!building)
+				continue;
+
+			int doorCount = building.GetDoorCount();
+
+			if (doorCount <= 0)
+				continue;
+
+			if (room.LootRoomDoorIndex >= doorCount)
+			{
+				Print("[EoH_CBD][WARN] Invalid door index " + room.LootRoomDoorIndex.ToString() + " for room " + room.LootRoomName + ".");
+				continue;
+			}
+
+			if (building.IsDoorOpen(room.LootRoomDoorIndex))
+				return true;
 		}
 
-		if (building.IsDoorOpen(room.LootRoomDoorIndex))
-			return true;
+		return false;
 	}
-
-	return false;
-}
 
 	string GetMarkerId(LootSystemRoom room)
 	{
-		return "CBD_ROOM_" + room.LootRoomName;
+		return EoH_CBD_MarkerHelper.GetMarkerId(room.LootRoomName);
 	}
-
-	int GetTierFromName(string roomName)
-	{
-		string upper = roomName;
-		upper.ToUpper();
-
-		if (upper.IndexOf("T1_") == 0 || upper.IndexOf("TIER1") != -1)
-			return 1;
-
-		if (upper.IndexOf("T2_") == 0 || upper.IndexOf("TIER2") != -1)
-			return 2;
-
-		if (upper.IndexOf("T3_") == 0 || upper.IndexOf("TIER3") != -1)
-			return 3;
-
-		if (upper.IndexOf("T4_") == 0 || upper.IndexOf("TIER4") != -1)
-			return 4;
-
-		if (upper.IndexOf("T5_") == 0 || upper.IndexOf("TIER5") != -1)
-			return 5;
-
-		return 0;
-	}
-
-	int GetTierColor(int tier)
-	{
-		switch (tier)
-		{
-			case 1:
-				return ARGB(255, 40, 200, 40);
-
-			case 2:
-				return ARGB(255, 50, 120, 255);
-
-			case 3:
-				return ARGB(255, 220, 180, 40);
-
-			case 4:
-				return ARGB(255, 255, 120, 40);
-
-			case 5:
-				return ARGB(255, 220, 40, 40);
-		}
-
-		return ARGB(255, 255, 50, 50);
-	}
-
-	string GetLabel(LootSystemRoom room)
-	{
-		int tier = GetTierFromName(room.LootRoomName);
-
-		if (tier > 0)
-			return "CBD Loot Room T" + tier.ToString();
-
-		return "CBD Loot Room";
-	}
-
-void SendMarkerToPlayer(PlayerBase player, LootSystemRoom room)
-{
-	if (!player || !player.GetIdentity() || !room)
-		return;
-
-	int tier = GetTierFromName(room.LootRoomName);
-
-	EoH_RT_MarkerData data = new EoH_RT_MarkerData();
-
-	data.TraderId = "KR_" + GetMarkerId(room); // IMPORTANT PREFIX
-data.Label = GetLabel(room);
-data.Position = room.LootRoomPosition;
-
-	data.Color = GetTierColor(tier);
-	data.Pulse = 1;
-	data.Icon = "Danger";
-	data.Is3D = 1;
-
-	Param1<ref EoH_RT_MarkerData> markerParam;
-	markerParam = new Param1<ref EoH_RT_MarkerData>(data);
-
-	GetGame().RPCSingleParam(player, EoH_RT_RPC.ADD_OR_UPDATE_KEYROOM_MARKER, markerParam, true, player.GetIdentity());
-}
-
-	void BroadcastMarker(LootSystemRoom room)
-	{
-		array<Man> players = new array<Man>();
-		GetGame().GetPlayers(players);
-
-		foreach (Man man : players)
-		{
-			PlayerBase player = PlayerBase.Cast(man);
-			if (!player || !player.GetIdentity())
-				continue;
-
-			SendMarkerToPlayer(player, room);
-		}
-	}
-
-void ClearMarker(string id)
-{
-	array<Man> players = new array<Man>();
-	GetGame().GetPlayers(players);
-
-	foreach (Man man : players)
-	{
-		PlayerBase player = PlayerBase.Cast(man);
-		if (!player || !player.GetIdentity())
-			continue;
-
-		Param1<string> removeParam = new Param1<string>(id);
-
-		GetGame().RPCSingleParam(player, EoH_RT_RPC.REMOVE_KEYROOM_MARKER, removeParam, true, player.GetIdentity());
-	}
-}
 };
