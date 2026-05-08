@@ -38,8 +38,7 @@ class EoH_BuildControlManager
         // IMPORTANT PERFORMANCE NOTE:
         // CanPlace can be called repeatedly while a hologram/kit is being previewed.
         // Large GetObjectsAtPosition scans here cause severe placement lag.
-        // Expensive territory conflict and placed-object limit checks are intentionally
-        // handled by final placement hooks/config workflows instead of every preview tick.
+        // Keep this check lightweight and avoid strict ownership registry-only behavior.
         if (itemType == "TerritoryFlagKit")
             return true;
 
@@ -114,7 +113,6 @@ class EoH_BuildControlManager
 
     static bool IsInsideOwnedTerritory(EoH_BuildControlConfig cfg, PlayerBase player, vector pos)
     {
-        // Uses persisted EoH ownership positions instead of repeatedly scanning/casting flags.
         string groupID = EoH_GroupHelper.GetGroupID(player);
         if (groupID == "")
             return false;
@@ -130,7 +128,29 @@ class EoH_BuildControlManager
             string owner = EoH_TerritoryOwnershipRegistry.GetOwnerForObject(obj);
             if (owner == groupID)
                 return true;
+
+            if (IsTerritoryFlagObject(obj))
+                return true;
         }
+
+        return false;
+    }
+
+    static bool IsTerritoryFlagObject(Object obj)
+    {
+        if (!obj)
+            return false;
+
+        string type = obj.GetType();
+
+        if (type == "TerritoryFlag" || type == "TerritoryFlagKit")
+            return true;
+
+        if (type.Contains("TerritoryFlag"))
+            return true;
+
+        if (type.Contains("Flag"))
+            return true;
 
         return false;
     }
@@ -148,7 +168,7 @@ class EoH_BuildControlManager
             if (!obj)
                 continue;
 
-            if (obj.GetType() == "TerritoryFlag" || obj.GetType() == "TerritoryFlagKit")
+            if (IsTerritoryFlagObject(obj))
                 return false;
         }
 
@@ -184,6 +204,10 @@ class EoH_BuildControlManager
         if (!player)
             return;
 
+        #ifdef EXPANSIONMOD
+        EoH_Notifications.SendToPlayer(player, "BUILD CONTROL", msg);
+        #else
         player.MessageStatus(msg);
+        #endif
     }
 };
