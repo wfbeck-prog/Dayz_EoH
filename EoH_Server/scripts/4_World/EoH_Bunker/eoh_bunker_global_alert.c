@@ -20,13 +20,7 @@ class EoH_BunkerGlobalAlert
         string title = "BUNKER ACCESS ALERT";
         string message = openerName + " has opened the underground bunker with a punch card.";
 
-        EoH_Notifications.SendToAll(
-            title,
-            message,
-            "set:dayz_gui image:icon_skull",
-            ARGB(255, 200, 25, 25),
-            10.0
-        );
+        EoH_Notifications.SendToAll(title, message);
 
         Print("[EoH_Bunker] " + title + ": " + message);
     }
