@@ -16,8 +16,7 @@ class ActionUseIntel: ActionSingleUseBase
         if (!player || !item)
             return false;
 
-        string type = item.GetType();
-        return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel";
+        return EoH_IsIntelItem(item.GetType());
     }
 
     override void OnExecuteServer(ActionData action_data)
@@ -43,29 +42,18 @@ class ActionUseIntel: ActionSingleUseBase
     }
 };
 
-modded class EoH_Intel_Document
+bool EoH_IsIntelItem(string type)
 {
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(ActionUseIntel);
-    }
-};
+    return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel";
+}
 
-modded class EoH_TownIntel
+modded class ItemBase
 {
     override void SetActions()
     {
         super.SetActions();
-        AddAction(ActionUseIntel);
-    }
-};
 
-modded class EoH_TraderIntel
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(ActionUseIntel);
+        if (EoH_IsIntelItem(GetType()))
+            AddAction(ActionUseIntel);
     }
 };
