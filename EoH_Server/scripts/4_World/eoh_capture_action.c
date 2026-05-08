@@ -34,3 +34,21 @@ class EoH_ActionCaptureRelay : ActionInteractBase
         EoH_RelayGameplay.ActivateRelay(player, relay);
     }
 };
+
+modded class EoH_CaptureRelay_Base
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(EoH_ActionCaptureRelay);
+    }
+};
+
+modded class EoH_RadioRelay
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(EoH_ActionCaptureRelay);
+    }
+};
