@@ -17,7 +17,8 @@ class EoH_BunkerGlobalAlert
         if (opener && opener.GetIdentity())
             openerName = opener.GetIdentity().GetName();
 
-        string message = "BUNKER ACCESS ALERT: " + openerName + " has opened the underground bunker with a punch card.";
+        string title = "BUNKER ACCESS ALERT";
+        string message = openerName + " has opened the underground bunker with a punch card.";
 
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
@@ -28,9 +29,15 @@ class EoH_BunkerGlobalAlert
             if (!player || !player.GetIdentity())
                 continue;
 
-            player.MessageStatus(message);
+            PlayerIdentity identity = player.GetIdentity();
+
+            #ifdef EXPANSIONMODCORE
+            ExpansionNotification(title, message, "set:dayz_gui image:icon_skull", COLOR_EXPANSION_NOTIFICATION_ERROR, 10).Create(identity);
+            #else
+            player.MessageStatus(title + ": " + message);
+            #endif
         }
 
-        Print("[EoH_Bunker] " + message);
+        Print("[EoH_Bunker] " + title + ": " + message);
     }
 }
