@@ -5,19 +5,19 @@
     "cardamage": 1,
     "GroupLocations": [
         {
-            "name": "EoH_TEST_GreenMountain_BanditPatrol",
+            "name": "EoH_TEST_Pustoshka_RecoveryPatrol",
             "faction": "Bandits",
             "waypoints": [
-                "3714.394531 402.893921 5993.566406",
-                "3730.000000 402.000000 6010.000000",
-                "3695.000000 402.000000 5980.000000"
+                "3060 310 7870",
+                "3100 310 7900",
+                "3025 310 7840"
             ],
             "npcclasses": [
                 "BanditAI_Denis",
                 "BanditAI_Mirek",
                 "BanditAI_Rolf"
             ],
-            "accuracy": 65.0,
+            "accuracy": 60.0,
             "dog": 0,
             "grenadechance": 0,
             "weaponpool": [
@@ -95,37 +95,6 @@
                 "shoes": ["CombatBoots_Black"],
                 "loot": ["BandageDressing", "Mag_STANAG_30Rnd", "Mag_Fal_20rnd", "AmmoBox_556x45_20Rnd", "AmmoBox_308Win_20Rnd"]
             }
-        },
-        {
-            "name": "EoH_TOWN_Pustoshka_BanditPatrol_SAFE",
-            "faction": "Bandits",
-            "waypoints": [
-                "3060 310 7870",
-                "3100 310 7900",
-                "3025 310 7840"
-            ],
-            "npcclasses": [
-                "BanditAI_Keiko",
-                "BanditAI_Linda",
-                "BanditAI_Mirek"
-            ],
-            "accuracy": 60.0,
-            "dog": 0,
-            "grenadechance": 0,
-            "weaponpool": [
-                "Predefined_EoH_SAFE_AK74",
-                "Predefined_EoH_SAFE_AKM"
-            ],
-            "npcproperties": {
-                "headgear": ["BallisticHelmet_Black"],
-                "masks": ["BalaclavaMask_Black"],
-                "vests": ["PlateCarrierVest"],
-                "backpacks": ["HuntingBag"],
-                "bodywear": ["BDUJacket"],
-                "pants": ["BDUPants"],
-                "shoes": ["CombatBoots_Black"],
-                "loot": ["BandageDressing", "Mag_AK74_30Rnd", "Mag_AKM_30Rnd", "AmmoBox_545x39_20Rnd", "AmmoBox_762x39_20Rnd"]
-            }
         }
     ],
     "SniperLocations": [],
@@ -133,38 +102,22 @@
         {
             "name": "Predefined_EoH_SAFE_AK74",
             "weapon": "AK74",
-            "attachments": [
-                "Mag_AK74_30Rnd",
-                "AK_PlasticBttstck",
-                "KobraOptic"
-            ]
+            "attachments": ["Mag_AK74_30Rnd", "AK_PlasticBttstck", "KobraOptic"]
         },
         {
             "name": "Predefined_EoH_SAFE_AKM",
             "weapon": "AKM",
-            "attachments": [
-                "Mag_AKM_30Rnd",
-                "AK_PlasticBttstck",
-                "PSO1Optic"
-            ]
+            "attachments": ["Mag_AKM_30Rnd", "AK_PlasticBttstck", "PSO1Optic"]
         },
         {
             "name": "Predefined_EoH_SAFE_M4",
             "weapon": "M4A1",
-            "attachments": [
-                "Mag_STANAG_30Rnd",
-                "M4_MPBttstck",
-                "M4_PlasticHndgrd",
-                "M68Optic"
-            ]
+            "attachments": ["Mag_STANAG_30Rnd", "M4_MPBttstck", "M4_PlasticHndgrd", "M68Optic"]
         },
         {
             "name": "Predefined_EoH_SAFE_FAL",
             "weapon": "FAL",
-            "attachments": [
-                "Mag_Fal_20rnd",
-                "ACOGOptic"
-            ]
+            "attachments": ["Mag_Fal_20rnd", "ACOGOptic"]
         }
     ]
 }
