@@ -16,7 +16,11 @@ class EoH_ActionCaptureRelay : ActionInteractBase
         if (!target)
             return false;
 
-        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(target.GetObject());
+        Object obj = target.GetObject();
+        if (!obj || !EoH_IsRelayObject(obj.GetType()))
+            return false;
+
+        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(obj);
         if (!relay)
             return false;
 
@@ -26,9 +30,15 @@ class EoH_ActionCaptureRelay : ActionInteractBase
     override void OnStartServer(ActionData action_data)
     {
         PlayerBase player = action_data.m_Player;
-        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(action_data.m_Target.GetObject());
+        if (!player || !action_data.m_Target)
+            return;
 
-        if (!player || !relay)
+        Object obj = action_data.m_Target.GetObject();
+        if (!obj || !EoH_IsRelayObject(obj.GetType()))
+            return;
+
+        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(obj);
+        if (!relay)
             return;
 
         EoH_RelayGameplay.ActivateRelay(player, relay);
@@ -37,10 +47,21 @@ class EoH_ActionCaptureRelay : ActionInteractBase
 
 bool EoH_IsRelayObject(string type)
 {
-    return type == "EoH_CaptureRelay_Base";
+    return type == "EoH_CaptureRelay_Base" || type == "EoH_RadioRelay" || type.Contains("EoH_CaptureRelay") || type.Contains("EoH_RadioRelay");
 }
 
-modded class ItemBase
+modded class Radio
+{
+    override void SetActions()
+    {
+        super.SetActions();
+
+        if (EoH_IsRelayObject(GetType()))
+            AddAction(EoH_ActionCaptureRelay);
+    }
+};
+
+modded class BaseRadio
 {
     override void SetActions()
     {
