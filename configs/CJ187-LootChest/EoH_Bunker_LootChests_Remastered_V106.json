@@ -1,7 +1,7 @@
 {
     "EnableDebug": 1,
     "DeleteLogs": 0,
-    "MaxSpareMags": 3,
+    "MaxSpareMags": 5,
     "RandomQuantity": 0,
     "LootChestsLocations": [
         {
@@ -11,11 +11,11 @@
             "keyclass": "",
             "openable": 0,
             "chest": ["CJ_LootChest_Wood_Brown_Large"],
-            "lootrandomize": 0.55,
+            "lootrandomize": 0.85,
             "light": 1,
-            "loot": ["LC_Table_EoH_Bunker_Epic_Weapons", "LC_Table_EoH_Bunker_Epic_Mags", "LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Epic_Attachments"],
-            "respawn": 0,
-            "respawn_timer": 1440,
+            "loot": ["LC_Table_EoH_Bunker_Epic_Weapons", "LC_Table_EoH_Bunker_Epic_Weapons", "LC_Table_EoH_Bunker_Epic_Mags", "LC_Table_EoH_Bunker_Epic_Mags", "LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Epic_Attachments", "LC_Table_EoH_Bunker_Epic_Attachments"],
+            "respawn": 1,
+            "respawn_timer": 20,
             "randomize_position": 0
         },
         {
@@ -25,11 +25,11 @@
             "keyclass": "",
             "openable": 0,
             "chest": ["CJ_LootChest_Wood_Brown_Large"],
-            "lootrandomize": 0.50,
+            "lootrandomize": 0.80,
             "light": 1,
-            "loot": ["LC_Table_EoH_Bunker_Apex_Snipers", "LC_Table_EoH_Bunker_Sniper_Mags", "LC_Table_EoH_Bunker_Sniper_Ammo", "LC_Table_EoH_Bunker_Sniper_Optics"],
-            "respawn": 0,
-            "respawn_timer": 1440,
+            "loot": ["LC_Table_EoH_Bunker_Apex_Snipers", "LC_Table_EoH_Bunker_Apex_Snipers", "LC_Table_EoH_Bunker_Sniper_Mags", "LC_Table_EoH_Bunker_Sniper_Mags", "LC_Table_EoH_Bunker_Sniper_Ammo", "LC_Table_EoH_Bunker_Sniper_Ammo", "LC_Table_EoH_Bunker_Sniper_Optics", "LC_Table_EoH_Bunker_Sniper_Optics"],
+            "respawn": 1,
+            "respawn_timer": 20,
             "randomize_position": 0
         },
         {
@@ -39,11 +39,11 @@
             "keyclass": "",
             "openable": 0,
             "chest": ["CJ_LootChest_Wood_Brown_Large"],
-            "lootrandomize": 0.60,
+            "lootrandomize": 0.90,
             "light": 1,
-            "loot": ["LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Epic_Mags", "LC_Table_EoH_Bunker_Sniper_Ammo", "LC_Table_EoH_Bunker_Sniper_Mags"],
-            "respawn": 0,
-            "respawn_timer": 1440,
+            "loot": ["LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Epic_Mags", "LC_Table_EoH_Bunker_Epic_Mags", "LC_Table_EoH_Bunker_Sniper_Ammo", "LC_Table_EoH_Bunker_Sniper_Ammo", "LC_Table_EoH_Bunker_Sniper_Mags", "LC_Table_EoH_Bunker_Sniper_Mags"],
+            "respawn": 1,
+            "respawn_timer": 20,
             "randomize_position": 0
         },
         {
@@ -53,11 +53,11 @@
             "keyclass": "",
             "openable": 0,
             "chest": ["CJ_LootChest_Wood_Brown_Large"],
-            "lootrandomize": 0.50,
+            "lootrandomize": 0.80,
             "light": 1,
-            "loot": ["LC_Table_EoH_Bunker_Epic_Gear", "LC_Table_EoH_Bunker_Epic_Attachments", "LC_Table_EoH_Bunker_Sniper_Optics"],
-            "respawn": 0,
-            "respawn_timer": 1440,
+            "loot": ["LC_Table_EoH_Bunker_Epic_Gear", "LC_Table_EoH_Bunker_Epic_Gear", "LC_Table_EoH_Bunker_Epic_Gear", "LC_Table_EoH_Bunker_Epic_Attachments", "LC_Table_EoH_Bunker_Epic_Attachments", "LC_Table_EoH_Bunker_Sniper_Optics", "LC_Table_EoH_Bunker_Sniper_Optics"],
+            "respawn": 1,
+            "respawn_timer": 20,
             "randomize_position": 0
         },
         {
@@ -67,11 +67,11 @@
             "keyclass": "",
             "openable": 0,
             "chest": ["CJ_LootChest_Wood_Brown_Large"],
-            "lootrandomize": 0.25,
+            "lootrandomize": 0.75,
             "light": 1,
-            "loot": ["LC_Table_EoH_Bunker_Breaching_Parts"],
-            "respawn": 0,
-            "respawn_timer": 1440,
+            "loot": ["LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Gates"],
+            "respawn": 1,
+            "respawn_timer": 20,
             "randomize_position": 0
         },
         {
@@ -81,11 +81,11 @@
             "keyclass": "",
             "openable": 0,
             "chest": ["CJ_LootChest_Wood_Brown_Large"],
-            "lootrandomize": 0.20,
+            "lootrandomize": 0.65,
             "light": 1,
-            "loot": ["LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Gates"],
-            "respawn": 0,
-            "respawn_timer": 1440,
+            "loot": ["LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Gates", "LC_Table_EoH_Bunker_Breaching_Gates", "LC_Table_EoH_Bunker_Breaching_Rare_VeryLow"],
+            "respawn": 1,
+            "respawn_timer": 20,
             "randomize_position": 0
         },
         {
@@ -95,11 +95,11 @@
             "keyclass": "",
             "openable": 0,
             "chest": ["CJ_LootChest_Wood_Brown_Large"],
-            "lootrandomize": 0.35,
+            "lootrandomize": 0.90,
             "light": 1,
-            "loot": ["LC_Table_EoH_Bunker_Apex_Snipers", "LC_Table_EoH_Bunker_Epic_Weapons", "LC_Table_EoH_Bunker_Epic_Gear", "LC_Table_EoH_Bunker_Breaching_Rare_VeryLow"],
-            "respawn": 0,
-            "respawn_timer": 1440,
+            "loot": ["LC_Table_EoH_Bunker_Apex_Snipers", "LC_Table_EoH_Bunker_Epic_Weapons", "LC_Table_EoH_Bunker_Epic_Weapons", "LC_Table_EoH_Bunker_Epic_Gear", "LC_Table_EoH_Bunker_Epic_Gear", "LC_Table_EoH_Bunker_Epic_Mags", "LC_Table_EoH_Bunker_Epic_Ammo", "LC_Table_EoH_Bunker_Breaching_Parts", "LC_Table_EoH_Bunker_Breaching_Gates", "LC_Table_EoH_Bunker_Breaching_Rare_VeryLow"],
+            "respawn": 1,
+            "respawn_timer": 20,
             "randomize_position": 0
         }
     ],
@@ -114,8 +114,8 @@
         {"name": "LC_Table_EoH_Bunker_Sniper_Optics", "Loot": ["SNAFU_Nightforce", "SNAFU_Leupold_Mark8", "SNAFU_Kahles", "SNAFU_HNightforce", "SNAFU_HLeupold_Mark8", "SNAFU_HKahles", "SNAFU_MNightforce", "SNAFU_MLeupold_Mark8", "SNAFU_MKahles"]},
         {"name": "LC_Table_EoH_Bunker_Epic_Attachments", "Loot": ["SNAFU_Nightforce", "SNAFU_Leupold_Mark8", "SNAFU_Kahles", "SNAFU_Elcan", "SNAFU_AKElcan", "SNAFU_AKNightforce", "SNAFU_AKLeupold_Mark8", "SNAFU_AKKahles", "SNAFU_Standardized_Suppressor_Black", "SNAFU_LStandardized_Suppressor_Black", "SNAFU_Normalized_Suppressor_Black", "SNAFU_LNormalized_Suppressor_Black", "SNAFU_SR25_Supp", "Snafu_ScarH_SIL_Black", "SNAFUUniversalLight"]},
         {"name": "LC_Table_EoH_Bunker_Epic_Gear", "Loot": ["PlateCarrierVest", "PlateCarrierPouches", "PlateCarrierHolster", "BallisticHelmet_Black", "NVGoggles", "NVGHeadstrap", "GhillieSuit_Woodland", "GhillieSuit_Mossy", "GhillieHood_Woodland", "GhillieHood_Mossy"]},
-        {"name": "LC_Table_EoH_Bunker_Breaching_Parts", "Loot": ["HDSN_Charcoal", "HDSN_Charcoal", "HDSN_Charcoal", "HDSN_Sulfur", "HDSN_Sulfur", "HDSN_Sulfur", "HDSN_Gunpowder", "BurlapSack", "PersonalRadio", "DuctTape", "ElectronicRepairKit"]},
-        {"name": "LC_Table_EoH_Bunker_Breaching_Gates", "Loot": ["HDSN_Explosive", "HDSN_C4Stick", "HDSN_Detonator"]},
-        {"name": "LC_Table_EoH_Bunker_Breaching_Rare_VeryLow", "Loot": ["HDSN_C4Sticks", "HDSN_C4NoWiring", "HDSN_BreachingCharge"]}
+        {"name": "LC_Table_EoH_Bunker_Breaching_Parts", "Loot": ["HDSN_Charcoal", "HDSN_Charcoal", "HDSN_Charcoal", "HDSN_Sulfur", "HDSN_Sulfur", "HDSN_Sulfur", "HDSN_Gunpowder", "HDSN_Gunpowder", "HDSN_Gunpowder", "BurlapSack", "PersonalRadio", "DuctTape", "ElectronicRepairKit"]},
+        {"name": "LC_Table_EoH_Bunker_Breaching_Gates", "Loot": ["HDSN_Explosive", "HDSN_C4Stick", "HDSN_Detonator", "HDSN_Explosive", "HDSN_C4Stick", "HDSN_Detonator"]},
+        {"name": "LC_Table_EoH_Bunker_Breaching_Rare_VeryLow", "Loot": ["HDSN_C4Sticks", "HDSN_C4NoWiring", "HDSN_BreachingCharge", "HDSN_BreachingChargeHeavy"]}
     ]
 }
