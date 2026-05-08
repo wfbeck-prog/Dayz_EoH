@@ -13,15 +13,59 @@ class ActionUseIntel: ActionSingleUseBase
 
     override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
     {
-        return item && item.GetType() == "EoH_Intel_Document";
+        if (!player || !item)
+            return false;
+
+        string type = item.GetType();
+        return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel";
     }
 
     override void OnExecuteServer(ActionData action_data)
+    {
+        PlayerBase player = action_data.m_Player;
+        ItemBase intel = action_data.m_MainItem;
+
+        if (!player || !intel)
+            return;
+
+        string type = intel.GetType();
+
+        if (type == "EoH_TraderIntel")
+        {
+            EoH_IntelManager.Get().RevealTraderIntel(player);
+        }
+        else
+        {
+            EoH_IntelManager.Get().RevealTownIntel(player);
+        }
+
+        intel.Delete();
+    }
+};
+
+modded class EoH_Intel_Document
 {
-    PlayerBase player = action_data.m_Player;
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseIntel);
+    }
+};
 
-    EoH_IntelManager.Get().RevealTownIntel(player);
+modded class EoH_TownIntel
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseIntel);
+    }
+};
 
-    action_data.m_MainItem.Delete();
-}
+modded class EoH_TraderIntel
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseIntel);
+    }
 };
