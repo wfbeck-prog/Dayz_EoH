@@ -106,7 +106,9 @@ modded class MissionServer
                 continue;
             }
 
-            if (EoH_RelayAlreadyExists(pos, 10.0))
+            if (cfg.DeleteExistingEoHRelaysBeforeSpawn)
+                EoH_DeleteExistingRelaysNear(pos, 15.0);
+            else if (EoH_RelayAlreadyExists(pos, 15.0))
             {
                 Print("[EoH] Relay already exists near " + relay.TownName + " at " + pos.ToString());
                 spawnedKeys.Insert(key);
@@ -135,6 +137,11 @@ modded class MissionServer
         return x.ToString() + "_" + z.ToString();
     }
 
+    bool EoH_IsRelayType(string type)
+    {
+        return type == "EoH_RadioRelay" || type == "EoH_CaptureRelay_Base" || type.Contains("EoH_RadioRelay") || type.Contains("EoH_CaptureRelay");
+    }
+
     bool EoH_RelayAlreadyExists(vector pos, float radius)
     {
         array<Object> objects = new array<Object>();
@@ -142,11 +149,30 @@ modded class MissionServer
 
         foreach (Object obj : objects)
         {
-            if (obj && obj.GetType() == "EoH_RadioRelay")
+            if (obj && EoH_IsRelayType(obj.GetType()))
                 return true;
         }
 
         return false;
+    }
+
+    void EoH_DeleteExistingRelaysNear(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        GetGame().GetObjectsAtPosition3D(pos, radius, objects, null);
+
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+
+            string type = obj.GetType();
+            if (!EoH_IsRelayType(type))
+                continue;
+
+            Print("[EoH] Removing existing relay before spawn: " + type + " at " + obj.GetPosition().ToString());
+            GetGame().ObjectDelete(obj);
+        }
     }
 
     void EoH_InitTownMarkers()
