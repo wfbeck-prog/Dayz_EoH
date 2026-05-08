@@ -32,7 +32,8 @@ class EoH_BunkerGlobalAlert
             PlayerIdentity identity = player.GetIdentity();
 
             #ifdef EXPANSIONMODCORE
-            ExpansionNotification(title, message, "set:dayz_gui image:icon_skull", COLOR_EXPANSION_NOTIFICATION_ERROR, 10).Create(identity);
+            ExpansionNotification notification = new ExpansionNotification(title, message, "set:dayz_gui image:icon_skull", ARGB(255, 200, 25, 25), 10.0);
+            notification.Create(identity);
             #else
             player.MessageStatus(title + ": " + message);
             #endif
