@@ -236,6 +236,7 @@ class EoH_CaptureManager
     void CompleteCapture(EoH_CaptureSession s)
     {
         EoH_WorldStateManager.Get().SetTownOwner(s.TownName, s.CapturingGroupID, s.CapturingGroupName);
+        EoH_TownRewardManager.SpawnCaptureReward(s.TownName, s.CapturingGroupName, GetTownPos(s.TownName));
         BroadcastCaptureMessage("TOWN CAPTURED", s.CapturingGroupName + " captured " + s.TownName + ".");
         EoH_TownMarkerManager.UpdateTownMarker(s.TownName, s.CapturingGroupName);
         Print("[EoH_Capture] Complete town=" + s.TownName + " owner=" + s.CapturingGroupName);
