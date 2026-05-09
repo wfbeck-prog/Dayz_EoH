@@ -22,6 +22,20 @@ class EoH_TownMarkerManager
         return ARGB(255, 200, 200, 200);
     }
 
+    static string GetIconForState(string state, string owner)
+    {
+        if (state == EoH_MarkerState.CAPTURING)
+            return "Radio";
+
+        if (state == EoH_MarkerState.CONTESTED)
+            return "Danger";
+
+        if (state == EoH_MarkerState.OWNED && owner != "" && owner != "Unclaimed")
+            return "Territory";
+
+        return "Flag";
+    }
+
     static void UpdateTownMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.OWNED, 0, GetGroupColor(owner));
@@ -70,7 +84,7 @@ class EoH_TownMarkerManager
         data.BaseColor = color;
         data.Pulse = pulse;
         data.Is3D = 0;
-        data.Icon = "Flag";
+        data.Icon = GetIconForState(state, owner);
         data.Visible = 1;
         data.Normalize();
         return data;
