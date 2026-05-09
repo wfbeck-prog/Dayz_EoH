@@ -24,7 +24,10 @@ class EoH_ActionCaptureRelay : ActionInteractBase
         if (!relay)
             return false;
 
-        return relay.IsInsideTownRadius();
+        if (!relay.IsInsideTownRadius())
+            Print("[EoH_Relay][DEBUG] Activate Relay visible, but relay reports outside town radius. Type=" + obj.GetType() + " pos=" + obj.GetPosition().ToString());
+
+        return true;
     }
 
     override void OnStartServer(ActionData action_data)
