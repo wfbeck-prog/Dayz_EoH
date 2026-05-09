@@ -41,20 +41,27 @@ modded class MissionServer
             if (!cfg)
                 continue;
 
-            EoH_MarkerData data = new EoH_MarkerData("EoH_TOWN_BASE_" + town, town, cfg.GetRelayVector());
-            data.Category = EoH_MarkerCategory.TOWN;
-            data.State = EoH_MarkerState.NORMAL;
+            // Remove the old duplicate base marker ID used by earlier builds.
+            string oldBaseId = "EoH_TOWN_BASE_" + town;
+            oldBaseId.Replace(" ", "_");
+            EoH_MarkerService.RemoveFromPlayer(player, oldBaseId);
+
+            string owner = cap.GetTownOwner(town);
+            EoH_MarkerData data;
+
+            if (owner != "")
+                data = EoH_TownMarkerManager.BuildTownMarker(town, owner, EoH_MarkerState.OWNED, 0, EoH_TownMarkerManager.GetGroupColor(owner));
+            else
+                data = EoH_TownMarkerManager.BuildTownMarker(town, "Unclaimed", EoH_MarkerState.NORMAL, 0, ARGB(120, 150, 150, 150));
+
+            data.Label = town;
             data.Icon = "Territory";
-            data.Is3D = 0;
-            data.Pulse = 0;
-            data.Color = ARGB(120, 150, 150, 150);
-            data.BaseColor = data.Color;
             data.Normalize();
 
             EoH_MarkerService.SendToPlayer(player, data);
         }
 
-        Print("[EoH] Sent base markers to player: " + player.GetIdentity().GetName());
+        Print("[EoH] Sent unified town markers to player: " + player.GetIdentity().GetName());
     }
 
     protected void EoH_Server_Init()
