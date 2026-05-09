@@ -2,6 +2,8 @@ class EoH_CBD_Observer
 {
 	private static ref EoH_CBD_Observer s_Instance;
 	protected ref map<string, bool> m_LastState;
+	protected ref map<string, int> m_LastDebug;
+	static const float EOH_CBD_DOOR_SCAN_RADIUS = 25.0;
 
 	static EoH_CBD_Observer GetInstance()
 	{
@@ -14,6 +16,7 @@ class EoH_CBD_Observer
 	void EoH_CBD_Observer()
 	{
 		m_LastState = new map<string, bool>();
+		m_LastDebug = new map<string, int>();
 	}
 
 	void Update()
@@ -23,7 +26,10 @@ class EoH_CBD_Observer
 
 		LootSystemEntryModule module = LootSystemEntryModule.Cast(CF_ModuleCoreManager.Get(LootSystemEntryModule));
 		if (!module || !module.settings || !module.settings.LootRooms)
+		{
+			DebugThrottled("CBD_MODULE", "[EoH_CBD][DEBUG] CBD module/settings/LootRooms unavailable.");
 			return;
+		}
 
 		foreach (LootSystemRoom room : module.settings.LootRooms)
 		{
@@ -78,13 +84,17 @@ class EoH_CBD_Observer
 			return false;
 
 		if (room.LootRoomDoorIndex < 0)
+		{
+			DebugThrottled(room.LootRoomName + "_NO_INDEX", "[EoH_CBD][DEBUG] Room has invalid door index: " + room.LootRoomName);
 			return false;
+		}
 
 		array<Object> objects = new array<Object>();
 		array<CargoBase> cargos = new array<CargoBase>();
 
-		GetGame().GetObjectsAtPosition(room.LootRoomPosition, 2.5, objects, cargos);
+		GetGame().GetObjectsAtPosition(room.LootRoomPosition, EOH_CBD_DOOR_SCAN_RADIUS, objects, cargos);
 
+		bool foundBuilding = false;
 		foreach (Object obj : objects)
 		{
 			if (!obj)
@@ -94,6 +104,7 @@ class EoH_CBD_Observer
 			if (!building)
 				continue;
 
+			foundBuilding = true;
 			int doorCount = building.GetDoorCount();
 
 			if (doorCount <= 0)
@@ -101,15 +112,38 @@ class EoH_CBD_Observer
 
 			if (room.LootRoomDoorIndex >= doorCount)
 			{
-				Print("[EoH_CBD][WARN] Invalid door index " + room.LootRoomDoorIndex.ToString() + " for room " + room.LootRoomName + ".");
+				Print("[EoH_CBD][WARN] Invalid door index " + room.LootRoomDoorIndex.ToString() + " for room " + room.LootRoomName + ". Building=" + building.GetType() + " doorCount=" + doorCount.ToString());
 				continue;
 			}
 
-			if (building.IsDoorOpen(room.LootRoomDoorIndex))
+			bool open = building.IsDoorOpen(room.LootRoomDoorIndex);
+			DebugThrottled(room.LootRoomName + "_STATE", "[EoH_CBD][DEBUG] Room=" + room.LootRoomName + " building=" + building.GetType() + " doorIndex=" + room.LootRoomDoorIndex.ToString() + " open=" + open.ToString() + " roomPos=" + room.LootRoomPosition.ToString());
+
+			if (open)
 				return true;
 		}
 
+		if (!foundBuilding)
+			DebugThrottled(room.LootRoomName + "_NO_BUILDING", "[EoH_CBD][DEBUG] No building found within " + EOH_CBD_DOOR_SCAN_RADIUS.ToString() + "m for room=" + room.LootRoomName + " pos=" + room.LootRoomPosition.ToString());
+
 		return false;
+	}
+
+	void DebugThrottled(string key, string message)
+	{
+		int now = GetGame().GetTime();
+		int last = 0;
+
+		if (m_LastDebug && m_LastDebug.Find(key, last))
+		{
+			if (now - last < 30000)
+				return;
+		}
+
+		if (m_LastDebug)
+			m_LastDebug.Set(key, now);
+
+		Print(message);
 	}
 
 	string GetMarkerId(LootSystemRoom room)
