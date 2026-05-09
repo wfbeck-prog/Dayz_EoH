@@ -52,8 +52,23 @@ class EoH_CBD_MarkerHelper
 		if (!room || !GetGame().IsServer())
 			return;
 
+		int tier = GetTierFromName(room.LootRoomName);
+		EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(room.LootRoomName), GetLabel(room), room.LootRoomPosition);
+		data.Category = EoH_MarkerCategory.KEYROOM;
+		data.State = EoH_MarkerState.CONTESTED;
+		data.Icon = "Danger";
+		data.Is3D = 0;
+		data.Pulse = 1;
+		data.Visible = 1;
+		data.Color = GetColor(tier);
+		data.BaseColor = data.Color;
+		data.Normalize();
+
+		EoH_MarkerService.Broadcast(data);
 		EoH_Notifications.SendToAll("CBD ROOM BREACHED", room.LootRoomName + " has been opened.");
-		Print("[EoH_CBD] CBD room opened: " + room.LootRoomName + " at " + room.LootRoomPosition.ToString());
+		Print("[EoH_CBD] Broadcast flashing keyroom marker " + data.Id + " at " + data.Position.ToString());
+
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_CBD_MarkerHelper.ClearByName, 900000, false, room.LootRoomName);
 	}
 
 	static void SendToPlayer(PlayerBase player, LootSystemRoom room)
@@ -61,6 +76,19 @@ class EoH_CBD_MarkerHelper
 		if (!player || !player.GetIdentity() || !room)
 			return;
 
+		int tier = GetTierFromName(room.LootRoomName);
+		EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(room.LootRoomName), GetLabel(room), room.LootRoomPosition);
+		data.Category = EoH_MarkerCategory.KEYROOM;
+		data.State = EoH_MarkerState.CONTESTED;
+		data.Icon = "Danger";
+		data.Is3D = 0;
+		data.Pulse = 1;
+		data.Visible = 1;
+		data.Color = GetColor(tier);
+		data.BaseColor = data.Color;
+		data.Normalize();
+
+		EoH_MarkerService.SendToPlayer(player, data);
 		EoH_Notifications.SendToPlayer(player, "CBD ROOM BREACHED", GetLabel(room));
 	}
 
@@ -75,6 +103,7 @@ class EoH_CBD_MarkerHelper
 	static void ClearByName(string roomName)
 	{
 		string markerId = GetMarkerId(roomName);
-		Print("[EoH_CBD] Cleared marker placeholder " + markerId);
+		EoH_MarkerService.RemoveFromAll(markerId);
+		Print("[EoH_CBD] Cleared keyroom marker " + markerId);
 	}
 }
