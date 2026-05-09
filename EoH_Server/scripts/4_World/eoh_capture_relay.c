@@ -11,6 +11,7 @@ class EoH_CaptureRelay_Base extends Radio
     {
         super.EEInit();
         AssignNearestTown();
+        Print("[EoH_Relay][DEBUG] EEInit type=" + GetType() + " pos=" + GetPosition().ToString());
     }
 
     void AssignNearestTown()
@@ -19,7 +20,10 @@ class EoH_CaptureRelay_Base extends Radio
 
         EoH_CaptureManager cap = EoH_CaptureManager.Get();
         if (!cap)
+        {
+            Print("[EoH_Relay][DEBUG] AssignNearestTown failed: no capture manager for " + GetType());
             return;
+        }
 
         float closestDist = 999999;
         string closestTown = "";
@@ -45,7 +49,11 @@ class EoH_CaptureRelay_Base extends Radio
         if (closestTown != "")
         {
             m_EoH_TownName = closestTown;
-            Print("[EoH] Relay assigned to town: " + closestTown);
+            Print("[EoH_Relay][DEBUG] Relay assigned to town: " + closestTown + " dist=" + closestDist.ToString());
+        }
+        else
+        {
+            Print("[EoH_Relay][DEBUG] Relay could not assign nearest town. Type=" + GetType() + " pos=" + myPos.ToString());
         }
     }
 
@@ -97,5 +105,16 @@ class EoH_CaptureRelay_Base extends Radio
         RemoveAction(ActionTakeItem);
         RemoveAction(ActionTakeItemToHands);
         AddAction(EoH_ActionCaptureRelay);
+        Print("[EoH_Relay][DEBUG] SetActions added EoH_ActionCaptureRelay to type=" + GetType());
+    }
+};
+
+class EoH_RadioRelay extends EoH_CaptureRelay_Base
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(EoH_ActionCaptureRelay);
+        Print("[EoH_Relay][DEBUG] EoH_RadioRelay SetActions added action to type=" + GetType());
     }
 };
