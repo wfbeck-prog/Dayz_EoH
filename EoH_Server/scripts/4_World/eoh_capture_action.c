@@ -1,4 +1,4 @@
-class EoH_ActionCaptureRelay : ActionSingleUseBase
+class EoH_ActionCaptureRelay : ActionInteractBase
 {
     void EoH_ActionCaptureRelay()
     {
@@ -11,38 +11,33 @@ class EoH_ActionCaptureRelay : ActionSingleUseBase
         return "Activate Relay";
     }
 
-    override bool HasTarget()
-    {
-        return false;
-    }
-
     override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
     {
-        if (!player || !item)
+        if (!player || !target)
             return false;
 
-        if (!EoH_IsRelayObject(item.GetType()))
+        Object obj = target.GetObject();
+        if (!obj || !EoH_IsRelayObject(obj.GetType()))
             return false;
 
-        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(item);
+        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(obj);
         if (!relay)
             return false;
 
         return relay.IsInsideTownRadius();
     }
 
-    override void OnExecuteServer(ActionData action_data)
+    override void OnStartServer(ActionData action_data)
     {
         PlayerBase player = action_data.m_Player;
-        ItemBase item = action_data.m_MainItem;
-
-        if (!player || !item)
+        if (!player || !action_data.m_Target)
             return;
 
-        if (!EoH_IsRelayObject(item.GetType()))
+        Object obj = action_data.m_Target.GetObject();
+        if (!obj || !EoH_IsRelayObject(obj.GetType()))
             return;
 
-        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(item);
+        EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(obj);
         if (!relay)
             return;
 
@@ -54,14 +49,3 @@ bool EoH_IsRelayObject(string type)
 {
     return type == "EoH_CaptureRelay_Base" || type == "EoH_RadioRelay" || type.Contains("EoH_CaptureRelay") || type.Contains("EoH_RadioRelay");
 }
-
-modded class ItemBase
-{
-    override void SetActions()
-    {
-        super.SetActions();
-
-        if (EoH_IsRelayObject(GetType()))
-            AddAction(EoH_ActionCaptureRelay);
-    }
-};
