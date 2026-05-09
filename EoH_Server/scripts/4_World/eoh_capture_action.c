@@ -32,18 +32,58 @@ class EoH_ActionCaptureRelay : ActionInteractBase
 
     override void OnStartServer(ActionData action_data)
     {
-        PlayerBase player = action_data.m_Player;
-        if (!player || !action_data.m_Target)
+        EoH_HandleRelayActivation(action_data, "OnStartServer");
+    }
+
+    override void OnExecuteServer(ActionData action_data)
+    {
+        EoH_HandleRelayActivation(action_data, "OnExecuteServer");
+    }
+
+    void EoH_HandleRelayActivation(ActionData action_data, string source)
+    {
+        if (!action_data)
+        {
+            Print("[EoH_Relay][DEBUG] " + source + " failed: action_data is null");
             return;
+        }
+
+        PlayerBase player = action_data.m_Player;
+        if (!player)
+        {
+            Print("[EoH_Relay][DEBUG] " + source + " failed: player is null");
+            return;
+        }
+
+        if (!action_data.m_Target)
+        {
+            Print("[EoH_Relay][DEBUG] " + source + " failed: target is null for player=" + player.GetIdentity().GetName());
+            return;
+        }
 
         Object obj = action_data.m_Target.GetObject();
-        if (!obj || !EoH_IsRelayObject(obj.GetType()))
+        if (!obj)
+        {
+            Print("[EoH_Relay][DEBUG] " + source + " failed: target object is null for player=" + player.GetIdentity().GetName());
             return;
+        }
+
+        Print("[EoH_Relay][DEBUG] " + source + " clicked by " + player.GetIdentity().GetName() + " targetType=" + obj.GetType() + " pos=" + obj.GetPosition().ToString());
+
+        if (!EoH_IsRelayObject(obj.GetType()))
+        {
+            Print("[EoH_Relay][DEBUG] " + source + " failed: target is not relay type=" + obj.GetType());
+            return;
+        }
 
         EoH_CaptureRelay_Base relay = EoH_CaptureRelay_Base.Cast(obj);
         if (!relay)
+        {
+            Print("[EoH_Relay][DEBUG] " + source + " failed: relay cast failed type=" + obj.GetType());
             return;
+        }
 
+        Print("[EoH_Relay][DEBUG] " + source + " activating town=" + relay.GetEoHTownName() + " insideRadius=" + relay.IsInsideTownRadius().ToString());
         EoH_RelayGameplay.ActivateRelay(player, relay);
     }
 };
