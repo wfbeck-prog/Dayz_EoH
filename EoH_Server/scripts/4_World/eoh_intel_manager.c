@@ -63,21 +63,21 @@ class EoH_IntelManager
             if (vector.Distance(playerPos, pos) > 5000)
                 continue;
 
-            EoH_MarkerData data = new EoH_MarkerData("EoH_INTEL_TOWN_" + name, "Town Intel: " + name, pos);
-            data.Category = EoH_MarkerCategory.INTEL;
-            data.State = EoH_MarkerState.NORMAL;
+            string oldIntelId = "EoH_INTEL_TOWN_" + name;
+            oldIntelId.Replace(" ", "_");
+            EoH_MarkerService.RemoveFromPlayer(player, oldIntelId);
+
+            EoH_MarkerData data = EoH_TownMarkerManager.BuildTownMarker(name, "Intel", EoH_MarkerState.NORMAL, 1, ARGB(255, 255, 220, 80));
+            data.Label = name;
             data.Icon = "Info";
-            data.Is3D = 0;
-            data.Pulse = 1;
-            data.Color = ARGB(255, 255, 220, 80);
-            data.BaseColor = data.Color;
+            data.Position = pos;
             data.Normalize();
 
             EoH_MarkerService.SendToPlayer(player, data);
             revealed++;
         }
 
-        player.MessageStatus("Intel decoded. Nearby town activity marked: " + revealed.ToString());
+        EoH_Notifications.SendToPlayer(player, "INTEL DECODED", "Nearby town activity updated: " + revealed.ToString());
     }
 
     void RevealTraderIntel(PlayerBase player)
@@ -89,9 +89,9 @@ class EoH_IntelManager
 
         bool revealed = EoH_RT_TraderManager.Get().RevealNearestHiddenTraderToPlayer(player);
         if (revealed)
-            player.MessageStatus("Trader intel decoded. A roaming trader location was marked.");
+            EoH_Notifications.SendToPlayer(player, "TRADER INTEL", "A roaming trader signal was marked.");
         else
-            player.MessageStatus("Trader intel decoded, but no hidden trader signal was found.");
+            EoH_Notifications.SendToPlayer(player, "TRADER INTEL", "No hidden trader signal was found.");
     }
 
     void TrackIntelUse(PlayerBase player)
