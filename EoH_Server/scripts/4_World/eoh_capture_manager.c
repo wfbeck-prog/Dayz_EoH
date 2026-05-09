@@ -5,6 +5,7 @@ class EoH_CaptureSession
     string CapturingGroupName;
     float Progress;
     int LastTick;
+    int LastNotifyPercent;
     bool IsContested;
 
     void EoH_CaptureSession()
@@ -14,6 +15,7 @@ class EoH_CaptureSession
         CapturingGroupName = "";
         Progress = 0;
         LastTick = 0;
+        LastNotifyPercent = 0;
         IsContested = false;
     }
 };
@@ -21,6 +23,7 @@ class EoH_CaptureSession
 class EoH_CaptureManager
 {
     static ref EoH_CaptureManager s_Instance;
+    static const float CAPTURE_DURATION_MS = 600000.0;
 
     ref map<string, ref EoH_CaptureSession> m_Sessions;
     ref map<string, vector> m_Towns;
@@ -44,29 +47,21 @@ class EoH_CaptureManager
     void InitTowns()
     {
         m_Towns.Clear();
-
-        // Tier 1 towns
         m_Towns.Set("Pustoshka", "3060 0 7870".ToVector());
         m_Towns.Set("Mogilevka", "7600 0 5100".ToVector());
         m_Towns.Set("Guglovo", "8500 0 6600".ToVector());
         m_Towns.Set("Tulga", "12750 0 4400".ToVector());
         m_Towns.Set("Nadezhdino", "5850 0 4800".ToVector());
         m_Towns.Set("Kamenka", "1850 0 2200".ToVector());
-
-        // Tier 2 towns
         m_Towns.Set("Vybor", "3850 0 8900".ToVector());
         m_Towns.Set("Stary Sobor", "6100 0 7800".ToVector());
         m_Towns.Set("Novy Sobor", "7000 0 7600".ToVector());
         m_Towns.Set("Zelenogorsk", "2750 0 5300".ToVector());
         m_Towns.Set("Staroye", "10150 0 5450".ToVector());
         m_Towns.Set("Polana", "10700 0 8150".ToVector());
-
-        // Tier 3 cities
         m_Towns.Set("Elektro", "10400 0 2250".ToVector());
         m_Towns.Set("Chernogorsk", "6650 0 2550".ToVector());
         m_Towns.Set("Berezino", "12250 0 9500".ToVector());
-
-        // Tier 4 military/high-risk zones
         m_Towns.Set("NWAF", "4700 0 10300".ToVector());
         m_Towns.Set("Tisy", "1675 0 14225".ToVector());
         m_Towns.Set("Pavlovo Military", "2150 0 3350".ToVector());
@@ -96,12 +91,8 @@ class EoH_CaptureManager
     array<string> GetAllTownNames()
     {
         array<string> names = new array<string>();
-
         foreach (string town, vector pos : m_Towns)
-        {
             names.Insert(town);
-        }
-
         return names;
     }
 
@@ -125,7 +116,11 @@ class EoH_CaptureManager
     void StartCapture(string town, PlayerBase player)
     {
         if (m_Sessions.Contains(town))
+        {
+            if (player)
+                EoH_Notifications.SendToPlayer(player, "TOWN CAPTURE", town + " is already being captured.");
             return;
+        }
 
         if (!player)
             return;
@@ -133,7 +128,7 @@ class EoH_CaptureManager
         string groupID = EoH_GroupHelper.GetGroupID(player);
         if (groupID == "")
         {
-            player.MessageStatus("You must be in a group to capture a town.");
+            EoH_Notifications.SendToPlayer(player, "TOWN CAPTURE FAILED", "You must be in a group to capture a town.");
             return;
         }
 
@@ -142,10 +137,14 @@ class EoH_CaptureManager
         s.CapturingGroupID = groupID;
         s.CapturingGroupName = EoH_GroupHelper.GetGroupName(player);
         s.LastTick = GetGame().GetTime();
+        s.LastNotifyPercent = 0;
 
         m_Sessions.Set(town, s);
 
         EoH_TownMarkerManager.UpdateCapturingMarker(town, s.CapturingGroupName);
+        UpdateCaptureProgressMarker(s, 0);
+        BroadcastCaptureMessage("TOWN CAPTURE STARTED", s.CapturingGroupName + " started capturing " + town + ". Hold for 10 minutes.");
+        Print("[EoH_Capture] Started capture town=" + town + " group=" + s.CapturingGroupName);
     }
 
     void Tick()
@@ -163,10 +162,19 @@ class EoH_CaptureManager
             {
                 s.Progress += delta;
 
-                if (s.Progress > 600000) // 10 min
+                int percent = Math.Clamp(Math.Floor((s.Progress / CAPTURE_DURATION_MS) * 100.0), 0, 100);
+                int bucket = Math.Floor(percent / 10) * 10;
+
+                if (bucket >= s.LastNotifyPercent + 10 || percent >= 100)
                 {
-                    CompleteCapture(s);
+                    s.LastNotifyPercent = bucket;
+                    UpdateCaptureProgressMarker(s, percent);
+                    BroadcastCaptureMessage("TOWN CAPTURE", s.TownName + " capture progress: " + percent.ToString() + "%");
+                    Print("[EoH_Capture] Progress town=" + s.TownName + " group=" + s.CapturingGroupName + " percent=" + percent.ToString());
                 }
+
+                if (s.Progress > CAPTURE_DURATION_MS)
+                    CompleteCapture(s);
             }
         }
     }
@@ -174,7 +182,6 @@ class EoH_CaptureManager
     void UpdatePresence(EoH_CaptureSession s)
     {
         vector pos = GetTownPos(s.TownName);
-
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
 
@@ -203,16 +210,35 @@ class EoH_CaptureManager
         if (s.IsContested)
         {
             EoH_TownMarkerManager.UpdateContestedMarker(s.TownName, s.CapturingGroupName);
+            BroadcastCaptureMessage("TOWN CONTESTED", s.TownName + " is contested. Capture progress paused.");
         }
         else if (wasContested)
         {
             EoH_TownMarkerManager.UpdateCapturingMarker(s.TownName, s.CapturingGroupName);
+            BroadcastCaptureMessage("TOWN CAPTURE RESUMED", s.TownName + " capture has resumed.");
         }
+    }
+
+    void UpdateCaptureProgressMarker(EoH_CaptureSession s, int percent)
+    {
+        EoH_MarkerData data = EoH_TownMarkerManager.BuildTownMarker(s.TownName, s.CapturingGroupName, EoH_MarkerState.CAPTURING, 1, ARGB(255, 255, 220, 80));
+        data.Label = s.TownName + " Capturing " + percent.ToString() + "%";
+        data.Icon = "Radio";
+        data.Normalize();
+        EoH_MarkerService.Broadcast(data);
+    }
+
+    void BroadcastCaptureMessage(string title, string msg)
+    {
+        EoH_Notifications.SendToAll(title, msg);
     }
 
     void CompleteCapture(EoH_CaptureSession s)
     {
         EoH_WorldStateManager.Get().SetTownOwner(s.TownName, s.CapturingGroupID, s.CapturingGroupName);
+        BroadcastCaptureMessage("TOWN CAPTURED", s.CapturingGroupName + " captured " + s.TownName + ".");
+        EoH_TownMarkerManager.UpdateTownMarker(s.TownName, s.CapturingGroupName);
+        Print("[EoH_Capture] Complete town=" + s.TownName + " owner=" + s.CapturingGroupName);
         m_Sessions.Remove(s.TownName);
     }
 };
