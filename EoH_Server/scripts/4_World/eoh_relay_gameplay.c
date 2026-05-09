@@ -82,16 +82,15 @@ class EoH_RelayGameplay
 
     static void SendRelayMarker(string town, vector pos)
     {
-        EoH_MarkerData data = new EoH_MarkerData("EoH_RELAY_ACTIVE_" + town, "Relay Active: " + town, pos);
-        data.Category = EoH_MarkerCategory.INTEL;
-        data.State = EoH_MarkerState.CONTESTED;
+        string groupName = "Relay Active";
+        EoH_MarkerData data = EoH_TownMarkerManager.BuildTownMarker(town, groupName, EoH_MarkerState.CONTESTED, 1, ARGB(255, 255, 220, 80));
+        data.Label = town;
         data.Icon = "Radio";
-        data.Is3D = 0;
-        data.Pulse = 1;
-        data.Color = ARGB(255, 255, 220, 80);
-        data.BaseColor = data.Color;
+        data.Position = pos;
         data.Normalize();
 
+        // Remove old relay-specific marker ID from previous builds to prevent duplicate map rows.
+        EoH_MarkerService.RemoveFromAll("EoH_RELAY_ACTIVE_" + town);
         EoH_MarkerService.Broadcast(data);
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(RemoveRelayMarker, 300000, false, town);
@@ -100,5 +99,6 @@ class EoH_RelayGameplay
     static void RemoveRelayMarker(string town)
     {
         EoH_MarkerService.RemoveFromAll("EoH_RELAY_ACTIVE_" + town);
+        EoH_TownMarkerManager.UpdateTownMarker(town, EoH_CaptureManager.Get().GetTownOwner(town));
     }
 }
