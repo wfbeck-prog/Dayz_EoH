@@ -111,10 +111,31 @@ class EoH_CaptureRelay_Base extends Radio
 
 class EoH_RadioRelay extends EoH_CaptureRelay_Base
 {
+    override void EEInit()
+    {
+        super.EEInit();
+        Print("[EoH_Relay][DEBUG] EoH_RadioRelay EEInit type=" + GetType() + " pos=" + GetPosition().ToString());
+    }
+
     override void SetActions()
     {
         super.SetActions();
         AddAction(EoH_ActionCaptureRelay);
         Print("[EoH_Relay][DEBUG] EoH_RadioRelay SetActions added action to type=" + GetType());
+    }
+};
+
+modded class Radio
+{
+    override void SetActions()
+    {
+        super.SetActions();
+
+        string type = GetType();
+        if (type == "EoH_CaptureRelay_Base" || type == "EoH_RadioRelay" || type.Contains("EoH_CaptureRelay") || type.Contains("EoH_RadioRelay"))
+        {
+            AddAction(EoH_ActionCaptureRelay);
+            Print("[EoH_Relay][DEBUG] Radio parent hook added relay action to type=" + type);
+        }
     }
 };
