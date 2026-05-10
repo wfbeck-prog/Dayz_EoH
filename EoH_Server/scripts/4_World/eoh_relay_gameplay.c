@@ -89,16 +89,12 @@ class EoH_RelayGameplay
         data.Position = pos;
         data.Normalize();
 
-        // Remove old relay-specific marker ID from previous builds to prevent duplicate map rows.
         EoH_MarkerService.RemoveFromAll("EoH_RELAY_ACTIVE_" + town);
         EoH_MarkerService.Broadcast(data);
-
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(RemoveRelayMarker, 300000, false, town);
     }
 
     static void RemoveRelayMarker(string town)
     {
         EoH_MarkerService.RemoveFromAll("EoH_RELAY_ACTIVE_" + town);
-        EoH_TownMarkerManager.UpdateTownMarker(town, EoH_CaptureManager.Get().GetTownOwner(town));
     }
 }
