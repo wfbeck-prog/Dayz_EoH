@@ -132,12 +132,7 @@ class EoH_IntelManager
         }
 
         EoH_CBD_MarkerHelper.SendToPlayer(player, nearest);
-
-        EoH_Notifications.SendToPlayer(
-            player,
-            "LOCKROOM SIGNAL DECODED",
-            "A sealed room frequency has been recovered. A ? marker has been added to your map."
-        );
+        EoH_Notifications.SendToPlayer(player, "LOCKROOM SIGNAL DECODED", "A sealed room frequency has been recovered. A marker has been added to your map.");
 
         Print("[EoH_CBDIntel] Revealed room=" + nearest.LootRoomName + " to player=" + player.GetIdentity().GetName());
     }
