@@ -10,6 +10,7 @@ class CfgPatches
             "EoH_TownIntel",
             "EoH_TraderIntel",
             "EoH_CBDIntel",
+            "EoH_LootRoomIntel",
             "ExpansionTraderChem",
             "ExpansionTraderBroker"
         };
@@ -132,8 +133,15 @@ class EoH_RadioRelay: EoH_CaptureRelay_Base
     class EoH_CBDIntel: BookTheOutlet
     {
         scope = 2;
-        displayName = "CBD Intel";
+        displayName = "Loot Room Intel";
         descriptionShort = "A damaged lockroom ledger containing partial sealed-room coordinates.";
+    };
+
+    class EoH_LootRoomIntel: EoH_CBDIntel
+    {
+        scope = 2;
+        displayName = "Loot Room Intel";
+        descriptionShort = "Recovered notes pointing toward sealed loot rooms.";
     };
 
     class ExpansionTraderChem: ExpansionTraderMirek
