@@ -43,10 +43,10 @@ class EoH_RT_AIIntegration
         if (ai.GetGroup())
         {
             ai.GetGroup().SetWaypointBehaviour(eAIWaypointBehavior.ALTERNATE);
-            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 8".ToVector(), 8.0);
-            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 8".ToVector(), 8.0);
-            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 -8".ToVector(), 8.0);
-            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 -8".ToVector(), 8.0);
+            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 8".ToVector());
+            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 8".ToVector());
+            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 -8".ToVector());
+            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 -8".ToVector());
         }
 
         return obj;
