@@ -47,6 +47,22 @@ class EoH_CBD_MarkerHelper
 		return "CBD Loot Room OPEN";
 	}
 
+	static void ApplyMarkerStyle(EoH_MarkerData data, int tier)
+	{
+		if (!data)
+			return;
+
+		data.Category = EoH_MarkerCategory.KEYROOM;
+		data.State = EoH_MarkerState.CONTESTED;
+		data.Icon = "Questionmark";
+		data.Is3D = 0;
+		data.Pulse = 1;
+		data.Visible = 1;
+		data.Color = GetColor(tier);
+		data.BaseColor = data.Color;
+		data.Normalize();
+	}
+
 	static void Broadcast(LootSystemRoom room)
 	{
 		if (!room || !GetGame().IsServer())
@@ -54,15 +70,7 @@ class EoH_CBD_MarkerHelper
 
 		int tier = GetTierFromName(room.LootRoomName);
 		EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(room.LootRoomName), GetLabel(room), room.LootRoomPosition);
-		data.Category = EoH_MarkerCategory.KEYROOM;
-		data.State = EoH_MarkerState.CONTESTED;
-		data.Icon = "Danger";
-		data.Is3D = 0;
-		data.Pulse = 1;
-		data.Visible = 1;
-		data.Color = GetColor(tier);
-		data.BaseColor = data.Color;
-		data.Normalize();
+		ApplyMarkerStyle(data, tier);
 
 		EoH_MarkerService.Broadcast(data);
 		EoH_Notifications.SendToAll("CBD ROOM BREACHED", room.LootRoomName + " has been opened.");
@@ -78,15 +86,7 @@ class EoH_CBD_MarkerHelper
 
 		int tier = GetTierFromName(room.LootRoomName);
 		EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(room.LootRoomName), GetLabel(room), room.LootRoomPosition);
-		data.Category = EoH_MarkerCategory.KEYROOM;
-		data.State = EoH_MarkerState.CONTESTED;
-		data.Icon = "Danger";
-		data.Is3D = 0;
-		data.Pulse = 1;
-		data.Visible = 1;
-		data.Color = GetColor(tier);
-		data.BaseColor = data.Color;
-		data.Normalize();
+		ApplyMarkerStyle(data, tier);
 
 		EoH_MarkerService.SendToPlayer(player, data);
 		EoH_Notifications.SendToPlayer(player, "CBD ROOM BREACHED", GetLabel(room));
