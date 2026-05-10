@@ -94,6 +94,54 @@ class EoH_IntelManager
             EoH_Notifications.SendToPlayer(player, "TRADER INTEL", "No hidden trader signal was found.");
     }
 
+    void RevealCBDIntel(PlayerBase player)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
+        TrackIntelUse(player);
+
+        array<ref LootSystemRoom> rooms = LootSystemManager.GetRooms();
+        if (!rooms || rooms.Count() == 0)
+        {
+            EoH_Notifications.SendToPlayer(player, "CBD INTEL", "No active sealed room signals were detected.");
+            return;
+        }
+
+        vector playerPos = player.GetPosition();
+        LootSystemRoom nearest;
+        float nearestDist = 999999;
+
+        foreach (LootSystemRoom room : rooms)
+        {
+            if (!room)
+                continue;
+
+            float dist = vector.Distance(playerPos, room.LootRoomPosition);
+            if (dist < nearestDist)
+            {
+                nearest = room;
+                nearestDist = dist;
+            }
+        }
+
+        if (!nearest)
+        {
+            EoH_Notifications.SendToPlayer(player, "CBD INTEL", "No nearby sealed room signals were found.");
+            return;
+        }
+
+        EoH_CBD_MarkerHelper.SendToPlayer(player, nearest);
+
+        EoH_Notifications.SendToPlayer(
+            player,
+            "LOCKROOM SIGNAL DECODED",
+            "A sealed room frequency has been recovered. A ? marker has been added to your map."
+        );
+
+        Print("[EoH_CBDIntel] Revealed room=" + nearest.LootRoomName + " to player=" + player.GetIdentity().GetName());
+    }
+
     void TrackIntelUse(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
