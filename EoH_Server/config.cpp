@@ -87,25 +87,24 @@ class CfgMods
 class CfgVehicles
 {
     class Radio;
-    class BaseRadio;
     class BookAVoyageToArcturus;
     class BookDeadSouls;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
-    class EoH_CaptureRelay_Base: Radio
-    {
-        scope = 2;
-        displayName = "EoH Radio Relay";
-        descriptionShort = "A modified radio used to project group influence across the region.";
-    };
+class EoH_CaptureRelay_Base: Radio
+{
+    scope = 2;
+    displayName = "EoH Radio Relay";
+    descriptionShort = "A modified radio used to project group influence across the region.";
+};
 
-    class EoH_RadioRelay: EoH_CaptureRelay_Base
-    {
-        scope = 2;
-        displayName = "EoH Radio Relay";
-        descriptionShort = "A modified radio used to broadcast nearby town intel.";
-    };
+class EoH_RadioRelay: EoH_CaptureRelay_Base
+{
+    scope = 2;
+    displayName = "EoH Radio Relay";
+    descriptionShort = "A modified radio used to broadcast nearby town intel.";
+};
 
     class EoH_Intel_Document: BookAVoyageToArcturus
     {
