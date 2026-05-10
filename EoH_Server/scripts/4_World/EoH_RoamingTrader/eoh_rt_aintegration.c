@@ -8,25 +8,24 @@ class EoH_RT_AIIntegration
         CleanupEscort(runtime);
 
         int count = GetEscortCount(profile);
-        string faction = GetExpansionFaction(profile);
 
         for (int i = 0; i < count; i++)
         {
             vector pos = GetEscortSpawnPosition(centerPos, i, count);
-            Object ai = SpawnExpansionAI(pos, centerPos, faction);
+            Object ai = SpawnExpansionAI(pos, centerPos);
             if (ai)
             {
                 runtime.EscortUnits.Insert(ai);
-                Print("[EoH_RT][ExpansionAI] Spawned trader escort " + ai.GetType() + " trader=" + profile.TraderId + " faction=" + faction + " pos=" + pos.ToString());
+                Print("[EoH_RT][ExpansionAI] Spawned trader escort " + ai.GetType() + " trader=" + profile.TraderId + " pos=" + pos.ToString());
             }
             else
             {
-                Print("[EoH_RT][ExpansionAI][WARN] Failed to spawn trader escort trader=" + profile.TraderId + " faction=" + faction + " pos=" + pos.ToString());
+                Print("[EoH_RT][ExpansionAI][WARN] Failed to spawn trader escort trader=" + profile.TraderId + " pos=" + pos.ToString());
             }
         }
     }
 
-    static Object SpawnExpansionAI(vector pos, vector patrolCenter, string faction)
+    static Object SpawnExpansionAI(vector pos, vector patrolCenter)
     {
         pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.1;
 
@@ -40,9 +39,6 @@ class EoH_RT_AIIntegration
 
         ai.SetPosition(pos);
         ai.SetOrientation(Vector(Math.RandomFloat(0, 360), 0, 0));
-
-        if (faction != "")
-            ai.SetFactionTypeID(faction);
 
         if (ai.GetGroup())
         {
@@ -84,37 +80,6 @@ class EoH_RT_AIIntegration
             return 4;
 
         return 3;
-    }
-
-    static string GetExpansionLoadout(EoH_RT_TraderProfile profile)
-    {
-        if (!profile)
-            return "EoH_BlackMarketEscort";
-
-        if (profile.TraderId == "eoh_drug_trader")
-            return "EoH_DrugEscort";
-
-        if (profile.TraderId == "eoh_black_market")
-            return "EoH_BlackMarketEscort";
-
-        if (profile.Escort && profile.Escort.AIGroupType != "")
-            return profile.Escort.AIGroupType;
-
-        return "EoH_BlackMarketEscort";
-    }
-
-    static string GetExpansionFaction(EoH_RT_TraderProfile profile)
-    {
-        if (!profile)
-            return "Guards";
-
-        if (profile.TraderId == "eoh_black_market")
-            return "Mercenaries";
-
-        if (profile.TraderId == "eoh_drug_trader")
-            return "Raiders";
-
-        return "Guards";
     }
 
     static void CleanupEscort(EoH_RT_TraderRuntime runtime)
