@@ -25,6 +25,10 @@ modded class MissionServer
         super.InvokeOnConnect(player, identity);
         EoH_DT_UpdatePlayerDogtag(player);
         SendBaseTownMarkers(player);
+
+        EoH_CBD_Observer cbd = EoH_CBD_Observer.GetInstance();
+        if (cbd)
+            cbd.SendCurrentMarkersToPlayer(player);
     }
 
     void SendBaseTownMarkers(PlayerBase player)
@@ -75,6 +79,7 @@ modded class MissionServer
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
         EoH_RT_TraderManager.Get().Initialize();
+        EoH_CBD_Observer.GetInstance();
 
         EoH_InitTownMarkers();
         EoH_SpawnRelaysFromConfig();
@@ -223,6 +228,10 @@ modded class MissionServer
         EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
         if (traderManager)
             traderManager.Update();
+
+        EoH_CBD_Observer cbd = EoH_CBD_Observer.GetInstance();
+        if (cbd)
+            cbd.Update();
     }
 
     void EoH_DT_UpdateAllPlayerDogtags()
