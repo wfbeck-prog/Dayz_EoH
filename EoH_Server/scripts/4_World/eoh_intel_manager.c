@@ -101,30 +101,14 @@ class EoH_IntelManager
 
         TrackIntelUse(player);
 
-        array<ref LootSystemRoom> rooms = LootSystemManager.GetRooms();
-        if (!rooms || rooms.Count() == 0)
+        EoH_CBD_Observer observer = EoH_CBD_Observer.GetInstance();
+        if (!observer)
         {
-            EoH_Notifications.SendToPlayer(player, "CBD INTEL", "No active sealed room signals were detected.");
+            EoH_Notifications.SendToPlayer(player, "CBD INTEL", "CBD tracking systems are offline.");
             return;
         }
 
-        vector playerPos = player.GetPosition();
-        LootSystemRoom nearest;
-        float nearestDist = 999999;
-
-        foreach (LootSystemRoom room : rooms)
-        {
-            if (!room)
-                continue;
-
-            float dist = vector.Distance(playerPos, room.LootRoomPosition);
-            if (dist < nearestDist)
-            {
-                nearest = room;
-                nearestDist = dist;
-            }
-        }
-
+        LootSystemRoom nearest = observer.FindNearestRoom(player.GetPosition());
         if (!nearest)
         {
             EoH_Notifications.SendToPlayer(player, "CBD INTEL", "No nearby sealed room signals were found.");
