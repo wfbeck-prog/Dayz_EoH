@@ -8,26 +8,25 @@ class EoH_RT_AIIntegration
         CleanupEscort(runtime);
 
         int count = GetEscortCount(profile);
-        string loadout = GetExpansionLoadout(profile);
         string faction = GetExpansionFaction(profile);
 
         for (int i = 0; i < count; i++)
         {
             vector pos = GetEscortSpawnPosition(centerPos, i, count);
-            Object ai = SpawnExpansionAI(pos, centerPos, loadout, faction);
+            Object ai = SpawnExpansionAI(pos, centerPos, faction);
             if (ai)
             {
                 runtime.EscortUnits.Insert(ai);
-                Print("[EoH_RT][ExpansionAI] Spawned trader escort " + ai.GetType() + " trader=" + profile.TraderId + " loadout=" + loadout + " pos=" + pos.ToString());
+                Print("[EoH_RT][ExpansionAI] Spawned trader escort " + ai.GetType() + " trader=" + profile.TraderId + " faction=" + faction + " pos=" + pos.ToString());
             }
             else
             {
-                Print("[EoH_RT][ExpansionAI][WARN] Failed to spawn trader escort trader=" + profile.TraderId + " loadout=" + loadout + " pos=" + pos.ToString());
+                Print("[EoH_RT][ExpansionAI][WARN] Failed to spawn trader escort trader=" + profile.TraderId + " faction=" + faction + " pos=" + pos.ToString());
             }
         }
     }
 
-    static Object SpawnExpansionAI(vector pos, vector patrolCenter, string loadout, string faction)
+    static Object SpawnExpansionAI(vector pos, vector patrolCenter, string faction)
     {
         pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.1;
 
@@ -42,17 +41,17 @@ class EoH_RT_AIIntegration
         ai.SetPosition(pos);
         ai.SetOrientation(Vector(Math.RandomFloat(0, 360), 0, 0));
 
-        if (loadout != "")
-            ai.SetLoadout(loadout);
-
         if (faction != "")
             ai.SetFactionTypeID(faction);
 
-        ai.GetGroup().SetWaypointBehaviour(eAIWaypointBehavior.ALTERNATE);
-        ai.GetGroup().AddWaypoint(patrolCenter + "8 0 8".ToVector(), 8.0);
-        ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 8".ToVector(), 8.0);
-        ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 -8".ToVector(), 8.0);
-        ai.GetGroup().AddWaypoint(patrolCenter + "8 0 -8".ToVector(), 8.0);
+        if (ai.GetGroup())
+        {
+            ai.GetGroup().SetWaypointBehaviour(eAIWaypointBehavior.ALTERNATE);
+            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 8".ToVector(), 8.0);
+            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 8".ToVector(), 8.0);
+            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 -8".ToVector(), 8.0);
+            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 -8".ToVector(), 8.0);
+        }
 
         return obj;
     }
