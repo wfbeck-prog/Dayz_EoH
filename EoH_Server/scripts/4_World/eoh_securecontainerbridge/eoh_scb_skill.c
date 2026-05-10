@@ -13,13 +13,13 @@ class EoH_SCB_Skill
         int exp = GetPlayerSkillExp(player);
 
         if (exp >= 2000 && config.Tier4x4)
-            return "A6_SecureContainer_4x4";
+            return "A6_SecureContainer_Kappa";
 
         if (exp >= 500 && config.Tier3x3)
-            return "A6_SecureContainer_3x3";
+            return "A6_SecureContainer_Epsilon";
 
         if (config.Tier2x2)
-            return "A6_SecureContainer_2x2";
+            return "A6_SecureContainer_Alpha";
 
         return "";
     }
