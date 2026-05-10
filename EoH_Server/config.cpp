@@ -9,6 +9,7 @@ class CfgPatches
             "EoH_Intel_Document",
             "EoH_TownIntel",
             "EoH_TraderIntel",
+            "EoH_CBDIntel",
             "ExpansionTraderChem",
             "ExpansionTraderBroker"
         };
@@ -89,6 +90,7 @@ class CfgVehicles
     class Radio;
     class BookAVoyageToArcturus;
     class BookDeadSouls;
+    class BookTheOutlet;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
@@ -125,6 +127,13 @@ class EoH_RadioRelay: EoH_CaptureRelay_Base
         scope = 2;
         displayName = "Trader Intel";
         descriptionShort = "Contains information about roaming trader activity.";
+    };
+
+    class EoH_CBDIntel: BookTheOutlet
+    {
+        scope = 2;
+        displayName = "CBD Intel";
+        descriptionShort = "A damaged lockroom ledger containing partial sealed-room coordinates.";
     };
 
     class ExpansionTraderChem: ExpansionTraderMirek
