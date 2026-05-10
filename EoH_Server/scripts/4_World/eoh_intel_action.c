@@ -26,17 +26,21 @@ class ActionUseIntel: ActionSingleUseBase
 
     override void OnExecuteServer(ActionData action_data)
     {
+        if (!action_data || !action_data.m_Player || !action_data.m_MainItem)
+            return;
+
         PlayerBase player = action_data.m_Player;
         ItemBase intel = action_data.m_MainItem;
-
-        if (!player || !intel)
-            return;
 
         string type = intel.GetType();
 
         if (type == "EoH_TraderIntel")
         {
             EoH_IntelManager.Get().RevealTraderIntel(player);
+        }
+        else if (type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel")
+        {
+            EoH_IntelManager.Get().RevealCBDIntel(player);
         }
         else
         {
@@ -49,7 +53,7 @@ class ActionUseIntel: ActionSingleUseBase
 
 bool EoH_IsIntelItem(string type)
 {
-    return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel";
+    return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel" || type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel";
 }
 
 modded class ItemBase
