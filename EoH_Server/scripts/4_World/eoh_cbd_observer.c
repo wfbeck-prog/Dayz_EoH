@@ -19,12 +19,42 @@ class EoH_CBD_Observer
 		m_LastDebug = new map<string, int>();
 	}
 
+	LootSystemEntryModule GetCBDModule()
+	{
+		return LootSystemEntryModule.Cast(CF_ModuleCoreManager.Get(LootSystemEntryModule));
+	}
+
+	LootSystemRoom FindNearestRoom(vector playerPos)
+	{
+		LootSystemEntryModule module = GetCBDModule();
+		if (!module || !module.settings || !module.settings.LootRooms)
+			return null;
+
+		LootSystemRoom nearest;
+		float nearestDist = 999999;
+
+		foreach (LootSystemRoom room : module.settings.LootRooms)
+		{
+			if (!room)
+				continue;
+
+			float dist = vector.Distance(playerPos, room.LootRoomPosition);
+			if (dist < nearestDist)
+			{
+				nearest = room;
+				nearestDist = dist;
+			}
+		}
+
+		return nearest;
+	}
+
 	void Update()
 	{
 		if (!GetGame().IsServer())
 			return;
 
-		LootSystemEntryModule module = LootSystemEntryModule.Cast(CF_ModuleCoreManager.Get(LootSystemEntryModule));
+		LootSystemEntryModule module = GetCBDModule();
 		if (!module || !module.settings || !module.settings.LootRooms)
 		{
 			DebugThrottled("CBD_MODULE", "[EoH_CBD][DEBUG] CBD module/settings/LootRooms unavailable.");
@@ -64,7 +94,7 @@ class EoH_CBD_Observer
 		if (!player || !player.GetIdentity())
 			return;
 
-		LootSystemEntryModule module = LootSystemEntryModule.Cast(CF_ModuleCoreManager.Get(LootSystemEntryModule));
+		LootSystemEntryModule module = GetCBDModule();
 		if (!module || !module.settings || !module.settings.LootRooms)
 			return;
 
