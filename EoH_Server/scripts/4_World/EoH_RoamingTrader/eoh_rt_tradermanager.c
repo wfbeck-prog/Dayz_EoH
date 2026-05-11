@@ -4,7 +4,10 @@ class EoH_RT_TraderManager
 	protected ref EoH_RT_GlobalConfig m_Config;
 	protected ref map<string, ref EoH_RT_TraderRuntime> m_Runtimes;
 	protected ref map<string, bool> m_RevealedMarkers;
+	protected ref map<string, int> m_RelocationGraceStart;
 	protected bool m_Initialized;
+	static const float EOH_RT_RELOCATION_HOLD_RADIUS = 30.0;
+	static const int EOH_RT_RELOCATION_MAX_GRACE_MS = 900000;
 
 	static EoH_RT_TraderManager Get()
 	{
@@ -23,6 +26,7 @@ class EoH_RT_TraderManager
 		m_Config = NULL;
 		m_Runtimes = new map<string, ref EoH_RT_TraderRuntime>();
 		m_RevealedMarkers = new map<string, bool>();
+		m_RelocationGraceStart = new map<string, int>();
 		m_Initialized = false;
 	}
 
@@ -52,6 +56,7 @@ class EoH_RT_TraderManager
 
 			m_Runtimes.Set(profile.TraderId, runtime);
 			m_RevealedMarkers.Set(profile.TraderId, false);
+			m_RelocationGraceStart.Set(profile.TraderId, 0);
 		}
 
 		m_Initialized = true;
@@ -93,8 +98,52 @@ class EoH_RT_TraderManager
 		if (stopMinutes <= 0)
 			stopMinutes = m_Config.StopDurationMinutes;
 
-		int elapsed = GetGame().GetTime() - runtime.LastMoveServerTime;
-		return elapsed >= stopMinutes * 60 * 1000;
+		int now = GetGame().GetTime();
+		int elapsed = now - runtime.LastMoveServerTime;
+		if (elapsed < stopMinutes * 60 * 1000)
+			return false;
+
+		if (IsSurvivorNearTrader(runtime, EOH_RT_RELOCATION_HOLD_RADIUS))
+		{
+			int graceStart = 0;
+			m_RelocationGraceStart.Find(runtime.TraderId, graceStart);
+
+			if (graceStart <= 0)
+			{
+				m_RelocationGraceStart.Set(runtime.TraderId, now);
+				Print("[EoH_RT] Relocation delayed for " + runtime.TraderId + ": survivor within " + EOH_RT_RELOCATION_HOLD_RADIUS.ToString() + "m.");
+				return false;
+			}
+
+			if (now - graceStart < EOH_RT_RELOCATION_MAX_GRACE_MS)
+				return false;
+
+			Print("[EoH_RT] Relocation grace expired for " + runtime.TraderId + ". Moving despite nearby survivor.");
+		}
+
+		m_RelocationGraceStart.Set(runtime.TraderId, 0);
+		return true;
+	}
+
+	bool IsSurvivorNearTrader(EoH_RT_TraderRuntime runtime, float radius)
+	{
+		if (!runtime || !runtime.TraderObject)
+			return false;
+
+		array<Man> players = new array<Man>();
+		GetGame().GetPlayers(players);
+
+		foreach (Man man : players)
+		{
+			PlayerBase player = PlayerBase.Cast(man);
+			if (!player || !player.GetIdentity() || !player.IsAlive())
+				continue;
+
+			if (vector.Distance(player.GetPosition(), runtime.TraderObject.GetPosition()) <= radius)
+				return true;
+		}
+
+		return false;
 	}
 
 	void SpawnTraderAtCurrentNode(EoH_RT_TraderRuntime runtime)
@@ -133,6 +182,7 @@ class EoH_RT_TraderManager
 		EoH_RT_AIIntegration.SpawnEscort(profile, runtime, runtime.TraderObject.GetPosition());
 
 		m_RevealedMarkers.Set(profile.TraderId, false);
+		m_RelocationGraceStart.Set(profile.TraderId, 0);
 
 		Print("[EoH_RT] Positioned trader " + profile.TraderId + " at " + runtime.TraderObject.GetPosition().ToString());
 	}
@@ -222,6 +272,7 @@ class EoH_RT_TraderManager
 
 		runtime.LastMoveServerTime = GetGame().GetTime();
 		runtime.CurrentPosition = runtime.TraderObject.GetPosition();
+		m_RelocationGraceStart.Set(profile.TraderId, 0);
 
 		EoH_RT_AIIntegration.SpawnEscort(profile, runtime, runtime.TraderObject.GetPosition());
 		BroadcastMoveNotification(profile, node);
