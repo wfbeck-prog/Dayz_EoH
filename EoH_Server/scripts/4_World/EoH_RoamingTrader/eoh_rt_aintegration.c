@@ -70,7 +70,6 @@ class EoH_RT_AIIntegration
             ExpansionHumanLoadout.Apply(ai, loadout, false);
 
         ai.eAI_SetLootingBehavior(eAILootingBehavior.NONE);
-        ai.eAI_SetMovementSpeedLimit(2);
         ai.eAI_SetThreatDistanceLimit(120.0);
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ForcePrimaryToHands, 500, false, ai);
