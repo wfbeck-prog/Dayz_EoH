@@ -3,6 +3,7 @@ class EoH_CBD_Observer
 	private static ref EoH_CBD_Observer s_Instance;
 	protected ref map<string, bool> m_LastState;
 	protected ref map<string, int> m_LastDebug;
+	protected bool m_StatePrimed;
 	static const float EOH_CBD_DOOR_SCAN_RADIUS = 25.0;
 
 	static EoH_CBD_Observer GetInstance()
@@ -17,6 +18,7 @@ class EoH_CBD_Observer
 	{
 		m_LastState = new map<string, bool>();
 		m_LastDebug = new map<string, int>();
+		m_StatePrimed = false;
 	}
 
 	LootSystemEntryModule GetCBDModule()
@@ -69,9 +71,13 @@ class EoH_CBD_Observer
 			string id = GetMarkerId(room);
 			bool isOpen = IsDoorOpen(room);
 			bool wasOpen = false;
+			bool known = m_LastState.Find(id, wasOpen);
 
-			if (!m_LastState.Find(id, wasOpen))
-				wasOpen = false;
+			if (!m_StatePrimed || !known)
+			{
+				m_LastState.Set(id, isOpen);
+				continue;
+			}
 
 			if (isOpen && !wasOpen)
 			{
@@ -87,25 +93,18 @@ class EoH_CBD_Observer
 
 			m_LastState.Set(id, isOpen);
 		}
+
+		if (!m_StatePrimed)
+		{
+			m_StatePrimed = true;
+			Print("[EoH_CBD] Observer state primed. Startup room states recorded without broadcasting markers.");
+		}
 	}
 
 	void SendCurrentMarkersToPlayer(PlayerBase player)
 	{
-		if (!player || !player.GetIdentity())
-			return;
-
-		LootSystemEntryModule module = GetCBDModule();
-		if (!module || !module.settings || !module.settings.LootRooms)
-			return;
-
-		foreach (LootSystemRoom room : module.settings.LootRooms)
-		{
-			if (!room)
-				continue;
-
-			if (IsDoorOpen(room))
-				EoH_CBD_MarkerHelper.SendToPlayer(player, room);
-		}
+		// Do not resend all currently-open CBD states on player connect.
+		// Loot room intel and true open transitions handle marker visibility.
 	}
 
 	bool IsDoorOpen(LootSystemRoom room)
