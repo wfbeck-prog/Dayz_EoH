@@ -21,6 +21,7 @@ class EoH_BunkerGlobalAlert
         string message = openerName + " has opened the underground bunker with a punch card.";
 
         EoH_Notifications.SendToAll(title, message);
+        EoH_DiscordWebhook.SendBunkerOpened(opener);
 
         Print("[EoH_Bunker] " + title + ": " + message);
     }
