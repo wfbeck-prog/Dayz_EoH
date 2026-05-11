@@ -7,7 +7,18 @@ modded class PlayerBase
         if (!GetGame().IsServer())
             return;
 
-        string victimName = "Unknown Survivor";
+        bool victimIsHuman = GetIdentity() != null;
+
+        PlayerBase killerPlayer = PlayerBase.Cast(killer);
+        bool killerIsHuman = false;
+        if (killerPlayer && killerPlayer.GetIdentity())
+            killerIsHuman = true;
+
+        // Do not send AI vs AI deaths to Discord. Keep player deaths and player kills visible.
+        if (!victimIsHuman && !killerIsHuman)
+            return;
+
+        string victimName = "AI Survivor";
         if (GetIdentity())
             victimName = GetIdentity().GetName();
 
@@ -15,11 +26,12 @@ modded class PlayerBase
         string weaponName = "";
         float distance = 0;
 
-        PlayerBase killerPlayer = PlayerBase.Cast(killer);
         if (killerPlayer)
         {
             if (killerPlayer.GetIdentity())
                 killerName = killerPlayer.GetIdentity().GetName();
+            else
+                killerName = "AI Survivor";
 
             EntityAI weapon = killerPlayer.GetHumanInventory().GetEntityInHands();
             if (weapon)
