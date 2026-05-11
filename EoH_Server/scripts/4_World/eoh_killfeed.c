@@ -46,34 +46,24 @@ modded class PlayerBase
 
         EoH_DiscordWebhook.SendKillFeed(victimName, killerName, weaponName, distance);
 
-        // RED LEDGER / HIGH VALUE KILL DETECTION
-        string reason = "";
+        string redLedgerReason = "";
 
         if (distance >= 500)
-            reason = "Extreme Longshot";
+            redLedgerReason = "Extreme Longshot";
         else if (distance >= 300)
-            reason = "Long Range Kill";
+            redLedgerReason = "Long Range Kill";
 
         vector pos = GetPosition();
 
-        // Rough NWAF / bunker conflict hotspot detection.
         if (vector.Distance(pos, "4700 0 10200") < 1200)
         {
-            if (reason != "")
-                reason += ", ";
+            if (redLedgerReason != "")
+                redLedgerReason += ", ";
 
-            reason += "Military Zone Engagement";
+            redLedgerReason += "Military Zone Engagement";
         }
 
-        if (reason != "")
-        {
-            EoH_DiscordWebhook.SendHighValueKill(
-                victimName,
-                killerName,
-                weaponName,
-                distance,
-                reason
-            );
-        }
+        if (redLedgerReason != "")
+            EoH_DiscordWebhook.SendHighValueKill(victimName, killerName, weaponName, distance, redLedgerReason);
     }
 }
