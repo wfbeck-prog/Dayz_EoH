@@ -18,6 +18,16 @@ class EoH_DiscordWebhookConfig
     }
 }
 
+class EoH_DiscordWebhookPayload
+{
+    string content;
+
+    void EoH_DiscordWebhookPayload(string message = "")
+    {
+        content = message;
+    }
+}
+
 class EoH_DiscordWebhook
 {
     protected static ref EoH_DiscordWebhookConfig s_Config;
@@ -64,7 +74,7 @@ class EoH_DiscordWebhook
         if (revealed)
             result = "A roaming trader signal was decoded and marked.";
 
-        string content = "**TRADER INTEL DECODED**\n";
+        string content = "TRADER INTEL DECODED\n";
         content += "Survivor: " + name + "\n";
         content += "Result: " + result + "\n";
         content += "Someone is listening to the old trade frequencies.";
@@ -78,7 +88,7 @@ class EoH_DiscordWebhook
         if (!cfg || cfg.EnableKillFeedWebhook != 1 || cfg.KillFeedWebhook == "")
             return;
 
-        string content = "**EoH KILL FEED**\n";
+        string content = "EoH KILL FEED\n";
         content += "Victim: " + victimName + "\n";
         content += "Killer: " + killerName + "\n";
 
@@ -103,7 +113,7 @@ class EoH_DiscordWebhook
         if (player && player.GetIdentity())
             name = player.GetIdentity().GetName();
 
-        string content = "**BUNKER OPENED**\n";
+        string content = "BUNKER OPENED\n";
         content += "Survivor: " + name + "\n";
         content += "The underground signal has awakened. Endgame loot is now in play. Expect heavy movement toward the bunker.";
 
@@ -124,17 +134,12 @@ class EoH_DiscordWebhook
 
         ctx.SetHeader("application/json");
 
-        string payload = "{\"content\":\"" + EscapeJson(content) + "\"}";
+        EoH_DiscordWebhookPayload payloadObject = new EoH_DiscordWebhookPayload(content);
+        string payload;
+        JsonSerializer serializer = new JsonSerializer();
+        serializer.WriteToString(payloadObject, false, payload);
+
         ctx.POST(null, "", payload);
         Print("[EoH_Discord] " + logMessage);
-    }
-
-    static string EscapeJson(string value)
-    {
-        value.Replace("\\", "\\\\");
-        value.Replace("\"", "\\\"");
-        value.Replace("\n", "\\n");
-        value.Replace("\r", "");
-        return value;
     }
 }
