@@ -388,10 +388,20 @@ class EoH_RT_TraderManager
 
 	void ClearMarkerForAllPlayers(string traderId)
 	{
-		if (!GetGame().IsServer())
+		if (!GetGame().IsServer() || traderId == "")
 			return;
 
-		EoH_MarkerService.RemoveFromAll(traderId);
+		array<string> markerIds = new array<string>();
+		markerIds.Insert(traderId);
+		markerIds.Insert("EoH_RT_" + traderId);
+		markerIds.Insert("EoH_TRADER_" + traderId);
+		markerIds.Insert("EoH_MARKER_" + traderId);
+
+		foreach (string markerId : markerIds)
+		{
+			EoH_MarkerService.RemoveFromAll(markerId);
+			Print("[EoH_RT] Requested marker removal id=" + markerId);
+		}
 	}
 
 	void BroadcastMoveNotification(EoH_RT_TraderProfile profile, EoH_RT_RouteNode node)
