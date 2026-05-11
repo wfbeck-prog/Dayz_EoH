@@ -10,6 +10,8 @@ class EoH_DiscordWebhookConfig
     string DogtagWebhook;
     int EnableServerStatusWebhook;
     string ServerStatusWebhook;
+    int EnableHighValueKillWebhook;
+    string HighValueKillWebhook;
 
     void EoH_DiscordWebhookConfig()
     {
@@ -23,6 +25,8 @@ class EoH_DiscordWebhookConfig
         DogtagWebhook = "";
         EnableServerStatusWebhook = 0;
         ServerStatusWebhook = "";
+        EnableHighValueKillWebhook = 0;
+        HighValueKillWebhook = "";
     }
 }
 
@@ -125,6 +129,31 @@ class EoH_DiscordWebhook
         content += "Another echo fades from Chernarus.";
 
         Send(cfg.KillFeedWebhook, content, "Kill feed webhook sent.");
+    }
+
+    static void SendHighValueKill(string victimName, string killerName, string weaponName, float distance, string reason)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableHighValueKillWebhook != 1 || cfg.HighValueKillWebhook == "")
+            return;
+
+        string content = "🔴 THE RED LEDGER HAS BEEN UPDATED\n\n";
+        content += "A priority kill has been recorded in the zone.\n\n";
+        content += "Killer: " + killerName + "\n";
+        content += "Victim: " + victimName + "\n";
+
+        if (weaponName != "")
+            content += "Weapon: " + weaponName + "\n";
+
+        if (distance > 0)
+            content += "Distance: " + Math.Round(distance).ToString() + "m\n";
+
+        if (reason != "")
+            content += "Reason: " + reason + "\n";
+
+        content += "\nThe old world keeps score, even when the dead cannot.";
+
+        Send(cfg.HighValueKillWebhook, content, "High value kill webhook sent.");
     }
 
     static void SendBunkerOpened(PlayerBase player)
