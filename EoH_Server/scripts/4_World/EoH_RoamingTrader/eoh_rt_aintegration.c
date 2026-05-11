@@ -8,24 +8,37 @@ class EoH_RT_AIIntegration
         CleanupEscort(runtime);
 
         int count = GetEscortCount(profile);
+        eAIFaction faction = GetEscortFaction(profile);
+        eAIGroup group = eAIGroup.CreateGroup(faction);
+
+        if (group)
+            group.SetWaypointBehaviour(eAIWaypointBehavior.ALTERNATE);
 
         for (int i = 0; i < count; i++)
         {
             vector pos = GetEscortSpawnPosition(centerPos, i, count);
-            Object ai = SpawnExpansionAI(pos, centerPos);
+            Object ai = SpawnExpansionAI(profile, pos, centerPos, group);
             if (ai)
             {
                 runtime.EscortUnits.Insert(ai);
-                Print("[EoH_RT][ExpansionAI] Spawned trader escort " + ai.GetType() + " trader=" + profile.TraderId + " pos=" + pos.ToString());
+                Print("[EoH_RT][ExpansionAI] Spawned trader escort " + ai.GetType() + " trader=" + profile.TraderId + " loadout=" + GetEscortLoadout(profile) + " pos=" + pos.ToString());
             }
             else
             {
                 Print("[EoH_RT][ExpansionAI][WARN] Failed to spawn trader escort trader=" + profile.TraderId + " pos=" + pos.ToString());
             }
         }
+
+        if (group)
+        {
+            group.AddWaypoint(patrolCenterToSurface(centerPos + "8 0 8".ToVector()));
+            group.AddWaypoint(patrolCenterToSurface(centerPos + "-8 0 8".ToVector()));
+            group.AddWaypoint(patrolCenterToSurface(centerPos + "-8 0 -8".ToVector()));
+            group.AddWaypoint(patrolCenterToSurface(centerPos + "8 0 -8".ToVector()));
+        }
     }
 
-    static Object SpawnExpansionAI(vector pos, vector patrolCenter)
+    static Object SpawnExpansionAI(EoH_RT_TraderProfile profile, vector pos, vector patrolCenter, eAIGroup group)
     {
         pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.1;
 
@@ -37,19 +50,75 @@ class EoH_RT_AIIntegration
         if (!ai)
             return obj;
 
+        if (group)
+            ai.SetGroup(group);
+
         ai.SetPosition(pos);
         ai.SetOrientation(Vector(Math.RandomFloat(0, 360), 0, 0));
-
-        if (ai.GetGroup())
-        {
-            ai.GetGroup().SetWaypointBehaviour(eAIWaypointBehavior.ALTERNATE);
-            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 8".ToVector());
-            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 8".ToVector());
-            ai.GetGroup().AddWaypoint(patrolCenter + "-8 0 -8".ToVector());
-            ai.GetGroup().AddWaypoint(patrolCenter + "8 0 -8".ToVector());
-        }
+        ApplyEscortSetup(ai, profile);
 
         return obj;
+    }
+
+    static void ApplyEscortSetup(eAIBase ai, EoH_RT_TraderProfile profile)
+    {
+        if (!ai || !profile)
+            return;
+
+        string loadout = GetEscortLoadout(profile);
+        if (loadout != "")
+            ExpansionHumanLoadout.Apply(ai, loadout, false);
+
+        ai.eAI_SetLootingBehavior(eAILootingBehavior.NONE);
+        ai.eAI_SetMovementSpeedLimit(2);
+        ai.eAI_SetThreatDistanceLimit(120.0);
+
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ForcePrimaryToHands, 500, false, ai);
+    }
+
+    static void ForcePrimaryToHands(eAIBase ai)
+    {
+        if (!ai)
+            return;
+
+        EntityAI item;
+        for (int i = 0; i < ai.GetInventory().AttachmentCount(); i++)
+        {
+            item = ai.GetInventory().GetAttachmentFromIndex(i);
+            if (!item)
+                continue;
+
+            if (item.IsWeapon())
+            {
+                ai.LocalTakeEntityToHands(item);
+                return;
+            }
+        }
+    }
+
+    static string GetEscortLoadout(EoH_RT_TraderProfile profile)
+    {
+        if (!profile)
+            return "EoH_AI_HighValue_Hard";
+
+        if (profile.TraderId == "eoh_drug_trader")
+            return "EoH_AI_Drug_SMGS";
+
+        if (profile.TraderId == "eoh_black_market")
+            return "EoH_AI_HighValue_Hard";
+
+        return "EoH_AI_HighValue_Hard";
+    }
+
+    static eAIFaction GetEscortFaction(EoH_RT_TraderProfile profile)
+    {
+        return new eAIFactionGuards();
+    }
+
+    static vector patrolCenterToSurface(vector pos)
+    {
+        pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.1;
+        return pos;
     }
 
     static vector GetEscortSpawnPosition(vector centerPos, int index, int count)
