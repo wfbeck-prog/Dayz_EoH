@@ -10,27 +10,7 @@ class CfgPatches
             "DZ_Data",
             "DZ_Characters",
             "DZ_Characters_Backpacks",
-            "My_DF_Gear_Scripts",
-            "My_DF_Gear_Backpacks_Shiled2",
-            "My_DF_Gear_Backpacks_Large_Mountain",
-            "My_DF_Gear_Backpacks_Camping",
-            "My_DF_Gear_Backpacks_Cross",
-            "My_DF_Gear_Backpacks_D2",
-            "My_DF_Gear_Backpacks_D3",
-            "My_DF_Gear_Backpacks_D7",
-            "My_DF_Gear_Backpacks_DASH",
-            "My_DF_Gear_Backpacks_DG",
-            "My_DF_Gear_Backpacks_Doctor",
-            "My_DF_Gear_Backpacks_Engineering_Shield",
-            "My_DF_Gear_Backpacks_Field_hiking",
-            "My_DF_Gear_Backpacks_GA",
-            "My_DF_Gear_Backpacks_GT1",
-            "My_DF_Gear_Backpacks_GT5",
-            "My_DF_Gear_Backpacks_GTO",
-            "My_DF_Gear_Backpacks_Heavy_Mountain",
-            "My_DF_Gear_Backpacks_HLS2",
-            "My_DF_Gear_Backpacks_Kai",
-            "My_DF_Gear_Backpacks_King"
+            "My_DF_Gear_Scripts"
         };
     };
 };
@@ -59,7 +39,29 @@ class CfgVehicles
     class My_DF_Gear_Backpacks_Heavy_Mountain;
     class My_DF_Gear_Backpacks_HLS2;
     class My_DF_Gear_Backpacks_Kai;
+    class My_DF_Gear_Backpacks_Kai_Haavk;
     class My_DF_Gear_Backpacks_King;
+    class My_DF_Gear_Backpacks_Zoya_Angel;
+    class My_DF_Gear_Backpacks_Large_sports;
+    class My_DF_Gear_Backpacks_Lightweight_Outdoor;
+    class My_DF_Gear_Backpacks_Lightweight_Outdoor2;
+    class My_DF_Gear_Backpacks_MAP;
+    class My_DF_Gear_Backpacks_Raid_Tactical;
+    class My_DF_Gear_Backpacks_Rainforest_hunter;
+    class My_DF_Gear_Backpacks_Rocket;
+    class My_DF_Gear_Backpacks_Roy;
+    class My_DF_Gear_Backpacks_Roy_Haavk;
+    class My_DF_Gear_Backpacks_Roy_mourners;
+    class My_DF_Gear_Backpacks_Rucksack;
+    class My_DF_Gear_Backpacks_SergeantWilson;
+    class My_DF_Gear_Backpacks_Shiled;
+    class My_DF_Gear_Backpacks_Sineva_Tincan;
+    class My_DF_Gear_Backpacks_Sports;
+    class My_DF_Gear_Backpacks_Subrosa;
+    class My_DF_Gear_Backpacks_Tactical;
+    class My_DF_Gear_Backpacks_Terry;
+    class My_DF_Gear_Backpacks_Terry_Haavk;
+    class My_DF_Gear_Backpacks_Travel;
 
     class My_DF_Gear_Backpacks_Shiled2 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_Large_Mountain { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
@@ -83,5 +85,27 @@ class CfgVehicles
     class My_DF_Gear_Backpacks_Heavy_Mountain { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_HLS2 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_Kai { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Kai_Haavk { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_King { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Zoya_Angel { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Large_sports { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Lightweight_Outdoor { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Lightweight_Outdoor2 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_MAP { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Raid_Tactical { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Rainforest_hunter { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Rocket { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Roy { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Roy_Haavk { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Roy_mourners { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Rucksack { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_SergeantWilson { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Shiled { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Sineva_Tincan { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Sports { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Subrosa { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Tactical { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Terry { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Terry_Haavk { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Backpacks_Travel { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
 };
