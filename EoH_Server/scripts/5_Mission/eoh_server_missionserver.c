@@ -3,6 +3,9 @@ modded class MissionServer
     protected bool m_EoH_ServerInitialized;
     protected bool m_EoH_DT_LiveUpdatesStarted;
     protected bool m_EoH_RelaysSpawned;
+    protected int m_EoH_LastCaptureTick;
+    protected int m_EoH_LastTraderTick;
+    protected int m_EoH_LastCBDTick;
 
     override void OnInit()
     {
@@ -45,7 +48,6 @@ modded class MissionServer
             if (!cfg)
                 continue;
 
-            // Remove the old duplicate base marker ID used by earlier builds.
             string oldBaseId = "EoH_TOWN_BASE_" + town;
             oldBaseId.Replace(" ", "_");
             EoH_MarkerService.RemoveFromPlayer(player, oldBaseId);
@@ -80,6 +82,7 @@ modded class MissionServer
         EoH_CaptureManager.Get();
         EoH_RT_TraderManager.Get().Initialize();
         EoH_CBD_Observer.GetInstance();
+        EoH_DiscordWebhook.GetConfig();
 
         EoH_InitTownMarkers();
         EoH_SpawnRelaysFromConfig();
@@ -221,17 +224,31 @@ modded class MissionServer
         if (!GetGame() || !GetGame().IsServer())
             return;
 
-        EoH_CaptureManager captureManager = EoH_CaptureManager.Get();
-        if (captureManager)
-            captureManager.Tick();
+        int now = GetGame().GetTime();
 
-        EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
-        if (traderManager)
-            traderManager.Update();
+        if (now - m_EoH_LastCaptureTick >= 5000)
+        {
+            m_EoH_LastCaptureTick = now;
+            EoH_CaptureManager captureManager = EoH_CaptureManager.Get();
+            if (captureManager)
+                captureManager.Tick();
+        }
 
-        EoH_CBD_Observer cbd = EoH_CBD_Observer.GetInstance();
-        if (cbd)
-            cbd.Update();
+        if (now - m_EoH_LastTraderTick >= 30000)
+        {
+            m_EoH_LastTraderTick = now;
+            EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
+            if (traderManager)
+                traderManager.Update();
+        }
+
+        if (now - m_EoH_LastCBDTick >= 15000)
+        {
+            m_EoH_LastCBDTick = now;
+            EoH_CBD_Observer cbd = EoH_CBD_Observer.GetInstance();
+            if (cbd)
+                cbd.Update();
+        }
     }
 
     void EoH_DT_UpdateAllPlayerDogtags()
