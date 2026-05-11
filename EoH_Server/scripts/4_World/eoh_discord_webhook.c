@@ -70,9 +70,9 @@ class EoH_DiscordWebhook
         if (player && player.GetIdentity())
             name = player.GetIdentity().GetName();
 
-        string result = "No hidden roaming trader signal was found.";
-        if (revealed)
-            result = "Hidden roaming trader signal was found.";
+        string result = "Hidden roaming trader signal was found.";
+        if (!revealed)
+            result = "No unrevealed roaming trader signal was available.";
 
         string content = "TRADER INTEL DECODED\n";
         content += "Survivor: " + name + "\n";
