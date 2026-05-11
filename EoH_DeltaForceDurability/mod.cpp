@@ -1,0 +1,13 @@
+name = "EoH Delta Force Durability";
+picture = "";
+action = "";
+hidePicture = 1;
+hideName = 0;
+description = "Echoes of Humanity durability balance patch for My Delta Force Gear.";
+logo = "";
+logoOver = "";
+tooltip = "EoH Delta Force Durability";
+tooltipOwned = "EoH Delta Force Durability";
+overview = "Increases durability for selected My Delta Force Gear items without changing storage, armor passthrough, or attachment slots.";
+author = "Echoes of Humanity";
+overviewPicture = "";
