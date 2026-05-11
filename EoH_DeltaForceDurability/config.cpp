@@ -10,6 +10,8 @@ class CfgPatches
             "DZ_Data",
             "DZ_Characters",
             "DZ_Characters_Backpacks",
+            "DZ_Characters_Headgear",
+            "DZ_Characters_Glasses",
             "My_DF_Gear_Scripts"
         };
     };
@@ -63,6 +65,32 @@ class CfgVehicles
     class My_DF_Gear_Backpacks_Terry_Haavk;
     class My_DF_Gear_Backpacks_Travel;
 
+    class My_DF_Gear_Heads_GT5;
+    class My_DF_Gear_Heads_Benny;
+    class My_DF_Gear_Heads_Butterfly;
+    class My_DF_Gear_Heads_D6;
+    class My_DF_Gear_Heads_D6_Visor;
+    class My_DF_Gear_Heads_DAS;
+    class My_DF_Gear_Heads_David_Savage;
+    class My_DF_Gear_Heads_DICH;
+    class My_DF_Gear_Heads_DICH1;
+    class My_DF_Gear_Heads_DICH9;
+    class My_DF_Gear_Heads_Dragon;
+    class My_DF_Gear_Heads_Dragon_NVG;
+    class My_DF_Gear_Heads_Dragon_Outers;
+    class My_DF_Gear_Heads_Dragon_Outers_NVG;
+    class My_DF_Gear_Heads_DRO;
+    class My_DF_Gear_Heads_Elio;
+    class My_DF_Gear_Heads_Elio_NVG;
+    class My_DF_Gear_Heads_Eversmann;
+    class My_DF_Gear_Heads_Flamethrower;
+    class My_DF_Gear_Heads_Flamethrower_Visor;
+    class My_DF_Gear_Heads_FPilot;
+    class My_DF_Gear_Heads_GN;
+    class My_DF_Gear_Heads_GN_Heavy;
+    class My_DF_Gear_Heads_GN_Heavy_NVG;
+    class My_DF_Gear_Heads_GT1;
+
     class My_DF_Gear_Backpacks_Shiled2 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_Large_Mountain { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_Camping { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
@@ -108,4 +136,30 @@ class CfgVehicles
     class My_DF_Gear_Backpacks_Terry { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_Terry_Haavk { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
     class My_DF_Gear_Backpacks_Travel { class DamageSystem { class GlobalHealth { class Health { hitpoints = 875; transferToAttachmentsCoef = 0.35; }; }; }; };
+
+    class My_DF_Gear_Heads_GT5 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Benny { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Butterfly { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_D6 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_D6_Visor { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; }; }; }; };
+    class My_DF_Gear_Heads_DAS { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_David_Savage { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_DICH { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_DICH1 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_DICH9 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Dragon { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Dragon_NVG { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; }; }; }; };
+    class My_DF_Gear_Heads_Dragon_Outers { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Dragon_Outers_NVG { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; }; }; }; };
+    class My_DF_Gear_Heads_DRO { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Elio { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Elio_NVG { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; }; }; }; };
+    class My_DF_Gear_Heads_Eversmann { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Flamethrower { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_Flamethrower_Visor { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; }; }; }; };
+    class My_DF_Gear_Heads_FPilot { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_GN { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_GN_Heavy { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
+    class My_DF_Gear_Heads_GN_Heavy_NVG { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; }; }; }; };
+    class My_DF_Gear_Heads_GT1 { class DamageSystem { class GlobalHealth { class Health { hitpoints = 200; transferToAttachmentsCoef = 0.35; }; }; }; };
 };
