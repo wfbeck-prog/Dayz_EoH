@@ -6,6 +6,10 @@ class EoH_DiscordWebhookConfig
     string KillFeedWebhook;
     int EnableBunkerWebhook;
     string BunkerWebhook;
+    int EnableDogtagWebhook;
+    string DogtagWebhook;
+    int EnableServerStatusWebhook;
+    string ServerStatusWebhook;
 
     void EoH_DiscordWebhookConfig()
     {
@@ -15,6 +19,10 @@ class EoH_DiscordWebhookConfig
         KillFeedWebhook = "";
         EnableBunkerWebhook = 0;
         BunkerWebhook = "";
+        EnableDogtagWebhook = 0;
+        DogtagWebhook = "";
+        EnableServerStatusWebhook = 0;
+        ServerStatusWebhook = "";
     }
 }
 
@@ -53,11 +61,9 @@ class EoH_DiscordWebhook
         }
 
         if (!s_Config)
-        {
             s_Config = new EoH_DiscordWebhookConfig();
-            JsonFileLoader<EoH_DiscordWebhookConfig>.JsonSaveFile(EOH_WEBHOOK_FILE, s_Config);
-            Print("[EoH_Discord] Created webhook config at " + EOH_WEBHOOK_FILE);
-        }
+
+        JsonFileLoader<EoH_DiscordWebhookConfig>.JsonSaveFile(EOH_WEBHOOK_FILE, s_Config);
     }
 
     static void SendTraderIntel(PlayerBase player, bool revealed)
@@ -80,6 +86,24 @@ class EoH_DiscordWebhook
         content += "Someone is listening to the old trade frequencies.";
 
         Send(cfg.TraderIntelWebhook, content, "Trader intel webhook sent.");
+    }
+
+    static void SendDogtagLedger(string content)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableDogtagWebhook != 1 || cfg.DogtagWebhook == "")
+            return;
+
+        Send(cfg.DogtagWebhook, content, "Dogtag ledger webhook sent.");
+    }
+
+    static void SendServerStatus(string content)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableServerStatusWebhook != 1 || cfg.ServerStatusWebhook == "")
+            return;
+
+        Send(cfg.ServerStatusWebhook, content, "Server status webhook sent.");
     }
 
     static void SendKillFeed(string victimName, string killerName, string weaponName, float distance)
