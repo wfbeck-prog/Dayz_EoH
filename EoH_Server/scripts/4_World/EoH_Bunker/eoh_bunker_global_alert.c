@@ -13,12 +13,8 @@ class EoH_BunkerGlobalAlert
 
         s_LastAlertTime = now;
 
-        string openerName = "Unknown survivor";
-        if (opener && opener.GetIdentity())
-            openerName = opener.GetIdentity().GetName();
-
         string title = "BUNKER ACCESS ALERT";
-        string message = openerName + " has opened the underground bunker with a punch card.";
+        string message = "A survivor has opened the underground bunker with a punch card.";
 
         EoH_Notifications.SendToAll(title, message);
         EoH_DiscordWebhook.SendBunkerOpened(opener);
