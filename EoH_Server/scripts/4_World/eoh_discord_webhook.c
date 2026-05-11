@@ -2,11 +2,15 @@ class EoH_DiscordWebhookConfig
 {
     int EnableTraderIntelWebhook;
     string TraderIntelWebhook;
+    int EnableKillFeedWebhook;
+    string KillFeedWebhook;
 
     void EoH_DiscordWebhookConfig()
     {
         EnableTraderIntelWebhook = 0;
         TraderIntelWebhook = "";
+        EnableKillFeedWebhook = 0;
+        KillFeedWebhook = "";
     }
 }
 
@@ -61,10 +65,31 @@ class EoH_DiscordWebhook
         content += "Result: " + result + "\n";
         content += "Someone is listening to the old trade frequencies.";
 
-        Send(cfg.TraderIntelWebhook, content);
+        Send(cfg.TraderIntelWebhook, content, "Trader intel webhook sent.");
     }
 
-    static void Send(string webhookUrl, string content)
+    static void SendKillFeed(string victimName, string killerName, string weaponName, float distance)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableKillFeedWebhook != 1 || cfg.KillFeedWebhook == "")
+            return;
+
+        string content = "☠️ **EoH KILL FEED**\n";
+        content += "Victim: " + victimName + "\n";
+        content += "Killer: " + killerName + "\n";
+
+        if (weaponName != "")
+            content += "Weapon: " + weaponName + "\n";
+
+        if (distance > 0)
+            content += "Distance: " + Math.Round(distance).ToString() + "m\n";
+
+        content += "Another echo fades from Chernarus.";
+
+        Send(cfg.KillFeedWebhook, content, "Kill feed webhook sent.");
+    }
+
+    static void Send(string webhookUrl, string content, string logMessage = "Webhook sent.")
     {
         if (webhookUrl == "" || content == "")
             return;
@@ -80,7 +105,7 @@ class EoH_DiscordWebhook
 
         string payload = "{\"content\":\"" + EscapeJson(content) + "\"}";
         ctx.POST(null, "", payload);
-        Print("[EoH_Discord] Trader intel webhook sent.");
+        Print("[EoH_Discord] " + logMessage);
     }
 
     static string EscapeJson(string value)
