@@ -88,6 +88,9 @@ class EoH_IntelManager
         TrackIntelUse(player);
 
         bool revealed = EoH_RT_TraderManager.Get().RevealNearestHiddenTraderToPlayer(player);
+
+        EoH_DiscordWebhook.SendTraderIntel(player, revealed);
+
         if (revealed)
             EoH_Notifications.SendToPlayer(player, "TRADER INTEL", "A roaming trader signal was marked.");
         else
