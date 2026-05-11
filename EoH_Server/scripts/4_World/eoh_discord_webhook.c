@@ -72,7 +72,7 @@ class EoH_DiscordWebhook
 
         string result = "No hidden roaming trader signal was found.";
         if (revealed)
-            result = "A roaming trader signal was decoded and marked.";
+            result = "Hidden roaming trader signal was found.";
 
         string content = "TRADER INTEL DECODED\n";
         content += "Survivor: " + name + "\n";
