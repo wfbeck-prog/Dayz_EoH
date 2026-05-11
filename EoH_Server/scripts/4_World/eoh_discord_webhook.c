@@ -4,6 +4,8 @@ class EoH_DiscordWebhookConfig
     string TraderIntelWebhook;
     int EnableKillFeedWebhook;
     string KillFeedWebhook;
+    int EnableBunkerWebhook;
+    string BunkerWebhook;
 
     void EoH_DiscordWebhookConfig()
     {
@@ -11,6 +13,8 @@ class EoH_DiscordWebhookConfig
         TraderIntelWebhook = "";
         EnableKillFeedWebhook = 0;
         KillFeedWebhook = "";
+        EnableBunkerWebhook = 0;
+        BunkerWebhook = "";
     }
 }
 
@@ -87,6 +91,23 @@ class EoH_DiscordWebhook
         content += "Another echo fades from Chernarus.";
 
         Send(cfg.KillFeedWebhook, content, "Kill feed webhook sent.");
+    }
+
+    static void SendBunkerOpened(PlayerBase player)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableBunkerWebhook != 1 || cfg.BunkerWebhook == "")
+            return;
+
+        string name = "Unknown Survivor";
+        if (player && player.GetIdentity())
+            name = player.GetIdentity().GetName();
+
+        string content = "🚨 **BUNKER OPENED**\n";
+        content += "Survivor: " + name + "\n";
+        content += "The underground signal has awakened. Endgame loot is now in play. Expect heavy movement toward the bunker.";
+
+        Send(cfg.BunkerWebhook, content, "Bunker webhook sent.");
     }
 
     static void Send(string webhookUrl, string content, string logMessage = "Webhook sent.")
