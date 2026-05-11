@@ -64,7 +64,7 @@ class EoH_DiscordWebhook
         if (revealed)
             result = "A roaming trader signal was decoded and marked.";
 
-        string content = "📡 **TRADER INTEL DECODED**\n";
+        string content = "**TRADER INTEL DECODED**\n";
         content += "Survivor: " + name + "\n";
         content += "Result: " + result + "\n";
         content += "Someone is listening to the old trade frequencies.";
@@ -78,7 +78,7 @@ class EoH_DiscordWebhook
         if (!cfg || cfg.EnableKillFeedWebhook != 1 || cfg.KillFeedWebhook == "")
             return;
 
-        string content = "☠️ **EoH KILL FEED**\n";
+        string content = "**EoH KILL FEED**\n";
         content += "Victim: " + victimName + "\n";
         content += "Killer: " + killerName + "\n";
 
@@ -103,7 +103,7 @@ class EoH_DiscordWebhook
         if (player && player.GetIdentity())
             name = player.GetIdentity().GetName();
 
-        string content = "🚨 **BUNKER OPENED**\n";
+        string content = "**BUNKER OPENED**\n";
         content += "Survivor: " + name + "\n";
         content += "The underground signal has awakened. Endgame loot is now in play. Expect heavy movement toward the bunker.";
 
