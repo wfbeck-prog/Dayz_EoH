@@ -89,31 +89,33 @@ class CfgMods
 class CfgVehicles
 {
     class Radio;
-    class BookAVoyageToArcturus;
-    class BookDeadSouls;
-    class BookTheOutlet;
+    class ItemBook;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
-class EoH_CaptureRelay_Base: Radio
-{
-    scope = 2;
-    displayName = "EoH Radio Relay";
-    descriptionShort = "A modified radio used to project group influence across the region.";
-};
+    class EoH_CaptureRelay_Base: Radio
+    {
+        scope = 2;
+        displayName = "EoH Radio Relay";
+        descriptionShort = "A modified radio used to project group influence across the region.";
+    };
 
-class EoH_RadioRelay: EoH_CaptureRelay_Base
-{
-    scope = 2;
-    displayName = "EoH Radio Relay";
-    descriptionShort = "A modified radio used to broadcast nearby town intel.";
-};
+    class EoH_RadioRelay: EoH_CaptureRelay_Base
+    {
+        scope = 2;
+        displayName = "EoH Radio Relay";
+        descriptionShort = "A modified radio used to broadcast nearby town intel.";
+    };
 
-    class EoH_Intel_Document: BookAVoyageToArcturus
+    class EoH_Intel_Document: ItemBook
     {
         scope = 2;
         displayName = "Intel Document";
         descriptionShort = "Contains real reconnaissance data about territorial control.";
+        model = "\dz\gear\books\book_kniga.p3d";
+        rotationFlags = 1;
+        itemSize[] = {1,2};
+        weight = 100;
     };
 
     class EoH_TownIntel: EoH_Intel_Document
@@ -123,14 +125,14 @@ class EoH_RadioRelay: EoH_CaptureRelay_Base
         descriptionShort = "Reveals nearby town control intel.";
     };
 
-    class EoH_TraderIntel: BookDeadSouls
+    class EoH_TraderIntel: EoH_Intel_Document
     {
         scope = 2;
         displayName = "Trader Intel";
         descriptionShort = "Contains information about roaming trader activity.";
     };
 
-    class EoH_CBDIntel: BookTheOutlet
+    class EoH_CBDIntel: EoH_Intel_Document
     {
         scope = 2;
         displayName = "Loot Room Intel";
@@ -140,8 +142,8 @@ class EoH_RadioRelay: EoH_CaptureRelay_Base
     class EoH_LootRoomIntel: EoH_CBDIntel
     {
         scope = 2;
-        displayName = "Loot Room Intel";
-        descriptionShort = "Recovered notes pointing toward sealed loot rooms.";
+        displayName = "Loot Cache Intel";
+        descriptionShort = "Recovered notes pointing toward sealed loot caches.";
     };
 
     class ExpansionTraderChem: ExpansionTraderMirek
