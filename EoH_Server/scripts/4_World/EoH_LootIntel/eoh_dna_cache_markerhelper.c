@@ -43,8 +43,8 @@ class EoH_DNACacheMarkerHelper
 	static EoH_MarkerData BuildCacheOpenedMarker(string tier, vector position)
 	{
 		EoH_MarkerData data = new EoH_MarkerData(BuildMarkerId(tier, position), GetMarkerLabel(tier), position);
-		data.Category = EoH_MarkerCategory.TRADER;
-		data.State = EoH_MarkerState.NORMAL;
+		data.Category = EoH_MarkerCategory.CACHE;
+		data.State = EoH_MarkerState.ACTIVE;
 		data.Icon = "Questionmark";
 		data.Is3D = 1;
 		data.Pulse = 1;
