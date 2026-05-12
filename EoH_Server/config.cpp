@@ -29,8 +29,7 @@ class CfgPatches
             "DayZExpansion_Groups",
             "DayZExpansion_Market",
             "Dogtags",
-            "TerjeSkills",
-            "CBD_LootRoomsSystem"
+            "TerjeSkills"
         };
     };
 };
