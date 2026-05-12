@@ -3,6 +3,7 @@ class EoH_MarkerCategory
     static const string TOWN = "Town";
     static const string TRADER = "Trader";
     static const string KEYROOM = "KeyRoom";
+    static const string CACHE = "Cache";
     static const string BUNKER = "Bunker";
     static const string INTEL = "Intel";
     static const string EVENT = "Event";
@@ -11,6 +12,7 @@ class EoH_MarkerCategory
 class EoH_MarkerState
 {
     static const string NORMAL = "Normal";
+    static const string ACTIVE = "Active";
     static const string CAPTURING = "Capturing";
     static const string CONTESTED = "Contested";
     static const string OWNED = "Owned";
