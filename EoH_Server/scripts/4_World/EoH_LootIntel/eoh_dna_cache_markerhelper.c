@@ -44,7 +44,7 @@ class EoH_DNACacheMarkerHelper
 	{
 		EoH_MarkerData data = new EoH_MarkerData(BuildMarkerId(tier, position), GetMarkerLabel(tier), position);
 		data.Category = EoH_MarkerCategory.TRADER;
-		data.State = EoH_MarkerState.ACTIVE;
+		data.State = EoH_MarkerState.NORMAL;
 		data.Icon = "Questionmark";
 		data.Is3D = 1;
 		data.Pulse = 1;
