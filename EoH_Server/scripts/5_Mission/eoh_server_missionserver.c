@@ -5,7 +5,6 @@ modded class MissionServer
     protected bool m_EoH_RelaysSpawned;
     protected int m_EoH_LastCaptureTick;
     protected int m_EoH_LastTraderTick;
-    protected int m_EoH_LastCBDTick;
 
     override void OnInit()
     {
@@ -28,10 +27,6 @@ modded class MissionServer
         super.InvokeOnConnect(player, identity);
         EoH_DT_UpdatePlayerDogtag(player);
         SendBaseTownMarkers(player);
-
-        EoH_CBD_Observer cbd = EoH_CBD_Observer.GetInstance();
-        if (cbd)
-            cbd.SendCurrentMarkersToPlayer(player);
     }
 
     void SendBaseTownMarkers(PlayerBase player)
@@ -81,7 +76,6 @@ modded class MissionServer
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
         EoH_RT_TraderManager.Get().Initialize();
-        EoH_CBD_Observer.GetInstance();
         EoH_DiscordWebhook.GetConfig();
 
         EoH_InitTownMarkers();
@@ -240,14 +234,6 @@ modded class MissionServer
             EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
             if (traderManager)
                 traderManager.Update();
-        }
-
-        if (now - m_EoH_LastCBDTick >= 15000)
-        {
-            m_EoH_LastCBDTick = now;
-            EoH_CBD_Observer cbd = EoH_CBD_Observer.GetInstance();
-            if (cbd)
-                cbd.Update();
         }
     }
 
