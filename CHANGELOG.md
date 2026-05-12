@@ -2,6 +2,84 @@
 
 All notable EoH_Server repository changes are tracked here.
 
+## 2026-05-12
+
+### Added
+- Added DNA Keycards migration support for the new EoH loot-cache progression direction.
+- Added DNA loot cache marker helper:
+  - `EoH_Server/scripts/4_World/EoH_LootIntel/eoh_dna_cache_markerhelper.c`
+- Added DNA loot cache open bridge:
+  - `EoH_Server/scripts/4_World/EoH_LootIntel/eoh_dna_cache_openbridge.c`
+- Added tier-aware DNA cache marker support:
+  - Yellow = T1 Cache
+  - Green = T2 Cache
+  - Blue = T3 Cache
+  - Red = T4 Cache
+  - Purple = bunker-only / special cache direction
+- Added temporary pulsing cache-open markers with timed removal support.
+- Added marker framework support for:
+  - `EoH_MarkerCategory.CACHE`
+  - `EoH_MarkerState.ACTIVE`
+- Added dogtag ledger Discord bridge:
+  - `EoH_Server/scripts/4_World/EoH_Dogtags/eoh_dogtag_ledger.c`
+- Added server status Discord bridge:
+  - `EoH_Server/scripts/4_World/EoH_Status/eoh_server_status_webhook.c`
+- Added delayed server-online webhook call from MissionServer startup:
+  - `EoH_Server/scripts/5_Mission/eoh_server_status_mission.c`
+- Added Red Ledger / high-value kill webhook support.
+- Added server status webhook payload details:
+  - online survivor count
+  - in-game server time
+- Added Dogtag and Server Status fields to `EoH_Webhooks.json` generation.
+- Added High Value Kill webhook fields to `EoH_Webhooks.json` generation.
+- Added combined My Delta Force durability override mod/config work under `EoH_DeltaForceDurability`.
+- Added planning issue for evaluating replacement of CBD Loot Rooms, CJ187/JD LootChests, and BS KeyRoom remnants with DNA Keycard Crates.
+
+### Changed
+- Changed EoH loot-room direction from CBD/BS room tracking to DNA Keycard Crates / Loot Cache Intel.
+- Renamed player-facing loot-room intel wording toward `Loot Cache Intel`.
+- Updated intel item config inheritance so EoH intel documents inherit from `ItemBook` via `EoH_Intel_Document`.
+- Updated roaming trader AI integration to use proper EoH guard loadouts:
+  - Drug trader guards use `EoH_AI_Drug_SMGS`
+  - Black market guards use `EoH_AI_HighValue_Hard`
+- Updated roaming trader AI guard faction/group handling to reduce friendly-fire/self-kill issues.
+- Updated roaming trader relocation marker cleanup to aggressively remove possible stale marker IDs.
+- Updated trader intel Discord wording:
+  - success now says `Hidden roaming trader signal was found.`
+  - unavailable now says `No unrevealed roaming trader signal was available.`
+- Updated marker helper fallback logic to use the newly added `CACHE` category and `ACTIVE` state instead of temporary `TRADER` / `NORMAL` fallbacks.
+- Updated server status webhook route to use the main `EoH_DiscordWebhook.SendServerStatus(...)` path.
+- Updated kill feed logic to skip AI-vs-AI deaths.
+- Updated high-value kill detection for long-range and military-zone engagements.
+- Updated Delta Force durability balancing:
+  - backpacks increased from 500 HP baseline to 875 HP
+  - rigs/headgear increased from 100 HP baseline to 200 HP
+  - light hat handling increased from 50 HP baseline to 100 HP
+  - armor protection, cargo, slots, weight, and inventory sizes were intentionally not changed.
+
+### Removed / Deprecated
+- Deprecated active CBD LootRooms integration for EoH progression.
+- Deprecated BS KeyRoom remnants for EoH progression.
+- Deprecated CJ187/JD LootChests as a possible future loot-progression dependency if DNA crate testing validates.
+- Removed the unsupported Expansion AI call `eAI_SetMovementSpeedLimit(...)` from roaming trader AI setup.
+- Removed/avoided BS key and CBD key entries from converted DNA loot pool direction.
+
+### Fixed
+- Fixed `EoH_MarkerCategory.LOOT` compile error by adding a proper `CACHE` marker category and using it for DNA cache markers.
+- Fixed `EoH_MarkerState.ACTIVE` compile error by adding a proper `ACTIVE` marker state.
+- Fixed `eAIBase.eAI_SetMovementSpeedLimit` compile error by removing the unsupported method call.
+- Fixed multiline Red Ledger webhook call syntax in `eoh_killfeed.c`.
+- Fixed webhook config generation so new Dogtag, Server Status, and High Value Kill fields appear in `EoH_Webhooks.json`.
+- Fixed intel item inheritance warning/spam by using `ItemBook` as the stable parent for intel documents.
+- Fixed server status webhook not firing by adding a delayed MissionServer startup hook.
+
+### Notes
+- CBD and BS KeyRoom should remain removed from the active server mod stack once DNA testing validates crate locking, loot spawning, persistence, and reset behavior.
+- Purple DNA crates are now planned for bunker/special-cache use rather than being removed completely.
+- DNA crate-open marker support is ready, but still needs the exact DNA crate open callback/action hook confirmed during testing.
+- `EoH_DNACacheOpenBridge.OnCrateOpened(crate)` is the intended hook target once the DNA open action is identified.
+- Server owners must enable and populate the desired webhook URLs in `$profile:EoH\\Webhooks\\EoH_Webhooks.json`.
+
 ## 2026-05-06
 
 ### Added
