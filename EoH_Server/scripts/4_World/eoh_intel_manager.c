@@ -99,29 +99,17 @@ class EoH_IntelManager
 
     void RevealCBDIntel(PlayerBase player)
     {
+        RevealLootCacheIntel(player);
+    }
+
+    void RevealLootCacheIntel(PlayerBase player)
+    {
         if (!player || !player.GetIdentity())
             return;
 
         TrackIntelUse(player);
-
-        EoH_CBD_Observer observer = EoH_CBD_Observer.GetInstance();
-        if (!observer)
-        {
-            EoH_Notifications.SendToPlayer(player, "CBD INTEL", "CBD tracking systems are offline.");
-            return;
-        }
-
-        LootSystemRoom nearest = observer.FindNearestRoom(player.GetPosition());
-        if (!nearest)
-        {
-            EoH_Notifications.SendToPlayer(player, "CBD INTEL", "No nearby sealed room signals were found.");
-            return;
-        }
-
-        EoH_CBD_MarkerHelper.SendToPlayer(player, nearest);
-        EoH_Notifications.SendToPlayer(player, "LOCKROOM SIGNAL DECODED", "A sealed room frequency has been recovered. A marker has been added to your map.");
-
-        Print("[EoH_CBDIntel] Revealed room=" + nearest.LootRoomName + " to player=" + player.GetIdentity().GetName());
+        EoH_Notifications.SendToPlayer(player, "LOOT CACHE INTEL", "Loot cache intel is being migrated to the DNA keycard cache system.");
+        Print("[EoH_LootCacheIntel] CBD observer removed. DNA cache intel hook pending for player=" + player.GetIdentity().GetName());
     }
 
     void TrackIntelUse(PlayerBase player)
