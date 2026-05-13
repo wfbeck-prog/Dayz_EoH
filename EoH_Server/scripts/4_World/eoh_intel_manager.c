@@ -67,10 +67,11 @@ class EoH_IntelManager
             oldIntelId.Replace(" ", "_");
             EoH_MarkerService.RemoveFromPlayer(player, oldIntelId);
 
-            EoH_MarkerData data = EoH_TownMarkerManager.BuildTownMarker(name, "Intel", EoH_MarkerState.NORMAL, 1, ARGB(255, 255, 220, 80));
+            EoH_MarkerData data = EoH_TownMarkerManager.BuildTownMarker(name, "Intel", EoH_MarkerState.NORMAL, 0, ARGB(255, 255, 220, 80));
             data.Label = name;
             data.Icon = "Info";
             data.Position = pos;
+            data.Pulse = 0;
             data.Normalize();
 
             EoH_MarkerService.SendToPlayer(player, data);
@@ -78,6 +79,7 @@ class EoH_IntelManager
         }
 
         EoH_Notifications.SendToPlayer(player, "INTEL DECODED", "Nearby town activity updated: " + revealed.ToString());
+        Print("[EoH_Intel] Town intel revealed count=" + revealed.ToString() + " player=" + player.GetIdentity().GetName());
     }
 
     void RevealTraderIntel(PlayerBase player)
@@ -95,6 +97,8 @@ class EoH_IntelManager
             EoH_Notifications.SendToPlayer(player, "TRADER INTEL", "A roaming trader signal was marked.");
         else
             EoH_Notifications.SendToPlayer(player, "TRADER INTEL", "No hidden trader signal was found.");
+
+        Print("[EoH_Intel] Trader intel used revealed=" + revealed.ToString() + " player=" + player.GetIdentity().GetName());
     }
 
     void RevealCBDIntel(PlayerBase player)
@@ -108,8 +112,15 @@ class EoH_IntelManager
             return;
 
         TrackIntelUse(player);
-        EoH_Notifications.SendToPlayer(player, "LOOT CACHE INTEL", "Loot cache intel is being migrated to the DNA keycard cache system.");
-        Print("[EoH_LootCacheIntel] CBD observer removed. DNA cache intel hook pending for player=" + player.GetIdentity().GetName());
+
+        bool revealed = EoH_DNACacheIntelManager.Get().RevealNearestCacheToPlayer(player);
+
+        if (revealed)
+            EoH_Notifications.SendToPlayer(player, "LOOT CACHE INTEL", "DNA cache coordinates were decoded and broadcast.");
+        else
+            EoH_Notifications.SendToPlayer(player, "LOOT CACHE INTEL", "No DNA cache signal could be triangulated.");
+
+        Print("[EoH_LootCacheIntel] DNA cache intel used revealed=" + revealed.ToString() + " player=" + player.GetIdentity().GetName());
     }
 
     void TrackIntelUse(PlayerBase player)
@@ -121,5 +132,6 @@ class EoH_IntelManager
         int used = 0;
         m_PlayerIntelUses.Find(playerId, used);
         m_PlayerIntelUses.Set(playerId, used + 1);
+        Print("[EoH_Intel] Track use player=" + player.GetIdentity().GetName() + " count=" + (used + 1).ToString());
     }
 };
