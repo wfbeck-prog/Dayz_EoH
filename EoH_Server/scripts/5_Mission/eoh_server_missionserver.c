@@ -5,6 +5,7 @@ modded class MissionServer
     protected bool m_EoH_RelaysSpawned;
     protected int m_EoH_LastCaptureTick;
     protected int m_EoH_LastTraderTick;
+    protected int m_EoH_LastAtmosphereTick;
 
     override void OnInit()
     {
@@ -72,10 +73,12 @@ modded class MissionServer
 
         GetEoHBuildControlConfig();
         GetEoHRelayConfig();
+        GetEoHAtmosphereConfig();
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
         EoH_RT_TraderManager.Get().Initialize();
+        EoH_AtmosphereManager.Get();
         EoH_DiscordWebhook.GetConfig();
 
         EoH_InitTownMarkers();
@@ -234,6 +237,14 @@ modded class MissionServer
             EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
             if (traderManager)
                 traderManager.Update();
+        }
+
+        if (now - m_EoH_LastAtmosphereTick >= 30000)
+        {
+            m_EoH_LastAtmosphereTick = now;
+            EoH_AtmosphereManager atmosphereManager = EoH_AtmosphereManager.Get();
+            if (atmosphereManager)
+                atmosphereManager.Tick();
         }
     }
 
