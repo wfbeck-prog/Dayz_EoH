@@ -39,6 +39,16 @@ class EoH_TownMarkerManager
     static void UpdateTownMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.OWNED, 0, GetGroupColor(owner));
+        data.Pulse = 0;
+        data.Normalize();
+        EoH_MarkerService.Broadcast(data);
+    }
+
+    static void UpdateBaseTownMarker(string townName)
+    {
+        EoH_MarkerData data = BuildTownMarker(townName, "Unclaimed", EoH_MarkerState.NORMAL, 0, ARGB(120, 150, 150, 150));
+        data.Pulse = 0;
+        data.Normalize();
         EoH_MarkerService.Broadcast(data);
     }
 
@@ -48,15 +58,34 @@ class EoH_TownMarkerManager
         EoH_MarkerService.Broadcast(data);
     }
 
+    static void UpdatePausedMarker(string townName, string owner)
+    {
+        EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.NORMAL, 0, GetGroupColor(owner));
+        data.Label = townName + " Capture Paused";
+        data.Icon = "Territory";
+        data.Pulse = 0;
+        data.Normalize();
+        EoH_MarkerService.Broadcast(data);
+    }
+
     static void UpdateContestedMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.CONTESTED, 1, ARGB(255, 255, 50, 50));
         EoH_MarkerService.Broadcast(data);
     }
 
+    static void ClearActiveTownMarker(string townName)
+    {
+        string owner = EoH_CaptureManager.Get().GetTownOwner(townName);
+        if (owner != "")
+            UpdateTownMarker(townName, owner);
+        else
+            UpdateBaseTownMarker(townName);
+    }
+
     static void ClearContestedMarker(string townName)
     {
-        RemoveMarkerFromAll(GetMarkerId(townName));
+        ClearActiveTownMarker(townName);
     }
 
     static void RemoveMarkerFromAll(string markerId)
@@ -76,13 +105,17 @@ class EoH_TownMarkerManager
 
     static EoH_MarkerData BuildTownMarker(string townName, string owner, string state, int pulse, int color)
     {
+        int safePulse = 0;
+        if (state == EoH_MarkerState.CAPTURING || state == EoH_MarkerState.CONTESTED)
+            safePulse = pulse;
+
         EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(townName), townName, GetTownPosition(townName));
         data.Category = EoH_MarkerCategory.TOWN;
         data.State = state;
         data.Owner = owner;
         data.Color = color;
         data.BaseColor = color;
-        data.Pulse = pulse;
+        data.Pulse = safePulse;
         data.Is3D = 0;
         data.Icon = GetIconForState(state, owner);
         data.Visible = 1;
