@@ -1,13 +1,11 @@
-modded class DNA_Crate_ColourBase
+// EoH DNA cache marker hook is intentionally disabled for marker regression testing.
+// Roaming trader markers worked before the DNA cache marker integration.
+// Re-enable only after drug trader and black market marker behavior is confirmed stable.
+
+class EoH_DNACrateHookDisabled
 {
-    override void Open()
+    static void Note()
     {
-        super.Open();
-
-        if (!GetGame().IsServer())
-            return;
-
-        Print("[EoH_DNAHook] DNA_Crate_ColourBase.Open fired type=" + GetType() + " pos=" + GetPosition().ToString());
-        EoH_DNACacheOpenBridge.OnCrateOpened(this);
+        // No runtime behavior.
     }
 };
