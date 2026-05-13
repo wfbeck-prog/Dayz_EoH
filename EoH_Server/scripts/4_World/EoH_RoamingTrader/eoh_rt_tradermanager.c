@@ -332,8 +332,9 @@ class EoH_RT_TraderManager
 			return false;
 
 		m_RevealedMarkers.Set(bestProfile.TraderId, true);
-		EoH_MarkerData data = BuildTraderMarkerData(bestProfile, bestRuntime.TraderObject.GetPosition());
-		EoH_MarkerService.SendToPlayer(player, data);
+		BroadcastMarker(bestProfile, bestRuntime.TraderObject.GetPosition());
+		EoH_Notifications.SendToAll("ROAMING TRADER SIGNAL", bestProfile.DisplayName + " signal was decoded. Survivors will converge on the location.");
+		Print("[EoH_RT] Trader intel revealed globally traderId=" + bestProfile.TraderId + " pos=" + bestRuntime.TraderObject.GetPosition().ToString() + " by=" + player.GetIdentity().GetName());
 		return true;
 	}
 
@@ -370,6 +371,7 @@ class EoH_RT_TraderManager
 			return;
 
 		EoH_MarkerService.Broadcast(BuildTraderMarkerData(profile, pos));
+		Print("[EoH_RT] Broadcast trader marker traderId=" + profile.TraderId + " pos=" + pos.ToString());
 	}
 
 	EoH_MarkerData BuildTraderMarkerData(EoH_RT_TraderProfile profile, vector pos)
