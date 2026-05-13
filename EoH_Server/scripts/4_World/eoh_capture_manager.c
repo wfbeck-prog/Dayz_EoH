@@ -7,6 +7,8 @@ class EoH_CaptureSession
     int LastTick;
     int LastNotifyPercent;
     bool IsContested;
+    bool CapturingGroupPresent;
+    bool WasPausedNoPresence;
 
     void EoH_CaptureSession()
     {
@@ -17,6 +19,8 @@ class EoH_CaptureSession
         LastTick = 0;
         LastNotifyPercent = 0;
         IsContested = false;
+        CapturingGroupPresent = false;
+        WasPausedNoPresence = false;
     }
 };
 
@@ -24,6 +28,7 @@ class EoH_CaptureManager
 {
     static ref EoH_CaptureManager s_Instance;
     static const float CAPTURE_DURATION_MS = 600000.0;
+    static const float CAPTURE_RADIUS = 150.0;
 
     ref map<string, ref EoH_CaptureSession> m_Sessions;
     ref map<string, vector> m_Towns;
@@ -125,6 +130,14 @@ class EoH_CaptureManager
         if (!player)
             return;
 
+        vector townPos = GetTownPos(town);
+        if (vector.Distance(player.GetPosition(), townPos) > CAPTURE_RADIUS)
+        {
+            EoH_Notifications.SendToPlayer(player, "TOWN CAPTURE FAILED", "You must be inside the capture zone to start capturing " + town + ".");
+            Print("[EoH_Capture] Blocked start outside radius town=" + town + " player=" + player.GetIdentity().GetName() + " dist=" + vector.Distance(player.GetPosition(), townPos).ToString());
+            return;
+        }
+
         string groupID = EoH_GroupHelper.GetGroupID(player);
         if (groupID == "")
         {
@@ -138,6 +151,7 @@ class EoH_CaptureManager
         s.CapturingGroupName = EoH_GroupHelper.GetGroupName(player);
         s.LastTick = GetGame().GetTime();
         s.LastNotifyPercent = 0;
+        s.CapturingGroupPresent = true;
 
         m_Sessions.Set(town, s);
 
@@ -157,6 +171,9 @@ class EoH_CaptureManager
             s.LastTick = now;
 
             UpdatePresence(s);
+
+            if (!s.CapturingGroupPresent)
+                continue;
 
             if (!s.IsContested)
             {
@@ -186,31 +203,54 @@ class EoH_CaptureManager
         GetGame().GetPlayers(players);
 
         bool enemyPresent = false;
+        bool captureGroupPresent = false;
 
         foreach (Man m : players)
         {
             PlayerBase p = PlayerBase.Cast(m);
-            if (!p || !p.GetIdentity())
+            if (!p || !p.GetIdentity() || !p.IsAlive())
                 continue;
 
-            if (vector.Distance(p.GetPosition(), pos) >= 150)
+            if (vector.Distance(p.GetPosition(), pos) >= CAPTURE_RADIUS)
                 continue;
 
             string otherGroupID = EoH_GroupHelper.GetGroupID(p);
-            if (otherGroupID != "" && otherGroupID != s.CapturingGroupID)
-            {
+            if (otherGroupID == s.CapturingGroupID)
+                captureGroupPresent = true;
+            else if (otherGroupID != "")
                 enemyPresent = true;
-                break;
-            }
         }
 
         bool wasContested = s.IsContested;
+        bool wasPresent = s.CapturingGroupPresent;
         s.IsContested = enemyPresent;
+        s.CapturingGroupPresent = captureGroupPresent;
+
+        if (!s.CapturingGroupPresent)
+        {
+            if (!s.WasPausedNoPresence)
+            {
+                s.WasPausedNoPresence = true;
+                EoH_TownMarkerManager.UpdateCapturingMarker(s.TownName, s.CapturingGroupName);
+                BroadcastCaptureMessage("TOWN CAPTURE PAUSED", s.TownName + " capture paused. Capturing group left the zone.");
+                Print("[EoH_Capture] Paused no presence town=" + s.TownName + " group=" + s.CapturingGroupName);
+            }
+            return;
+        }
+
+        if (!wasPresent || s.WasPausedNoPresence)
+        {
+            s.WasPausedNoPresence = false;
+            EoH_TownMarkerManager.UpdateCapturingMarker(s.TownName, s.CapturingGroupName);
+            BroadcastCaptureMessage("TOWN CAPTURE RESUMED", s.TownName + " capture has resumed.");
+            Print("[EoH_Capture] Resumed presence town=" + s.TownName + " group=" + s.CapturingGroupName);
+        }
 
         if (s.IsContested)
         {
             EoH_TownMarkerManager.UpdateContestedMarker(s.TownName, s.CapturingGroupName);
-            BroadcastCaptureMessage("TOWN CONTESTED", s.TownName + " is contested. Capture progress paused.");
+            if (!wasContested)
+                BroadcastCaptureMessage("TOWN CONTESTED", s.TownName + " is contested. Capture progress paused.");
         }
         else if (wasContested)
         {
