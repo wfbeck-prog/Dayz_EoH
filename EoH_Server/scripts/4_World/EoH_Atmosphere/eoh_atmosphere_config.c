@@ -1,6 +1,9 @@
 class EoH_AtmosphereConfig
 {
     int Enabled = 1;
+    int ForceWeatherControl = 1;
+    int DebugForceMist = 1;
+    float ForceReapplySeconds = 120.0;
 
     // Percent chance that the next atmosphere cycle will be a mist cycle.
     float MistChance = 0.70;
@@ -8,6 +11,9 @@ class EoH_AtmosphereConfig
     // Legacy/simple interval fallback. The manager now uses mist/clear cycle durations.
     float CheckIntervalSeconds = 900.0;
     float TransitionSeconds = 180.0;
+
+    // Fast startup/test transition. Used when DebugForceMist is enabled or on first apply.
+    float StartupTransitionSeconds = 10.0;
 
     // Mist cycle duration range.
     float MistDurationMinutesMin = 20.0;
@@ -22,6 +28,10 @@ class EoH_AtmosphereConfig
     float MistOvercastMax = 0.95;
     float MistFogMin = 0.35;
     float MistFogMax = 0.65;
+
+    // Hard diagnostic mist values. Leave DebugForceMist=1 until weather control is visually confirmed.
+    float DebugMistOvercast = 0.95;
+    float DebugMistFog = 0.75;
 
     // Clearer relief weather.
     float ClearOvercastMin = 0.35;
@@ -59,6 +69,8 @@ class EoH_AtmosphereConfig
         MistChance = Math.Clamp(MistChance, 0.0, 1.0);
         CheckIntervalSeconds = Math.Max(CheckIntervalSeconds, 60.0);
         TransitionSeconds = Math.Max(TransitionSeconds, 1.0);
+        StartupTransitionSeconds = Math.Max(StartupTransitionSeconds, 1.0);
+        ForceReapplySeconds = Math.Max(ForceReapplySeconds, 30.0);
 
         MistDurationMinutesMin = Math.Max(MistDurationMinutesMin, 1.0);
         MistDurationMinutesMax = Math.Max(MistDurationMinutesMax, MistDurationMinutesMin);
@@ -74,6 +86,8 @@ class EoH_AtmosphereConfig
         MistOvercastMax = Math.Clamp(MistOvercastMax, MistOvercastMin, 1.0);
         MistFogMin = Math.Clamp(MistFogMin, 0.0, 1.0);
         MistFogMax = Math.Clamp(MistFogMax, MistFogMin, 1.0);
+        DebugMistOvercast = Math.Clamp(DebugMistOvercast, 0.0, 1.0);
+        DebugMistFog = Math.Clamp(DebugMistFog, 0.0, 1.0);
 
         ClearOvercastMin = Math.Clamp(ClearOvercastMin, 0.0, 1.0);
         ClearOvercastMax = Math.Clamp(ClearOvercastMax, ClearOvercastMin, 1.0);
