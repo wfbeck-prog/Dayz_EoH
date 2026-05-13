@@ -26,7 +26,13 @@ modded class PlayerBase
         string weaponName = "";
         float distance = 0;
 
-        if (killerPlayer)
+        // If DayZ reports the victim as their own killer, treat it as environment/bleed-out.
+        if (killer == this)
+        {
+            killerName = "Environment";
+            weaponName = "Bleed-out / Exposure";
+        }
+        else if (killerPlayer)
         {
             if (killerPlayer.GetIdentity())
                 killerName = killerPlayer.GetIdentity().GetName();
@@ -41,21 +47,26 @@ modded class PlayerBase
         }
         else if (killer)
         {
-            killerName = killer.GetType();
+            string killerType = killer.GetType();
+
+            if (killerType.Contains("eAI") || killerType.Contains("Infected") || killerType.Contains("Zmb") || killerType.Contains("Animal") || killerType.Contains("Wolf") || killerType.Contains("Bear"))
+                killerName = "AI Survivor";
+            else
+                killerName = killerType;
         }
 
         EoH_DiscordWebhook.SendKillFeed(victimName, killerName, weaponName, distance);
 
         string redLedgerReason = "";
 
-        if (distance >= 500)
+        if (killerIsHuman && distance >= 500)
             redLedgerReason = "Extreme Longshot";
-        else if (distance >= 300)
+        else if (killerIsHuman && distance >= 300)
             redLedgerReason = "Long Range Kill";
 
         vector pos = GetPosition();
 
-        if (vector.Distance(pos, "4700 0 10200") < 1200)
+        if (killerIsHuman && vector.Distance(pos, "4700 0 10200") < 1200)
         {
             if (redLedgerReason != "")
                 redLedgerReason += ", ";
