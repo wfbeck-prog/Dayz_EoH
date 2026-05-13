@@ -14,17 +14,29 @@ class EoH_DNACacheOpenBridge
 		if (!GetGame().IsServer() || !crate)
 			return;
 
+		string type = crate.GetType();
+		Print("[EoH_DNAHook] Bridge received crate type=" + type);
+
 		string tier = GetTierFromCrate(crate);
+		Print("[EoH_DNAHook] Tier detected=" + tier);
+
 		if (tier == string.Empty || tier == "Purple")
+		{
+			Print("[EoH_DNAHook] Tier ignored or unresolved for crate=" + type);
 			return;
+		}
 
 		vector pos = crate.GetPosition();
 		string alertId = BuildAlertId(tier, pos);
 
 		if (WasRecentlyAlerted(alertId))
+		{
+			Print("[EoH_DNAHook] Alert cooldown active for=" + alertId);
 			return;
+		}
 
 		SetRecentlyAlerted(alertId);
+		Print("[EoH_DNAHook] Broadcasting cache marker tier=" + tier + " pos=" + pos.ToString());
 		EoH_DNACacheMarkerHelper.BroadcastCacheOpenedTimed(tier, pos, EOH_DNA_CACHE_ALERT_COOLDOWN_MS);
 	}
 
