@@ -231,7 +231,7 @@ class EoH_CaptureManager
             if (!s.WasPausedNoPresence)
             {
                 s.WasPausedNoPresence = true;
-                EoH_TownMarkerManager.UpdateCapturingMarker(s.TownName, s.CapturingGroupName);
+                EoH_TownMarkerManager.UpdatePausedMarker(s.TownName, s.CapturingGroupName);
                 BroadcastCaptureMessage("TOWN CAPTURE PAUSED", s.TownName + " capture paused. Capturing group left the zone.");
                 Print("[EoH_Capture] Paused no presence town=" + s.TownName + " group=" + s.CapturingGroupName);
             }
