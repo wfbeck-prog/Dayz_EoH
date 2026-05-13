@@ -7,6 +7,7 @@ class EoH_RT_TraderManager
 	protected ref map<string, int> m_RelocationGraceStart;
 	protected bool m_Initialized;
 	static const float EOH_RT_RELOCATION_HOLD_RADIUS = 30.0;
+	static const float EOH_RT_PROXIMITY_REVEAL_RADIUS = 35.0;
 	static const int EOH_RT_RELOCATION_MAX_GRACE_MS = 900000;
 
 	static EoH_RT_TraderManager Get()
@@ -83,8 +84,38 @@ class EoH_RT_TraderManager
 				continue;
 			}
 
+			CheckProximityReveal(profile, runtime);
+
 			if (ShouldAdvanceRoute(profile, runtime))
 				MoveTraderToNextNode(profile, runtime);
+		}
+	}
+
+	void CheckProximityReveal(EoH_RT_TraderProfile profile, EoH_RT_TraderRuntime runtime)
+	{
+		if (!profile || !runtime || !runtime.TraderObject)
+			return;
+
+		bool revealed = false;
+		m_RevealedMarkers.Find(profile.TraderId, revealed);
+		if (revealed)
+			return;
+
+		array<Man> players = new array<Man>();
+		GetGame().GetPlayers(players);
+
+		foreach (Man man : players)
+		{
+			PlayerBase player = PlayerBase.Cast(man);
+			if (!player || !player.GetIdentity() || !player.IsAlive())
+				continue;
+
+			float dist = vector.Distance(player.GetPosition(), runtime.TraderObject.GetPosition());
+			if (dist > EOH_RT_PROXIMITY_REVEAL_RADIUS)
+				continue;
+
+			RevealTraderGlobally(profile, runtime.TraderObject.GetPosition(), "PROXIMITY", player);
+			return;
 		}
 	}
 
@@ -259,8 +290,7 @@ class EoH_RT_TraderManager
 		if (nextIndex < 0)
 			return;
 
-		ClearMarkerForAllPlayers(profile.TraderId);
-		m_RevealedMarkers.Set(profile.TraderId, false);
+		HideMarkerForAllPlayers(profile.TraderId);
 
 		runtime.CurrentRouteIndex = nextIndex;
 
@@ -282,19 +312,16 @@ class EoH_RT_TraderManager
 
 	void RevealMarkerForObjectToAllPlayers(Object obj)
 	{
+		// Legacy object-only reveal is intentionally disabled.
+		// A real player must either use trader intel or physically enter proximity range.
 		if (!GetGame().IsServer() || !obj)
 			return;
 
 		EoH_RT_TraderRuntime runtime = GetRuntimeByObject(obj);
-		if (!runtime || !runtime.IsSpawned || !runtime.TraderObject)
+		if (!runtime)
 			return;
 
-		EoH_RT_TraderProfile profile = m_Config.FindProfile(runtime.TraderId);
-		if (!profile)
-			return;
-
-		m_RevealedMarkers.Set(profile.TraderId, true);
-		BroadcastMarker(profile, runtime.TraderObject.GetPosition());
+		Print("[EoH_RT] Ignored legacy object-only trader reveal traderId=" + runtime.TraderId + ". Awaiting player proximity or intel.");
 	}
 
 	bool RevealNearestHiddenTraderToPlayer(PlayerBase player)
@@ -331,11 +358,33 @@ class EoH_RT_TraderManager
 		if (!bestProfile || !bestRuntime || !bestRuntime.TraderObject)
 			return false;
 
-		m_RevealedMarkers.Set(bestProfile.TraderId, true);
-		BroadcastMarker(bestProfile, bestRuntime.TraderObject.GetPosition());
-		EoH_Notifications.SendToAll("ROAMING TRADER SIGNAL", bestProfile.DisplayName + " signal was decoded. Survivors will converge on the location.");
-		Print("[EoH_RT] Trader intel revealed globally traderId=" + bestProfile.TraderId + " pos=" + bestRuntime.TraderObject.GetPosition().ToString() + " by=" + player.GetIdentity().GetName());
+		RevealTraderGlobally(bestProfile, bestRuntime.TraderObject.GetPosition(), "INTEL", player);
 		return true;
+	}
+
+	void RevealTraderGlobally(EoH_RT_TraderProfile profile, vector pos, string reason, PlayerBase player = null)
+	{
+		if (!profile)
+			return;
+
+		bool alreadyRevealed = false;
+		m_RevealedMarkers.Find(profile.TraderId, alreadyRevealed);
+		if (alreadyRevealed)
+			return;
+
+		m_RevealedMarkers.Set(profile.TraderId, true);
+		BroadcastMarker(profile, pos);
+
+		string playerName = "unknown survivor";
+		if (player && player.GetIdentity())
+			playerName = player.GetIdentity().GetName();
+
+		if (reason == "PROXIMITY")
+			EoH_Notifications.SendToAll("ROAMING TRADER FOUND", profile.DisplayName + " was found in the field. Survivors will converge on the location.");
+		else
+			EoH_Notifications.SendToAll("ROAMING TRADER SIGNAL", profile.DisplayName + " signal was decoded. Survivors will converge on the location.");
+
+		Print("[EoH_RT] Trader revealed globally reason=" + reason + " traderId=" + profile.TraderId + " pos=" + pos.ToString() + " by=" + playerName);
 	}
 
 	void SendAllMarkersToPlayer(PlayerBase player)
@@ -386,6 +435,16 @@ class EoH_RT_TraderManager
 		data.BaseColor = data.Color;
 		data.Normalize();
 		return data;
+	}
+
+	void HideMarkerForAllPlayers(string traderId)
+	{
+		if (!GetGame().IsServer() || traderId == "")
+			return;
+
+		m_RevealedMarkers.Set(traderId, false);
+		ClearMarkerForAllPlayers(traderId);
+		Print("[EoH_RT] Trader marker hidden and reveal state reset traderId=" + traderId);
 	}
 
 	void ClearMarkerForAllPlayers(string traderId)
