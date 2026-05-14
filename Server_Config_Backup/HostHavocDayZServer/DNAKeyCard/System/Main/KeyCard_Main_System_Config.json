@@ -279,50 +279,250 @@
             "dna_Setting": 0
         }
     ],
-    "m_DNAYellow_Crate_Locations": [
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        }
-    ],
+ "m_DNAYellow_Crate_Locations": [
+    {
+        "dna_Location": "13472.18 6.2 6281.44",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "13171.45 6.1 7074.91",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "12057.82 6.5 9084.55",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "10488.64 6.3 9733.17",
+        "dna_Rotation": "135 0 0"
+    },
+    {
+        "dna_Location": "10021.47 7.0 11634.11",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "8705.22 8.0 13312.42",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "8202.11 6.7 12485.55",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "7544.91 6.4 5150.88",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "6890.12 6.8 2483.91",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "6592.74 7.1 3578.44",
+        "dna_Rotation": "225 0 0"
+    },
+    {
+        "dna_Location": "6412.11 7.3 2661.17",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "6124.82 7.4 7772.19",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "5930.74 6.8 10223.18",
+        "dna_Rotation": "135 0 0"
+    },
+    {
+        "dna_Location": "5314.55 7.0 8612.27",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "4722.15 7.2 6781.90",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "4322.91 7.5 8272.44",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "3781.88 6.6 5984.11",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "3520.44 6.7 4874.55",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "3312.78 7.1 3931.55",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "2855.66 7.0 5281.41",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "2451.88 6.8 6322.91",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "2240.17 6.9 7512.62",
+        "dna_Rotation": "135 0 0"
+    },
+    {
+        "dna_Location": "1912.15 7.3 9110.82",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "1688.91 7.4 10284.17",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "1433.51 7.6 11772.88",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "1011.55 7.1 12682.47",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "4120.82 6.9 11344.17",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "5220.61 6.5 11918.73",
+        "dna_Rotation": "135 0 0"
+    },
+    {
+        "dna_Location": "7331.11 6.8 11284.28",
+        "dna_Rotation": "225 0 0"
+    },
+    {
+        "dna_Location": "8122.55 6.3 10484.74",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "9455.11 6.4 8820.44",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "10451.11 6.7 7355.88",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "11224.91 6.5 6551.77",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "12155.61 6.4 5442.22",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "12712.44 6.3 4781.11",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "13351.22 6.2 4142.66",
+        "dna_Rotation": "180 0 0"
+    }
+],
     "m_DNAGreen_Crate_Locations": [
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        },
-        {
-            "dna_Location": "0.0 0.0 0.0",
-            "dna_Rotation": "0.0 0.0 0.0"
-        }
-    ],
+    {
+        "dna_Location": "11352.44 225.1 6604.71",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "10471.55 195.4 8033.15",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "9861.44 182.3 8832.88",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "9142.11 167.7 10125.47",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "8441.17 160.5 11282.91",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "7612.91 155.2 11951.11",
+        "dna_Rotation": "135 0 0"
+    },
+    {
+        "dna_Location": "6744.82 150.1 12211.91",
+        "dna_Rotation": "225 0 0"
+    },
+    {
+        "dna_Location": "5933.22 148.4 11552.61",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "5221.91 144.7 10782.11",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "4410.55 138.6 9921.44",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "3742.17 132.5 9182.88",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "3112.91 128.1 8512.11",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "2521.44 125.7 7724.55",
+        "dna_Rotation": "135 0 0"
+    },
+    {
+        "dna_Location": "1981.11 120.4 6911.88",
+        "dna_Rotation": "225 0 0"
+    },
+    {
+        "dna_Location": "1452.61 117.7 6024.11",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "3241.77 148.1 10941.88",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "4321.15 153.5 11812.77",
+        "dna_Rotation": "180 0 0"
+    },
+    {
+        "dna_Location": "5311.44 161.2 12584.17",
+        "dna_Rotation": "270 0 0"
+    },
+    {
+        "dna_Location": "6422.55 168.4 13211.41",
+        "dna_Rotation": "45 0 0"
+    },
+    {
+        "dna_Location": "7521.77 174.2 13782.11",
+        "dna_Rotation": "135 0 0"
+    },
+    {
+        "dna_Location": "8611.41 181.7 13255.55",
+        "dna_Rotation": "225 0 0"
+    },
+    {
+        "dna_Location": "9732.88 188.4 12482.77",
+        "dna_Rotation": "0 0 0"
+    },
+    {
+        "dna_Location": "10822.41 201.2 11612.15",
+        "dna_Rotation": "90 0 0"
+    },
+    {
+        "dna_Location": "11741.55 214.1 10284.91",
+        "dna_Rotation": "180 0 0"
+    }
+],
     "m_DNABlue_Crate_Locations": [
 {
             "dna_Location": "6684.26171875 377.63134765625 14494.4921875",
