@@ -84,15 +84,15 @@
         },
         {
             "dna_Option": "(19) Separate Tools by tier (1 = Yes, 0 = No)",
-            "dna_Setting": 0
+            "dna_Setting": 1
         },
         {
             "dna_Option": "(20) Separate Meds by tier (1 = Yes, 0 = No)",
-            "dna_Setting": 0
+            "dna_Setting": 1
         },
         {
             "dna_Option": "(21) Separate Materials by tier (1 = Yes, 0 = No)",
-            "dna_Setting": 0
+            "dna_Setting": 1
         },
         {
             "dna_Option": "(22) Separate Miscellaneous by tier (1 = Yes, 0 = No)",
