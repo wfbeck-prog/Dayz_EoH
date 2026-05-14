@@ -1,0 +1,419 @@
+{
+    "m_DNAConfig_Loot": [
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_IJ70_8Rnd"
+        },
+      {
+            "dna_Tier": "yellow",
+            "dna_Category": "misc",
+            "dna_Type": "DNA_KeyCard_Green_Inactive"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_CZ75_15Rnd"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_380"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_9x19"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_12gaPellets"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "medical",
+            "dna_Type": "BandageDressing"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "food",
+            "dna_Type": "TacticalBaconCan"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "tools",
+            "dna_Type": "SewingKit"
+        },
+        {
+            "dna_Tier": "yellow",
+            "dna_Category": "tools",
+            "dna_Type": "CombatKnife"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_AK74_30Rnd"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_MP5_30Rnd"
+        },
+      {
+            "dna_Tier": "green",
+            "dna_Category": "misc",
+            "dna_Type": "DNA_KeyCard_Blue_Inactive"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_UMP_25Rnd"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_545x39"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_762x39"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_45ACP"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "tools",
+            "dna_Type": "CombatKnife"
+        },
+        {
+            "dna_Tier": "green",
+            "dna_Category": "tools",
+            "dna_Type": "WeaponCleaningKit"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_AK74_30Rnd"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_AKM_30Rnd"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_AK101_30Rnd"
+        },
+      {
+            "dna_Tier": "blue",
+            "dna_Category": "misc",
+            "dna_Type": "DNA_KeyCard_Red_Inactive"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_545x39"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_762x39"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_556x45"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "AK_Suppressor"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "M4_Suppressor"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "PSO1Optic"
+        },
+        {
+            "dna_Tier": "blue",
+            "dna_Category": "proprietary",
+            "dna_Type": "KobraOptic"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "misc",
+            "dna_Type": "PunchCard"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_STANAG_30Rnd"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_AK101_30Rnd"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_SVD_10Rnd"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_FAL_20Rnd"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_556x45"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_762x54"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "Ammo_308Win"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "M4_Suppressor"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "AK_Suppressor"
+        },
+        {
+            "dna_Tier": "red",
+            "dna_Category": "proprietary",
+            "dna_Type": "ACOGOptic"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_STANAG_60Rnd"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_CMAG_40Rnd_Black"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "Mag_AKM_Drum75Rnd_Black"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "GCGN_Ammo_50Cal"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "GCGN_Ammo_408Chey"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "GCGN_Ammo_3006"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "AmmoBox_308Win_20Rnd"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "AmmoBox_762x54_20Rnd"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "AmmoBox_556x45_20Rnd"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "AmmoBox_762x39_20Rnd"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "AmmoBox_545x39_20Rnd"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_Nightforce"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_Leupold_Mark8"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_Kahles"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_HNightforce"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_HLeupold_Mark8"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_HKahles"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_MNightforce"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_MLeupold_Mark8"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_MKahles"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_Elcan"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_Standardized_Suppressor_Black"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_LStandardized_Suppressor_Black"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_Normalized_Suppressor_Black"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_LNormalized_Suppressor_Black"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "proprietary",
+            "dna_Type": "SNAFU_SR25_Supp"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "Snafu_ScarH_SIL_Black"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "SNAFUUniversalLight"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "material",
+            "dna_Type": "HDSN_Charcoal"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "material",
+            "dna_Type": "HDSN_Sulfur"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "material",
+            "dna_Type": "HDSN_Gunpowder"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "material",
+            "dna_Type": "BurlapSack"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "tools",
+            "dna_Type": "PersonalRadio"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "tools",
+            "dna_Type": "DuctTape"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "tools",
+            "dna_Type": "ElectronicRepairKit"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "HDSN_Explosive"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "HDSN_C4Stick"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "HDSN_Detonator"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "HDSN_C4Sticks"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "HDSN_C4NoWiring"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "HDSN_BreachingCharge"
+        },
+        {
+            "dna_Tier": "purple",
+            "dna_Category": "misc",
+            "dna_Type": "HDSN_BreachingChargeHeavy"
+        }
+    ]
+}
