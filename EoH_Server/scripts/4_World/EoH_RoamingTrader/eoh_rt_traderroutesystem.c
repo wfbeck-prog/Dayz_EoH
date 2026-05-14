@@ -5,9 +5,31 @@ class EoH_RT_TraderRouteSystem
 		if (!profile || !runtime || !profile.Route || profile.Route.Count() == 0)
 			return -1;
 
-		int nextIndex = runtime.CurrentRouteIndex + 1;
-		if (nextIndex >= profile.Route.Count())
-			nextIndex = 0;
+		int count = profile.Route.Count();
+		if (count == 1)
+			return 0;
+
+		int current = runtime.CurrentRouteIndex;
+		int nextIndex = current;
+
+		// EoH behavior: roaming traders should feel unpredictable.
+		// Pick a random route node and avoid immediately reusing the current one.
+		for (int attempts = 0; attempts < 10; attempts++)
+		{
+			nextIndex = Math.RandomInt(0, count);
+			if (nextIndex != current)
+				break;
+		}
+
+		// Failsafe: if random somehow returned current every time, move forward once.
+		if (nextIndex == current)
+		{
+			nextIndex = current + 1;
+			if (nextIndex >= count)
+				nextIndex = 0;
+		}
+
+		Print("[EoH_RT] Random route selected traderId=" + runtime.TraderId + " current=" + current.ToString() + " next=" + nextIndex.ToString() + " routeCount=" + count.ToString());
 		return nextIndex;
 	}
 
