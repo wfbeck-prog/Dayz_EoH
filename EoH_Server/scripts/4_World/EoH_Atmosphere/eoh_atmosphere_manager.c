@@ -141,11 +141,7 @@ class EoH_AtmosphereManager
             fogValue = Math.RandomFloatInclusive(m_Config.MistFogMin, m_Config.MistFogMax);
         }
 
-        float rainValue = 0.0;
-        if (m_Config.DebugForceMist == 0 && Math.RandomFloatInclusive(0.0, 1.0) <= m_Config.RainChance)
-            rainValue = Math.RandomFloatInclusive(m_Config.RainMin, m_Config.RainMax);
-
-        ApplyWeatherValues(weather, overcast, fogValue, rainValue, startup, reason);
+        ApplyWeatherValues(weather, overcast, fogValue, 0.0, startup, reason);
     }
 
     void ApplyClearCycle(bool startup, string reason = "CLEAR")
@@ -159,9 +155,8 @@ class EoH_AtmosphereManager
 
         float overcast = Math.RandomFloatInclusive(m_Config.ClearOvercastMin, m_Config.ClearOvercastMax);
         float fogValue = Math.RandomFloatInclusive(m_Config.ClearFogMin, m_Config.ClearFogMax);
-        float rainValue = 0.0;
 
-        ApplyWeatherValues(weather, overcast, fogValue, rainValue, startup, reason);
+        ApplyWeatherValues(weather, overcast, fogValue, 0.0, startup, reason);
     }
 
     void ApplyWeatherValues(Weather weather, float overcast, float fogValue, float rainValue, bool startup, string reason)
@@ -170,14 +165,31 @@ class EoH_AtmosphereManager
         if (startup || m_Config.DebugForceMist == 1)
             transition = m_Config.StartupTransitionSeconds;
 
+        if (m_Config.DebugForceMist == 1 || m_Config.ForceWhiteMistOnly == 1)
+        {
+            overcast = Math.Max(overcast, 0.95);
+            fogValue = Math.Max(fogValue, 0.90);
+            rainValue = 0.0;
+            transition = 0.0;
+        }
+
+        weather.GetRain().SetLimits(0.0, 0.0);
+        weather.GetRain().SetForecastChangeLimits(0.0, 0.0);
+        weather.GetRain().Set(0.0, 0.0, 0.0);
+
+        weather.GetOvercast().SetLimits(overcast, 1.0);
+        weather.GetOvercast().SetForecastChangeLimits(0.0, 0.0);
         weather.GetOvercast().Set(overcast, transition, 0);
+
+        weather.GetFog().SetLimits(fogValue, 1.0);
+        weather.GetFog().SetForecastChangeLimits(0.0, 0.0);
         weather.GetFog().Set(fogValue, transition, 0);
-        weather.GetRain().Set(rainValue, transition, 0);
+
         weather.SetWindMaximumSpeed(Math.RandomFloatInclusive(m_Config.WindMagnitudeMin, m_Config.WindMagnitudeMax));
 
         m_LastForceApplyTime = GetGame().GetTime();
 
         if (m_Config.DebugLogs == 1)
-            Print("[EoH_Atmosphere] Applied weather reason=" + reason + " overcast=" + overcast.ToString() + " fog=" + fogValue.ToString() + " rain=" + rainValue.ToString() + " transition=" + transition.ToString() + " gameTime=" + m_LastForceApplyTime.ToString());
+            Print("[EoH_Atmosphere] HARD applied weather reason=" + reason + " overcast=" + overcast.ToString() + " fog=" + fogValue.ToString() + " rain=0 transition=" + transition.ToString() + " gameTime=" + m_LastForceApplyTime.ToString());
     }
 }
