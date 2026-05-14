@@ -15,6 +15,26 @@ modded class MissionServer
         EoH_DT_StartLiveUpdates();
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Radio_Tick, 120000, true);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Atmosphere_ForceWeatherTick, 15000, true);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Atmosphere_StartupApply, 5000, false);
+    }
+
+    void EoH_Atmosphere_StartupApply()
+    {
+        Print("[EoH_Atmosphere] MissionServer startup force apply requested.");
+        EoH_AtmosphereManager.Get().ForceApplyNow("MISSION_STARTUP_FORCE");
+    }
+
+    void EoH_Atmosphere_ForceWeatherTick()
+    {
+        EoH_AtmosphereManager atmosphereManager = EoH_AtmosphereManager.Get();
+        if (!atmosphereManager)
+        {
+            Print("[EoH_Atmosphere][WARN] MissionServer force tick could not get manager.");
+            return;
+        }
+
+        atmosphereManager.Tick();
     }
 
     void EoH_Radio_Tick()
