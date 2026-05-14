@@ -1,12 +1,71 @@
 class EoH_DNACacheOpenBridge
 {
 	protected static ref map<string, int> s_OpenedCacheAlerts;
+	protected static ref array<ref EoH_DNACacheIntelTarget> s_LiveCaches;
 	static const int EOH_DNA_CACHE_ALERT_COOLDOWN_MS = 900000;
 
 	static void EnsureInit()
 	{
 		if (!s_OpenedCacheAlerts)
 			s_OpenedCacheAlerts = new map<string, int>();
+
+		if (!s_LiveCaches)
+			s_LiveCaches = new array<ref EoH_DNACacheIntelTarget>();
+	}
+
+	static void RegisterLiveCache(Object crate)
+	{
+		if (!GetGame().IsServer() || !crate)
+			return;
+
+		EnsureInit();
+
+		string tier = GetTierFromCrate(crate);
+		if (tier == string.Empty || tier == "Purple")
+			return;
+
+		vector pos = crate.GetPosition();
+		string id = BuildAlertId(tier, pos);
+
+		foreach (EoH_DNACacheIntelTarget existing : s_LiveCaches)
+		{
+			if (!existing)
+				continue;
+
+			if (BuildAlertId(existing.Tier, existing.Position) == id)
+				return;
+		}
+
+		s_LiveCaches.Insert(new EoH_DNACacheIntelTarget(tier, pos, tier + " DNA Cache Signal"));
+		Print("[EoH_DNAHook] Registered live DNA cache tier=" + tier + " pos=" + pos.ToString() + " type=" + crate.GetType());
+	}
+
+	static EoH_DNACacheIntelTarget GetNearestRegisteredCache(vector playerPos)
+	{
+		EnsureInit();
+
+		EoH_DNACacheIntelTarget best = null;
+		float bestDistance = 99999999.0;
+
+		foreach (EoH_DNACacheIntelTarget target : s_LiveCaches)
+		{
+			if (!target)
+				continue;
+
+			float dist = vector.Distance(playerPos, target.Position);
+			if (dist < bestDistance)
+			{
+				bestDistance = dist;
+				best = target;
+			}
+		}
+
+		if (best)
+			Print("[EoH_DNAHook] Nearest registered DNA cache tier=" + best.Tier + " dist=" + bestDistance.ToString() + " pos=" + best.Position.ToString());
+		else
+			Print("[EoH_DNAHook] No registered DNA cache available for intel.");
+
+		return best;
 	}
 
 	static void OnCrateOpened(Object crate)
@@ -25,6 +84,8 @@ class EoH_DNACacheOpenBridge
 			Print("[EoH_DNAHook] Tier ignored or unresolved for crate=" + type);
 			return;
 		}
+
+		RegisterLiveCache(crate);
 
 		vector pos = crate.GetPosition();
 		string alertId = BuildAlertId(tier, pos);
