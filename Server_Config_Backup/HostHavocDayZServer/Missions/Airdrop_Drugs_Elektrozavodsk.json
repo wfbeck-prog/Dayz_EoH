@@ -1,0 +1,605 @@
+{
+    "m_Version": 3,
+    "Enabled": 1,
+    "Weight": 694.0,
+    "MissionMaxTime": 1200,
+    "MissionName": "Drugs_Elektrozavodsk",
+    "Difficulty": 0,
+    "Objective": 0,
+    "Reward": "",
+    "ShowNotification": 1,
+    "Height": 450.0,
+    "DropZoneHeight": 450.0,
+    "Speed": 25.0,
+    "DropZoneSpeed": 25.0,
+    "Container": "ExpansionAirdropContainer",
+    "FallSpeed": 4.5,
+    "DropLocation": {
+        "x": 9371.0,
+        "z": 2229.0,
+        "Name": "Drugs Elektrozavodsk",
+        "Radius": 100.0
+    },
+    "Infected": [],
+    "ItemCount": -1,
+    "InfectedCount": -1,
+    "AirdropPlaneClassName": "",
+    "Loot": [
+        {
+            "Name": "iM7s_Brick_Coke",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_BlackTar",
+            "Chance": 0.14,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Fent",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Brown",
+            "Chance": 0.12,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_MDMA",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Crystal_Blue",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Crystal_Pink",
+            "Chance": 0.08,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Crystal_PB",
+            "Chance": 0.08,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "im7s_Brick_Gelato",
+            "Chance": 0.22,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Barney",
+            "Chance": 0.2,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_BlueCookies",
+            "Chance": 0.2,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Champagne",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_CheetahPiss",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_Paragon",
+            "Chance": 0.16,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brick_BabyBatter",
+            "Chance": 0.14,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Psilocybin_BlueVeils",
+            "Chance": 0.2,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Psilocybin_GhostCaps",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Psilocybin_Sunspores",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Psilocybin_GoldenTeacher",
+            "Chance": 0.16,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Psilocybin_MysticVoid",
+            "Chance": 0.12,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Bundle_Coke",
+            "Chance": 0.22,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Meth_Bagged_Blue",
+            "Chance": 0.2,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Meth_Bagged_Pink",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_MDMA_Pack",
+            "Chance": 0.16,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Zip_Bagged_Gelato",
+            "Chance": 0.22,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 3,
+            "Min": 1,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Zip_Bagged_BlueCookies",
+            "Chance": 0.2,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 3,
+            "Min": 1,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Zip_Bagged_Champagne",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 3,
+            "Min": 1,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_Gelato",
+            "Chance": 0.26,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_Barney",
+            "Chance": 0.22,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_BlueCookies",
+            "Chance": 0.24,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_CheetahPiss",
+            "Chance": 0.2,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_Champagne",
+            "Chance": 0.22,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 2,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_Paragon",
+            "Chance": 0.18,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_BabyBatter",
+            "Chance": 0.16,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_Coca",
+            "Chance": 0.16,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_SeedPack_Poppy",
+            "Chance": 0.12,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_LabStation_Kit",
+            "Chance": 0.06,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_ProductionTable_Kit",
+            "Chance": 0.08,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_GrowTent_Kit",
+            "Chance": 0.06,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_GrowPot2_Kit",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_DryingRack_Kit",
+            "Chance": 0.05,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Press_Static_Kit",
+            "Chance": 0.035,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_PillPress_Industrial_Kit",
+            "Chance": 0.025,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_StoragePallet_Kit",
+            "Chance": 0.04,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_BudTrimmer_Kit",
+            "Chance": 0.04,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_LSD_Lab_Kit",
+            "Chance": 0.025,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Hydroponics_DWC_Kit",
+            "Chance": 0.035,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Hydroponics_DBS_Kit",
+            "Chance": 0.035,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_HydroPlanter_Kit",
+            "Chance": 0.04,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Ziplock",
+            "Chance": 0.35,
+            "Attachments": [],
+            "QuantityPercent": -1.0,
+            "Max": 5,
+            "Min": 1,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Ammonia",
+            "Chance": 0.12,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Sodium_Hydroxide",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_pseudoephedrine",
+            "Chance": 0.08,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Brake_Fluid",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Butane",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Acetone",
+            "Chance": 0.1,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Isopropyl_Alcohol",
+            "Chance": 0.08,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Hydrofluoric_Acid",
+            "Chance": 0.06,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Sulfuric_Acid",
+            "Chance": 0.05,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Ammonium_Nitrate",
+            "Chance": 0.06,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Battery_Acid_01",
+            "Chance": 0.05,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Battery_Acid_02",
+            "Chance": 0.05,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Bleach_01",
+            "Chance": 0.08,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        },
+        {
+            "Name": "iM7s_Bleach_02",
+            "Chance": 0.08,
+            "Attachments": [],
+            "QuantityPercent": 50.0,
+            "Max": 1,
+            "Min": 0,
+            "Variants": []
+        }
+    ]
+}
