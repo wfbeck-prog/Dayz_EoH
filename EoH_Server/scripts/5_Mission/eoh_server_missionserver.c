@@ -5,7 +5,6 @@ modded class MissionServer
     protected bool m_EoH_RelaysSpawned;
     protected int m_EoH_LastCaptureTick;
     protected int m_EoH_LastTraderTick;
-    protected int m_EoH_LastAtmosphereTick;
 
     override void OnInit()
     {
@@ -15,26 +14,6 @@ modded class MissionServer
         EoH_DT_StartLiveUpdates();
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Radio_Tick, 120000, true);
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Atmosphere_ForceWeatherTick, 15000, true);
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Atmosphere_StartupApply, 5000, false);
-    }
-
-    void EoH_Atmosphere_StartupApply()
-    {
-        Print("[EoH_Atmosphere] MissionServer startup force apply requested.");
-        EoH_AtmosphereManager.Get().ForceApplyNow("MISSION_STARTUP_FORCE");
-    }
-
-    void EoH_Atmosphere_ForceWeatherTick()
-    {
-        EoH_AtmosphereManager atmosphereManager = EoH_AtmosphereManager.Get();
-        if (!atmosphereManager)
-        {
-            Print("[EoH_Atmosphere][WARN] MissionServer force tick could not get manager.");
-            return;
-        }
-
-        atmosphereManager.Tick();
     }
 
     void EoH_Radio_Tick()
@@ -93,12 +72,10 @@ modded class MissionServer
 
         GetEoHBuildControlConfig();
         GetEoHRelayConfig();
-        GetEoHAtmosphereConfig();
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
         EoH_RT_TraderManager.Get().Initialize();
-        EoH_AtmosphereManager.Get();
         EoH_DiscordWebhook.GetConfig();
 
         EoH_InitTownMarkers();
@@ -257,14 +234,6 @@ modded class MissionServer
             EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
             if (traderManager)
                 traderManager.Update();
-        }
-
-        if (now - m_EoH_LastAtmosphereTick >= 30000)
-        {
-            m_EoH_LastAtmosphereTick = now;
-            EoH_AtmosphereManager atmosphereManager = EoH_AtmosphereManager.Get();
-            if (atmosphereManager)
-                atmosphereManager.Tick();
         }
     }
 
