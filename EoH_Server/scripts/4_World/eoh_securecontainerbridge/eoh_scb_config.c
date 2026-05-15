@@ -4,6 +4,8 @@ class EoH_SCB_Config
     int ContainerSize;
     bool PersistOnDeath;
     int RestoreDelayMs;
+    int RestoreRetryCount;
+    int RestoreRetryDelayMs;
 
     // Tier flags (container size unlocks)
     bool Tier2x2;
@@ -17,10 +19,12 @@ class EoH_SCB_Config
 
     void EoH_SCB_Config()
     {
-        EnableDebug = false;
+        EnableDebug = true;
         ContainerSize = 4;
         PersistOnDeath = true;
-        RestoreDelayMs = 5000;
+        RestoreDelayMs = 12000;
+        RestoreRetryCount = 3;
+        RestoreRetryDelayMs = 6000;
 
         // Default unlocks
         Tier2x2 = true;
