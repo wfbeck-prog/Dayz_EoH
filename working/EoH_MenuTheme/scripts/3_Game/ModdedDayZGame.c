@@ -85,7 +85,7 @@ modded class LoadingScreen
 		{
 			g_EOH_MenuMusic.SetSoundLoop(true);
 			g_EOH_MenuMusic.SetSoundAutodestroy(false);
-			g_EOH_MenuMusic.SetSoundVolume(1.0);
+			g_EOH_MenuMusic.SetSoundVolume(0.5);
 			g_EOH_MenuMusic.SoundPlay();
 		}
 	}
