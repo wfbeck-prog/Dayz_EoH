@@ -29,14 +29,17 @@ class EoH_CaptureManager
     static ref EoH_CaptureManager s_Instance;
     static const float CAPTURE_DURATION_MS = 600000.0;
     static const float CAPTURE_RADIUS = 150.0;
+    static const bool EOH_CAPTURE_DEBUG = true;
 
     ref map<string, ref EoH_CaptureSession> m_Sessions;
     ref map<string, vector> m_Towns;
+    protected int m_LastDebugTick;
 
     void EoH_CaptureManager()
     {
         m_Sessions = new map<string, ref EoH_CaptureSession>();
         m_Towns = new map<string, vector>();
+        m_LastDebugTick = 0;
 
         InitTowns();
     }
@@ -134,7 +137,7 @@ class EoH_CaptureManager
         if (vector.Distance(player.GetPosition(), townPos) > CAPTURE_RADIUS)
         {
             EoH_Notifications.SendToPlayer(player, "TOWN CAPTURE FAILED", "You must be inside the capture zone to start capturing " + town + ".");
-            Print("[EoH_Capture] Blocked start outside radius town=" + town + " player=" + player.GetIdentity().GetName() + " dist=" + vector.Distance(player.GetPosition(), townPos).ToString());
+            Print("[EoH_Capture] Blocked start outside radius town=" + town + " player=" + player.GetIdentity().GetName() + " dist=" + vector.Distance(player.GetPosition(), townPos).ToString() + " playerPos=" + player.GetPosition().ToString() + " townPos=" + townPos.ToString());
             return;
         }
 
@@ -142,6 +145,7 @@ class EoH_CaptureManager
         if (groupID == "")
         {
             EoH_Notifications.SendToPlayer(player, "TOWN CAPTURE FAILED", "You must be in a group to capture a town.");
+            Print("[EoH_Capture] Blocked start no group town=" + town + " player=" + player.GetIdentity().GetName());
             return;
         }
 
@@ -158,12 +162,18 @@ class EoH_CaptureManager
         EoH_TownMarkerManager.UpdateCapturingMarker(town, s.CapturingGroupName);
         UpdateCaptureProgressMarker(s, 0);
         BroadcastCaptureMessage("TOWN CAPTURE STARTED", s.CapturingGroupName + " started capturing " + town + ". Hold for 10 minutes.");
-        Print("[EoH_Capture] Started capture town=" + town + " group=" + s.CapturingGroupName);
+        Print("[EoH_Capture] Started capture town=" + town + " group=" + s.CapturingGroupName + " playerPos=" + player.GetPosition().ToString() + " townPos=" + townPos.ToString());
     }
 
     void Tick()
     {
         int now = GetGame().GetTime();
+
+        if (EOH_CAPTURE_DEBUG && now - m_LastDebugTick >= 30000)
+        {
+            m_LastDebugTick = now;
+            Print("[EoH_Capture][DEBUG] Tick sessions=" + m_Sessions.Count().ToString() + " towns=" + m_Towns.Count().ToString());
+        }
 
         foreach (string town, EoH_CaptureSession s : m_Sessions)
         {
@@ -171,6 +181,9 @@ class EoH_CaptureManager
             s.LastTick = now;
 
             UpdatePresence(s);
+
+            if (EOH_CAPTURE_DEBUG)
+                Print("[EoH_Capture][DEBUG] Session town=" + s.TownName + " group=" + s.CapturingGroupName + " present=" + s.CapturingGroupPresent.ToString() + " contested=" + s.IsContested.ToString() + " progressMs=" + s.Progress.ToString() + " delta=" + delta.ToString());
 
             if (!s.CapturingGroupPresent)
                 continue;
@@ -204,6 +217,9 @@ class EoH_CaptureManager
 
         bool enemyPresent = false;
         bool captureGroupPresent = false;
+        int playersInRadius = 0;
+        int captureGroupInRadius = 0;
+        int enemiesInRadius = 0;
 
         foreach (Man m : players)
         {
@@ -211,15 +227,31 @@ class EoH_CaptureManager
             if (!p || !p.GetIdentity() || !p.IsAlive())
                 continue;
 
-            if (vector.Distance(p.GetPosition(), pos) >= CAPTURE_RADIUS)
+            float dist = vector.Distance(p.GetPosition(), pos);
+            if (dist >= CAPTURE_RADIUS)
                 continue;
 
+            playersInRadius++;
             string otherGroupID = EoH_GroupHelper.GetGroupID(p);
+            string otherGroupName = EoH_GroupHelper.GetGroupName(p);
+
             if (otherGroupID == s.CapturingGroupID)
+            {
                 captureGroupPresent = true;
+                captureGroupInRadius++;
+            }
             else if (otherGroupID != "")
+            {
                 enemyPresent = true;
+                enemiesInRadius++;
+            }
+
+            if (EOH_CAPTURE_DEBUG)
+                Print("[EoH_Capture][DEBUG] PlayerInZone town=" + s.TownName + " player=" + p.GetIdentity().GetName() + " group=" + otherGroupName + " groupID=" + otherGroupID + " dist=" + dist.ToString() + " playerPos=" + p.GetPosition().ToString() + " zonePos=" + pos.ToString());
         }
+
+        if (EOH_CAPTURE_DEBUG)
+            Print("[EoH_Capture][DEBUG] Presence town=" + s.TownName + " zonePos=" + pos.ToString() + " playersInRadius=" + playersInRadius.ToString() + " captureGroupInRadius=" + captureGroupInRadius.ToString() + " enemiesInRadius=" + enemiesInRadius.ToString() + " requiredGroupID=" + s.CapturingGroupID);
 
         bool wasContested = s.IsContested;
         bool wasPresent = s.CapturingGroupPresent;
