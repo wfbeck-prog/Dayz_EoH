@@ -24,41 +24,43 @@ class EoH_AtmosphereConfig
     float ClearDurationMinutesMax = 45.0;
 
     // Gloomy mist weather.
-    float MistOvercastMin = 0.70;
-    float MistOvercastMax = 0.95;
-    float MistFogMin = 0.35;
-    float MistFogMax = 0.65;
+    float MistOvercastMin = 0.90;
+    float MistOvercastMax = 1.0;
+    float MistFogMin = 0.75;
+    float MistFogMax = 0.95;
 
     // Hard diagnostic mist values. Leave DebugForceMist=1 until weather control is visually confirmed.
-    float DebugMistOvercast = 0.95;
-    float DebugMistFog = 0.75;
+    float DebugMistOvercast = 1.0;
+    float DebugMistFog = 0.95;
 
     // Clearer relief weather.
-    float ClearOvercastMin = 0.35;
-    float ClearOvercastMax = 0.65;
-    float ClearFogMin = 0.02;
-    float ClearFogMax = 0.18;
+    float ClearOvercastMin = 0.45;
+    float ClearOvercastMax = 0.70;
+    float ClearFogMin = 0.05;
+    float ClearFogMax = 0.20;
 
     // Backward-compatible values used as default mist values.
-    float OvercastMin = 0.70;
-    float OvercastMax = 0.95;
-    float FogMin = 0.35;
-    float FogMax = 0.65;
+    float OvercastMin = 0.90;
+    float OvercastMax = 1.0;
+    float FogMin = 0.75;
+    float FogMax = 0.95;
 
-    float RainChance = 0.15;
+    float RainChance = 0.0;
     float RainMin = 0.0;
-    float RainMax = 0.25;
+    float RainMax = 0.0;
     float WindMagnitudeMin = 0.05;
-    float WindMagnitudeMax = 0.35;
+    float WindMagnitudeMax = 0.25;
 
-    // Particle mist is config-supported but not force-enabled by default.
-    // Use weather fog as the safe baseline. Particle spawning should only be enabled after runtime validation.
-    int UseParticleMist = 0;
+    // Optional white particle mist overlay. This is non-lethal and separate from contaminated area damage/PPE.
+    // Enable this when weather fog is not visually dense enough.
+    int UseParticleMist = 1;
     string ParticleName = "graphics/particles/spooky_mist";
     ref array<float> ParticleCenter = {7200.0, 0.0, 8400.0};
     float ParticleRadius = 8500.0;
     float ParticlePosHeight = 22.0;
     float ParticleNegHeight = 10.0;
+    int ParticleGridStep = 900;
+    int ParticleMaxEmitters = 80;
 
     int ForceWhiteMistOnly = 1;
     int LethalMist = 0;
@@ -103,6 +105,8 @@ class EoH_AtmosphereConfig
         ParticleRadius = Math.Max(ParticleRadius, 100.0);
         ParticlePosHeight = Math.Max(ParticlePosHeight, 1.0);
         ParticleNegHeight = Math.Max(ParticleNegHeight, 1.0);
+        ParticleGridStep = Math.Max(ParticleGridStep, 250);
+        ParticleMaxEmitters = Math.Clamp(ParticleMaxEmitters, 1, 250);
 
         if (!ParticleCenter || ParticleCenter.Count() != 3)
         {
