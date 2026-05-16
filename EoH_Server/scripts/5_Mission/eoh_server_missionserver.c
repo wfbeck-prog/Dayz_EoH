@@ -95,6 +95,8 @@ modded class MissionServer
         if (!cfg || !cfg.Enabled || !cfg.SpawnRelaysOnServerStart)
             return;
 
+        EoH_DeleteAllExistingRelays();
+
         ref set<string> spawnedKeys = new set<string>();
 
         foreach (EoH_RelayLocation relay : cfg.Relays)
@@ -115,15 +117,6 @@ modded class MissionServer
                 continue;
             }
 
-            if (cfg.DeleteExistingEoHRelaysBeforeSpawn)
-                EoH_DeleteExistingRelaysNear(pos, 15.0);
-            else if (EoH_RelayAlreadyExists(pos, 15.0))
-            {
-                Print("[EoH] Relay already exists near " + relay.TownName + " at " + pos.ToString());
-                spawnedKeys.Insert(key);
-                continue;
-            }
-
             Object obj = GetGame().CreateObjectEx("EoH_RadioRelay", pos, ECE_PLACE_ON_SURFACE);
             if (!obj)
             {
@@ -133,7 +126,7 @@ modded class MissionServer
 
             obj.SetOrientation(Vector(relay.Orientation, 0, 0));
             spawnedKeys.Insert(key);
-            Print("[EoH] Spawned relay for " + relay.TownName + " at " + pos.ToString());
+            Print("[EoH] Spawned single authoritative relay for " + relay.TownName + " at " + pos.ToString());
         }
 
         m_EoH_RelaysSpawned = true;
@@ -149,6 +142,29 @@ modded class MissionServer
     bool EoH_IsRelayType(string type)
     {
         return type == "EoH_RadioRelay" || type == "EoH_CaptureRelay_Base" || type.Contains("EoH_RadioRelay") || type.Contains("EoH_CaptureRelay");
+    }
+
+    void EoH_DeleteAllExistingRelays()
+    {
+        array<Object> objects = new array<Object>();
+        GetGame().GetObjectsAtPosition3D("7500 0 7500".ToVector(), 12000.0, objects, null);
+
+        int deleted = 0;
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+
+            string type = obj.GetType();
+            if (!EoH_IsRelayType(type))
+                continue;
+
+            Print("[EoH] Purging existing relay before authoritative respawn: " + type + " at " + obj.GetPosition().ToString());
+            GetGame().ObjectDelete(obj);
+            deleted++;
+        }
+
+        Print("[EoH] Relay purge complete. Deleted " + deleted.ToString() + " existing EoH relay objects.");
     }
 
     bool EoH_RelayAlreadyExists(vector pos, float radius)
