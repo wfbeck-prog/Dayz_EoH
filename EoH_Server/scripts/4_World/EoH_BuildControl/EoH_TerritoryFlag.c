@@ -4,7 +4,7 @@ modded class TerritoryFlag
     {
         super.EEInit();
 
-        SetScale(0.25);
+        SetScale(0.10);
     }
 
     override string GetConstructionKitType()
