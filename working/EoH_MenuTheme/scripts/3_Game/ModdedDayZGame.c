@@ -1,5 +1,3 @@
-static ref EffectSound g_EOH_MenuMusic;
-
 modded class LoadingScreen
 {
 	void LoadingScreen(DayZGame game)
@@ -55,49 +53,8 @@ modded class LoadingScreen
 			m_TextWidgetStatus.SetText("");
 		}
 
-		// force menu music whenever main menu is active
-		if (m_DayZGame.GetMissionState() == DayZGame.MISSION_STATE_MAINMENU)
-		{
-			PlayEoHMenuMusic();
-		}
-		else
-		{
-			StopEoHMenuMusic();
-		}
-
 		ProgressAsync.SetProgressData(pText);
 		ProgressAsync.SetUserData(lIcon);
-	}
-
-	protected void PlayEoHMenuMusic()
-	{
-		if (!GetGame() || GetGame().IsDedicatedServer())
-			return;
-
-		if (g_EOH_MenuMusic && g_EOH_MenuMusic.IsSoundPlaying())
-			return;
-
-		StopEoHMenuMusic();
-
-		g_EOH_MenuMusic = SEffectManager.CreateSound("EoH_MenuMusic_SoundSet", vector.Zero, 0, 0, false);
-
-		if (g_EOH_MenuMusic)
-		{
-			g_EOH_MenuMusic.SetSoundLoop(true);
-			g_EOH_MenuMusic.SetSoundAutodestroy(false);
-			g_EOH_MenuMusic.SetSoundVolume(0.5);
-			g_EOH_MenuMusic.SoundPlay();
-		}
-	}
-
-	protected void StopEoHMenuMusic()
-	{
-		if (g_EOH_MenuMusic)
-		{
-			g_EOH_MenuMusic.SetSoundFadeOut(0.5);
-			g_EOH_MenuMusic.SoundStop();
-			g_EOH_MenuMusic = null;
-		}
 	}
 }
 
