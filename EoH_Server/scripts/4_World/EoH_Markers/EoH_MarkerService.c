@@ -10,12 +10,12 @@ class EoH_MarkerService
         data.Normalize();
 
         // Store authoritative server-side copy.
-        s_ServerMarkers.Set(data.ID, data);
+        s_ServerMarkers.Set(data.Id, data);
 
         Param1<ref EoH_MarkerData> param = new Param1<ref EoH_MarkerData>(data);
         GetGame().RPCSingleParam(player, EoH_MarkerRPC.ADD_OR_UPDATE_MARKER, param, true, player.GetIdentity());
 
-        Print("[EoH_MarkerService] Sent server-controlled marker id=" + data.ID + " to=" + player.GetIdentity().GetName());
+        Print("[EoH_MarkerService] Sent server-controlled marker id=" + data.Id + " to=" + player.GetIdentity().GetName());
     }
 
     static void RemoveFromPlayer(PlayerBase player, string id)
@@ -33,7 +33,7 @@ class EoH_MarkerService
             return;
 
         data.Normalize();
-        s_ServerMarkers.Set(data.ID, data);
+        s_ServerMarkers.Set(data.Id, data);
 
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
@@ -48,7 +48,7 @@ class EoH_MarkerService
             GetGame().RPCSingleParam(player, EoH_MarkerRPC.ADD_OR_UPDATE_MARKER, param, true, player.GetIdentity());
         }
 
-        Print("[EoH_MarkerService] Broadcast server-controlled marker id=" + data.ID + " label=" + data.Label);
+        Print("[EoH_MarkerService] Broadcast server-controlled marker id=" + data.Id + " label=" + data.Label);
     }
 
     static void RemoveFromAll(string id)
