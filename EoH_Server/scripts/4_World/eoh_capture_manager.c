@@ -75,8 +75,54 @@ class EoH_CaptureManager
         m_Towns.Set("Pavlovo Military", "2150 0 3350".ToVector());
     }
 
+    bool EoH_IsRelayType(string type)
+    {
+        return type == "EoH_RadioRelay" || type == "EoH_CaptureRelay_Base" || type.Contains("EoH_RadioRelay") || type.Contains("EoH_CaptureRelay");
+    }
+
+    vector GetLiveRelayPos(string town)
+    {
+        vector fallback = "0 0 0".ToVector();
+        if (!m_Towns.Contains(town))
+            return fallback;
+
+        vector expected = m_Towns.Get(town);
+        array<Object> objects = new array<Object>();
+        GetGame().GetObjectsAtPosition3D(expected, 75.0, objects, null);
+
+        Object bestObj;
+        float bestDist = 999999.0;
+
+        foreach (Object obj : objects)
+        {
+            if (!obj || !EoH_IsRelayType(obj.GetType()))
+                continue;
+
+            float dist = vector.Distance(obj.GetPosition(), expected);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                bestObj = obj;
+            }
+        }
+
+        if (bestObj)
+        {
+            if (EOH_CAPTURE_DEBUG)
+                Print("[EoH_Capture][DEBUG] Using live relay position for town=" + town + " relayPos=" + bestObj.GetPosition().ToString() + " distFromConfig=" + bestDist.ToString());
+
+            return bestObj.GetPosition();
+        }
+
+        return fallback;
+    }
+
     vector GetTownPos(string town)
     {
+        vector relayPos = GetLiveRelayPos(town);
+        if (relayPos != "0 0 0".ToVector())
+            return relayPos;
+
         if (m_Towns.Contains(town))
             return m_Towns.Get(town);
 
@@ -113,7 +159,7 @@ class EoH_CaptureManager
         cfg.Name = town;
         cfg.RelayPosition.Clear();
 
-        vector pos = m_Towns.Get(town);
+        vector pos = GetTownPos(town);
         cfg.RelayPosition.Insert(pos[0]);
         cfg.RelayPosition.Insert(pos[1]);
         cfg.RelayPosition.Insert(pos[2]);
@@ -136,8 +182,8 @@ class EoH_CaptureManager
         vector townPos = GetTownPos(town);
         if (vector.Distance(player.GetPosition(), townPos) > CAPTURE_RADIUS)
         {
-            EoH_Notifications.SendToPlayer(player, "TOWN CAPTURE FAILED", "You must be inside the capture zone to start capturing " + town + ".");
-            Print("[EoH_Capture] Blocked start outside radius town=" + town + " player=" + player.GetIdentity().GetName() + " dist=" + vector.Distance(player.GetPosition(), townPos).ToString() + " playerPos=" + player.GetPosition().ToString() + " townPos=" + townPos.ToString());
+            EoH_Notifications.SendToPlayer(player, "TOWN CAPTURE FAILED", "You must be within " + CAPTURE_RADIUS.ToString() + "m of the radio relay to start capturing " + town + ".");
+            Print("[EoH_Capture] Blocked start outside relay radius town=" + town + " player=" + player.GetIdentity().GetName() + " dist=" + vector.Distance(player.GetPosition(), townPos).ToString() + " playerPos=" + player.GetPosition().ToString() + " relayPos=" + townPos.ToString());
             return;
         }
 
@@ -161,8 +207,8 @@ class EoH_CaptureManager
 
         EoH_TownMarkerManager.UpdateCapturingMarker(town, s.CapturingGroupName);
         UpdateCaptureProgressMarker(s, 0);
-        BroadcastCaptureMessage("TOWN CAPTURE STARTED", s.CapturingGroupName + " started capturing " + town + ". Hold for 10 minutes.");
-        Print("[EoH_Capture] Started capture town=" + town + " group=" + s.CapturingGroupName + " playerPos=" + player.GetPosition().ToString() + " townPos=" + townPos.ToString());
+        BroadcastCaptureMessage("TOWN CAPTURE STARTED", s.CapturingGroupName + " started capturing " + town + ". Hold the radio relay for 10 minutes.");
+        Print("[EoH_Capture] Started capture town=" + town + " group=" + s.CapturingGroupName + " playerPos=" + player.GetPosition().ToString() + " relayPos=" + townPos.ToString());
     }
 
     void Tick()
@@ -247,11 +293,11 @@ class EoH_CaptureManager
             }
 
             if (EOH_CAPTURE_DEBUG)
-                Print("[EoH_Capture][DEBUG] PlayerInZone town=" + s.TownName + " player=" + p.GetIdentity().GetName() + " group=" + otherGroupName + " groupID=" + otherGroupID + " dist=" + dist.ToString() + " playerPos=" + p.GetPosition().ToString() + " zonePos=" + pos.ToString());
+                Print("[EoH_Capture][DEBUG] PlayerInRelayZone town=" + s.TownName + " player=" + p.GetIdentity().GetName() + " group=" + otherGroupName + " groupID=" + otherGroupID + " dist=" + dist.ToString() + " playerPos=" + p.GetPosition().ToString() + " relayPos=" + pos.ToString());
         }
 
         if (EOH_CAPTURE_DEBUG)
-            Print("[EoH_Capture][DEBUG] Presence town=" + s.TownName + " zonePos=" + pos.ToString() + " playersInRadius=" + playersInRadius.ToString() + " captureGroupInRadius=" + captureGroupInRadius.ToString() + " enemiesInRadius=" + enemiesInRadius.ToString() + " requiredGroupID=" + s.CapturingGroupID);
+            Print("[EoH_Capture][DEBUG] Presence town=" + s.TownName + " relayPos=" + pos.ToString() + " playersInRadius=" + playersInRadius.ToString() + " captureGroupInRadius=" + captureGroupInRadius.ToString() + " enemiesInRadius=" + enemiesInRadius.ToString() + " requiredGroupID=" + s.CapturingGroupID);
 
         bool wasContested = s.IsContested;
         bool wasPresent = s.CapturingGroupPresent;
@@ -264,7 +310,7 @@ class EoH_CaptureManager
             {
                 s.WasPausedNoPresence = true;
                 EoH_TownMarkerManager.UpdatePausedMarker(s.TownName, s.CapturingGroupName);
-                BroadcastCaptureMessage("TOWN CAPTURE PAUSED", s.TownName + " capture paused. Capturing group left the zone.");
+                BroadcastCaptureMessage("TOWN CAPTURE PAUSED", s.TownName + " capture paused. Capturing group left the radio relay.");
                 Print("[EoH_Capture] Paused no presence town=" + s.TownName + " group=" + s.CapturingGroupName);
             }
             return;
@@ -296,6 +342,7 @@ class EoH_CaptureManager
         EoH_MarkerData data = EoH_TownMarkerManager.BuildTownMarker(s.TownName, s.CapturingGroupName, EoH_MarkerState.CAPTURING, 1, ARGB(255, 255, 220, 80));
         data.Label = s.TownName + " Capturing " + percent.ToString() + "%";
         data.Icon = "Radio";
+        data.Position = GetTownPos(s.TownName);
         data.Normalize();
         EoH_MarkerService.Broadcast(data);
     }
@@ -307,11 +354,12 @@ class EoH_CaptureManager
 
     void CompleteCapture(EoH_CaptureSession s)
     {
+        vector relayPos = GetTownPos(s.TownName);
         EoH_WorldStateManager.Get().SetTownOwner(s.TownName, s.CapturingGroupID, s.CapturingGroupName);
-        EoH_TownRewardManager.SpawnCaptureReward(s.TownName, s.CapturingGroupName, GetTownPos(s.TownName));
+        EoH_TownRewardManager.SpawnCaptureReward(s.TownName, s.CapturingGroupName, relayPos);
         BroadcastCaptureMessage("TOWN CAPTURED", s.CapturingGroupName + " captured " + s.TownName + ".");
         EoH_TownMarkerManager.UpdateTownMarker(s.TownName, s.CapturingGroupName);
-        Print("[EoH_Capture] Complete town=" + s.TownName + " owner=" + s.CapturingGroupName);
+        Print("[EoH_Capture] Complete town=" + s.TownName + " owner=" + s.CapturingGroupName + " relayPos=" + relayPos.ToString());
         m_Sessions.Remove(s.TownName);
     }
 };
