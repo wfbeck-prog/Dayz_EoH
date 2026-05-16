@@ -80,7 +80,10 @@ class EoH_ActionCraftBBPBlueprint : ActionContinuousBase
             blueprint = EntityAI.Cast(GetGame().CreateObject("BBP_Blueprint", pos));
         }
 
-        Print("[EoH_Crafting] Crafted BBP_Blueprint from 2x Paper for player=" + player.GetIdentity().GetName());
+        if (player.GetIdentity())
+            Print("[EoH_Crafting] Crafted BBP_Blueprint from 2x Paper for player=" + player.GetIdentity().GetName());
+        else
+            Print("[EoH_Crafting] Crafted BBP_Blueprint from 2x Paper");
     }
 };
 
@@ -91,4 +94,13 @@ modded class ActionConstructor
         super.RegisterActions(actions);
         actions.Insert(EoH_ActionCraftBBPBlueprint);
     }
-}
+};
+
+modded class Paper
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(EoH_ActionCraftBBPBlueprint);
+    }
+};
