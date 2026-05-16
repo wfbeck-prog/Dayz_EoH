@@ -2,6 +2,45 @@ class EoH_MarkerService
 {
     protected static ref map<string, ref EoH_MarkerData> s_ServerMarkers = new map<string, ref EoH_MarkerData>();
 
+    static bool IsQuestMarker(EoH_MarkerData data)
+    {
+        if (!data)
+            return false;
+
+        string category = data.Category;
+        category.ToLower();
+        string id = data.Id;
+        id.ToLower();
+        string label = data.Label;
+        label.ToLower();
+
+        return category.Contains("quest") || id.Contains("quest") || label.Contains("quest");
+    }
+
+    static string ResolveExpansionIcon(EoH_MarkerData data)
+    {
+        if (!data || data.Icon == "")
+            return "MapMarker";
+
+        return data.Icon;
+    }
+
+    static bool CreateOrUpdateExpansionServerMarker(EoH_MarkerData data)
+    {
+        if (!data)
+            return false;
+
+        ExpansionMarkerModule markerModule = ExpansionMarkerModule.Cast(CF_ModuleCoreManager.Get(ExpansionMarkerModule));
+        if (!markerModule)
+        {
+            Print("[EoH_MarkerService][WARN] ExpansionMarkerModule unavailable for server marker id=" + data.Id);
+            return false;
+        }
+
+        markerModule.CreateServerMarker(data.Label, ResolveExpansionIcon(data), data.Position, data.Color, data.Is3D == 1, data.Id);
+        return true;
+    }
+
     static void SendToPlayer(PlayerBase player, EoH_MarkerData data)
     {
         if (!player || !player.GetIdentity() || !data)
@@ -9,13 +48,18 @@ class EoH_MarkerService
 
         data.Normalize();
 
-        // Store authoritative server-side copy.
-        s_ServerMarkers.Set(data.Id, data);
+        if (!IsQuestMarker(data))
+        {
+            s_ServerMarkers.Set(data.Id, data);
+            CreateOrUpdateExpansionServerMarker(data);
+            Print("[EoH_MarkerService] Created Expansion SERVER marker id=" + data.Id + " label=" + data.Label);
+            return;
+        }
 
         Param1<ref EoH_MarkerData> param = new Param1<ref EoH_MarkerData>(data);
         GetGame().RPCSingleParam(player, EoH_MarkerRPC.ADD_OR_UPDATE_MARKER, param, true, player.GetIdentity());
 
-        Print("[EoH_MarkerService] Sent server-controlled marker id=" + data.Id + " to=" + player.GetIdentity().GetName());
+        Print("[EoH_MarkerService] Sent personal QUEST marker id=" + data.Id + " to=" + player.GetIdentity().GetName());
     }
 
     static void RemoveFromPlayer(PlayerBase player, string id)
@@ -33,7 +77,14 @@ class EoH_MarkerService
             return;
 
         data.Normalize();
-        s_ServerMarkers.Set(data.Id, data);
+
+        if (!IsQuestMarker(data))
+        {
+            s_ServerMarkers.Set(data.Id, data);
+            CreateOrUpdateExpansionServerMarker(data);
+            Print("[EoH_MarkerService] Broadcast Expansion SERVER marker id=" + data.Id + " label=" + data.Label);
+            return;
+        }
 
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
@@ -48,7 +99,7 @@ class EoH_MarkerService
             GetGame().RPCSingleParam(player, EoH_MarkerRPC.ADD_OR_UPDATE_MARKER, param, true, player.GetIdentity());
         }
 
-        Print("[EoH_MarkerService] Broadcast server-controlled marker id=" + data.Id + " label=" + data.Label);
+        Print("[EoH_MarkerService] Broadcast personal QUEST marker id=" + data.Id + " label=" + data.Label);
     }
 
     static void RemoveFromAll(string id)
@@ -71,7 +122,7 @@ class EoH_MarkerService
             RemoveFromPlayer(player, id);
         }
 
-        Print("[EoH_MarkerService] Removed server-controlled marker id=" + id);
+        Print("[EoH_MarkerService] Removed EoH marker id=" + id);
     }
 
     static void ResendAllMarkersToPlayer(PlayerBase player)
@@ -84,10 +135,9 @@ class EoH_MarkerService
             if (!data)
                 continue;
 
-            Param1<ref EoH_MarkerData> param = new Param1<ref EoH_MarkerData>(data);
-            GetGame().RPCSingleParam(player, EoH_MarkerRPC.ADD_OR_UPDATE_MARKER, param, true, player.GetIdentity());
+            CreateOrUpdateExpansionServerMarker(data);
         }
 
-        Print("[EoH_MarkerService] Resent " + s_ServerMarkers.Count().ToString() + " server markers to " + player.GetIdentity().GetName());
+        Print("[EoH_MarkerService] Refreshed " + s_ServerMarkers.Count().ToString() + " Expansion server markers for " + player.GetIdentity().GetName());
     }
 };
