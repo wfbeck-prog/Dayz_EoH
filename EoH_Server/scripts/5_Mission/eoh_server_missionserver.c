@@ -2,9 +2,10 @@ modded class MissionServer
 {
     protected bool m_EoH_ServerInitialized;
     protected bool m_EoH_DT_LiveUpdatesStarted;
-    protected bool m_EoH_RelaysSpawned;
+    protected bool m_EoH_RelayMaintenanceStarted;
     protected int m_EoH_LastCaptureTick;
     protected int m_EoH_LastTraderTick;
+    protected int m_EoH_LastRelayMaintenanceTick;
 
     override void OnInit()
     {
@@ -79,25 +80,31 @@ modded class MissionServer
         EoH_DiscordWebhook.GetConfig();
 
         EoH_InitTownMarkers();
-        EoH_SpawnRelaysFromConfig();
+        EoH_StartRelayMaintenance();
 
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_Server_Tick, 1000, true);
 
         m_EoH_ServerInitialized = true;
     }
 
-    void EoH_SpawnRelaysFromConfig()
+    void EoH_StartRelayMaintenance()
     {
-        if (m_EoH_RelaysSpawned)
+        if (m_EoH_RelayMaintenanceStarted)
             return;
 
+        m_EoH_RelayMaintenanceStarted = true;
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_MaintainConfiguredRelays, 30000, false);
+        Print("[EoH] Relay system is in maintenance mode. No startup spawning or purging will be performed.");
+    }
+
+    void EoH_MaintainConfiguredRelays()
+    {
         EoH_RelayConfig cfg = GetEoHRelayConfig();
-        if (!cfg || !cfg.Enabled || !cfg.SpawnRelaysOnServerStart)
+        if (!cfg || !cfg.Enabled)
             return;
 
-        EoH_DeleteAllExistingRelays();
-
-        ref set<string> spawnedKeys = new set<string>();
+        int found = 0;
+        int missing = 0;
 
         foreach (EoH_RelayLocation relay : cfg.Relays)
         {
@@ -108,28 +115,68 @@ modded class MissionServer
             if (pos == "0 0 0".ToVector())
                 continue;
 
-            pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.2;
-            string key = EoH_RelaySpawnKey(pos);
-
-            if (spawnedKeys.Find(key) != -1)
-            {
-                Print("[EoH] Skipping duplicate relay config position for " + relay.TownName + " at " + pos.ToString());
-                continue;
-            }
-
-            Object obj = GetGame().CreateObjectEx("EoH_RadioRelay", pos, ECE_PLACE_ON_SURFACE);
+            Object obj = EoH_FindRelayNear(pos, 25.0);
             if (!obj)
             {
-                Print("[EoH] Failed to spawn relay for " + relay.TownName + " at " + pos.ToString());
+                missing++;
+                Print("[EoH][WARN] No editor/persistent relay found near " + relay.TownName + " at " + pos.ToString() + ". Place it in DayZ Editor or update relay config.");
                 continue;
             }
 
-            obj.SetOrientation(Vector(relay.Orientation, 0, 0));
-            spawnedKeys.Insert(key);
-            Print("[EoH] Spawned single authoritative relay for " + relay.TownName + " at " + pos.ToString());
+            found++;
+            EoH_RefreshRelayObject(obj, relay.TownName);
         }
 
-        m_EoH_RelaysSpawned = true;
+        Print("[EoH] Relay maintenance complete. found=" + found.ToString() + " missing=" + missing.ToString());
+    }
+
+    Object EoH_FindRelayNear(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        vector searchPos = pos;
+        searchPos[1] = GetGame().SurfaceY(pos[0], pos[2]);
+        GetGame().GetObjectsAtPosition3D(searchPos, radius, objects, null);
+
+        Object best;
+        float bestDist = 999999.0;
+
+        foreach (Object obj : objects)
+        {
+            if (!obj || !EoH_IsRelayType(obj.GetType()))
+                continue;
+
+            float dist = EoH_Distance2D(obj.GetPosition(), pos);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                best = obj;
+            }
+        }
+
+        return best;
+    }
+
+    float EoH_Distance2D(vector a, vector b)
+    {
+        float dx = a[0] - b[0];
+        float dz = a[2] - b[2];
+        return Math.Sqrt((dx * dx) + (dz * dz));
+    }
+
+    void EoH_RefreshRelayObject(Object obj, string townName)
+    {
+        if (!obj)
+            return;
+
+        EntityAI entity = EntityAI.Cast(obj);
+        if (entity)
+        {
+            entity.SetLifetime(3888000);
+            entity.SetHealth("", "", entity.GetMaxHealth("", ""));
+            entity.SetSynchDirty();
+        }
+
+        Print("[EoH] Maintained relay town=" + townName + " type=" + obj.GetType() + " pos=" + obj.GetPosition().ToString());
     }
 
     string EoH_RelaySpawnKey(vector pos)
@@ -142,62 +189,6 @@ modded class MissionServer
     bool EoH_IsRelayType(string type)
     {
         return type == "EoH_RadioRelay" || type == "EoH_CaptureRelay_Base" || type.Contains("EoH_RadioRelay") || type.Contains("EoH_CaptureRelay");
-    }
-
-    void EoH_DeleteAllExistingRelays()
-    {
-        array<Object> objects = new array<Object>();
-        GetGame().GetObjectsAtPosition3D("7500 0 7500".ToVector(), 12000.0, objects, null);
-
-        int deleted = 0;
-        foreach (Object obj : objects)
-        {
-            if (!obj)
-                continue;
-
-            string type = obj.GetType();
-            if (!EoH_IsRelayType(type))
-                continue;
-
-            Print("[EoH] Purging existing relay before authoritative respawn: " + type + " at " + obj.GetPosition().ToString());
-            GetGame().ObjectDelete(obj);
-            deleted++;
-        }
-
-        Print("[EoH] Relay purge complete. Deleted " + deleted.ToString() + " existing EoH relay objects.");
-    }
-
-    bool EoH_RelayAlreadyExists(vector pos, float radius)
-    {
-        array<Object> objects = new array<Object>();
-        GetGame().GetObjectsAtPosition3D(pos, radius, objects, null);
-
-        foreach (Object obj : objects)
-        {
-            if (obj && EoH_IsRelayType(obj.GetType()))
-                return true;
-        }
-
-        return false;
-    }
-
-    void EoH_DeleteExistingRelaysNear(vector pos, float radius)
-    {
-        array<Object> objects = new array<Object>();
-        GetGame().GetObjectsAtPosition3D(pos, radius, objects, null);
-
-        foreach (Object obj : objects)
-        {
-            if (!obj)
-                continue;
-
-            string type = obj.GetType();
-            if (!EoH_IsRelayType(type))
-                continue;
-
-            Print("[EoH] Removing existing relay before spawn: " + type + " at " + obj.GetPosition().ToString());
-            GetGame().ObjectDelete(obj);
-        }
     }
 
     void EoH_InitTownMarkers()
@@ -250,6 +241,12 @@ modded class MissionServer
             EoH_RT_TraderManager traderManager = EoH_RT_TraderManager.Get();
             if (traderManager)
                 traderManager.Update();
+        }
+
+        if (now - m_EoH_LastRelayMaintenanceTick >= 900000)
+        {
+            m_EoH_LastRelayMaintenanceTick = now;
+            EoH_MaintainConfiguredRelays();
         }
     }
 
