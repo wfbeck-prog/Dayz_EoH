@@ -22,6 +22,26 @@ class EoH_TownMarkerManager
         return ARGB(255, 200, 200, 200);
     }
 
+    static string GetGroupTag(string groupName)
+    {
+        if (groupName == "" || groupName == "Unclaimed")
+            return "[FREE]";
+
+        string compact = groupName;
+        compact.Replace(" ", "");
+        compact.Replace("-", "");
+        compact.Replace("_", "");
+
+        if (compact.Length() <= 0)
+            return "[GRP]";
+
+        int tagLen = Math.Min(3, compact.Length());
+        string tag = compact.Substring(0, tagLen);
+        tag.ToUpper();
+
+        return "[" + tag + "]";
+    }
+
     static string GetIconForState(string state, string owner)
     {
         if (state == EoH_MarkerState.CAPTURING)
@@ -55,7 +75,7 @@ class EoH_TownMarkerManager
     static void UpdateCapturingMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.CAPTURING, 1, GetGroupColor(owner));
-        data.Label = townName + " Capturing";
+        data.Label = townName + " " + GetGroupTag(owner) + " Capturing";
         data.Icon = "Radio";
         data.Normalize();
         EoH_MarkerService.Broadcast(data);
@@ -64,7 +84,7 @@ class EoH_TownMarkerManager
     static void UpdatePausedMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.NORMAL, 0, GetGroupColor(owner));
-        data.Label = townName + " Capture Paused";
+        data.Label = townName + " " + GetGroupTag(owner) + " Paused";
         data.Icon = "Territory";
         data.Pulse = 0;
         data.Normalize();
@@ -74,7 +94,7 @@ class EoH_TownMarkerManager
     static void UpdateContestedMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.CONTESTED, 1, ARGB(255, 255, 50, 50));
-        data.Label = townName + " Contested";
+        data.Label = townName + " " + GetGroupTag(owner) + " Contested";
         data.Icon = "Exclamationmark";
         data.Normalize();
         EoH_MarkerService.Broadcast(data);
@@ -129,7 +149,7 @@ class EoH_TownMarkerManager
         data.Visible = 1;
         data.Normalize();
 
-        Print("[EoH_TownMarker] Build town=" + townName + " state=" + state + " pos=" + markerPos.ToString() + " icon=" + data.Icon);
+        Print("[EoH_TownMarker] Build town=" + townName + " state=" + state + " owner=" + owner + " pos=" + markerPos.ToString() + " icon=" + data.Icon);
         return data;
     }
 
