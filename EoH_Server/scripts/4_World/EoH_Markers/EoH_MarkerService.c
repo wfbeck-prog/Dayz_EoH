@@ -19,10 +19,60 @@ class EoH_MarkerService
 
     static string ResolveExpansionIcon(EoH_MarkerData data)
     {
-        if (!data || data.Icon == "")
-            return "MapMarker";
+        if (!data)
+            return "Map Marker";
 
-        return data.Icon;
+        string icon = data.Icon;
+
+        if (icon == "" || icon == "MapMarker")
+            return "Map Marker";
+
+        if (icon == "QuestionMark")
+            return "Questionmark";
+
+        if (icon == "ExclamationMark")
+            return "Exclamationmark";
+
+        if (icon == "Skull")
+            return "Skull 1";
+
+        if (icon == "Territory" || icon == "Radio" || icon == "Trader" || icon == "Info" || icon == "Map Marker" || icon == "Questionmark" || icon == "Exclamationmark")
+            return icon;
+
+        string category = data.Category;
+        category.ToLower();
+
+        if (category.Contains("town"))
+            return "Territory";
+
+        if (category.Contains("trader"))
+            return "Trader";
+
+        if (category.Contains("cache"))
+            return "Map Marker";
+
+        if (category.Contains("intel"))
+            return "Info";
+
+        return "Map Marker";
+    }
+
+    static ExpansionMarkerModule GetExpansionMarkerModule()
+    {
+        return ExpansionMarkerModule.Cast(CF_ModuleCoreManager.Get(ExpansionMarkerModule));
+    }
+
+    static void DeleteExpansionServerMarker(string id)
+    {
+        if (id == "")
+            return;
+
+        ExpansionMarkerModule markerModule = GetExpansionMarkerModule();
+        if (!markerModule)
+            return;
+
+        markerModule.RemoveServerMarker(id);
+        Print("[EoH_MarkerService] Deleted Expansion SERVER marker id=" + id);
     }
 
     static bool CreateOrUpdateExpansionServerMarker(EoH_MarkerData data)
@@ -30,12 +80,16 @@ class EoH_MarkerService
         if (!data)
             return false;
 
-        ExpansionMarkerModule markerModule = ExpansionMarkerModule.Cast(CF_ModuleCoreManager.Get(ExpansionMarkerModule));
+        ExpansionMarkerModule markerModule = GetExpansionMarkerModule();
         if (!markerModule)
         {
             Print("[EoH_MarkerService][WARN] ExpansionMarkerModule unavailable for server marker id=" + data.Id);
             return false;
         }
+
+        // Expansion server markers do not reliably refresh in-place.
+        // Delete + recreate is required for flashing, ownership color, state, and icon updates.
+        DeleteExpansionServerMarker(data.Id);
 
         markerModule.CreateServerMarker(data.Label, ResolveExpansionIcon(data), data.Position, data.Color, data.Is3D == 1, data.Id);
         return true;
@@ -52,7 +106,7 @@ class EoH_MarkerService
         {
             s_ServerMarkers.Set(data.Id, data);
             CreateOrUpdateExpansionServerMarker(data);
-            Print("[EoH_MarkerService] Created Expansion SERVER marker id=" + data.Id + " label=" + data.Label);
+            Print("[EoH_MarkerService] Created Expansion SERVER marker id=" + data.Id + " label=" + data.Label + " icon=" + ResolveExpansionIcon(data));
             return;
         }
 
@@ -82,7 +136,7 @@ class EoH_MarkerService
         {
             s_ServerMarkers.Set(data.Id, data);
             CreateOrUpdateExpansionServerMarker(data);
-            Print("[EoH_MarkerService] Broadcast Expansion SERVER marker id=" + data.Id + " label=" + data.Label);
+            Print("[EoH_MarkerService] Broadcast Expansion SERVER marker id=" + data.Id + " label=" + data.Label + " icon=" + ResolveExpansionIcon(data));
             return;
         }
 
@@ -109,6 +163,8 @@ class EoH_MarkerService
 
         if (s_ServerMarkers.Contains(id))
             s_ServerMarkers.Remove(id);
+
+        DeleteExpansionServerMarker(id);
 
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
