@@ -28,12 +28,12 @@ class EoH_TownMarkerManager
             return "Radio";
 
         if (state == EoH_MarkerState.CONTESTED)
-            return "Danger";
+            return "Exclamationmark";
 
         if (state == EoH_MarkerState.OWNED && owner != "" && owner != "Unclaimed")
             return "Territory";
 
-        return "Flag";
+        return "Territory";
     }
 
     static void UpdateTownMarker(string townName, string owner)
@@ -55,6 +55,9 @@ class EoH_TownMarkerManager
     static void UpdateCapturingMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.CAPTURING, 1, GetGroupColor(owner));
+        data.Label = townName + " Capturing";
+        data.Icon = "Radio";
+        data.Normalize();
         EoH_MarkerService.Broadcast(data);
     }
 
@@ -71,6 +74,9 @@ class EoH_TownMarkerManager
     static void UpdateContestedMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.CONTESTED, 1, ARGB(255, 255, 50, 50));
+        data.Label = townName + " Contested";
+        data.Icon = "Exclamationmark";
+        data.Normalize();
         EoH_MarkerService.Broadcast(data);
     }
 
@@ -109,7 +115,9 @@ class EoH_TownMarkerManager
         if (state == EoH_MarkerState.CAPTURING || state == EoH_MarkerState.CONTESTED)
             safePulse = pulse;
 
-        EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(townName), townName, GetTownPosition(townName));
+        vector markerPos = GetTownPosition(townName);
+
+        EoH_MarkerData data = new EoH_MarkerData(GetMarkerId(townName), townName, markerPos);
         data.Category = EoH_MarkerCategory.TOWN;
         data.State = state;
         data.Owner = owner;
@@ -120,6 +128,8 @@ class EoH_TownMarkerManager
         data.Icon = GetIconForState(state, owner);
         data.Visible = 1;
         data.Normalize();
+
+        Print("[EoH_TownMarker] Build town=" + townName + " state=" + state + " pos=" + markerPos.ToString() + " icon=" + data.Icon);
         return data;
     }
 
@@ -132,10 +142,15 @@ class EoH_TownMarkerManager
 
     static vector GetTownPosition(string townName)
     {
+        // Single source of truth: town markers must use the same relay position used by capture logic.
+        vector pos = EoH_CaptureManager.Get().GetTownPos(townName);
+        if (pos != "0 0 0".ToVector())
+            return pos;
+
         EoH_CaptureTownConfig cfg = EoH_CaptureManager.Get().GetTownConfig(townName);
         if (cfg)
             return cfg.GetRelayVector();
 
-        return "0 0 0";
+        return "0 0 0".ToVector();
     }
 };
