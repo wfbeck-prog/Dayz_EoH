@@ -10,13 +10,14 @@ class EoH_QuestTravelOverlayConfig
         s_Overlays = new array<ref EoH_QuestTravelOverlayData>();
 
         // Prototype: Signal and Ashes: Dead Air 1
-        s_Overlays.Insert(new EoH_QuestTravelOverlayData(
-            401001,
-            501001,
-            "Signal and Ashes: Search Area",
-            "3060 310 7870".ToVector(),
-            350.0
-        ));
+        EoH_QuestTravelOverlayData deadAir = new EoH_QuestTravelOverlayData();
+        deadAir.QuestID = 401001;
+        deadAir.ObjectiveID = 501001;
+        deadAir.Label = "Signal and Ashes: Search Area";
+        deadAir.TruePosition = "3060 310 7870".ToVector();
+        deadAir.Radius = 350.0;
+        deadAir.CircleCenter = EoH_QuestTravelOverlayData.ComputeOffsetCenter(deadAir.TruePosition, deadAir.QuestID, deadAir.ObjectiveID, deadAir.Radius);
+        s_Overlays.Insert(deadAir);
 
         Print("[EoH_TravelOverlay] Loaded prototype overlays=" + s_Overlays.Count().ToString());
     }
