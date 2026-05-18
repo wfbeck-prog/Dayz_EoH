@@ -52,11 +52,19 @@ modded class MissionServer
             EoH_MarkerData data;
 
             if (owner != "")
+            {
                 data = EoH_TownMarkerManager.BuildTownMarker(town, owner, EoH_MarkerState.OWNED, 0, EoH_TownMarkerManager.GetGroupColor(owner));
+                if (owner != "Unclaimed")
+                    data.Label = town + " " + EoH_TownMarkerManager.GetGroupTag(owner);
+                else
+                    data.Label = town;
+            }
             else
+            {
                 data = EoH_TownMarkerManager.BuildTownMarker(town, "Unclaimed", EoH_MarkerState.NORMAL, 0, ARGB(120, 150, 150, 150));
+                data.Label = town;
+            }
 
-            data.Label = town;
             data.Icon = "Territory";
             data.Normalize();
 
