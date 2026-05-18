@@ -59,6 +59,12 @@ class EoH_TownMarkerManager
     static void UpdateTownMarker(string townName, string owner)
     {
         EoH_MarkerData data = BuildTownMarker(townName, owner, EoH_MarkerState.OWNED, 0, GetGroupColor(owner));
+
+        if (owner != "" && owner != "Unclaimed")
+            data.Label = townName + " " + GetGroupTag(owner);
+        else
+            data.Label = townName;
+
         data.Pulse = 0;
         data.Normalize();
         EoH_MarkerService.Broadcast(data);
@@ -67,6 +73,7 @@ class EoH_TownMarkerManager
     static void UpdateBaseTownMarker(string townName)
     {
         EoH_MarkerData data = BuildTownMarker(townName, "Unclaimed", EoH_MarkerState.NORMAL, 0, ARGB(120, 150, 150, 150));
+        data.Label = townName;
         data.Pulse = 0;
         data.Normalize();
         EoH_MarkerService.Broadcast(data);
@@ -149,7 +156,7 @@ class EoH_TownMarkerManager
         data.Visible = 1;
         data.Normalize();
 
-        Print("[EoH_TownMarker] Build town=" + townName + " state=" + state + " owner=" + owner + " pos=" + markerPos.ToString() + " icon=" + data.Icon);
+        Print("[EoH_TownMarker] Build town=" + townName + " state=" + state + " owner=" + owner + " pos=" + markerPos.ToString() + " icon=" + data.Icon + " label=" + data.Label);
         return data;
     }
 
@@ -162,7 +169,6 @@ class EoH_TownMarkerManager
 
     static vector GetTownPosition(string townName)
     {
-        // Single source of truth: town markers must use the same relay position used by capture logic.
         vector pos = EoH_CaptureManager.Get().GetTownPos(townName);
         if (pos != "0 0 0".ToVector())
             return pos;
