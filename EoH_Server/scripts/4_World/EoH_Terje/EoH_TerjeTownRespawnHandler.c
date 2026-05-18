@@ -2,7 +2,9 @@ class EoH_TerjeTownRespawnHandler : TerjeRespawnObjectHandler
 {
     override bool SetAsRespawnObject(PlayerBase player, Object object, string respawnId)
     {
-        return EoH_IsObjectValid(object, player, respawnId);
+        // EoH town relay respawns are ownership-implied.
+        // Players should not manually mark radio relays as respawn points.
+        return false;
     }
 
     override bool RespawnOnObject(PlayerBase player, Object object, string respawnId)
