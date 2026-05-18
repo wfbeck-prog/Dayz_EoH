@@ -29,26 +29,8 @@ class EoH_QuestTravelOverlayClient
     }
 };
 
-modded class MissionGameplay
-{
-    override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
-    {
-        super.OnRPC(sender, target, rpc_type, ctx);
-
-        if (rpc_type == EoH_QuestCircleRPC.ADD_OR_UPDATE_CIRCLE)
-        {
-            Param1<ref EoH_QuestCircleData> addParam;
-            if (ctx.Read(addParam) && addParam && addParam.param1)
-                EoH_QuestTravelOverlayClient.AddCircle(addParam.param1);
-            return;
-        }
-
-        if (rpc_type == EoH_QuestCircleRPC.REMOVE_CIRCLE)
-        {
-            Param1<string> removeParam;
-            if (ctx.Read(removeParam) && removeParam)
-                EoH_QuestTravelOverlayClient.RemoveCircle(removeParam.param1);
-            return;
-        }
-    }
-};
+// NOTE:
+// MissionGameplay has no OnRPC override in this script context.
+// The old override was removed to fix compile errors.
+// Travel overlay circle rendering/storage remains available through EoH_QuestTravelOverlayClient,
+// but RPC receive + map rendering still need a safe CF/Event-based implementation pass.
