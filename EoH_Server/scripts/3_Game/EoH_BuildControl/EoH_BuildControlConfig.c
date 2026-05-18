@@ -51,6 +51,10 @@ class EoH_BuildControlConfig
     bool AllowFlagKitOutsideTerritory;
     bool EnforcePerPlayerLimits;
 
+    bool LimitOneTerritoryFlagPerGroup;
+    int MaxTerritoryFlagsPerGroup;
+    string TerritoryFlagGroupLimitMessage;
+
     float TerritoryRadiusMeters;
     float TerritoryConflictRadiusMeters;
 
@@ -71,6 +75,10 @@ class EoH_BuildControlConfig
         RequireTerritoryForBuilding = true;
         AllowFlagKitOutsideTerritory = true;
         EnforcePerPlayerLimits = true;
+
+        LimitOneTerritoryFlagPerGroup = true;
+        MaxTerritoryFlagsPerGroup = 1;
+        TerritoryFlagGroupLimitMessage = "Your group already controls a territory flag.";
 
         TerritoryRadiusMeters = 80.0;
         TerritoryConflictRadiusMeters = 160.0;
@@ -99,6 +107,10 @@ class EoH_BuildControlConfig
         BuildBlacklist.Clear();
         BuildBlacklist.Insert("BarrelHoles_ColorBase");
         BuildBlacklist.Insert("FireplaceBase");
+
+        LimitOneTerritoryFlagPerGroup = true;
+        MaxTerritoryFlagsPerGroup = 1;
+        TerritoryFlagGroupLimitMessage = "Your group already controls a territory flag.";
 
         Rules.Clear();
 
