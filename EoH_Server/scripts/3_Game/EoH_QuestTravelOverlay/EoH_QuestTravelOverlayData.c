@@ -26,7 +26,11 @@ class EoH_QuestTravelOverlayData
     {
         // Deterministic offset: target stays inside circle, but is not centered.
         int seed = (questId * 37) + (objectiveId * 17);
-        float angleDeg = Math.Mod(seed, 360);
+        int angleInt = seed % 360;
+        if (angleInt < 0)
+            angleInt = angleInt + 360;
+
+        float angleDeg = angleInt;
         float angleRad = angleDeg * Math.DEG2RAD;
         float distance = Math.Clamp(radius * 0.45, 75.0, radius * 0.70);
 
