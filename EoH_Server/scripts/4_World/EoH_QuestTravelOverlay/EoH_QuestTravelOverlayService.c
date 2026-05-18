@@ -5,15 +5,21 @@ class EoH_QuestTravelOverlayService
         if (!player || !player.GetIdentity() || !overlay)
             return;
 
-        EoH_QuestCircleData circle = new EoH_QuestCircleData(overlay.GetId(), overlay.Label, overlay.CircleCenter, overlay.Radius);
-        circle.Color = ARGB(220, 255, 220, 80);
-        circle.FillColor = ARGB(45, 255, 220, 80);
-        circle.Visible = 1;
-        circle.Normalize();
+        EoH_MarkerData marker = new EoH_MarkerData(overlay.GetId(), overlay.Label, overlay.CircleCenter);
+        marker.Category = "quest_travel";
+        marker.State = "active";
+        marker.Owner = player.GetIdentity().GetPlainId();
+        marker.Color = ARGB(220, 255, 220, 80);
+        marker.BaseColor = marker.Color;
+        marker.Pulse = 1;
+        marker.Is3D = 0;
+        marker.Icon = "Map Marker";
+        marker.Visible = 1;
+        marker.Normalize();
 
-        EoH_QuestCircleService.SendToPlayer(player, circle);
+        EoH_MarkerService.SendToPlayer(player, marker);
 
-        Print("[EoH_TravelOverlay] Show player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId() + " label=" + overlay.Label + " center=" + overlay.CircleCenter.ToString() + " radius=" + overlay.Radius.ToString());
+        Print("[EoH_TravelOverlay] Sent personal travel marker player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId() + " label=" + overlay.Label + " center=" + overlay.CircleCenter.ToString() + " radius=" + overlay.Radius.ToString());
     }
 
     static void HideForPlayer(PlayerBase player, EoH_QuestTravelOverlayData overlay)
@@ -21,8 +27,8 @@ class EoH_QuestTravelOverlayService
         if (!player || !player.GetIdentity() || !overlay)
             return;
 
-        EoH_QuestCircleService.RemoveFromPlayer(player, overlay.GetId());
-        Print("[EoH_TravelOverlay] Hide player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId());
+        EoH_MarkerService.RemoveFromPlayer(player, overlay.GetId());
+        Print("[EoH_TravelOverlay] Removed personal travel marker player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId());
     }
 
     static void ShowPrototypeForPlayer(PlayerBase player)
