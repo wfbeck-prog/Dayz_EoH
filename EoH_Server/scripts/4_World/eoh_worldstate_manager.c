@@ -186,6 +186,9 @@ class EoH_WorldStateManager
 
     void SetTownOwner(string townName, string groupID, string groupName)
     {
+        if (!m_State)
+            CreateDefaultState();
+
         EoH_WorldStateTownState town = GetTownState(townName);
 
         if (!town)
@@ -204,14 +207,18 @@ class EoH_WorldStateManager
         town.CapturedAtUnix = now;
         town.LastChangedUnix = now;
 
-        Print("[EoH_WorldState] Town owner changed: " + townName + " -> " + groupName);
-
-        EoH_AIManager.Get().OnTownCaptured(townName, town.Tier);
-
-        // NEW: update map marker
-        EoH_TownMarkerManager.UpdateTownMarker(townName, groupName);
+        Print("[EoH_WorldState] Town owner changed: " + townName + " -> groupID=" + groupID + " groupName=" + groupName);
 
         SaveState();
+
+        EoH_WorldStateTownState verify = GetTownState(townName);
+        if (verify)
+            Print("[EoH_WorldState] VERIFY after save town=" + townName + " ownerID=" + verify.OwnerGroupID + " ownerName=" + verify.OwnerGroupName + " influence=" + verify.Influence.ToString());
+        else
+            Print("[EoH_WorldState][WARN] VERIFY failed after save. Town missing: " + townName);
+
+        EoH_AIManager.Get().OnTownCaptured(townName, town.Tier);
+        EoH_TownMarkerManager.UpdateTownMarker(townName, groupName);
     }
 
     void ClearTownOwner(string townName)
@@ -220,12 +227,12 @@ class EoH_WorldStateManager
         if (!town)
             return;
 
+        Print("[EoH_WorldState] Town cleared: " + townName + " previousOwnerID=" + town.OwnerGroupID + " previousOwnerName=" + town.OwnerGroupName);
+
         town.OwnerGroupID = "";
         town.OwnerGroupName = "Unclaimed";
         town.Influence = 0.0;
         town.LastChangedUnix = GetGame().GetTime();
-
-        Print("[EoH_WorldState] Town cleared: " + townName);
 
         EoH_TownMarkerManager.RemoveMarkerFromAll(EoH_TownMarkerManager.GetMarkerId(townName));
 
