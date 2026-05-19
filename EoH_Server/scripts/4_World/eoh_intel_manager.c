@@ -99,11 +99,10 @@ class EoH_IntelManager
         body += "INTEL CONFIDENCE: " + confidence + "\n\n";
         body += "RECOMMENDATION:\n" + recommendation;
 
-        EoH_FieldReportData report = new EoH_FieldReportData(
-            "TOWN RISK REPORT",
-            "Echoes of Humanity Intelligence Network",
-            body
-        );
+        EoH_FieldReportData report = new EoH_FieldReportData();
+        report.Title = "TOWN RISK REPORT";
+        report.Subtitle = "Echoes of Humanity Intelligence Network";
+        report.Body = body;
 
         EoH_FieldReportService.OpenForPlayer(player, report);
 
@@ -194,8 +193,8 @@ class EoH_IntelManager
         if (type.Contains("eai") || type.Contains("aib") || type.Contains("bandit") || type.Contains("raider"))
             return true;
 
-        DayZPlayerImplement player = DayZPlayerImplement.Cast(obj);
-        if (player && !PlayerBase.Cast(obj))
+        DayZPlayerImplement aiPlayer = DayZPlayerImplement.Cast(obj);
+        if (aiPlayer && !PlayerBase.Cast(obj))
             return true;
 
         return false;
