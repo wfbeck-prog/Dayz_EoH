@@ -11,20 +11,17 @@ class EoH_QuestTravelOverlayService
         marker.Owner = player.GetIdentity().GetPlainId();
         marker.Color = ARGB(220, 255, 220, 80);
         marker.BaseColor = marker.Color;
-        marker.FillColor = ARGB(45, 255, 220, 80);
         marker.Pulse = 1;
         marker.Is3D = 0;
         marker.Icon = "Map Marker";
         marker.Visible = 1;
-
-        // EoH search-area behavior.
-        // The circle center is intentionally offset from the true target position.
-        marker.Radius = overlay.Radius;
-        marker.ShowCircle = 1;
-
         marker.Normalize();
 
+        // Personal icon marker.
         EoH_MarkerService.SendToPlayer(player, marker);
+
+        // Real client-side search-area circle overlay.
+        EoH_QuestTravelCircleService.SendToPlayer(player, overlay);
 
         Print("[EoH_TravelOverlay] Sent personal travel search area player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId() + " label=" + overlay.Label + " truePos=" + overlay.TruePosition.ToString() + " center=" + overlay.CircleCenter.ToString() + " radius=" + overlay.Radius.ToString());
     }
@@ -35,6 +32,8 @@ class EoH_QuestTravelOverlayService
             return;
 
         EoH_MarkerService.RemoveFromPlayer(player, overlay.GetId());
+        EoH_QuestTravelCircleService.RemoveFromPlayer(player, overlay.GetId());
+
         Print("[EoH_TravelOverlay] Removed personal travel marker player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId());
     }
 
