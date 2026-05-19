@@ -78,10 +78,8 @@ modded class ExpansionMapMenu
 
         vector prevWorld;
         vector nextWorld;
-        float prevX;
-        float prevY;
-        float nextX;
-        float nextY;
+        vector prevScreen;
+        vector nextScreen;
 
         for (int i = 0; i <= segments; i++)
         {
@@ -97,10 +95,10 @@ modded class ExpansionMapMenu
             nextWorld[0] = circle.Center[0] + Math.Cos(angleB) * circle.Radius;
             nextWorld[2] = circle.Center[2] + Math.Sin(angleB) * circle.Radius;
 
-            mapWidget.MapToScreen(prevWorld, prevX, prevY);
-            mapWidget.MapToScreen(nextWorld, nextX, nextY);
+            prevScreen = mapWidget.MapToScreen(prevWorld);
+            nextScreen = mapWidget.MapToScreen(nextWorld);
 
-            m_EoH_QuestCircleCanvas.DrawLine(prevX, prevY, nextX, nextY, 2, circle.Color);
+            m_EoH_QuestCircleCanvas.DrawLine(prevScreen[0], prevScreen[1], nextScreen[0], nextScreen[1], 2, circle.Color);
         }
     }
 };
