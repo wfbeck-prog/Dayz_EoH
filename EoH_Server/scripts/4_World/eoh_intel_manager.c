@@ -45,41 +45,140 @@ class EoH_IntelManager
 
     void RevealIntel(PlayerBase player)
     {
-        RevealTownIntel(player);
+        RevealTownRiskReport(player);
     }
 
     void RevealTownIntel(PlayerBase player)
+    {
+        RevealTownRiskReport(player);
+    }
+
+    void RevealTownRiskReport(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
             return;
 
         TrackIntelUse(player);
 
-        vector playerPos = player.GetPosition();
-        int revealed = 0;
+        if (!m_IntelLocations || m_IntelLocations.Count() == 0)
+            InitIntel();
+
+        if (!m_IntelLocations || m_IntelLocations.Count() == 0)
+        {
+            EoH_Notifications.SendToPlayer(player, "TOWN RISK REPORT", "The report is too damaged to read.");
+            Print("[EoH_Intel] Town risk report failed: no town intel locations player=" + player.GetIdentity().GetName());
+            return;
+        }
+
+        string town = GetNearestKnownTown(player.GetPosition());
+        vector townPos = m_IntelLocations.Get(town);
+        float distance = vector.Distance(player.GetPosition(), townPos);
+
+        string infected = GetWeightedRiskLevel();
+        string humanThreat = GetWeightedHumanThreat();
+        string medical = GetWeightedMedicalOpportunity();
+        string confidence = GetWeightedConfidence(distance);
+        string recommendation = BuildTownRiskRecommendation(infected, humanThreat, medical);
+
+        EoH_Notifications.SendToPlayer(player, "TOWN RISK REPORT", town + " | Infected: " + infected + " | Human threat: " + humanThreat);
+        EoH_Notifications.SendToPlayer(player, "FIELD NOTES", "Medical: " + medical + " | Confidence: " + confidence);
+        EoH_Notifications.SendToPlayer(player, "RECOMMENDATION", recommendation);
+
+        Print("[EoH_Intel] Town risk report town=" + town + " infected=" + infected + " humanThreat=" + humanThreat + " medical=" + medical + " confidence=" + confidence + " player=" + player.GetIdentity().GetName());
+    }
+
+    string GetNearestKnownTown(vector playerPos)
+    {
+        string bestTown = "Unknown Settlement";
+        float bestDistance = 999999.0;
 
         foreach (string name, vector pos : m_IntelLocations)
         {
-            if (vector.Distance(playerPos, pos) > 5000)
-                continue;
-
-            string oldIntelId = "EoH_INTEL_TOWN_" + name;
-            oldIntelId.Replace(" ", "_");
-            EoH_MarkerService.RemoveFromPlayer(player, oldIntelId);
-
-            EoH_MarkerData data = EoH_TownMarkerManager.BuildTownMarker(name, "Intel", EoH_MarkerState.NORMAL, 0, ARGB(255, 255, 220, 80));
-            data.Label = name;
-            data.Icon = "Info";
-            data.Position = pos;
-            data.Pulse = 0;
-            data.Normalize();
-
-            EoH_MarkerService.SendToPlayer(player, data);
-            revealed++;
+            float distance = vector.Distance(playerPos, pos);
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                bestTown = name;
+            }
         }
 
-        EoH_Notifications.SendToPlayer(player, "INTEL DECODED", "Nearby town activity updated: " + revealed.ToString());
-        Print("[EoH_Intel] Town intel revealed count=" + revealed.ToString() + " player=" + player.GetIdentity().GetName());
+        return bestTown;
+    }
+
+    string GetWeightedRiskLevel()
+    {
+        int roll = Math.RandomIntInclusive(1, 100);
+
+        if (roll <= 20)
+            return "Low";
+        if (roll <= 50)
+            return "Moderate";
+        if (roll <= 82)
+            return "High";
+
+        return "Severe";
+    }
+
+    string GetWeightedHumanThreat()
+    {
+        int roll = Math.RandomIntInclusive(1, 100);
+
+        if (roll <= 25)
+            return "None reported";
+        if (roll <= 58)
+            return "Possible";
+        if (roll <= 86)
+            return "Confirmed";
+
+        return "Heavy activity";
+    }
+
+    string GetWeightedMedicalOpportunity()
+    {
+        int roll = Math.RandomIntInclusive(1, 100);
+
+        if (roll <= 25)
+            return "Poor";
+        if (roll <= 60)
+            return "Moderate";
+        if (roll <= 88)
+            return "Good";
+
+        return "High-value medical lead";
+    }
+
+    string GetWeightedConfidence(float distance)
+    {
+        int roll = Math.RandomIntInclusive(1, 100);
+
+        if (distance > 6000)
+            roll = roll + 15;
+
+        if (roll <= 20)
+            return "Outdated";
+        if (roll <= 52)
+            return "Unverified";
+        if (roll <= 84)
+            return "Reliable";
+
+        return "Recently confirmed";
+    }
+
+    string BuildTownRiskRecommendation(string infected, string humanThreat, string medical)
+    {
+        if (infected == "Severe" || humanThreat == "Heavy activity")
+            return "Do not enter alone. Move quiet, avoid the main road, and carry medical supplies.";
+
+        if (infected == "High" || humanThreat == "Confirmed")
+            return "High-risk approach. Scout first, avoid gunfire, and keep an exit route open.";
+
+        if (medical == "High-value medical lead" || medical == "Good")
+            return "Search clinics, aid stations, and survivor shelters. Medical supplies may still be recoverable.";
+
+        if (infected == "Low" && humanThreat == "None reported")
+            return "Low activity reported. Good for quiet scavenging, food, water, and basic supplies.";
+
+        return "Proceed carefully. Conditions are unstable and the report may not reflect current movement.";
     }
 
     void RevealTraderIntel(PlayerBase player)
