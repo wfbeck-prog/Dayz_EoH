@@ -5,25 +5,11 @@ class EoH_QuestTravelOverlayService
         if (!player || !player.GetIdentity() || !overlay)
             return;
 
-        EoH_MarkerData marker = new EoH_MarkerData(overlay.GetId(), overlay.Label, overlay.CircleCenter);
-        marker.Category = "quest_travel";
-        marker.State = "active";
-        marker.Owner = player.GetIdentity().GetPlainId();
-        marker.Color = ARGB(220, 255, 220, 80);
-        marker.BaseColor = marker.Color;
-        marker.Pulse = 1;
-        marker.Is3D = 0;
-        marker.Icon = "Map Marker";
-        marker.Visible = 1;
-        marker.Normalize();
-
-        // Personal icon marker.
-        EoH_MarkerService.SendToPlayer(player, marker);
-
-        // Real client-side search-area circle overlay.
+        // Circle-only travel overlay.
+        // Do not send an Expansion icon marker because the icon can reveal the exact task point.
         EoH_QuestTravelCircleService.SendToPlayer(player, overlay);
 
-        Print("[EoH_TravelOverlay] Sent personal travel search area player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId() + " label=" + overlay.Label + " truePos=" + overlay.TruePosition.ToString() + " center=" + overlay.CircleCenter.ToString() + " radius=" + overlay.Radius.ToString());
+        Print("[EoH_TravelOverlay] Sent personal travel circle player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId() + " label=" + overlay.Label + " truePos=" + overlay.TruePosition.ToString() + " center=" + overlay.CircleCenter.ToString() + " radius=" + overlay.Radius.ToString());
     }
 
     static void HideForPlayer(PlayerBase player, EoH_QuestTravelOverlayData overlay)
@@ -31,10 +17,11 @@ class EoH_QuestTravelOverlayService
         if (!player || !player.GetIdentity() || !overlay)
             return;
 
+        // Remove both paths so old icon markers from earlier builds are cleaned up too.
         EoH_MarkerService.RemoveFromPlayer(player, overlay.GetId());
         EoH_QuestTravelCircleService.RemoveFromPlayer(player, overlay.GetId());
 
-        Print("[EoH_TravelOverlay] Removed personal travel marker player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId());
+        Print("[EoH_TravelOverlay] Removed personal travel overlay player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId());
     }
 
     static void ShowQuestOverlay(PlayerBase player, int objectiveId)
