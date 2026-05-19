@@ -1,0 +1,11 @@
+CanvasWidgetClass {
+ position 0 0
+ size 1 1
+ halign stretch
+ valign stretch
+ visible 1
+ ignorepointer 1
+ inherit 0
+ clipchildren 0
+ exactly 0
+}
