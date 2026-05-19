@@ -3,19 +3,18 @@ class EoH_QuestTravelOverlayAutoSource
     /*
         EoH Quest Travel Overlay Auto Source
 
-        Direction:
-        - Manual AddOverlay(...) entries are fallback/special-case overrides only.
-        - Normal travel/search markers should eventually be discovered from active Expansion quest objective data.
-        - If Expansion does not expose position/radius cleanly at runtime, this class should load the quest/objective JSON files from profile storage and build overlays from those configs.
+        Goal:
+        - Remove hardcoded one-off quest marker logic.
+        - Generate circle-only search overlays for all valid Expansion travel/search objectives.
 
         Intended source priority:
-        1. Runtime active Expansion quest objective data, if API exposes objective position/radius.
-        2. Expansion quest/objective JSON files from $profile:ExpansionMod\Quests.
-        3. Manual EoH_QuestTravelOverlayConfig fallback entries for special/custom search areas.
+        1. Runtime active Expansion objective data.
+        2. Expansion quest JSON/objective JSON from profile storage.
+        3. Manual fallback overlays for custom EoH search regions.
 
-        Current status:
-        - Stub only. It intentionally returns no auto overlays until the exact Expansion objective API or JSON schema is validated on the live server.
-        - This keeps the proven personal marker pipeline stable while documenting the next implementation direction.
+        Current safe implementation:
+        - Uses fallback overlay config while preserving the automatic-source architecture.
+        - This keeps the proven quest circle system stable until live Expansion objective schemas are confirmed.
     */
 
     static array<ref EoH_QuestTravelOverlayData> BuildForPlayer(PlayerBase player)
@@ -25,14 +24,26 @@ class EoH_QuestTravelOverlayAutoSource
         if (!player || !player.GetIdentity())
             return overlays;
 
-        // TODO Phase 2:
-        // Inspect active Expansion quests for this player and extract travel/search objective data.
-        // Expected output per discovered objective:
-        // overlays.Insert(new EoH_QuestTravelOverlayData(questId, objectiveId, label, truePosition, radius));
+        // Phase 1:
+        // Use fallback config entries while auto-discovery integration is validated.
+        array<ref EoH_QuestTravelOverlayData> fallback = EoH_QuestTravelOverlayConfig.GetAll();
 
-        // TODO Phase 3 fallback:
-        // If runtime API does not expose objective coordinates, load quest/objective JSON from profile and build overlays from that config data.
+        foreach (EoH_QuestTravelOverlayData data : fallback)
+        {
+            if (!data)
+                continue;
+
+            overlays.Insert(data);
+        }
 
         return overlays;
+    }
+
+    static bool IsLikelyTravelObjectiveType(string typeName)
+    {
+        string lower = typeName;
+        lower.ToLower();
+
+        return lower.Contains("travel") || lower.Contains("position") || lower.Contains("location") || lower.Contains("area") || lower.Contains("search");
     }
 };
