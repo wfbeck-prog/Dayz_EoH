@@ -74,13 +74,25 @@ class EoH_IntelManager
         vector townPos = m_IntelLocations.Get(town);
         float distance = vector.Distance(player.GetPosition(), townPos);
 
-        string infected = GetWeightedRiskLevel();
-        string humanThreat = GetWeightedHumanThreat();
+        string owner = GetTownOwnerLabel(town);
+        int infectedCount = CountInfectedInRadius(townPos, EoH_CaptureManager.CAPTURE_RADIUS);
+        int aiCount = CountAIInRadius(townPos, EoH_CaptureManager.CAPTURE_RADIUS);
+        int playerCount = CountPlayersInRadius(townPos, EoH_CaptureManager.CAPTURE_RADIUS);
+
+        string infected = BuildInfectedLevel(infectedCount);
+        string humanThreat = BuildHumanThreatLevel(aiCount, playerCount, owner);
         string medical = GetWeightedMedicalOpportunity();
         string confidence = GetWeightedConfidence(distance);
         string recommendation = BuildTownRiskRecommendation(infected, humanThreat, medical);
 
-        string body = "LOCATION: " + town + "\n\n";
+        string body = "LOCATION: " + town + "\n";
+        body += "CONTROL: " + owner + "\n";
+        body += "CAPTURE RADIUS: " + EoH_CaptureManager.CAPTURE_RADIUS.ToString() + "m\n\n";
+        body += "LIVE COUNTS INSIDE RADIUS:\n";
+        body += "INFECTED: " + infectedCount.ToString() + "\n";
+        body += "AI / BANDITS: " + aiCount.ToString() + "\n";
+        body += "SURVIVORS: " + playerCount.ToString() + "\n\n";
+        body += "ASSESSMENT:\n";
         body += "INFECTED PRESENCE: " + infected + "\n";
         body += "HUMAN THREAT: " + humanThreat + "\n";
         body += "MEDICAL OPPORTUNITY: " + medical + "\n";
@@ -95,7 +107,134 @@ class EoH_IntelManager
 
         EoH_FieldReportService.OpenForPlayer(player, report);
 
-        Print("[EoH_Intel] Town risk report town=" + town + " infected=" + infected + " humanThreat=" + humanThreat + " medical=" + medical + " confidence=" + confidence + " player=" + player.GetIdentity().GetName());
+        Print("[EoH_Intel] Town risk report town=" + town + " owner=" + owner + " infectedCount=" + infectedCount.ToString() + " aiCount=" + aiCount.ToString() + " playerCount=" + playerCount.ToString() + " player=" + player.GetIdentity().GetName());
+    }
+
+    string GetTownOwnerLabel(string town)
+    {
+        EoH_CaptureManager cap = EoH_CaptureManager.Get();
+        if (!cap)
+            return "Unclaimed";
+
+        string owner = cap.GetTownOwner(town);
+        if (owner == "" || owner == "Unclaimed")
+            return "Unclaimed";
+
+        return owner;
+    }
+
+    int CountPlayersInRadius(vector townPos, float radius)
+    {
+        int count = 0;
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.GetIdentity() || !player.IsAlive())
+                continue;
+
+            if (Distance2D(player.GetPosition(), townPos) <= radius)
+                count++;
+        }
+
+        return count;
+    }
+
+    int CountInfectedInRadius(vector townPos, float radius)
+    {
+        int count = 0;
+        array<Object> objects = new array<Object>();
+        vector searchPos = townPos;
+        searchPos[1] = GetGame().SurfaceY(townPos[0], townPos[2]);
+        GetGame().GetObjectsAtPosition3D(searchPos, radius, objects, null);
+
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+
+            ZombieBase zmb = ZombieBase.Cast(obj);
+            if (zmb && zmb.IsAlive())
+                count++;
+        }
+
+        return count;
+    }
+
+    int CountAIInRadius(vector townPos, float radius)
+    {
+        int count = 0;
+        array<Object> objects = new array<Object>();
+        vector searchPos = townPos;
+        searchPos[1] = GetGame().SurfaceY(townPos[0], townPos[2]);
+        GetGame().GetObjectsAtPosition3D(searchPos, radius, objects, null);
+
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+
+            if (IsAIThreat(obj))
+                count++;
+        }
+
+        return count;
+    }
+
+    bool IsAIThreat(Object obj)
+    {
+        if (!obj)
+            return false;
+
+        string type = obj.GetType();
+        type.ToLower();
+
+        if (type.Contains("eai") || type.Contains("aib") || type.Contains("bandit") || type.Contains("raider"))
+            return true;
+
+        DayZPlayerImplement player = DayZPlayerImplement.Cast(obj);
+        if (player && !PlayerBase.Cast(obj))
+            return true;
+
+        return false;
+    }
+
+    float Distance2D(vector a, vector b)
+    {
+        float dx = a[0] - b[0];
+        float dz = a[2] - b[2];
+        return Math.Sqrt((dx * dx) + (dz * dz));
+    }
+
+    string BuildInfectedLevel(int count)
+    {
+        if (count <= 3)
+            return "Low";
+        if (count <= 10)
+            return "Moderate";
+        if (count <= 20)
+            return "High";
+
+        return "Severe";
+    }
+
+    string BuildHumanThreatLevel(int aiCount, int playerCount, string owner)
+    {
+        if (aiCount >= 8 || playerCount >= 4)
+            return "Heavy activity";
+
+        if (aiCount >= 3 || playerCount >= 2)
+            return "Confirmed";
+
+        if (aiCount > 0 || playerCount > 0)
+            return "Possible";
+
+        if (owner != "Unclaimed")
+            return "Possible";
+
+        return "None reported";
     }
 
     string GetNearestKnownTown(vector playerPos)
