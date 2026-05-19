@@ -37,7 +37,9 @@ class EoH_QuestTravelOverlayFileLoader
             if (!entry)
                 continue;
 
-            EoH_QuestTravelOverlayData overlay = new EoH_QuestTravelOverlayData(entry.QuestID, entry.ObjectiveID, entry.Label, entry.Position, entry.Radius);
+            // Config stores the REAL objective position.
+            // Overlay system automatically offsets the visible circle center.
+            EoH_QuestTravelOverlayData overlay = new EoH_QuestTravelOverlayData(entry.QuestID, entry.ObjectiveID, entry.Label, entry.TruePosition, entry.Radius);
             s_Cache.Insert(overlay);
         }
 
@@ -68,7 +70,11 @@ class EoH_QuestTravelOverlayFileLoader
         example.QuestID = 401001;
         example.ObjectiveID = 501001;
         example.Label = "Signal and Ashes: Search Area";
-        example.Position = "3060 310 7870";
+
+        // REAL objective location.
+        // Visible search circle center is automatically offset.
+        example.TruePosition = "3060 310 7870";
+
         example.Radius = 350.0;
 
         cfg.Overlays.Insert(example);
