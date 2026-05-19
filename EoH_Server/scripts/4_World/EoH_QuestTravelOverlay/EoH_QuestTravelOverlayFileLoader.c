@@ -1,0 +1,58 @@
+class EoH_QuestTravelOverlayFileLoader
+{
+    protected static ref array<ref EoH_QuestTravelOverlayData> s_Cache;
+    protected const static string CONFIG_PATH = "$profile:EoH/QuestTravelOverlays.json";
+
+    static array<ref EoH_QuestTravelOverlayData> Get()
+    {
+        if (!s_Cache)
+            Load();
+
+        return s_Cache;
+    }
+
+    static void Load()
+    {
+        s_Cache = new array<ref EoH_QuestTravelOverlayData>();
+
+        EoH_QuestTravelOverlayFileConfig cfg = new EoH_QuestTravelOverlayFileConfig();
+
+        if (!FileExist(CONFIG_PATH))
+        {
+            SeedDefaults(cfg);
+            JsonFileLoader<EoH_QuestTravelOverlayFileConfig>.JsonSaveFile(CONFIG_PATH, cfg);
+            Print("[EoH_QuestOverlayLoader] Created default overlay config file path=" + CONFIG_PATH);
+        }
+        else
+        {
+            JsonFileLoader<EoH_QuestTravelOverlayFileConfig>.JsonLoadFile(CONFIG_PATH, cfg);
+            Print("[EoH_QuestOverlayLoader] Loaded overlay config file path=" + CONFIG_PATH + " entries=" + cfg.Overlays.Count().ToString());
+        }
+
+        foreach (EoH_QuestTravelOverlayFileEntry entry : cfg.Overlays)
+        {
+            if (!entry)
+                continue;
+
+            EoH_QuestTravelOverlayData overlay = new EoH_QuestTravelOverlayData(entry.QuestID, entry.ObjectiveID, entry.Label, entry.Position, entry.Radius);
+            s_Cache.Insert(overlay);
+        }
+
+        Print("[EoH_QuestOverlayLoader] Active overlay entries=" + s_Cache.Count().ToString());
+    }
+
+    static void SeedDefaults(EoH_QuestTravelOverlayFileConfig cfg)
+    {
+        if (!cfg)
+            return;
+
+        ref EoH_QuestTravelOverlayFileEntry example = new EoH_QuestTravelOverlayFileEntry();
+        example.QuestID = 401001;
+        example.ObjectiveID = 501001;
+        example.Label = "Search Area";
+        example.Position = "3706 0 5983";
+        example.Radius = 350.0;
+
+        cfg.Overlays.Insert(example);
+    }
+};
