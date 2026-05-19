@@ -1,5 +1,7 @@
 class EoH_FieldReportMenu extends UIScriptedMenu
 {
+    protected static ref EoH_FieldReportMenu s_ActiveReportMenu;
+
     protected TextWidget m_Title;
     protected TextWidget m_Subtitle;
     protected MultilineTextWidget m_Body;
@@ -8,16 +10,15 @@ class EoH_FieldReportMenu extends UIScriptedMenu
 
     static void Open(EoH_FieldReportData report)
     {
-        if (!GetGame() || !GetGame().GetUIManager() || !report)
+        if (!GetGame() || !GetGame().GetWorkspace() || !report)
             return;
 
-        UIScriptedMenu current = GetGame().GetUIManager().GetMenu();
-        if (current && current.IsInherited(EoH_FieldReportMenu))
-            GetGame().GetUIManager().Back();
+        if (s_ActiveReportMenu)
+            s_ActiveReportMenu.EoH_DestroyReport();
 
-        EoH_FieldReportMenu menu = EoH_FieldReportMenu.Cast(GetGame().GetUIManager().EnterScriptedMenu(MENU_SCRIPTED, null));
-        if (menu)
-            menu.SetReport(report);
+        s_ActiveReportMenu = new EoH_FieldReportMenu();
+        s_ActiveReportMenu.Init();
+        s_ActiveReportMenu.SetReport(report);
     }
 
     override Widget Init()
@@ -28,6 +29,11 @@ class EoH_FieldReportMenu extends UIScriptedMenu
         m_Subtitle = TextWidget.Cast(layoutRoot.FindAnyWidget("ReportSubtitle"));
         m_Body = MultilineTextWidget.Cast(layoutRoot.FindAnyWidget("ReportBody"));
         m_CloseButton = ButtonWidget.Cast(layoutRoot.FindAnyWidget("CloseButton"));
+
+        if (layoutRoot)
+            layoutRoot.Show(true);
+
+        GetGame().GetUIManager().ShowUICursor(true);
 
         return layoutRoot;
     }
@@ -53,15 +59,24 @@ class EoH_FieldReportMenu extends UIScriptedMenu
     {
         if (w == m_CloseButton)
         {
-            EoH_CloseReport();
+            EoH_DestroyReport();
             return true;
         }
 
         return super.OnClick(w, x, y, button);
     }
 
-    void EoH_CloseReport()
+    void EoH_DestroyReport()
     {
-        GetGame().GetUIManager().Back();
+        if (layoutRoot)
+        {
+            layoutRoot.Unlink();
+            layoutRoot = null;
+        }
+
+        GetGame().GetUIManager().ShowUICursor(false);
+
+        if (s_ActiveReportMenu == this)
+            s_ActiveReportMenu = null;
     }
 };
