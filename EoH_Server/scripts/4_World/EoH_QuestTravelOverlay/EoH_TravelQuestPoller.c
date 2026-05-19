@@ -25,7 +25,9 @@ class EoH_TravelQuestPoller
         if (!player || !player.GetIdentity())
             return;
 
-        array<ref EoH_QuestTravelOverlayData> overlays = EoH_QuestTravelOverlayConfig.GetAll();
+        // Future-proof source path.
+        // This now routes through the auto-source layer instead of directly depending on hardcoded config entries.
+        array<ref EoH_QuestTravelOverlayData> overlays = EoH_QuestTravelOverlayAutoSource.BuildForPlayer(player);
 
         foreach (EoH_QuestTravelOverlayData overlay : overlays)
         {
@@ -47,7 +49,7 @@ class EoH_TravelQuestPoller
 
         if (active && !visible)
         {
-            Print("[EoH_TravelQuestPoller] Active quest detected. Showing marker player=" + player.GetIdentity().GetName() + " quest=" + overlay.QuestID.ToString() + " objective=" + overlay.ObjectiveID.ToString());
+            Print("[EoH_TravelQuestPoller] Active quest detected. Showing overlay player=" + player.GetIdentity().GetName() + " quest=" + overlay.QuestID.ToString() + " objective=" + overlay.ObjectiveID.ToString());
             EoH_QuestTravelOverlayService.ShowForPlayer(player, overlay);
             s_PlayerMarkerVisible.Set(stateKey, true);
             return;
@@ -55,7 +57,7 @@ class EoH_TravelQuestPoller
 
         if (!active && visible)
         {
-            Print("[EoH_TravelQuestPoller] Quest no longer active. Hiding marker player=" + player.GetIdentity().GetName() + " quest=" + overlay.QuestID.ToString() + " objective=" + overlay.ObjectiveID.ToString());
+            Print("[EoH_TravelQuestPoller] Quest no longer active. Hiding overlay player=" + player.GetIdentity().GetName() + " quest=" + overlay.QuestID.ToString() + " objective=" + overlay.ObjectiveID.ToString());
             EoH_QuestTravelOverlayService.HideForPlayer(player, overlay);
             s_PlayerMarkerVisible.Set(stateKey, false);
             return;
@@ -83,7 +85,7 @@ class EoH_TravelQuestPoller
         if (!player || !player.GetIdentity())
             return;
 
-        array<ref EoH_QuestTravelOverlayData> overlays = EoH_QuestTravelOverlayConfig.GetAll();
+        array<ref EoH_QuestTravelOverlayData> overlays = EoH_QuestTravelOverlayAutoSource.BuildForPlayer(player);
 
         foreach (EoH_QuestTravelOverlayData overlay : overlays)
         {
