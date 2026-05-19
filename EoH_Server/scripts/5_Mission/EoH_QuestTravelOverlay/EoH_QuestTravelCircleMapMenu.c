@@ -1,6 +1,7 @@
 modded class ExpansionMapMenu
 {
     protected CanvasWidget m_EoH_QuestCircleCanvas;
+    protected MapWidget m_EoH_MapWidget;
 
     override Widget Init()
     {
@@ -24,6 +25,8 @@ modded class ExpansionMapMenu
         if (!mapWidget)
             mapWidget = root.FindAnyWidget("map");
 
+        m_EoH_MapWidget = MapWidget.Cast(mapWidget);
+
         Widget parent = mapWidget;
         if (!parent)
             parent = root;
@@ -40,18 +43,17 @@ modded class ExpansionMapMenu
         {
             Print("[EoH_QuestCircle][WARN] Failed to create Expansion map circle canvas.");
         }
+
+        if (!m_EoH_MapWidget)
+            Print("[EoH_QuestCircle][WARN] Could not find MapWidget by layout name Map/map.");
     }
 
     void EoH_DrawQuestTravelCircles()
     {
-        if (!m_EoH_QuestCircleCanvas)
+        if (!m_EoH_QuestCircleCanvas || !m_EoH_MapWidget)
             return;
 
         m_EoH_QuestCircleCanvas.Clear();
-
-        MapWidget mapWidget = MapWidget.Cast(GetMapWidget());
-        if (!mapWidget)
-            return;
 
         map<string, ref EoH_QuestTravelCircleData> circles = EoH_QuestTravelCircleManager.Get().GetAll();
         if (!circles || circles.Count() == 0)
@@ -62,7 +64,7 @@ modded class ExpansionMapMenu
             if (!circle || circle.Visible == 0)
                 continue;
 
-            EoH_DrawCircleOnMap(mapWidget, circle);
+            EoH_DrawCircleOnMap(m_EoH_MapWidget, circle);
         }
     }
 
