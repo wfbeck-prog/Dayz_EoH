@@ -1,7 +1,8 @@
 class EoH_QuestTravelOverlayFileLoader
 {
     protected static ref array<ref EoH_QuestTravelOverlayData> s_Cache;
-    protected const static string CONFIG_PATH = "$profile:EoH/QuestTravelOverlays.json";
+    protected const static string CONFIG_DIR = "$profile:EoH";
+    protected const static string CONFIG_PATH = "$profile:EoH/QuestTravelOverlayConfig.json";
 
     static array<ref EoH_QuestTravelOverlayData> Get()
     {
@@ -14,6 +15,8 @@ class EoH_QuestTravelOverlayFileLoader
     static void Load()
     {
         s_Cache = new array<ref EoH_QuestTravelOverlayData>();
+
+        EnsureConfigDir();
 
         EoH_QuestTravelOverlayFileConfig cfg = new EoH_QuestTravelOverlayFileConfig();
 
@@ -41,6 +44,21 @@ class EoH_QuestTravelOverlayFileLoader
         Print("[EoH_QuestOverlayLoader] Active overlay entries=" + s_Cache.Count().ToString());
     }
 
+    static void EnsureConfigDir()
+    {
+        if (!FileExist(CONFIG_DIR))
+        {
+            MakeDirectory(CONFIG_DIR);
+            Print("[EoH_QuestOverlayLoader] Created config directory path=" + CONFIG_DIR);
+        }
+    }
+
+    static void Reload()
+    {
+        s_Cache = null;
+        Load();
+    }
+
     static void SeedDefaults(EoH_QuestTravelOverlayFileConfig cfg)
     {
         if (!cfg)
@@ -49,8 +67,8 @@ class EoH_QuestTravelOverlayFileLoader
         ref EoH_QuestTravelOverlayFileEntry example = new EoH_QuestTravelOverlayFileEntry();
         example.QuestID = 401001;
         example.ObjectiveID = 501001;
-        example.Label = "Search Area";
-        example.Position = "3706 0 5983";
+        example.Label = "Signal and Ashes: Search Area";
+        example.Position = "3060 310 7870";
         example.Radius = 350.0;
 
         cfg.Overlays.Insert(example);
