@@ -9,10 +9,26 @@ class EoH_QuestTravelOverlayConfig
 
         s_Overlays = new array<ref EoH_QuestTravelOverlayData>();
 
+        /*
+            IMPORTANT:
+            This config is now considered a fallback/special-case overlay source.
+
+            Intended long-term direction:
+            - Automatically discover travel/search objectives from active Expansion quests.
+            - Build personal travel overlays directly from quest objective data.
+            - Use this config only when:
+                * a quest requires a custom EoH search area
+                * a fake/offset search region is desired
+                * runtime Expansion objective data is unavailable
+                * a quest intentionally hides its true objective position
+
+            Current prototype overlay remains intentionally hardcoded while the automatic discovery path is validated.
+        */
+
         // Signal and Ashes: Dead Air 1
         AddOverlay(401001, 501001, "Signal and Ashes: Search Area", "3060 310 7870".ToVector(), 350.0);
 
-        Print("[EoH_TravelOverlay] Loaded quest travel overlays=" + s_Overlays.Count().ToString());
+        Print("[EoH_TravelOverlay] Loaded fallback quest travel overlays=" + s_Overlays.Count().ToString());
     }
 
     static void AddOverlay(int questId, int objectiveId, string label, vector truePosition, float radius)
