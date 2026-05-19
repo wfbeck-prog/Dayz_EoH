@@ -37,9 +37,10 @@ class EoH_QuestTravelOverlayFileLoader
             if (!entry)
                 continue;
 
-            // Config stores the REAL objective position.
+            // Config stores the REAL objective position as a safe DayZ vector string.
             // Overlay system automatically offsets the visible circle center.
-            EoH_QuestTravelOverlayData overlay = new EoH_QuestTravelOverlayData(entry.QuestID, entry.ObjectiveID, entry.Label, entry.TruePosition, entry.Radius);
+            vector truePos = entry.TruePosition.ToVector();
+            EoH_QuestTravelOverlayData overlay = new EoH_QuestTravelOverlayData(entry.QuestID, entry.ObjectiveID, entry.Label, truePos, entry.Radius);
             s_Cache.Insert(overlay);
         }
 
