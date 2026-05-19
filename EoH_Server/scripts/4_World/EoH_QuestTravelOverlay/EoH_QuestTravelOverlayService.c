@@ -31,15 +31,36 @@ class EoH_QuestTravelOverlayService
         Print("[EoH_TravelOverlay] Removed personal travel marker player=" + player.GetIdentity().GetName() + " id=" + overlay.GetId());
     }
 
+    static void ShowQuestOverlay(PlayerBase player, int objectiveId)
+    {
+        EoH_QuestTravelOverlayData overlay = EoH_QuestTravelOverlayConfig.GetByObjective(objectiveId);
+
+        if (!overlay)
+        {
+            Print("[EoH_TravelOverlay][WARN] Missing overlay config for objective=" + objectiveId.ToString());
+            return;
+        }
+
+        ShowForPlayer(player, overlay);
+    }
+
+    static void HideQuestOverlay(PlayerBase player, int objectiveId)
+    {
+        EoH_QuestTravelOverlayData overlay = EoH_QuestTravelOverlayConfig.GetByObjective(objectiveId);
+
+        if (!overlay)
+            return;
+
+        HideForPlayer(player, overlay);
+    }
+
     static void ShowPrototypeForPlayer(PlayerBase player)
     {
-        EoH_QuestTravelOverlayData overlay = EoH_QuestTravelOverlayConfig.GetByObjective(501001);
-        ShowForPlayer(player, overlay);
+        ShowQuestOverlay(player, 501001);
     }
 
     static void HidePrototypeForPlayer(PlayerBase player)
     {
-        EoH_QuestTravelOverlayData overlay = EoH_QuestTravelOverlayConfig.GetByObjective(501001);
-        HideForPlayer(player, overlay);
+        HideQuestOverlay(player, 501001);
     }
 };
