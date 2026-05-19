@@ -4,9 +4,9 @@ class EoH_QuestTravelOverlayFileEntry
     int ObjectiveID;
     string Label;
 
-    // Enter the exact objective/task position here.
+    // Enter the exact objective/task position here as a DayZ vector string: "x y z".
     // The mod automatically offsets the visible circle center so the target is inside the circle but not centered.
-    vector TruePosition;
+    string TruePosition;
 
     float Radius;
 
@@ -27,7 +27,7 @@ class EoH_QuestTravelOverlayFileConfig
 
     void EoH_QuestTravelOverlayFileConfig()
     {
-        ConfigVersion = 2;
+        ConfigVersion = 3;
         Overlays = new array<ref EoH_QuestTravelOverlayFileEntry>();
     }
 };
