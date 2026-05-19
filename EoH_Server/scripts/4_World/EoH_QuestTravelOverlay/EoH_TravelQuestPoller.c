@@ -1,7 +1,6 @@
 class EoH_TravelQuestPoller
 {
     protected static ref map<string, bool> s_PlayerMarkerVisible = new map<string, bool>();
-    protected static const int EOH_TRAVEL_QUEST_ID = 401001;
 
     static void Tick()
     {
@@ -26,31 +25,44 @@ class EoH_TravelQuestPoller
         if (!player || !player.GetIdentity())
             return;
 
-        string playerId = player.GetIdentity().GetPlainId();
-        bool active = HasActiveTravelQuest(player);
+        array<ref EoH_QuestTravelOverlayData> overlays = EoH_QuestTravelOverlayConfig.GetAll();
+
+        foreach (EoH_QuestTravelOverlayData overlay : overlays)
+        {
+            if (!overlay)
+                continue;
+
+            UpdatePlayerOverlay(player, overlay);
+        }
+    }
+
+    static void UpdatePlayerOverlay(PlayerBase player, EoH_QuestTravelOverlayData overlay)
+    {
+        string stateKey = player.GetIdentity().GetPlainId() + "_" + overlay.GetId();
+        bool active = HasActiveTravelQuest(player, overlay.QuestID);
         bool visible = false;
 
-        if (s_PlayerMarkerVisible.Contains(playerId))
-            visible = s_PlayerMarkerVisible.Get(playerId);
+        if (s_PlayerMarkerVisible.Contains(stateKey))
+            visible = s_PlayerMarkerVisible.Get(stateKey);
 
         if (active && !visible)
         {
-            Print("[EoH_TravelQuestPoller] Active travel quest detected. Showing marker player=" + player.GetIdentity().GetName());
-            EoH_QuestTravelOverlayService.ShowPrototypeForPlayer(player);
-            s_PlayerMarkerVisible.Set(playerId, true);
+            Print("[EoH_TravelQuestPoller] Active quest detected. Showing marker player=" + player.GetIdentity().GetName() + " quest=" + overlay.QuestID.ToString() + " objective=" + overlay.ObjectiveID.ToString());
+            EoH_QuestTravelOverlayService.ShowForPlayer(player, overlay);
+            s_PlayerMarkerVisible.Set(stateKey, true);
             return;
         }
 
         if (!active && visible)
         {
-            Print("[EoH_TravelQuestPoller] Travel quest no longer active. Hiding marker player=" + player.GetIdentity().GetName());
-            EoH_QuestTravelOverlayService.HidePrototypeForPlayer(player);
-            s_PlayerMarkerVisible.Set(playerId, false);
+            Print("[EoH_TravelQuestPoller] Quest no longer active. Hiding marker player=" + player.GetIdentity().GetName() + " quest=" + overlay.QuestID.ToString() + " objective=" + overlay.ObjectiveID.ToString());
+            EoH_QuestTravelOverlayService.HideForPlayer(player, overlay);
+            s_PlayerMarkerVisible.Set(stateKey, false);
             return;
         }
     }
 
-    static bool HasActiveTravelQuest(PlayerBase player)
+    static bool HasActiveTravelQuest(PlayerBase player, int questId)
     {
         if (!player)
             return false;
@@ -62,7 +74,7 @@ class EoH_TravelQuestPoller
             return false;
         }
 
-        ExpansionQuest quest = questModule.GetActiveQuestWithQuestID(player, EOH_TRAVEL_QUEST_ID);
+        ExpansionQuest quest = questModule.GetActiveQuestWithQuestID(player, questId);
         return quest != null;
     }
 
@@ -71,8 +83,16 @@ class EoH_TravelQuestPoller
         if (!player || !player.GetIdentity())
             return;
 
-        string playerId = player.GetIdentity().GetPlainId();
-        EoH_QuestTravelOverlayService.HidePrototypeForPlayer(player);
-        s_PlayerMarkerVisible.Set(playerId, false);
+        array<ref EoH_QuestTravelOverlayData> overlays = EoH_QuestTravelOverlayConfig.GetAll();
+
+        foreach (EoH_QuestTravelOverlayData overlay : overlays)
+        {
+            if (!overlay)
+                continue;
+
+            string stateKey = player.GetIdentity().GetPlainId() + "_" + overlay.GetId();
+            EoH_QuestTravelOverlayService.HideForPlayer(player, overlay);
+            s_PlayerMarkerVisible.Set(stateKey, false);
+        }
     }
 };
