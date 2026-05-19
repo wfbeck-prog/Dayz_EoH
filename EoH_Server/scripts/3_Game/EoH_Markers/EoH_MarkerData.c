@@ -43,6 +43,12 @@ class EoH_MarkerData
     int Is3D;
     int Visible;
 
+    // Optional personal marker search-area support.
+    // Radius <= 0 behaves like a normal point marker.
+    float Radius;
+    int ShowCircle;
+    int FillColor;
+
     void EoH_MarkerData(string id = "", string label = "", vector position = "0 0 0")
     {
         Id = id;
@@ -59,6 +65,10 @@ class EoH_MarkerData
         Pulse = 0;
         Is3D = 1;
         Visible = 1;
+
+        Radius = 0.0;
+        ShowCircle = 0;
+        FillColor = ARGB(35, 220, 220, 220);
     }
 
     void Normalize()
@@ -83,6 +93,18 @@ class EoH_MarkerData
 
         if (Visible != 0)
             Visible = 1;
+
+        if (Radius <= 0.0)
+        {
+            Radius = 0.0;
+            ShowCircle = 0;
+        }
+
+        if (ShowCircle != 0)
+            ShowCircle = 1;
+
+        if (FillColor == 0)
+            FillColor = ARGB(35, 220, 220, 220);
     }
 
     static string MakeSafeId(string raw)
