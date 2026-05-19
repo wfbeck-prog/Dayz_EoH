@@ -1,19 +1,20 @@
 modded class MissionGameplay
 {
-    override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
+    override void OnEvent(EventType eventTypeId, Param params)
     {
-        super.OnRPC(sender, target, rpc_type, ctx);
+        super.OnEvent(eventTypeId, params);
 
-        if (rpc_type == EoH_FieldReportRPC.OPEN_REPORT)
+        if (eventTypeId != ChatMessageEventTypeID && eventTypeId != MPSessionPlayerReadyEventTypeID)
         {
-            Param1<ref EoH_FieldReportData> data;
-            if (!ctx.Read(data))
-                return;
-
-            if (!data || !data.param1)
-                return;
-
-            EoH_FieldReportMenu.Open(data.param1);
+            // Keep this hook lightweight. Field report UI opens through direct RPC queue below when available.
         }
+    }
+
+    void EoH_OpenFieldReport(EoH_FieldReportData report)
+    {
+        if (!report)
+            return;
+
+        EoH_FieldReportMenu.Open(report);
     }
 };
