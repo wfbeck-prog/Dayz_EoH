@@ -1,0 +1,35 @@
+FrameWidgetClass {
+ position 0.22 0.12
+ size 0.56 0.72
+ color 0 0 0 220
+
+ TextWidgetClass ReportTitle {
+  position 0.03 0.03
+  size 0.94 0.05
+  text "FIELD REPORT"
+  color 255 220 120 255
+  font "gui/fonts/sdf_MetronBook24"
+ }
+
+ TextWidgetClass ReportSubtitle {
+  position 0.03 0.09
+  size 0.94 0.04
+  text "Echoes of Humanity"
+  color 180 180 180 255
+  font "gui/fonts/sdf_MetronBook16"
+ }
+
+ MultilineTextWidgetClass ReportBody {
+  position 0.03 0.16
+  size 0.94 0.70
+  text ""
+  color 230 230 230 255
+  font "gui/fonts/sdf_MetronBook14"
+ }
+
+ ButtonWidgetClass CloseButton {
+  position 0.78 0.90
+  size 0.18 0.06
+  text "CLOSE"
+ }
+}
