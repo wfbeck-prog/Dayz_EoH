@@ -6,6 +6,7 @@ modded class MissionServer
     protected int m_EoH_LastCaptureTick;
     protected int m_EoH_LastTraderTick;
     protected int m_EoH_LastRelayMaintenanceTick;
+    protected int m_EoH_LastTravelQuestTick;
 
     override void OnInit()
     {
@@ -255,6 +256,12 @@ modded class MissionServer
         {
             m_EoH_LastRelayMaintenanceTick = now;
             EoH_MaintainConfiguredRelays();
+        }
+
+        if (now - m_EoH_LastTravelQuestTick >= 10000)
+        {
+            m_EoH_LastTravelQuestTick = now;
+            EoH_TravelQuestPoller.Tick();
         }
     }
 
