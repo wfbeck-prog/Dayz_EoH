@@ -3,40 +3,26 @@ class EoH_QuestTravelOverlayAutoSource
     /*
         EoH Quest Travel Overlay Auto Source
 
-        Goal:
-        - Remove hardcoded one-off quest marker logic.
-        - Generate circle-only search overlays for all valid Expansion travel/search objectives.
+        Current behavior:
+        - Loads overlay entries from:
+            $profile:EoH/QuestTravelOverlays.json
 
-        Intended source priority:
-        1. Runtime active Expansion objective data.
-        2. Expansion quest JSON/objective JSON from profile storage.
-        3. Manual fallback overlays for custom EoH search regions.
+        Result:
+        - No code changes required for new travel/search quests.
+        - Server owners only add quest/objective/position/radius entries to JSON.
+        - Circle overlay system works for every configured travel objective.
 
-        Current safe implementation:
-        - Uses fallback overlay config while preserving the automatic-source architecture.
-        - This keeps the proven quest circle system stable until live Expansion objective schemas are confirmed.
+        Future expansion:
+        - Runtime Expansion objective discovery.
+        - Automatic quest JSON parsing.
     */
 
     static array<ref EoH_QuestTravelOverlayData> BuildForPlayer(PlayerBase player)
     {
-        ref array<ref EoH_QuestTravelOverlayData> overlays = new array<ref EoH_QuestTravelOverlayData>();
-
         if (!player || !player.GetIdentity())
-            return overlays;
+            return new array<ref EoH_QuestTravelOverlayData>();
 
-        // Phase 1:
-        // Use fallback config entries while auto-discovery integration is validated.
-        array<ref EoH_QuestTravelOverlayData> fallback = EoH_QuestTravelOverlayConfig.GetAll();
-
-        foreach (EoH_QuestTravelOverlayData data : fallback)
-        {
-            if (!data)
-                continue;
-
-            overlays.Insert(data);
-        }
-
-        return overlays;
+        return EoH_QuestTravelOverlayFileLoader.Get();
     }
 
     static bool IsLikelyTravelObjectiveType(string typeName)
