@@ -5,13 +5,12 @@ class EoH_QuestTravelCircleService
         if (!player || !player.GetIdentity() || !overlay)
             return;
 
-        EoH_QuestTravelCircleData data = new EoH_QuestTravelCircleData(
-            overlay.GetId(),
-            overlay.Label,
-            overlay.CircleCenter,
-            overlay.Radius
-        );
+        string circleId = overlay.GetId();
+        string label = overlay.Label;
+        vector center = overlay.CircleCenter;
+        float radius = overlay.Radius;
 
+        EoH_QuestTravelCircleData data = new EoH_QuestTravelCircleData(circleId, label, center, radius);
         data.Normalize();
 
         Param1<ref EoH_QuestTravelCircleData> param = new Param1<ref EoH_QuestTravelCircleData>(data);
