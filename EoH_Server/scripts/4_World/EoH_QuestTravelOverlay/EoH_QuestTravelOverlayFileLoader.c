@@ -29,22 +29,42 @@ class EoH_QuestTravelOverlayFileLoader
         else
         {
             JsonFileLoader<EoH_QuestTravelOverlayFileConfig>.JsonLoadFile(CONFIG_PATH, cfg);
-            Print("[EoH_QuestOverlayLoader] Loaded overlay config file path=" + CONFIG_PATH + " entries=" + cfg.Overlays.Count().ToString());
+            Print("[EoH_QuestOverlayLoader] Loaded overlay config file path=" + CONFIG_PATH + " entries=" + cfg.Overlays.Count().ToString() + " version=" + cfg.ConfigVersion.ToString());
         }
+
+        int skipped = 0;
 
         foreach (EoH_QuestTravelOverlayFileEntry entry : cfg.Overlays)
         {
             if (!entry)
+            {
+                skipped++;
                 continue;
+            }
+
+            if (entry.QuestID <= 0 || entry.ObjectiveID <= 0 || entry.TruePosition == "")
+            {
+                skipped++;
+                Print("[EoH_QuestOverlayLoader][WARN] Skipping invalid overlay entry quest=" + entry.QuestID.ToString() + " objective=" + entry.ObjectiveID.ToString() + " pos=" + entry.TruePosition);
+                continue;
+            }
 
             // Config stores the REAL objective position as a safe DayZ vector string.
             // Overlay system automatically offsets the visible circle center.
             vector truePos = entry.TruePosition.ToVector();
+
+            if (truePos == "0 0 0".ToVector())
+            {
+                skipped++;
+                Print("[EoH_QuestOverlayLoader][WARN] Skipping zero-position overlay quest=" + entry.QuestID.ToString() + " objective=" + entry.ObjectiveID.ToString() + " pos=" + entry.TruePosition);
+                continue;
+            }
+
             EoH_QuestTravelOverlayData overlay = new EoH_QuestTravelOverlayData(entry.QuestID, entry.ObjectiveID, entry.Label, truePos, entry.Radius);
             s_Cache.Insert(overlay);
         }
 
-        Print("[EoH_QuestOverlayLoader] Active overlay entries=" + s_Cache.Count().ToString());
+        Print("[EoH_QuestOverlayLoader] Active overlay entries=" + s_Cache.Count().ToString() + " skipped=" + skipped.ToString());
     }
 
     static void EnsureConfigDir()
