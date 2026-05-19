@@ -79,9 +79,21 @@ class EoH_IntelManager
         string medical = GetWeightedMedicalOpportunity();
         string confidence = GetWeightedConfidence(distance);
         string recommendation = BuildTownRiskRecommendation(infected, humanThreat, medical);
-        string report = town + " | INF: " + infected + " | HUM: " + humanThreat + " | MED: " + medical + " | CONF: " + confidence + " | " + recommendation;
 
-        EoH_Notifications.SendToPlayer(player, "TOWN RISK REPORT", report, "Info", 0, 14.0);
+        string body = "LOCATION: " + town + "\n\n";
+        body += "INFECTED PRESENCE: " + infected + "\n";
+        body += "HUMAN THREAT: " + humanThreat + "\n";
+        body += "MEDICAL OPPORTUNITY: " + medical + "\n";
+        body += "INTEL CONFIDENCE: " + confidence + "\n\n";
+        body += "RECOMMENDATION:\n" + recommendation;
+
+        EoH_FieldReportData report = new EoH_FieldReportData(
+            "TOWN RISK REPORT",
+            "Echoes of Humanity Intelligence Network",
+            body
+        );
+
+        EoH_FieldReportService.OpenForPlayer(player, report);
 
         Print("[EoH_Intel] Town risk report town=" + town + " infected=" + infected + " humanThreat=" + humanThreat + " medical=" + medical + " confidence=" + confidence + " player=" + player.GetIdentity().GetName());
     }
