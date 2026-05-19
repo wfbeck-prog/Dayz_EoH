@@ -73,37 +73,32 @@ modded class MissionBaseWorld
         EoH_QuestTravelOverlayService.HidePrototypeForPlayer(player);
     }
 
-    override void Expansion_OnQuestStart(ExpansionQuest quest)
+    void Expansion_OnQuestStart(ExpansionQuest quest)
     {
-        super.Expansion_OnQuestStart(quest);
         EoH_LogTravelQuestHook("OnQuestStart", quest);
         EoH_ShowTravelMarkerForQuest(quest);
     }
 
-    override void Expansion_OnQuestContinue(ExpansionQuest quest)
+    void Expansion_OnQuestContinue(ExpansionQuest quest)
     {
-        super.Expansion_OnQuestContinue(quest);
         EoH_LogTravelQuestHook("OnQuestContinue", quest);
         EoH_ShowTravelMarkerForQuest(quest);
     }
 
-    override void Expansion_OnQuestCancel(ExpansionQuest quest)
+    void Expansion_OnQuestCancel(ExpansionQuest quest)
     {
-        super.Expansion_OnQuestCancel(quest);
         EoH_LogTravelQuestHook("OnQuestCancel", quest);
         EoH_HideTravelMarkerForQuest(quest);
     }
 
-    override void Expansion_OnQuestCompletion(ExpansionQuest quest)
+    void Expansion_OnQuestCompletion(ExpansionQuest quest)
     {
-        super.Expansion_OnQuestCompletion(quest);
         EoH_LogTravelQuestHook("OnQuestCompletion", quest);
         EoH_HideTravelMarkerForQuest(quest);
     }
 
-    override void Expansion_OnQuestObjectivesComplete(ExpansionQuest quest)
+    void Expansion_OnQuestObjectivesComplete(ExpansionQuest quest)
     {
-        super.Expansion_OnQuestObjectivesComplete(quest);
         EoH_LogTravelQuestHook("OnQuestObjectivesComplete", quest);
         EoH_HideTravelMarkerForQuest(quest);
     }
