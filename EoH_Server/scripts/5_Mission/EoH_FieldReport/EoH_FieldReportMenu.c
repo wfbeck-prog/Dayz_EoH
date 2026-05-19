@@ -53,14 +53,14 @@ class EoH_FieldReportMenu extends UIScriptedMenu
     {
         if (w == m_CloseButton)
         {
-            Close();
+            EoH_CloseReport();
             return true;
         }
 
         return super.OnClick(w, x, y, button);
     }
 
-    void Close()
+    void EoH_CloseReport()
     {
         GetGame().GetUIManager().Back();
     }
