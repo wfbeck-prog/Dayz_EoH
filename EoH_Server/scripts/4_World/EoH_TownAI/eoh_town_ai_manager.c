@@ -195,10 +195,11 @@ class EoH_TownAIManager
 
     vector GetTownPosition(string townName)
     {
-        EoH_CaptureTownConfig cfg = EoH_CaptureManager.Get().GetTownConfig(townName);
-        if (cfg)
-            return cfg.GetPosition();
+        vector pos = EoH_CaptureManager.Get().GetTownPos(townName);
+        if (pos != "0 0 0".ToVector())
+            return pos;
 
+        Print("[EoH_TownAI][SPAWN][WARN] Capture manager returned no position for town=" + townName);
         return "0 0 0".ToVector();
     }
 
