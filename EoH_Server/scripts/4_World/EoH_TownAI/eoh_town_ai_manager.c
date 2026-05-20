@@ -137,7 +137,11 @@ class EoH_TownAIManager
         EoH_TownAIActiveTown active;
         if (m_ActiveTowns.Find(townCfg.TownName, active) && active)
         {
-            Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " already tracked spawnedObjects=" + active.SpawnedObjects.Count().ToString());
+            if (!HasLiveTrackedObjects(active))
+                SpawnTownDebugPlaceholder(active, townCfg, tierCfg);
+            else
+                Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " already tracked spawnedObjects=" + active.SpawnedObjects.Count().ToString());
+
             return;
         }
 
@@ -147,7 +151,66 @@ class EoH_TownAIManager
         active.LastSpawnTime = GetGame().GetTime();
         m_ActiveTowns.Set(townCfg.TownName, active);
 
-        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " entered active tracking. Live spawn still disabled.");
+        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " entered active tracking. Spawning debug placeholder only.");
+        SpawnTownDebugPlaceholder(active, townCfg, tierCfg);
+    }
+
+    bool HasLiveTrackedObjects(EoH_TownAIActiveTown active)
+    {
+        if (!active || !active.SpawnedObjects)
+            return false;
+
+        for (int i = active.SpawnedObjects.Count() - 1; i >= 0; i--)
+        {
+            Object obj = active.SpawnedObjects.Get(i);
+            if (obj)
+                return true;
+
+            active.SpawnedObjects.Remove(i);
+        }
+
+        return false;
+    }
+
+    void SpawnTownDebugPlaceholder(EoH_TownAIActiveTown active, EoH_TownAITownConfig townCfg, EoH_TownAITierConfig tierCfg)
+    {
+        if (!active || !townCfg || !tierCfg)
+            return;
+
+        vector center = GetTownPosition(townCfg.TownName);
+        if (center == "0 0 0".ToVector())
+        {
+            Print("[EoH_TownAI][SPAWN][WARN] No valid town position for " + townCfg.TownName);
+            return;
+        }
+
+        vector spawnPos = GetRandomSpawnPosition(center, tierCfg.SpawnRadiusMin, tierCfg.SpawnRadiusMax);
+        Object obj = EoH_TownAISpawnAdapter.SpawnDebugPlaceholder(townCfg.TownName, spawnPos);
+        if (obj)
+        {
+            active.SpawnedObjects.Insert(obj);
+            Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " registered debug placeholder count=" + active.SpawnedObjects.Count().ToString());
+        }
+    }
+
+    vector GetTownPosition(string townName)
+    {
+        EoH_CaptureTownConfig cfg = EoH_CaptureManager.Get().GetTownConfig(townName);
+        if (cfg)
+            return cfg.GetPosition();
+
+        return "0 0 0".ToVector();
+    }
+
+    vector GetRandomSpawnPosition(vector center, float minRadius, float maxRadius)
+    {
+        float radius = Math.RandomFloatInclusive(Math.Max(10.0, minRadius), Math.Max(minRadius + 1.0, maxRadius));
+        float angle = Math.RandomFloatInclusive(0.0, Math.PI2);
+        vector pos = center;
+        pos[0] = center[0] + Math.Cos(angle) * radius;
+        pos[2] = center[2] + Math.Sin(angle) * radius;
+        pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.05;
+        return pos;
     }
 
     void CleanupInactiveTowns(array<string> eligibleNames)
