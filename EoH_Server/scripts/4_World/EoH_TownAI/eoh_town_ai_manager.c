@@ -138,7 +138,7 @@ class EoH_TownAIManager
         if (m_ActiveTowns.Find(townCfg.TownName, active) && active)
         {
             if (!HasLiveTrackedObjects(active))
-                SpawnTownDebugPlaceholder(active, townCfg, tierCfg);
+                SpawnTownPatrol(active, townCfg, tierCfg);
             else
                 Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " already tracked spawnedObjects=" + active.SpawnedObjects.Count().ToString());
 
@@ -151,8 +151,8 @@ class EoH_TownAIManager
         active.LastSpawnTime = GetGame().GetTime();
         m_ActiveTowns.Set(townCfg.TownName, active);
 
-        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " entered active tracking. Spawning debug placeholder only.");
-        SpawnTownDebugPlaceholder(active, townCfg, tierCfg);
+        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " entered active tracking. Spawning conservative patrol.");
+        SpawnTownPatrol(active, townCfg, tierCfg);
     }
 
     bool HasLiveTrackedObjects(EoH_TownAIActiveTown active)
@@ -172,10 +172,16 @@ class EoH_TownAIManager
         return false;
     }
 
-    void SpawnTownDebugPlaceholder(EoH_TownAIActiveTown active, EoH_TownAITownConfig townCfg, EoH_TownAITierConfig tierCfg)
+    void SpawnTownPatrol(EoH_TownAIActiveTown active, EoH_TownAITownConfig townCfg, EoH_TownAITierConfig tierCfg)
     {
         if (!active || !townCfg || !tierCfg)
             return;
+
+        if (townCfg.Tier > 2)
+        {
+            Print("[EoH_TownAI][SPAWN] Skipped live spawn for town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " because live spawning is limited to Tier 1-2 for now.");
+            return;
+        }
 
         vector center = GetTownPosition(townCfg.TownName);
         if (center == "0 0 0".ToVector())
@@ -184,13 +190,37 @@ class EoH_TownAIManager
             return;
         }
 
-        vector spawnPos = GetRandomSpawnPosition(center, tierCfg.SpawnRadiusMin, tierCfg.SpawnRadiusMax);
-        Object obj = EoH_TownAISpawnAdapter.SpawnDebugPlaceholder(townCfg.TownName, spawnPos);
-        if (obj)
+        int minCount = Math.Max(1, tierCfg.MinAIPerPatrol);
+        int maxCount = Math.Max(minCount, tierCfg.MaxAIPerPatrol);
+        int count = Math.RandomIntInclusive(minCount, maxCount);
+        if (townCfg.Tier == 1)
+            count = Math.Min(count, 2);
+        else
+            count = Math.Min(count, 3);
+
+        string loadout = PickPatrolLoadout(tierCfg);
+        eAIGroup group = EoH_TownAISpawnAdapter.CreateTownPatrolGroup(center);
+
+        Print("[EoH_TownAI][SPAWN] Spawning patrol town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " count=" + count.ToString() + " loadout=" + loadout);
+
+        for (int i = 0; i < count; i++)
         {
-            active.SpawnedObjects.Insert(obj);
-            Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " registered debug placeholder count=" + active.SpawnedObjects.Count().ToString());
+            vector spawnPos = GetRandomSpawnPosition(center, tierCfg.SpawnRadiusMin, tierCfg.SpawnRadiusMax);
+            Object obj = EoH_TownAISpawnAdapter.SpawnTownPatrolUnit(townCfg.TownName, spawnPos, center, loadout, group);
+            if (obj)
+                active.SpawnedObjects.Insert(obj);
         }
+
+        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " registered patrol objects=" + active.SpawnedObjects.Count().ToString());
+    }
+
+    string PickPatrolLoadout(EoH_TownAITierConfig tierCfg)
+    {
+        if (!tierCfg || !tierCfg.Loadouts || !tierCfg.Loadouts.PatrolLoadouts || tierCfg.Loadouts.PatrolLoadouts.Count() == 0)
+            return "EoH_AI_Patrol_Assault_DF";
+
+        int index = Math.RandomInt(0, tierCfg.Loadouts.PatrolLoadouts.Count());
+        return tierCfg.Loadouts.PatrolLoadouts.Get(index);
     }
 
     vector GetTownPosition(string townName)
