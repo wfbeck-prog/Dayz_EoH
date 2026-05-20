@@ -19,6 +19,15 @@ All notable EoH_Server repository changes are tracked here.
 - Added config validation/debug logging for quest overlay entries.
 - Added automatic offset logic so `TruePosition` stores the real objective location while the visible circle center is offset.
 - Added `EoH_FieldReportData` and field report service groundwork for future readable report UI support.
+- Added DF-based AI loadout variation pack for mission AI patrols and camps:
+  - patrol assault
+  - patrol scout
+  - patrol marksman
+  - camp guard
+  - camp heavy
+  - camp raider
+- Added config model groundwork for town reward tiers and loot pools.
+- Added generated `TownRewardConfig.json` profile example under `ProfileConfigs/EoH/`.
 
 ### Changed
 - Repurposed `EoH_TownIntel` from map-marker reveal intel into a Town Risk Report system.
@@ -34,6 +43,9 @@ All notable EoH_Server repository changes are tracked here.
 - Town intel now derives infected presence and human threat from live count data instead of pure random flavor.
 - Town intel keeps medical opportunity and intel confidence as semi-randomized assessment fields for now.
 - Town intel report delivery is currently handled through the stable notification path after custom UI testing proved unreliable in the current build.
+- Updated AI quest objective loadout references to rotate between the new EoH DF patrol/camp loadouts instead of using the same loadout everywhere.
+- Converted town reward direction from hardcoded town tiers/loot toward config-driven reward tiering.
+- Town reward cache behavior now supports smoke-marked cache drops, improved surface placement, cleanup of old reward crates/smoke, and DF-focused non-bunker reward loot.
 - Kept `EoH_TraderIntel` behavior unchanged.
 
 ### Fixed
@@ -48,6 +60,21 @@ All notable EoH_Server repository changes are tracked here.
 - Fixed field report construction syntax issues in town intel.
 - Removed incompatible custom UI hooks/overrides discovered during server testing.
 
+### Assessment
+- Town AI is **not fully implemented yet**.
+- Current AI-related implementation includes:
+  - mission AI loadout variation for AIPatrol/AICamp objectives
+  - town intel live counting of AI/bandits inside the capture radius
+  - capture/reward systems that can react to town ownership state
+- A full Town AI system still needs:
+  - `TownAIConfig.json`
+  - town-to-tier AI spawn rules
+  - defender/patrol/camp templates per town or tier
+  - loadout rotation using the new DF AI loadouts
+  - spawn/despawn cleanup logic
+  - capture-state integration for unclaimed, owned, contested, and recently captured towns
+  - safeguards to prevent AI stacking or abandoned persistent spawns
+
 ### Notes
 - Quest travel overlays are now stable enough for multiplayer testing.
 - For quest overlays, enter the exact task/objective location in `TruePosition`; the mod offsets the displayed circle automatically.
@@ -59,6 +86,7 @@ All notable EoH_Server repository changes are tracked here.
   - local scouting objectives
   - regional intel chains
   - hidden survivor encounters
+  - full config-driven Town AI defenders/patrols by town tier and ownership state
 
 ## 2026-05-12
 
