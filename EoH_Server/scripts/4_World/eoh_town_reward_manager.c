@@ -32,10 +32,8 @@ class EoH_TownRewardManager
         if (!GetGame() || !GetGame().IsServer())
             return;
 
-        vector pos = townPos + "3 0 3".ToVector();
-        pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.05;
-
-        ClearOldRewardCrates(pos, 8.0);
+        vector pos = FindRewardSpawnPosition(townPos);
+        ClearOldRewardCrates(pos, 10.0);
 
         string containerType = GetRewardContainerForTown(townName);
         EntityAI crate = EntityAI.Cast(GetGame().CreateObjectEx(containerType, pos, ECE_PLACE_ON_SURFACE));
@@ -45,11 +43,70 @@ class EoH_TownRewardManager
             return;
         }
 
+        crate.SetPosition(pos);
+        crate.PlaceOnSurface();
         crate.SetLifetime(3600);
         FillRewardCrate(crate, GetTownTier(townName));
+        SpawnRewardSmoke(pos, townName);
 
-        EoH_Notifications.SendToAll("TOWN REWARD DROPPED", "A capture cache was deployed near " + townName + " for " + groupName + ".");
+        EoH_Notifications.SendToAll("TOWN REWARD DROPPED", "A smoke-marked capture cache was deployed near " + townName + " for " + groupName + ".");
         Print("[EoH_TownReward] Spawned reward crate town=" + townName + " tier=" + GetTownTier(townName).ToString() + " type=" + containerType + " pos=" + pos.ToString());
+    }
+
+    static vector FindRewardSpawnPosition(vector townPos)
+    {
+        vector offsets[8];
+        offsets[0] = "3 0 3".ToVector();
+        offsets[1] = "5 0 0".ToVector();
+        offsets[2] = "0 0 5".ToVector();
+        offsets[3] = "-5 0 0".ToVector();
+        offsets[4] = "0 0 -5".ToVector();
+        offsets[5] = "7 0 7".ToVector();
+        offsets[6] = "-7 0 7".ToVector();
+        offsets[7] = "7 0 -7".ToVector();
+
+        for (int i = 0; i < 8; i++)
+        {
+            vector candidate = townPos + offsets[i];
+            candidate[1] = GetGame().SurfaceY(candidate[0], candidate[2]) + 0.10;
+
+            if (candidate[1] > 0.1)
+                return candidate;
+        }
+
+        vector fallback = townPos;
+        fallback[1] = GetGame().SurfaceY(fallback[0], fallback[2]) + 0.10;
+        return fallback;
+    }
+
+    static void SpawnRewardSmoke(vector cratePos, string townName)
+    {
+        vector smokePos = cratePos + "1.25 0 1.25".ToVector();
+        smokePos[1] = GetGame().SurfaceY(smokePos[0], smokePos[2]) + 0.05;
+
+        ClearOldRewardSmoke(smokePos, 12.0);
+
+        EntityAI smoke = EntityAI.Cast(GetGame().CreateObjectEx("M18SmokeGrenade_Red", smokePos, ECE_PLACE_ON_SURFACE));
+        if (!smoke)
+        {
+            Print("[EoH_TownReward][WARN] Failed to spawn reward smoke town=" + townName + " pos=" + smokePos.ToString());
+            return;
+        }
+
+        smoke.SetPosition(smokePos);
+        smoke.PlaceOnSurface();
+        smoke.SetLifetime(900);
+
+        // Try to activate smoke. Some builds expose smoke through different inherited methods,
+        // so leave the spawned grenade in world even if activation is handled by vanilla state.
+        SmokeGrenadeBase smokeBase = SmokeGrenadeBase.Cast(smoke);
+        if (smokeBase)
+        {
+            smokeBase.SetTakeable(false);
+            smokeBase.StartSmoke();
+        }
+
+        Print("[EoH_TownReward] Spawned reward smoke town=" + townName + " pos=" + smokePos.ToString());
     }
 
     static void ClearOldRewardCrates(vector pos, float radius)
@@ -72,6 +129,26 @@ class EoH_TownRewardManager
         }
     }
 
+    static void ClearOldRewardSmoke(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        array<CargoBase> cargos = new array<CargoBase>();
+        GetGame().GetObjectsAtPosition(pos, radius, objects, cargos);
+
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+
+            string type = obj.GetType();
+            if (type.Contains("M18SmokeGrenade"))
+            {
+                Print("[EoH_TownReward] Removing old reward smoke type=" + type + " pos=" + obj.GetPosition().ToString());
+                GetGame().ObjectDelete(obj);
+            }
+        }
+    }
+
     static void FillRewardCrate(EntityAI crate, int tier)
     {
         if (!crate)
@@ -80,30 +157,30 @@ class EoH_TownRewardManager
         AddItem(crate, "BandageDressing", 2 + tier);
         AddItem(crate, "Epinephrine", tier);
         AddItem(crate, "Morphine", tier);
-        AddItem(crate, "AmmoBox_556x45_20Rnd", tier);
-        AddItem(crate, "AmmoBox_762x39_20Rnd", tier);
-        AddItem(crate, "Mag_STANAG_30Rnd", tier);
+        AddItem(crate, "My_DF_Weapons_Ammo_556x45_M855A1", tier);
+        AddItem(crate, "My_DF_Weapons_Ammo_762x39_BP", tier);
+        AddItem(crate, "My_DF_Weapons_Rifle_M4A1_30RndMag", tier);
         AddItem(crate, "EoH_TownIntel", 1);
 
         if (tier >= 2)
         {
-            AddItem(crate, "AmmoBox_308Win_20Rnd", tier);
-            AddItem(crate, "Mag_AKM_30Rnd", 1);
+            AddItem(crate, "My_DF_Weapons_Ammo_762x51_M80", tier);
+            AddItem(crate, "My_DF_Weapons_Rifle_AK12_30RndMag", 1);
             AddItem(crate, "EoH_TraderIntel", 1);
         }
 
         if (tier >= 3)
         {
-            AddItem(crate, "PlateCarrierVest", 1);
-            AddItem(crate, "NVGoggles", 1);
-            AddItem(crate, "M4A1", 1);
+            AddItem(crate, "My_DF_Gear_Armors_Standard", 1);
+            AddItem(crate, "My_DF_Gear_Heads_H70_NVG", 1);
+            AddItem(crate, "My_DF_Weapons_Rifle_M4A1", 1);
         }
 
         if (tier >= 4)
         {
-            AddItem(crate, "FAL", 1);
-            AddItem(crate, "Mag_Fal_20Rnd", 2);
-            AddItem(crate, "AmmoBox_308Win_20Rnd", 2);
+            AddItem(crate, "My_DF_Weapons_DMR_M14", 1);
+            AddItem(crate, "My_DF_Weapons_DMR_M14_20RndMag", 2);
+            AddItem(crate, "My_DF_Weapons_Ammo_762x51_M80", 2);
             AddItem(crate, "EoH_TraderIntel", 1);
         }
     }
