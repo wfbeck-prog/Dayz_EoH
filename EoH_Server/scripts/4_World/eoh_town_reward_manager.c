@@ -171,12 +171,9 @@ class EoH_TownRewardManager
 
         SmokeGrenadeBase smokeBase = SmokeGrenadeBase.Cast(smoke);
         if (smokeBase)
-        {
             smokeBase.SetTakeable(false);
-            smokeBase.StartSmoke();
-        }
 
-        Print("[EoH_TownReward] Spawned reward smoke town=" + townName + " type=" + smokeType + " pos=" + smokePos.ToString());
+        Print("[EoH_TownReward] Spawned reward smoke marker town=" + townName + " type=" + smokeType + " pos=" + smokePos.ToString());
     }
 
     static void ClearOldRewardCrates(vector pos, float radius)
