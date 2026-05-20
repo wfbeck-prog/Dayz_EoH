@@ -3,6 +3,7 @@ class EoH_TownAIManager
     protected static ref EoH_TownAIManager s_Instance;
     protected ref EoH_TownAIConfig m_Config;
     protected int m_LastTick;
+    protected int m_HeartbeatCount;
 
     protected const string CONFIG_DIR = "$profile:EoH";
     protected const string CONFIG_PATH = "$profile:EoH/TownAIConfig.json";
@@ -10,6 +11,7 @@ class EoH_TownAIManager
     void EoH_TownAIManager()
     {
         m_LastTick = 0;
+        m_HeartbeatCount = 0;
         LoadConfig();
     }
 
@@ -59,7 +61,17 @@ class EoH_TownAIManager
         if (!m_Config)
             LoadConfig();
 
-        if (!m_Config || !m_Config.Enabled)
+        if (!m_Config)
+        {
+            Print("[EoH_TownAI][HEARTBEAT] Tick skipped: config is null.");
+            return;
+        }
+
+        m_HeartbeatCount++;
+        if (m_HeartbeatCount <= 3 || m_HeartbeatCount % 6 == 0)
+            Print("[EoH_TownAI][HEARTBEAT] Tick received enabled=" + m_Config.Enabled.ToString() + " tickSeconds=" + m_Config.TickSeconds.ToString() + " towns=" + m_Config.Towns.Count().ToString() + " tiers=" + m_Config.Tiers.Count().ToString());
+
+        if (!m_Config.Enabled)
             return;
 
         int now = GetGame().GetTime();
