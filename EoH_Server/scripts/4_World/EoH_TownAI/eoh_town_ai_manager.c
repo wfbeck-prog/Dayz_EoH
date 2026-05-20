@@ -2,6 +2,7 @@ class EoH_TownAIManager
 {
     protected static ref EoH_TownAIManager s_Instance;
     protected ref EoH_TownAIConfig m_Config;
+    protected ref map<string, ref EoH_TownAIActiveTown> m_ActiveTowns;
     protected int m_LastTick;
     protected int m_HeartbeatCount;
 
@@ -12,6 +13,7 @@ class EoH_TownAIManager
     {
         m_LastTick = 0;
         m_HeartbeatCount = 0;
+        m_ActiveTowns = new map<string, ref EoH_TownAIActiveTown>();
         LoadConfig();
     }
 
@@ -69,7 +71,7 @@ class EoH_TownAIManager
 
         m_HeartbeatCount++;
         if (m_HeartbeatCount <= 3 || m_HeartbeatCount % 6 == 0)
-            Print("[EoH_TownAI][HEARTBEAT] Tick received enabled=" + m_Config.Enabled.ToString() + " tickSeconds=" + m_Config.TickSeconds.ToString() + " towns=" + m_Config.Towns.Count().ToString() + " tiers=" + m_Config.Tiers.Count().ToString());
+            Print("[EoH_TownAI][HEARTBEAT] Tick received enabled=" + m_Config.Enabled.ToString() + " tickSeconds=" + m_Config.TickSeconds.ToString() + " towns=" + m_Config.Towns.Count().ToString() + " tiers=" + m_Config.Tiers.Count().ToString() + " active=" + m_ActiveTowns.Count().ToString());
 
         if (!m_Config.Enabled)
             return;
@@ -89,6 +91,7 @@ class EoH_TownAIManager
             return;
 
         int activeEligible = 0;
+        ref array<string> eligibleNames = new array<string>();
 
         foreach (EoH_TownAITownConfig townCfg : m_Config.Towns)
         {
@@ -115,10 +118,72 @@ class EoH_TownAIManager
                 continue;
 
             activeEligible++;
+            eligibleNames.Insert(townCfg.TownName);
+
             Print("[EoH_TownAI][DRYRUN] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " owner=" + owner + " patrols=" + tierCfg.MinPatrols.ToString() + "-" + tierCfg.MaxPatrols.ToString() + " camps=" + tierCfg.MinCamps.ToString() + "-" + tierCfg.MaxCamps.ToString());
+
+            EnsureActiveTown(townCfg, tierCfg);
         }
 
-        Print("[EoH_TownAI][DRYRUN] Eligible active towns this tick=" + activeEligible.ToString() + " max=" + m_Config.MaxActiveTowns.ToString());
+        CleanupInactiveTowns(eligibleNames);
+        Print("[EoH_TownAI][DRYRUN] Eligible active towns this tick=" + activeEligible.ToString() + " max=" + m_Config.MaxActiveTowns.ToString() + " tracked=" + m_ActiveTowns.Count().ToString());
+    }
+
+    void EnsureActiveTown(EoH_TownAITownConfig townCfg, EoH_TownAITierConfig tierCfg)
+    {
+        if (!townCfg || !tierCfg)
+            return;
+
+        EoH_TownAIActiveTown active;
+        if (m_ActiveTowns.Find(townCfg.TownName, active) && active)
+        {
+            Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " already tracked spawnedObjects=" + active.SpawnedObjects.Count().ToString());
+            return;
+        }
+
+        active = new EoH_TownAIActiveTown();
+        active.TownName = townCfg.TownName;
+        active.Tier = townCfg.Tier;
+        active.LastSpawnTime = GetGame().GetTime();
+        m_ActiveTowns.Set(townCfg.TownName, active);
+
+        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " entered active tracking. Live spawn still disabled.");
+    }
+
+    void CleanupInactiveTowns(array<string> eligibleNames)
+    {
+        if (!m_ActiveTowns)
+            return;
+
+        ref array<string> removeList = new array<string>();
+
+        for (int i = 0; i < m_ActiveTowns.Count(); i++)
+        {
+            string townName = m_ActiveTowns.GetKey(i);
+            if (eligibleNames.Find(townName) == -1)
+                removeList.Insert(townName);
+        }
+
+        foreach (string removeTown : removeList)
+        {
+            CleanupTown(removeTown);
+        }
+    }
+
+    void CleanupTown(string townName)
+    {
+        EoH_TownAIActiveTown active;
+        if (!m_ActiveTowns.Find(townName, active) || !active)
+            return;
+
+        foreach (Object obj : active.SpawnedObjects)
+        {
+            if (obj)
+                GetGame().ObjectDelete(obj);
+        }
+
+        m_ActiveTowns.Remove(townName);
+        Print("[EoH_TownAI][TRACK] town=" + townName + " removed from active tracking.");
     }
 
     string GetTownOwner(string townName)
