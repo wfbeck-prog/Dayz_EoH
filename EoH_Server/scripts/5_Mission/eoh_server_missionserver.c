@@ -7,6 +7,7 @@ modded class MissionServer
     protected int m_EoH_LastTraderTick;
     protected int m_EoH_LastRelayMaintenanceTick;
     protected int m_EoH_LastTravelQuestTick;
+    protected int m_EoH_LastTownAITick;
 
     override void OnInit()
     {
@@ -85,6 +86,7 @@ modded class MissionServer
         EoH_WorldStateManager.Get();
         EoH_AIManager.Get();
         EoH_CaptureManager.Get();
+        EoH_TownAIManager.Get();
         EoH_RT_TraderManager.Get().Initialize();
         EoH_DiscordWebhook.GetConfig();
 
@@ -262,6 +264,14 @@ modded class MissionServer
         {
             m_EoH_LastTravelQuestTick = now;
             EoH_TravelQuestPoller.Tick();
+        }
+
+        if (now - m_EoH_LastTownAITick >= 10000)
+        {
+            m_EoH_LastTownAITick = now;
+            EoH_TownAIManager townAI = EoH_TownAIManager.Get();
+            if (townAI)
+                townAI.Tick();
         }
     }
 
