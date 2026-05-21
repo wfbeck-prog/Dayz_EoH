@@ -90,10 +90,11 @@ class EoH_TownAIManager
         if (!m_Config || !m_Config.Towns)
             return;
 
+        ref array<ref EoH_TownAITownConfig> ordered = BuildPriorityTownList();
         int activeEligible = 0;
         ref array<string> eligibleNames = new array<string>();
 
-        foreach (EoH_TownAITownConfig townCfg : m_Config.Towns)
+        foreach (EoH_TownAITownConfig townCfg : ordered)
         {
             if (!townCfg || !townCfg.Enabled)
                 continue;
@@ -127,6 +128,33 @@ class EoH_TownAIManager
 
         CleanupInactiveTowns(eligibleNames);
         Print("[EoH_TownAI][DRYRUN] Eligible active towns this tick=" + activeEligible.ToString() + " max=" + m_Config.MaxActiveTowns.ToString() + " tracked=" + m_ActiveTowns.Count().ToString());
+    }
+
+    ref array<ref EoH_TownAITownConfig> BuildPriorityTownList()
+    {
+        ref array<ref EoH_TownAITownConfig> ordered = new array<ref EoH_TownAITownConfig>();
+
+        foreach (EoH_TownAITownConfig ownedTown : m_Config.Towns)
+        {
+            if (!ownedTown)
+                continue;
+
+            string owner = GetTownOwner(ownedTown.TownName);
+            if (owner != "" && owner != "Unclaimed")
+                ordered.Insert(ownedTown);
+        }
+
+        foreach (EoH_TownAITownConfig unownedTown : m_Config.Towns)
+        {
+            if (!unownedTown)
+                continue;
+
+            string unownedOwner = GetTownOwner(unownedTown.TownName);
+            if (unownedOwner == "" || unownedOwner == "Unclaimed")
+                ordered.Insert(unownedTown);
+        }
+
+        return ordered;
     }
 
     void EnsureActiveTown(EoH_TownAITownConfig townCfg, EoH_TownAITierConfig tierCfg)
@@ -213,9 +241,9 @@ class EoH_TownAIManager
         if (!active || !townCfg || !tierCfg)
             return;
 
-        if (townCfg.Tier > 2)
+        if (townCfg.Tier > 3)
         {
-            Print("[EoH_TownAI][SPAWN] Skipped live spawn for town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " because live spawning is limited to Tier 1-2 for now.");
+            Print("[EoH_TownAI][SPAWN] Skipped live spawn for town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " because live spawning is limited to Tier 1-3 for now.");
             return;
         }
 
@@ -231,8 +259,10 @@ class EoH_TownAIManager
         int count = Math.RandomIntInclusive(minCount, maxCount);
         if (townCfg.Tier == 1)
             count = Math.Min(count, 2);
-        else
+        else if (townCfg.Tier == 2)
             count = Math.Min(count, 3);
+        else
+            count = Math.Min(count, 4);
 
         string loadout = PickPatrolLoadout(tierCfg);
         eAIGroup group = EoH_TownAISpawnAdapter.CreateTownPatrolGroup(center);
@@ -350,7 +380,7 @@ class EoH_TownAIManager
         cfg.ConfigVersion = 1;
         cfg.Enabled = false;
         cfg.TickSeconds = 60;
-        cfg.MaxActiveTowns = 4;
+        cfg.MaxActiveTowns = 8;
         cfg.RespawnCooldownSeconds = 1800;
 
         InsertTown(cfg, "Pustoshka", 1);
