@@ -34,7 +34,10 @@ class EoH_TerjeOwnedRespawnRegistry
             return results;
 
         AddOwnedTownRespawns(player, playerGroupID, results);
-        AddOwnedTerritoryRespawns(player, playerGroupID, results);
+        // Territory scanning is intentionally disabled for now. A 30km GetObjectsAtPosition3D scan during
+        // Start Screen generation causes slow respawn-screen loads. We will replace this with a cached
+        // territory registry later.
+        // AddOwnedTerritoryRespawns(player, playerGroupID, results);
 
         Print("[EoH_TerjeRespawn][REGISTRY] player=" + player.GetIdentity().GetName() + " groupId=" + playerGroupID + " ownedRespawns=" + results.Count().ToString());
         return results;
