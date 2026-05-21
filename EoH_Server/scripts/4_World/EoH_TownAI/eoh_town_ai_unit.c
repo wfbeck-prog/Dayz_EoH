@@ -28,16 +28,8 @@ modded class eAIBase
 
         bool friendly = EoH_TownAIManager.Get().IsOwnerFriendly(player, m_EoH_TownAITownName);
         if (friendly && player.GetIdentity())
-            Print("[EoH_TownAI][FRIENDLY] Suppressed town AI threat town=" + m_EoH_TownAITownName + " player=" + player.GetIdentity().GetName());
+            Print("[EoH_TownAI][FRIENDLY] Owner detected near town AI town=" + m_EoH_TownAITownName + " player=" + player.GetIdentity().GetName());
 
         return friendly;
-    }
-
-    override bool eAI_IsTargetInformationValid(ExpansionAIThreat threat)
-    {
-        if (threat && EoH_IsFriendlyTownOwner(threat.GetObject()))
-            return false;
-
-        return super.eAI_IsTargetInformationValid(threat);
     }
 };
