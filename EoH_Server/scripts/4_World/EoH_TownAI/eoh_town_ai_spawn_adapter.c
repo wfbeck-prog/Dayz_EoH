@@ -41,6 +41,8 @@ class EoH_TownAISpawnAdapter
             return obj;
         }
 
+        ai.EoH_SetTownAITownName(townName);
+
         if (group)
             ai.SetGroup(group);
 
