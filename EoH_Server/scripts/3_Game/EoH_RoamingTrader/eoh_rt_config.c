@@ -13,6 +13,8 @@ class EoH_RT_GlobalConfig
 	int StopDurationMinutes;
 	int MoveCheckSeconds;
 	int MinPlayersOnline;
+	int RequirePlayerNearby;
+	float ActivationRadius;
 	ref array<ref EoH_RT_TraderProfile> Traders;
 
 	void EoH_RT_GlobalConfig()
@@ -42,6 +44,8 @@ class EoH_RT_GlobalConfig
 		StopDurationMinutes = 30;
 		MoveCheckSeconds = 15;
 		MinPlayersOnline = 0;
+		RequirePlayerNearby = 1;
+		ActivationRadius = 1000.0;
 		Traders.Clear();
 
 		EoH_RT_TraderProfile drug = new EoH_RT_TraderProfile();
@@ -104,6 +108,8 @@ class EoH_RT_GlobalConfig
 		}
 
 		JsonFileLoader<EoH_RT_GlobalConfig>.JsonLoadFile(CONFIG_PATH, this);
+		if (ActivationRadius <= 0)
+			ActivationRadius = 1000.0;
 		return true;
 	}
 
