@@ -76,6 +76,8 @@ class EoH_TownAIManager
         if (!m_Config.Enabled)
             return;
 
+        MonitorOwnerFriendlyPlayers();
+
         int now = GetGame().GetTime();
         int intervalMs = Math.Max(10, m_Config.TickSeconds) * 1000;
         if (m_LastTick > 0 && now - m_LastTick < intervalMs)
@@ -83,6 +85,47 @@ class EoH_TownAIManager
 
         m_LastTick = now;
         EvaluateTownAI();
+    }
+
+    void MonitorOwnerFriendlyPlayers()
+    {
+        if (!m_ActiveTowns)
+            return;
+
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.GetIdentity())
+                continue;
+
+            for (int i = 0; i < m_ActiveTowns.Count(); i++)
+            {
+                EoH_TownAIActiveTown active = m_ActiveTowns.GetElement(i);
+                if (!active || active.OwnerGroupID == "")
+                    continue;
+
+                if (!IsOwnerFriendly(player, active.TownName))
+                    continue;
+
+                vector townPos = GetTownPosition(active.TownName);
+                float dist = vector.Distance(player.GetPosition(), townPos);
+                if (dist > 250.0)
+                    continue;
+
+                foreach (Object obj : active.SpawnedObjects)
+                {
+                    eAIBase ai = eAIBase.Cast(obj);
+                    if (!ai)
+                        continue;
+
+                    ai.eAI_SetThreatDistanceLimit(5.0);
+                    ai.EoH_IsFriendlyTownOwner(player);
+                }
+            }
+        }
     }
 
     void EvaluateTownAI()
