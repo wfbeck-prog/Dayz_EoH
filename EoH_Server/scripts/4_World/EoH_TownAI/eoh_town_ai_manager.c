@@ -39,8 +39,21 @@ class EoH_TownAIManager
         else
         {
             JsonFileLoader<EoH_TownAIConfig>.JsonLoadFile(CONFIG_PATH, m_Config);
-            Print("[EoH_TownAI] Loaded config path=" + CONFIG_PATH + " enabled=" + m_Config.Enabled.ToString() + " towns=" + m_Config.Towns.Count().ToString() + " tiers=" + m_Config.Tiers.Count().ToString());
+            NormalizeConfig();
+            Print("[EoH_TownAI] Loaded config path=" + CONFIG_PATH + " enabled=" + m_Config.Enabled.ToString() + " towns=" + m_Config.Towns.Count().ToString() + " tiers=" + m_Config.Tiers.Count().ToString() + " requirePlayerNearby=" + m_Config.RequirePlayerNearby.ToString() + " activationRadius=" + m_Config.ActivationRadius.ToString());
         }
+    }
+
+    void NormalizeConfig()
+    {
+        if (!m_Config)
+            return;
+
+        if (m_Config.ActivationRadius <= 0)
+            m_Config.ActivationRadius = 1000.0;
+
+        if (m_Config.MaxActiveTowns <= 0)
+            m_Config.MaxActiveTowns = 8;
     }
 
     void EnsureConfigDir()
@@ -142,6 +155,14 @@ class EoH_TownAIManager
             if (!townCfg || !townCfg.Enabled)
                 continue;
 
+            vector townPos = GetTownPosition(townCfg.TownName);
+            bool playerNearby = IsPlayerNearPosition(townPos, m_Config.ActivationRadius);
+            if (m_Config.RequirePlayerNearby && !playerNearby)
+            {
+                Print("[EoH_TownAI][PROXIMITY] Skipping town=" + townCfg.TownName + " no players within " + m_Config.ActivationRadius.ToString() + "m");
+                continue;
+            }
+
             if (activeEligible >= m_Config.MaxActiveTowns)
                 break;
 
@@ -164,13 +185,34 @@ class EoH_TownAIManager
             activeEligible++;
             eligibleNames.Insert(townCfg.TownName);
 
-            Print("[EoH_TownAI][DRYRUN] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " owner=" + owner + " patrols=" + tierCfg.MinPatrols.ToString() + "-" + tierCfg.MaxPatrols.ToString() + " camps=" + tierCfg.MinCamps.ToString() + "-" + tierCfg.MaxCamps.ToString());
+            Print("[EoH_TownAI][DRYRUN] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " owner=" + owner + " playerNearby=" + playerNearby.ToString() + " patrols=" + tierCfg.MinPatrols.ToString() + "-" + tierCfg.MaxPatrols.ToString() + " camps=" + tierCfg.MinCamps.ToString() + "-" + tierCfg.MaxCamps.ToString());
 
             EnsureActiveTown(townCfg, tierCfg);
         }
 
         CleanupInactiveTowns(eligibleNames);
         Print("[EoH_TownAI][DRYRUN] Eligible active towns this tick=" + activeEligible.ToString() + " max=" + m_Config.MaxActiveTowns.ToString() + " tracked=" + m_ActiveTowns.Count().ToString());
+    }
+
+    bool IsPlayerNearPosition(vector pos, float radius)
+    {
+        if (pos == "0 0 0".ToVector())
+            return false;
+
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player)
+                continue;
+
+            if (vector.Distance(player.GetPosition(), pos) <= radius)
+                return true;
+        }
+
+        return false;
     }
 
     ref array<ref EoH_TownAITownConfig> BuildPriorityTownList()
@@ -416,11 +458,13 @@ class EoH_TownAIManager
         if (!cfg)
             return;
 
-        cfg.ConfigVersion = 1;
+        cfg.ConfigVersion = 2;
         cfg.Enabled = false;
         cfg.TickSeconds = 60;
-        cfg.MaxActiveTowns = 10;
+        cfg.MaxActiveTowns = 8;
         cfg.RespawnCooldownSeconds = 1800;
+        cfg.RequirePlayerNearby = true;
+        cfg.ActivationRadius = 1000.0;
 
         InsertTown(cfg, "Pustoshka", 1);
         InsertTown(cfg, "Mogilevka", 1);
