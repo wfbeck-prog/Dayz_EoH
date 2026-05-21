@@ -137,10 +137,12 @@ class EoH_TownAIManager
         EoH_TownAIActiveTown active;
         if (m_ActiveTowns.Find(townCfg.TownName, active) && active)
         {
+            RefreshOwnerIdentity(active);
+
             if (!HasLiveTrackedObjects(active))
                 SpawnTownPatrol(active, townCfg, tierCfg);
             else
-                Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " already tracked spawnedObjects=" + active.SpawnedObjects.Count().ToString());
+                Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " already tracked spawnedObjects=" + active.SpawnedObjects.Count().ToString() + " owner=" + active.OwnerGroupName);
 
             return;
         }
@@ -149,10 +151,44 @@ class EoH_TownAIManager
         active.TownName = townCfg.TownName;
         active.Tier = townCfg.Tier;
         active.LastSpawnTime = GetGame().GetTime();
+        RefreshOwnerIdentity(active);
         m_ActiveTowns.Set(townCfg.TownName, active);
 
-        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " entered active tracking. Spawning conservative patrol.");
+        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " owner=" + active.OwnerGroupName + " entered active tracking. Spawning conservative patrol.");
         SpawnTownPatrol(active, townCfg, tierCfg);
+    }
+
+    void RefreshOwnerIdentity(EoH_TownAIActiveTown active)
+    {
+        if (!active)
+            return;
+
+        EoH_WorldStateTownState state = EoH_WorldStateManager.Get().GetTownState(active.TownName);
+        if (!state || state.OwnerGroupName == "" || state.OwnerGroupName == "Unclaimed")
+        {
+            active.OwnerGroupID = "";
+            active.OwnerGroupName = "Unclaimed";
+            return;
+        }
+
+        active.OwnerGroupID = state.OwnerGroupID;
+        active.OwnerGroupName = state.OwnerGroupName;
+    }
+
+    bool IsOwnerFriendly(PlayerBase player, string townName)
+    {
+        if (!player || townName == "")
+            return false;
+
+        EoH_TownAIActiveTown active;
+        if (!m_ActiveTowns.Find(townName, active) || !active)
+            return false;
+
+        if (active.OwnerGroupID == "")
+            return false;
+
+        string playerGroupID = EoH_GroupHelper.GetGroupID(player);
+        return playerGroupID != "" && playerGroupID == active.OwnerGroupID;
     }
 
     bool HasLiveTrackedObjects(EoH_TownAIActiveTown active)
@@ -201,7 +237,7 @@ class EoH_TownAIManager
         string loadout = PickPatrolLoadout(tierCfg);
         eAIGroup group = EoH_TownAISpawnAdapter.CreateTownPatrolGroup(center);
 
-        Print("[EoH_TownAI][SPAWN] Spawning patrol town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " count=" + count.ToString() + " loadout=" + loadout);
+        Print("[EoH_TownAI][SPAWN] Spawning patrol town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " owner=" + active.OwnerGroupName + " count=" + count.ToString() + " loadout=" + loadout);
 
         for (int i = 0; i < count; i++)
         {
@@ -211,7 +247,7 @@ class EoH_TownAIManager
                 active.SpawnedObjects.Insert(obj);
         }
 
-        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " registered patrol objects=" + active.SpawnedObjects.Count().ToString());
+        Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " owner=" + active.OwnerGroupName + " registered patrol objects=" + active.SpawnedObjects.Count().ToString());
     }
 
     string PickPatrolLoadout(EoH_TownAITierConfig tierCfg)
