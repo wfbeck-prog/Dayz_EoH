@@ -40,12 +40,36 @@ class EoH_TerjeOwnedRespawnRegistry
         return results;
     }
 
+    static ref array<string> GetKnownTownNames()
+    {
+        ref array<string> towns = new array<string>();
+        towns.Insert("Pustoshka");
+        towns.Insert("Mogilevka");
+        towns.Insert("Guglovo");
+        towns.Insert("Tulga");
+        towns.Insert("Nadezhdino");
+        towns.Insert("Kamenka");
+        towns.Insert("Vybor");
+        towns.Insert("Stary Sobor");
+        towns.Insert("Novy Sobor");
+        towns.Insert("Zelenogorsk");
+        towns.Insert("Staroye");
+        towns.Insert("Polana");
+        towns.Insert("Elektro");
+        towns.Insert("Chernogorsk");
+        towns.Insert("Berezino");
+        towns.Insert("NWAF");
+        towns.Insert("Tisy");
+        towns.Insert("Pavlovo Military");
+        return towns;
+    }
+
     static void AddOwnedTownRespawns(PlayerBase player, string playerGroupID, array<ref EoH_TerjeOwnedRespawnEntry> results)
     {
         if (!results || playerGroupID == "")
             return;
 
-        array<string> townNames = EoH_CaptureManager.Get().GetTownNames();
+        ref array<string> townNames = GetKnownTownNames();
         foreach (string townName : townNames)
         {
             EoH_WorldStateTownState state = EoH_WorldStateManager.Get().GetTownState(townName);
@@ -57,7 +81,7 @@ class EoH_TerjeOwnedRespawnRegistry
                 continue;
 
             EoH_TerjeOwnedRespawnEntry entry = new EoH_TerjeOwnedRespawnEntry();
-            entry.Id = "eoh_town_" + townName;
+            entry.Id = "eoh_town_" + NormalizeId(townName);
             entry.DisplayName = "Town: " + townName;
             entry.Type = "town";
             entry.OwnerGroupID = state.OwnerGroupID;
@@ -68,6 +92,14 @@ class EoH_TerjeOwnedRespawnRegistry
 
             Print("[EoH_TerjeRespawn][REGISTRY] owned town respawn town=" + townName + " owner=" + state.OwnerGroupName + " pos=" + pos.ToString());
         }
+    }
+
+    static string NormalizeId(string raw)
+    {
+        string value = raw;
+        value.Replace(" ", "_");
+        value.ToLower();
+        return value;
     }
 
     static void AddOwnedTerritoryRespawns(PlayerBase player, string playerGroupID, array<ref EoH_TerjeOwnedRespawnEntry> results)
