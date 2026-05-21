@@ -241,12 +241,6 @@ class EoH_TownAIManager
         if (!active || !townCfg || !tierCfg)
             return;
 
-        if (townCfg.Tier > 3)
-        {
-            Print("[EoH_TownAI][SPAWN] Skipped live spawn for town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " because live spawning is limited to Tier 1-3 for now.");
-            return;
-        }
-
         vector center = GetTownPosition(townCfg.TownName);
         if (center == "0 0 0".ToVector())
         {
@@ -261,8 +255,10 @@ class EoH_TownAIManager
             count = Math.Min(count, 2);
         else if (townCfg.Tier == 2)
             count = Math.Min(count, 3);
-        else
+        else if (townCfg.Tier == 3)
             count = Math.Min(count, 4);
+        else
+            count = Math.Min(count, 5);
 
         string loadout = PickPatrolLoadout(tierCfg);
         eAIGroup group = EoH_TownAISpawnAdapter.CreateTownPatrolGroup(center);
@@ -380,7 +376,7 @@ class EoH_TownAIManager
         cfg.ConfigVersion = 1;
         cfg.Enabled = false;
         cfg.TickSeconds = 60;
-        cfg.MaxActiveTowns = 8;
+        cfg.MaxActiveTowns = 10;
         cfg.RespawnCooldownSeconds = 1800;
 
         InsertTown(cfg, "Pustoshka", 1);
