@@ -65,17 +65,6 @@ modded class PluginTerjeStartScreen
                 point.SetAttribute("pos", EoH_VectorToTerjePos(entry.Position));
         }
 
-        TerjeXmlObject conditions = respawn.CreateChild("Conditions");
-        if (conditions)
-        {
-            TerjeXmlObject timeout = conditions.CreateChild("Timeout");
-            if (timeout)
-            {
-                timeout.SetAttribute("id", entry.Id);
-                timeout.SetAttribute("minutes", "10");
-            }
-        }
-
         Print("[EoH_TerjeRespawn][STARTSCREEN] Added respawn id=" + entry.Id + " name=" + entry.DisplayName + " type=" + entry.Type + " pos=" + entry.Position.ToString());
     }
 
