@@ -75,16 +75,20 @@ class EoH_TownAIConfig
     int TickSeconds;
     int MaxActiveTowns;
     int RespawnCooldownSeconds;
+    bool RequirePlayerNearby;
+    float ActivationRadius;
     ref array<ref EoH_TownAITownConfig> Towns;
     ref array<ref EoH_TownAITierConfig> Tiers;
 
     void EoH_TownAIConfig()
     {
-        ConfigVersion = 1;
+        ConfigVersion = 2;
         Enabled = false;
         TickSeconds = 60;
-        MaxActiveTowns = 4;
+        MaxActiveTowns = 8;
         RespawnCooldownSeconds = 1800;
+        RequirePlayerNearby = true;
+        ActivationRadius = 1000.0;
         Towns = new array<ref EoH_TownAITownConfig>();
         Tiers = new array<ref EoH_TownAITierConfig>();
     }
