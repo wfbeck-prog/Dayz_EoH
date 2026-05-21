@@ -78,6 +78,17 @@ class EoH_RT_TraderManager
 			if (!profile)
 				continue;
 
+			EoH_RT_RouteNode currentNode = EoH_RT_TraderRouteSystem.GetCurrentNode(profile, runtime);
+			if (m_Config.RequirePlayerNearby && currentNode && !IsSurvivorNearPosition(currentNode.Position, m_Config.ActivationRadius))
+			{
+				if (runtime.IsSpawned)
+					DeactivateTrader(profile, runtime);
+				else if (m_Config.EnableDebug)
+					Print("[EoH_RT][PROXIMITY] Trader inactive traderId=" + profile.TraderId + " no players within " + m_Config.ActivationRadius.ToString() + "m of route node " + currentNode.Name);
+
+				continue;
+			}
+
 			if (!runtime.IsSpawned || !runtime.TraderObject)
 			{
 				SpawnTraderAtCurrentNode(runtime);
@@ -89,6 +100,36 @@ class EoH_RT_TraderManager
 			if (ShouldAdvanceRoute(profile, runtime))
 				MoveTraderToNextNode(profile, runtime);
 		}
+	}
+
+	bool IsSurvivorNearPosition(vector pos, float radius)
+	{
+		array<Man> players = new array<Man>();
+		GetGame().GetPlayers(players);
+
+		foreach (Man man : players)
+		{
+			PlayerBase player = PlayerBase.Cast(man);
+			if (!player || !player.GetIdentity() || !player.IsAlive())
+				continue;
+
+			if (vector.Distance(player.GetPosition(), pos) <= radius)
+				return true;
+		}
+
+		return false;
+	}
+
+	void DeactivateTrader(EoH_RT_TraderProfile profile, EoH_RT_TraderRuntime runtime)
+	{
+		if (!profile || !runtime)
+			return;
+
+		EoH_RT_AIIntegration.CleanupEscort(runtime);
+		HideMarkerForAllPlayers(profile.TraderId);
+		runtime.IsSpawned = false;
+		m_RelocationGraceStart.Set(profile.TraderId, 0);
+		Print("[EoH_RT][PROXIMITY] Deactivated trader " + profile.TraderId + " because no players are within " + m_Config.ActivationRadius.ToString() + "m.");
 	}
 
 	void CheckProximityReveal(EoH_RT_TraderProfile profile, EoH_RT_TraderRuntime runtime)
@@ -161,20 +202,7 @@ class EoH_RT_TraderManager
 		if (!runtime || !runtime.TraderObject)
 			return false;
 
-		array<Man> players = new array<Man>();
-		GetGame().GetPlayers(players);
-
-		foreach (Man man : players)
-		{
-			PlayerBase player = PlayerBase.Cast(man);
-			if (!player || !player.GetIdentity() || !player.IsAlive())
-				continue;
-
-			if (vector.Distance(player.GetPosition(), runtime.TraderObject.GetPosition()) <= radius)
-				return true;
-		}
-
-		return false;
+		return IsSurvivorNearPosition(runtime.TraderObject.GetPosition(), radius);
 	}
 
 	void SpawnTraderAtCurrentNode(EoH_RT_TraderRuntime runtime)
@@ -192,6 +220,13 @@ class EoH_RT_TraderManager
 		EoH_RT_RouteNode node = profile.Route.Get(runtime.CurrentRouteIndex);
 		if (!node)
 			return;
+
+		if (m_Config.RequirePlayerNearby && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
+		{
+			if (m_Config.EnableDebug)
+				Print("[EoH_RT][PROXIMITY] Spawn skipped traderId=" + profile.TraderId + " no players within " + m_Config.ActivationRadius.ToString() + "m of route node " + node.Name);
+			return;
+		}
 
 		if (!runtime.TraderObject)
 		{
@@ -215,7 +250,7 @@ class EoH_RT_TraderManager
 		m_RevealedMarkers.Set(profile.TraderId, false);
 		m_RelocationGraceStart.Set(profile.TraderId, 0);
 
-		Print("[EoH_RT] Positioned trader " + profile.TraderId + " at " + runtime.TraderObject.GetPosition().ToString());
+		Print("[EoH_RT][PROXIMITY] Activated trader " + profile.TraderId + " at " + runtime.TraderObject.GetPosition().ToString());
 	}
 
 	Object FindExistingTraderObject(string className)
@@ -298,6 +333,12 @@ class EoH_RT_TraderManager
 		if (!node)
 			return;
 
+		if (m_Config.RequirePlayerNearby && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
+		{
+			DeactivateTrader(profile, runtime);
+			return;
+		}
+
 		PlaceTraderObject(runtime.TraderObject, node.Position, node.Orientation);
 
 		runtime.LastMoveServerTime = GetGame().GetTime();
@@ -312,8 +353,6 @@ class EoH_RT_TraderManager
 
 	void RevealMarkerForObjectToAllPlayers(Object obj)
 	{
-		// Legacy object-only reveal is intentionally disabled.
-		// A real player must either use trader intel or physically enter proximity range.
 		if (!GetGame().IsServer() || !obj)
 			return;
 
