@@ -79,7 +79,10 @@ class EoH_RT_TraderManager
 				continue;
 
 			EoH_RT_RouteNode currentNode = EoH_RT_TraderRouteSystem.GetCurrentNode(profile, runtime);
-			if (m_Config.RequirePlayerNearby && currentNode && !IsSurvivorNearPosition(currentNode.Position, m_Config.ActivationRadius))
+			bool revealed = false;
+			m_RevealedMarkers.Find(profile.TraderId, revealed);
+
+			if (m_Config.RequirePlayerNearby && currentNode && !revealed && !IsSurvivorNearPosition(currentNode.Position, m_Config.ActivationRadius))
 			{
 				if (runtime.IsSpawned)
 					DeactivateTrader(profile, runtime);
@@ -221,7 +224,9 @@ class EoH_RT_TraderManager
 		if (!node)
 			return;
 
-		if (m_Config.RequirePlayerNearby && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
+		bool revealed = false;
+		m_RevealedMarkers.Find(profile.TraderId, revealed);
+		if (m_Config.RequirePlayerNearby && !revealed && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
 		{
 			if (m_Config.EnableDebug)
 				Print("[EoH_RT][PROXIMITY] Spawn skipped traderId=" + profile.TraderId + " no players within " + m_Config.ActivationRadius.ToString() + "m of route node " + node.Name);
@@ -247,7 +252,8 @@ class EoH_RT_TraderManager
 		EoH_RT_AIIntegration.CleanupEscort(runtime);
 		EoH_RT_AIIntegration.SpawnEscort(profile, runtime, runtime.TraderObject.GetPosition());
 
-		m_RevealedMarkers.Set(profile.TraderId, false);
+		if (!revealed)
+			m_RevealedMarkers.Set(profile.TraderId, false);
 		m_RelocationGraceStart.Set(profile.TraderId, 0);
 
 		Print("[EoH_RT][PROXIMITY] Activated trader " + profile.TraderId + " at " + runtime.TraderObject.GetPosition().ToString());
@@ -333,7 +339,9 @@ class EoH_RT_TraderManager
 		if (!node)
 			return;
 
-		if (m_Config.RequirePlayerNearby && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
+		bool revealed = false;
+		m_RevealedMarkers.Find(profile.TraderId, revealed);
+		if (m_Config.RequirePlayerNearby && !revealed && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
 		{
 			DeactivateTrader(profile, runtime);
 			return;
@@ -374,10 +382,11 @@ class EoH_RT_TraderManager
 		float bestDistance = 999999.0;
 		EoH_RT_TraderProfile bestProfile = NULL;
 		EoH_RT_TraderRuntime bestRuntime = NULL;
+		vector bestPos = "0 0 0".ToVector();
 
 		foreach (string traderId, EoH_RT_TraderRuntime runtime : m_Runtimes)
 		{
-			if (!runtime || !runtime.IsSpawned || !runtime.TraderObject)
+			if (!runtime)
 				continue;
 
 			bool alreadyRevealed = false;
@@ -385,19 +394,40 @@ class EoH_RT_TraderManager
 			if (alreadyRevealed)
 				continue;
 
-			float dist = vector.Distance(player.GetPosition(), runtime.TraderObject.GetPosition());
+			EoH_RT_TraderProfile profile = m_Config.FindProfile(traderId);
+			if (!profile)
+				continue;
+
+			vector candidatePos = "0 0 0".ToVector();
+			if (runtime.IsSpawned && runtime.TraderObject)
+				candidatePos = runtime.TraderObject.GetPosition();
+			else
+			{
+				EoH_RT_RouteNode node = EoH_RT_TraderRouteSystem.GetCurrentNode(profile, runtime);
+				if (node)
+					candidatePos = node.Position;
+			}
+
+			if (candidatePos == "0 0 0".ToVector())
+				continue;
+
+			float dist = vector.Distance(player.GetPosition(), candidatePos);
 			if (dist < bestDistance)
 			{
 				bestDistance = dist;
 				bestRuntime = runtime;
-				bestProfile = m_Config.FindProfile(traderId);
+				bestProfile = profile;
+				bestPos = candidatePos;
 			}
 		}
 
-		if (!bestProfile || !bestRuntime || !bestRuntime.TraderObject)
+		if (!bestProfile || !bestRuntime || bestPos == "0 0 0".ToVector())
 			return false;
 
-		RevealTraderGlobally(bestProfile, bestRuntime.TraderObject.GetPosition(), "INTEL", player);
+		RevealTraderGlobally(bestProfile, bestPos, "INTEL", player);
+		if (!bestRuntime.IsSpawned || !bestRuntime.TraderObject)
+			SpawnTraderAtCurrentNode(bestRuntime);
+
 		return true;
 	}
 
@@ -433,9 +463,6 @@ class EoH_RT_TraderManager
 
 		foreach (string traderId, EoH_RT_TraderRuntime runtime : m_Runtimes)
 		{
-			if (!runtime || !runtime.IsSpawned || !runtime.TraderObject)
-				continue;
-
 			bool revealed = false;
 			if (!m_RevealedMarkers.Find(traderId, revealed) || !revealed)
 				continue;
@@ -444,7 +471,20 @@ class EoH_RT_TraderManager
 			if (!profile)
 				continue;
 
-			EoH_MarkerData data = BuildTraderMarkerData(profile, runtime.TraderObject.GetPosition());
+			vector markerPos = "0 0 0".ToVector();
+			if (runtime && runtime.IsSpawned && runtime.TraderObject)
+				markerPos = runtime.TraderObject.GetPosition();
+			else if (runtime)
+			{
+				EoH_RT_RouteNode node = EoH_RT_TraderRouteSystem.GetCurrentNode(profile, runtime);
+				if (node)
+					markerPos = node.Position;
+			}
+
+			if (markerPos == "0 0 0".ToVector())
+				continue;
+
+			EoH_MarkerData data = BuildTraderMarkerData(profile, markerPos);
 			EoH_MarkerService.SendToPlayer(player, data);
 		}
 	}
