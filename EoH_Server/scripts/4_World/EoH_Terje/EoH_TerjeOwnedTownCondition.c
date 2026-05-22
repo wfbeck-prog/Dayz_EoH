@@ -32,25 +32,14 @@ modded class TerjePlayerConditions
         if (state.OwnerGroupID == "")
             return false;
 
-        bool owned;
-        owned = false;
-        if (state.OwnerGroupID == playerGroupID)
-            owned = true;
-
-        if (owned)
-        {
-            displayText = "Your group controls " + townName + ".";
-        }
-        else
-        {
-            displayText = "Your group does not control " + townName + ".";
-        }
-
         if (player.GetIdentity())
         {
-            Print("[EoH_TerjeRespawn][CONDITION] town=" + townName + " player=" + player.GetIdentity().GetName() + " playerGroup=" + playerGroupID + " ownerGroup=" + state.OwnerGroupID + " owned=" + owned.ToString());
+            Print("[EoH_TerjeRespawn][CONDITION] town=" + townName + " player=" + player.GetIdentity().GetName() + " playerGroup=" + playerGroupID + " ownerGroup=" + state.OwnerGroupID);
         }
 
-        return owned;
+        if (state.OwnerGroupID == playerGroupID)
+            return true;
+
+        return false;
     }
 }
