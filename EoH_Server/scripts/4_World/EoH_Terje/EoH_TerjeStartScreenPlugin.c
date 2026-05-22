@@ -40,7 +40,7 @@ modded class PluginTerjeStartScreen
             TerjeXmlObject mapRender = options.CreateChild("MapRender");
             if (mapRender)
             {
-                mapRender.SetAttribute("pos", EoH_VectorToTerjePos(entry.Position));
+                EoH_SetPositionAttributes(mapRender, entry.Position);
                 mapRender.SetAttribute("zoom", "0.25");
                 mapRender.SetAttribute("showMarker", "always");
                 mapRender.SetAttribute("showPoints", "always");
@@ -62,10 +62,21 @@ modded class PluginTerjeStartScreen
         {
             TerjeXmlObject point = points.CreateChild("Point");
             if (point)
-                point.SetAttribute("pos", EoH_VectorToTerjePos(entry.Position));
+                EoH_SetPositionAttributes(point, entry.Position);
         }
 
         Print("[EoH_TerjeRespawn][STARTSCREEN] Added respawn id=" + entry.Id + " name=" + entry.DisplayName + " type=" + entry.Type + " pos=" + entry.Position.ToString());
+    }
+
+    void EoH_SetPositionAttributes(TerjeXmlObject node, vector pos)
+    {
+        if (!node)
+            return;
+
+        node.SetAttribute("pos", EoH_VectorToTerjePos(pos));
+        node.SetAttribute("x", pos[0].ToString());
+        node.SetAttribute("y", pos[1].ToString());
+        node.SetAttribute("z", pos[2].ToString());
     }
 
     string EoH_VectorToTerjePos(vector pos)
