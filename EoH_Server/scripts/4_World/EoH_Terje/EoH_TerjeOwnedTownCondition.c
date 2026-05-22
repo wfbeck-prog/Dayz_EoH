@@ -26,10 +26,17 @@ modded class TerjePlayerConditions
             return false;
 
         EoH_WorldStateTownState state = EoH_WorldStateManager.Get().GetTownState(townName);
-        if (!state || state.OwnerGroupID == "")
+        if (!state)
             return false;
 
-        bool owned = state.OwnerGroupID == playerGroupID;
+        if (state.OwnerGroupID == "")
+            return false;
+
+        bool owned;
+        owned = false;
+        if (state.OwnerGroupID == playerGroupID)
+            owned = true;
+
         if (owned)
         {
             displayText = "Your group controls " + townName + ".";
