@@ -82,7 +82,7 @@ class EoH_RT_TraderManager
 			bool revealed = false;
 			m_RevealedMarkers.Find(profile.TraderId, revealed);
 
-			if (m_Config.RequirePlayerNearby && currentNode && !revealed && !IsSurvivorNearPosition(currentNode.Position, m_Config.ActivationRadius))
+			if (m_Config.RequirePlayerNearby && currentNode && !IsSurvivorNearPosition(currentNode.Position, m_Config.ActivationRadius))
 			{
 				if (runtime.IsSpawned)
 					DeactivateTrader(profile, runtime);
@@ -224,9 +224,7 @@ class EoH_RT_TraderManager
 		if (!node)
 			return;
 
-		bool revealed = false;
-		m_RevealedMarkers.Find(profile.TraderId, revealed);
-		if (m_Config.RequirePlayerNearby && !revealed && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
+		if (m_Config.RequirePlayerNearby && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
 		{
 			if (m_Config.EnableDebug)
 				Print("[EoH_RT][PROXIMITY] Spawn skipped traderId=" + profile.TraderId + " no players within " + m_Config.ActivationRadius.ToString() + "m of route node " + node.Name);
@@ -252,8 +250,7 @@ class EoH_RT_TraderManager
 		EoH_RT_AIIntegration.CleanupEscort(runtime);
 		EoH_RT_AIIntegration.SpawnEscort(profile, runtime, runtime.TraderObject.GetPosition());
 
-		if (!revealed)
-			m_RevealedMarkers.Set(profile.TraderId, false);
+		m_RevealedMarkers.Set(profile.TraderId, false);
 		m_RelocationGraceStart.Set(profile.TraderId, 0);
 
 		Print("[EoH_RT][PROXIMITY] Activated trader " + profile.TraderId + " at " + runtime.TraderObject.GetPosition().ToString());
@@ -339,9 +336,7 @@ class EoH_RT_TraderManager
 		if (!node)
 			return;
 
-		bool revealed = false;
-		m_RevealedMarkers.Find(profile.TraderId, revealed);
-		if (m_Config.RequirePlayerNearby && !revealed && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
+		if (m_Config.RequirePlayerNearby && !IsSurvivorNearPosition(node.Position, m_Config.ActivationRadius))
 		{
 			DeactivateTrader(profile, runtime);
 			return;
@@ -425,9 +420,6 @@ class EoH_RT_TraderManager
 			return false;
 
 		RevealTraderGlobally(bestProfile, bestPos, "INTEL", player);
-		if (!bestRuntime.IsSpawned || !bestRuntime.TraderObject)
-			SpawnTraderAtCurrentNode(bestRuntime);
-
 		return true;
 	}
 
