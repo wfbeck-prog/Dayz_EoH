@@ -1,86 +1,13 @@
+// Dynamic Terje Start Screen respawn injection is intentionally disabled.
+// Static Respawns.xml town entries are confirmed selectable and are now the supported path.
+// Keep this file as documentation of the abandoned runtime-injection approach so it is not rebuilt accidentally.
+
+/*
 modded class PluginTerjeStartScreen
 {
     override void BuildRespawnsForPlayer(PlayerBase player, out TerjeXmlObject result)
     {
         super.BuildRespawnsForPlayer(player, result);
-
-        if (!GetGame() || !GetGame().IsServer())
-            return;
-
-        if (!player || !player.GetIdentity() || !result)
-            return;
-
-        ref array<ref EoH_TerjeOwnedRespawnEntry> entries = EoH_TerjeOwnedRespawnRegistry.BuildOwnedRespawns(player);
-        foreach (EoH_TerjeOwnedRespawnEntry entry : entries)
-        {
-            if (!entry || entry.Id == "" || entry.Position == "0 0 0".ToVector())
-                continue;
-
-            EoH_AddOwnedRespawnXml(result, entry);
-        }
-
-        Print("[EoH_TerjeRespawn][STARTSCREEN] Injected owned respawns player=" + player.GetIdentity().GetName() + " count=" + entries.Count().ToString());
-    }
-
-    void EoH_AddOwnedRespawnXml(TerjeXmlObject root, EoH_TerjeOwnedRespawnEntry entry)
-    {
-        if (!root || !entry)
-            return;
-
-        TerjeXmlObject respawn = root.CreateChild("Respawn");
-        if (!respawn)
-            return;
-
-        respawn.SetAttribute("id", entry.Id);
-        respawn.SetAttribute("displayName", entry.DisplayName);
-
-        TerjeXmlObject options = respawn.CreateChild("Options");
-        if (options)
-        {
-            TerjeXmlObject mapRender = options.CreateChild("MapRender");
-            if (mapRender)
-            {
-                EoH_SetPositionAttributes(mapRender, entry.Position);
-                mapRender.SetAttribute("zoom", "0.25");
-                mapRender.SetAttribute("showMarker", "always");
-                mapRender.SetAttribute("showPoints", "always");
-                mapRender.SetAttribute("allowInteraction", "1");
-            }
-
-            TerjeXmlObject safe = options.CreateChild("SafeRadius");
-            if (safe)
-            {
-                safe.SetAttribute("zombie", "15");
-                safe.SetAttribute("animal", "0");
-                safe.SetAttribute("player", "100");
-                safe.SetAttribute("other", "0");
-            }
-        }
-
-        TerjeXmlObject points = respawn.CreateChild("Points");
-        if (points)
-        {
-            TerjeXmlObject point = points.CreateChild("Point");
-            if (point)
-                EoH_SetPositionAttributes(point, entry.Position);
-        }
-
-        Print("[EoH_TerjeRespawn][STARTSCREEN] Added respawn id=" + entry.Id + " name=" + entry.DisplayName + " type=" + entry.Type + " pos=" + entry.Position.ToString());
-    }
-
-    void EoH_SetPositionAttributes(TerjeXmlObject node, vector pos)
-    {
-        if (!node)
-            return;
-
-        node.SetAttribute("pos", EoH_VectorToTerjePos(pos));
-        node.SetAttribute("x", pos[0].ToString());
-        node.SetAttribute("y", pos[1].ToString());
-        node.SetAttribute("z", pos[2].ToString());
-    }
-
-    string EoH_VectorToTerjePos(vector pos)
-    {
-        return pos[0].ToString() + ", " + pos[2].ToString();
     }
 }
+*/
