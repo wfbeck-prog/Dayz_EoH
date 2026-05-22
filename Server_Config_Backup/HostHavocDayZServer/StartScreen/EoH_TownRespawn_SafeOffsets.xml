@@ -1,0 +1,111 @@
+<!-- EoH captured-town respawns with safe offset points.
+     These replace the relay-center points so players do not respawn directly on the capture radio.
+     Keep the EoHOwnedTown conditions so only owning group members can use each town. -->
+
+<Respawn id="eoh_town_pustoshka" displayName="Town: Pustoshka">
+    <Options><MapRender pos="3040.058350, 7837.127441" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="3310.058350, 7567.127441" /></Points>
+    <Conditions><EoHOwnedTown town="Pustoshka" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_mogilevka" displayName="Town: Mogilevka">
+    <Options><MapRender pos="7565.978516, 5143.846191" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="7295.978516, 4873.846191" /></Points>
+    <Conditions><EoHOwnedTown town="Mogilevka" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_guglovo" displayName="Town: Guglovo">
+    <Options><MapRender pos="8429.012695, 6674.694336" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="8129.012695, 6874.694336" /></Points>
+    <Conditions><EoHOwnedTown town="Guglovo" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_tulga" displayName="Town: Tulga">
+    <Options><MapRender pos="12831.127930, 4441.098633" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="12551.127930, 4181.098633" /></Points>
+    <Conditions><EoHOwnedTown town="Tulga" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_nadezhdino" displayName="Town: Nadezhdino">
+    <Options><MapRender pos="5862.669922, 4681.779785" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="6162.669922, 4411.779785" /></Points>
+    <Conditions><EoHOwnedTown town="Nadezhdino" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_kamenka" displayName="Town: Kamenka">
+    <Options><MapRender pos="1895.338013, 2227.847168" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="2175.338013, 2487.847168" /></Points>
+    <Conditions><EoHOwnedTown town="Kamenka" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_vybor" displayName="Town: Vybor">
+    <Options><MapRender pos="3834.491211, 8870.569336" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="3534.491211, 9140.569336" /></Points>
+    <Conditions><EoHOwnedTown town="Vybor" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_stary_sobor" displayName="Town: Stary Sobor">
+    <Options><MapRender pos="6087.996582, 7695.061523" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="5787.996582, 7425.061523" /></Points>
+    <Conditions><EoHOwnedTown town="Stary Sobor" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_novy_sobor" displayName="Town: Novy Sobor">
+    <Options><MapRender pos="7123.294922, 7685.226563" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="7423.294922, 7955.226563" /></Points>
+    <Conditions><EoHOwnedTown town="Novy Sobor" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_zelenogorsk" displayName="Town: Zelenogorsk">
+    <Options><MapRender pos="2728.530029, 5375.410156" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="2428.530029, 5105.410156" /></Points>
+    <Conditions><EoHOwnedTown town="Zelenogorsk" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_staroye" displayName="Town: Staroye">
+    <Options><MapRender pos="10112.792969, 5508.722168" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="9812.792969, 5778.722168" /></Points>
+    <Conditions><EoHOwnedTown town="Staroye" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_polana" displayName="Town: Polana">
+    <Options><MapRender pos="10678.775391, 8020.553711" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="10978.775391, 8290.553711" /></Points>
+    <Conditions><EoHOwnedTown town="Polana" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_elektro" displayName="Town: Elektro">
+    <Options><MapRender pos="10476.380859, 2353.717529" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="10776.380859, 2083.717529" /></Points>
+    <Conditions><EoHOwnedTown town="Elektro" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_chernogorsk" displayName="Town: Chernogorsk">
+    <Options><MapRender pos="6248.418945, 2720.154785" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="5948.418945, 2990.154785" /></Points>
+    <Conditions><EoHOwnedTown town="Chernogorsk" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_berezino" displayName="Town: Berezino">
+    <Options><MapRender pos="12149.748047, 9758.506836" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="11849.748047, 10028.506836" /></Points>
+    <Conditions><EoHOwnedTown town="Berezino" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_nwaf" displayName="Town: NWAF">
+    <Options><MapRender pos="4628.059082, 10428.923828" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="4328.059082, 10728.923828" /></Points>
+    <Conditions><EoHOwnedTown town="NWAF" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_tisy" displayName="Town: Tisy">
+    <Options><MapRender pos="1675.765015, 14219.389648" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="1975.765015, 13919.389648" /></Points>
+    <Conditions><EoHOwnedTown town="Tisy" /></Conditions>
+</Respawn>
+
+<Respawn id="eoh_town_pavlovo_military" displayName="Town: Pavlovo Military">
+    <Options><MapRender pos="2122.629883, 3310.729980" zoom="0.25" showPoints="always" showMarker="always" allowInteraction="1" /><SafeRadius zombie="15" animal="0" player="100" other="0" /></Options>
+    <Points><Point pos="2422.629883, 3010.729980" /></Points>
+    <Conditions><EoHOwnedTown town="Pavlovo Military" /></Conditions>
+</Respawn>
