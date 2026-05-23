@@ -37,14 +37,17 @@ class ActionUseIntel: ActionSingleUseBase
         if (type == "EoH_TraderIntel")
         {
             EoH_IntelManager.Get().RevealTraderIntel(player);
+            Print("[EoH_Intel] Manual trader intel used player=" + player.GetIdentity().GetName());
         }
         else if (type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel")
         {
             EoH_IntelManager.Get().RevealCBDIntel(player);
+            Print("[EoH_Intel] Manual loot room intel used player=" + player.GetIdentity().GetName());
         }
-        else
+        else if (type == "EoH_TownIntel" || type == "EoH_Intel_Document")
         {
             EoH_IntelManager.Get().RevealTownIntel(player);
+            Print("[EoH_Intel] Manual town intel used player=" + player.GetIdentity().GetName());
         }
 
         intel.Delete();
@@ -64,5 +67,41 @@ modded class ItemBase
 
         if (EoH_IsIntelItem(GetType()))
             AddAction(ActionUseIntel);
+    }
+};
+
+modded class EoH_TownIntel
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseIntel);
+    }
+};
+
+modded class EoH_TraderIntel
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseIntel);
+    }
+};
+
+modded class EoH_CBDIntel
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseIntel);
+    }
+};
+
+modded class EoH_LootRoomIntel
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseIntel);
     }
 };
