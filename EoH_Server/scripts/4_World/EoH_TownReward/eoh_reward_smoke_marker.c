@@ -56,11 +56,7 @@ class EoH_RewardSmokeMarker extends House
             return;
         }
 
-        m_EoH_SmokeParticle = Particle.PlayInWorld(ParticleList.SMOKE_NORMAL, smokePos);
-        if (m_EoH_SmokeParticle)
-            Print("[EoH_TownReward][SMOKE] Client started fallback smoke particle attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + smokePos.ToString());
-        else
-            Print("[EoH_TownReward][SMOKE][WARN] All particle attempts returned null attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + smokePos.ToString());
+        Print("[EoH_TownReward][SMOKE][WARN] Expansion airdrop smoke particle returned null attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + smokePos.ToString());
     }
 
     void ~EoH_RewardSmokeMarker()
