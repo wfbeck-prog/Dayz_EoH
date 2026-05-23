@@ -14,7 +14,7 @@ class EoH_WeeklyEventManager
     protected ref EoH_WeeklyEventConfig m_Config;
     protected int m_LastTick;
     protected int m_State;
-    protected string m_ActiveRelayTown;
+    protected ref EoH_WeeklyRelayTowerLocation m_ActiveRelayTower;
     protected int m_StateStart;
 
     static EoH_WeeklyEventManager Get()
@@ -30,7 +30,7 @@ class EoH_WeeklyEventManager
         m_Config = EoH_WeeklyEventConfig.Load();
         m_LastTick = 0;
         m_State = EOH_WEEKLY_EVENT_IDLE;
-        m_ActiveRelayTown = "";
+        m_ActiveRelayTower = null;
         m_StateStart = 0;
 
         Print("[EoH_WeeklyEvents] Manager initialized");
@@ -71,10 +71,10 @@ class EoH_WeeklyEventManager
         if (!m_Config.RelayCollapseEnabled)
             return;
 
-        if (m_ActiveRelayTown == "")
-            m_ActiveRelayTown = PickRandomRelayTown();
+        if (!m_ActiveRelayTower)
+            m_ActiveRelayTower = PickRandomRelayTower();
 
-        if (m_ActiveRelayTown == "")
+        if (!m_ActiveRelayTower)
             return;
 
         StartRelayWarning();
@@ -82,14 +82,18 @@ class EoH_WeeklyEventManager
 
     void StartRelayWarning()
     {
+        if (!m_ActiveRelayTower)
+            return;
+
         m_State = EOH_WEEKLY_EVENT_WARNING;
         m_StateStart = GetGame().GetTime();
 
-        string msg = "Emergency Broadcast: Relay Station near " + m_ActiveRelayTown + " has gone dark. Signal degradation detected across South Zagoria.";
+        string msg = "Emergency Broadcast: " + m_ActiveRelayTower.DisplayName + " has gone dark. Signal degradation detected across South Zagoria.";
 
         EoH_Notifications.SendToAll("RELAY COLLAPSE", msg);
+        BroadcastRelayMarker("WARNING");
 
-        Print("[EoH_WeeklyEvents] Relay Collapse warning started town=" + m_ActiveRelayTown);
+        Print("[EoH_WeeklyEvents] Relay Collapse warning started tower=" + m_ActiveRelayTower.Id + " pos=" + m_ActiveRelayTower.Position.ToString());
     }
 
     void HandleWarning()
@@ -103,14 +107,18 @@ class EoH_WeeklyEventManager
 
     void StartRelayActive()
     {
+        if (!m_ActiveRelayTower)
+            return;
+
         m_State = EOH_WEEKLY_EVENT_ACTIVE;
         m_StateStart = GetGame().GetTime();
 
-        string msg = "Relay collapse escalation detected near " + m_ActiveRelayTown + ". Hostile movement reported around the relay sector.";
+        string msg = "Relay collapse escalation detected at " + m_ActiveRelayTower.DisplayName + ". Hostile movement reported around the relay sector.";
 
         EoH_Notifications.SendToAll("RELAY COLLAPSE ACTIVE", msg);
+        BroadcastRelayMarker("ACTIVE");
 
-        Print("[EoH_WeeklyEvents] Relay Collapse active town=" + m_ActiveRelayTown);
+        Print("[EoH_WeeklyEvents] Relay Collapse active tower=" + m_ActiveRelayTower.Id + " pos=" + m_ActiveRelayTower.Position.ToString());
     }
 
     void HandleActive()
@@ -124,11 +132,15 @@ class EoH_WeeklyEventManager
 
     void CompleteRelayEvent()
     {
+        if (!m_ActiveRelayTower)
+            return;
+
         m_State = EOH_WEEKLY_EVENT_SUCCESS;
 
-        EoH_Notifications.SendToAll("RELAY STABILIZED", "Relay communications near " + m_ActiveRelayTown + " have been restored.");
+        EoH_Notifications.SendToAll("RELAY STABILIZED", "Relay communications at " + m_ActiveRelayTower.DisplayName + " have been restored.");
+        EoH_MarkerService.RemoveFromAll(GetRelayMarkerId());
 
-        Print("[EoH_WeeklyEvents] Relay Collapse completed town=" + m_ActiveRelayTown);
+        Print("[EoH_WeeklyEvents] Relay Collapse completed tower=" + m_ActiveRelayTower.Id);
 
         ResetEvent();
     }
@@ -136,26 +148,42 @@ class EoH_WeeklyEventManager
     void ResetEvent()
     {
         m_State = EOH_WEEKLY_EVENT_IDLE;
-        m_ActiveRelayTown = "";
+        m_ActiveRelayTower = null;
         m_StateStart = GetGame().GetTime();
     }
 
-    string PickRandomRelayTown()
+    EoH_WeeklyRelayTowerLocation PickRandomRelayTower()
     {
-        array<string> towns = {
-            "Chernogorsk",
-            "Elektro",
-            "Berezino",
-            "Novy Sobor",
-            "Stary Sobor",
-            "Zelenogorsk",
-            "NWAF",
-            "Tisy"
-        };
+        if (!m_Config || !m_Config.RelayTowers || m_Config.RelayTowers.Count() == 0)
+            return null;
 
-        if (towns.Count() == 0)
-            return "";
+        return m_Config.RelayTowers.Get(Math.RandomInt(0, m_Config.RelayTowers.Count()));
+    }
 
-        return towns.Get(Math.RandomInt(0, towns.Count()));
+    string GetRelayMarkerId()
+    {
+        if (!m_ActiveRelayTower)
+            return "EoH_RELAY_COLLAPSE";
+
+        return "EoH_RELAY_COLLAPSE_" + m_ActiveRelayTower.Id;
+    }
+
+    void BroadcastRelayMarker(string state)
+    {
+        if (!m_ActiveRelayTower)
+            return;
+
+        EoH_MarkerData data = new EoH_MarkerData(GetRelayMarkerId(), "Relay Collapse: " + m_ActiveRelayTower.DisplayName, m_ActiveRelayTower.Position);
+        data.Category = EoH_MarkerCategory.TOWN;
+        data.State = EoH_MarkerState.ALERT;
+        data.Icon = "Radio";
+        data.Is3D = 1;
+        data.Pulse = 1;
+        data.Color = ARGB(255, 255, 120, 0);
+        data.BaseColor = data.Color;
+        data.Normalize();
+
+        EoH_MarkerService.Broadcast(data);
+        Print("[EoH_WeeklyEvents] Broadcast relay event marker state=" + state + " id=" + data.Id + " pos=" + data.Position.ToString());
     }
 }
