@@ -69,39 +69,3 @@ modded class ItemBase
             AddAction(ActionUseIntel);
     }
 };
-
-modded class EoH_TownIntel
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(ActionUseIntel);
-    }
-};
-
-modded class EoH_TraderIntel
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(ActionUseIntel);
-    }
-};
-
-modded class EoH_CBDIntel
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(ActionUseIntel);
-    }
-};
-
-modded class EoH_LootRoomIntel
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(ActionUseIntel);
-    }
-};
