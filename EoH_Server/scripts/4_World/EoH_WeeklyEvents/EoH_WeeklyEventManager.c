@@ -163,8 +163,8 @@ class EoH_WeeklyEventManager
             return;
 
         EoH_MarkerData data = new EoH_MarkerData(GetRelayMarkerId(), "Relay Collapse: " + m_ActiveRelayTower.DisplayName, m_ActiveRelayTower.Position);
-        data.Category = EoH_MarkerCategory.TOWN;
-        data.State = EoH_MarkerState.ALERT;
+        data.Category = "town";
+        data.State = "alert";
         data.Icon = "Radio";
         data.Is3D = 1;
         data.Pulse = 1;
