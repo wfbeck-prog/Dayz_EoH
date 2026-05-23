@@ -154,14 +154,10 @@ class EoH_TownRewardManager
 
         ClearOldRewardSmoke(smokePos, 12.0);
 
-        string smokeType = "M18SmokeGrenade_Red";
-        if (tierCfg && tierCfg.SmokeType != "")
-            smokeType = tierCfg.SmokeType;
-
-        EntityAI smoke = EntityAI.Cast(GetGame().CreateObjectEx(smokeType, smokePos, ECE_PLACE_ON_SURFACE));
+        EntityAI smoke = EntityAI.Cast(GetGame().CreateObjectEx("EoH_RewardSmokeMarker", smokePos, ECE_PLACE_ON_SURFACE));
         if (!smoke)
         {
-            Print("[EoH_TownReward][WARN] Failed to spawn reward smoke type=" + smokeType + " town=" + townName + " pos=" + smokePos.ToString());
+            Print("[EoH_TownReward][WARN] Failed to spawn reward smoke marker town=" + townName + " pos=" + smokePos.ToString());
             return;
         }
 
@@ -169,11 +165,7 @@ class EoH_TownRewardManager
         smoke.PlaceOnSurface();
         smoke.SetLifetime(900);
 
-        SmokeGrenadeBase smokeBase = SmokeGrenadeBase.Cast(smoke);
-        if (smokeBase)
-            smokeBase.SetTakeable(false);
-
-        Print("[EoH_TownReward] Spawned reward smoke marker town=" + townName + " type=" + smokeType + " pos=" + smokePos.ToString());
+        Print("[EoH_TownReward] Spawned reward smoke marker town=" + townName + " type=EoH_RewardSmokeMarker pos=" + smokePos.ToString());
     }
 
     static void ClearOldRewardCrates(vector pos, float radius)
@@ -208,7 +200,7 @@ class EoH_TownRewardManager
                 continue;
 
             string type = obj.GetType();
-            if (type.Contains("M18SmokeGrenade"))
+            if (type.Contains("M18SmokeGrenade") || type == "EoH_RewardSmokeMarker")
             {
                 Print("[EoH_TownReward] Removing old reward smoke type=" + type + " pos=" + obj.GetPosition().ToString());
                 GetGame().ObjectDelete(obj);
@@ -284,7 +276,7 @@ class EoH_TownRewardManager
         InsertTown(cfg, "Tisy", 4);
         InsertTown(cfg, "Pavlovo Military", 4);
 
-        EoH_TownRewardTierConfig t1 = InsertTier(cfg, 1, "AmmoBox", "M18SmokeGrenade_White", 3600);
+        EoH_TownRewardTierConfig t1 = InsertTier(cfg, 1, "AmmoBox", "EoH_RewardSmokeMarker", 3600);
         InsertLoot(t1, "BandageDressing", 2, 4, 1.0);
         InsertLoot(t1, "Epinephrine", 1, 2, 0.55);
         InsertLoot(t1, "Morphine", 1, 2, 0.45);
@@ -294,7 +286,7 @@ class EoH_TownRewardManager
         InsertLoot(t1, "EoH_TownIntel", 1, 1, 0.18);
         InsertLoot(t1, "DNA_Yellow_Keycard", 1, 1, 0.06);
 
-        EoH_TownRewardTierConfig t2 = InsertTier(cfg, 2, "WoodenCrate", "M18SmokeGrenade_Green", 4500);
+        EoH_TownRewardTierConfig t2 = InsertTier(cfg, 2, "WoodenCrate", "EoH_RewardSmokeMarker", 4500);
         InsertLoot(t2, "BandageDressing", 3, 5, 1.0);
         InsertLoot(t2, "Epinephrine", 1, 3, 0.75);
         InsertLoot(t2, "Morphine", 1, 3, 0.70);
@@ -306,7 +298,7 @@ class EoH_TownRewardManager
         InsertLoot(t2, "EoH_TraderIntel", 1, 1, 0.15);
         InsertLoot(t2, "DNA_Yellow_Keycard", 1, 1, 0.10);
 
-        EoH_TownRewardTierConfig t3 = InsertTier(cfg, 3, "WoodenCrate", "M18SmokeGrenade_Red", 5400);
+        EoH_TownRewardTierConfig t3 = InsertTier(cfg, 3, "WoodenCrate", "EoH_RewardSmokeMarker", 5400);
         InsertLoot(t3, "BandageDressing", 4, 6, 1.0);
         InsertLoot(t3, "Epinephrine", 2, 4, 0.90);
         InsertLoot(t3, "Morphine", 2, 4, 0.85);
@@ -319,7 +311,7 @@ class EoH_TownRewardManager
         InsertLoot(t3, "EoH_TraderIntel", 1, 1, 0.22);
         InsertLoot(t3, "DNA_Yellow_Keycard", 1, 1, 0.16);
 
-        EoH_TownRewardTierConfig t4 = InsertTier(cfg, 4, "SeaChest", "M18SmokeGrenade_Purple", 7200);
+        EoH_TownRewardTierConfig t4 = InsertTier(cfg, 4, "SeaChest", "EoH_RewardSmokeMarker", 7200);
         InsertLoot(t4, "BandageDressing", 5, 8, 1.0);
         InsertLoot(t4, "Epinephrine", 3, 5, 1.0);
         InsertLoot(t4, "Morphine", 3, 5, 0.95);
