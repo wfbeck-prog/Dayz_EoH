@@ -20,10 +20,13 @@ class EoH_RewardSmokeMarker extends House
         if (!GetGame() || GetGame().IsDedicatedServer())
             return;
 
-        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 250, false);
-        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 1000, false);
-        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 2500, false);
-        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 5000, false);
+        Print("[EoH_TownReward][SMOKE] Client init reward smoke marker pos=" + GetPosition().ToString());
+
+        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 100, false);
+        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 500, false);
+        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 1500, false);
+        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 3000, false);
+        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(EoH_StartSmoke, 6000, false);
     }
 
     void EoH_StartSmoke()
@@ -39,15 +42,25 @@ class EoH_RewardSmokeMarker extends House
         vector pos = GetPosition();
         if (pos == "0 0 0".ToVector())
         {
-            Print("[EoH_TownReward][SMOKE][WARN] Reward smoke marker client has invalid position on attempt=" + m_EoH_SmokeAttempts.ToString());
+            Print("[EoH_TownReward][SMOKE][WARN] Reward smoke marker client has invalid position attempt=" + m_EoH_SmokeAttempts.ToString());
             return;
         }
 
-        m_EoH_SmokeParticle = Particle.PlayOnObject(ParticleList.EXPANSION_AIRDROP_SMOKE, this, "0 1.0 0".ToVector());
+        vector smokePos = pos;
+        smokePos[1] = smokePos[1] + 1.0;
+
+        m_EoH_SmokeParticle = Particle.PlayInWorld(ParticleList.EXPANSION_AIRDROP_SMOKE, smokePos);
         if (m_EoH_SmokeParticle)
-            Print("[EoH_TownReward][SMOKE] Client started reward smoke particle attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + pos.ToString());
+        {
+            Print("[EoH_TownReward][SMOKE] Client started reward smoke world particle attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + smokePos.ToString());
+            return;
+        }
+
+        m_EoH_SmokeParticle = Particle.PlayInWorld(ParticleList.SMOKE_NORMAL, smokePos);
+        if (m_EoH_SmokeParticle)
+            Print("[EoH_TownReward][SMOKE] Client started fallback smoke particle attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + smokePos.ToString());
         else
-            Print("[EoH_TownReward][SMOKE][WARN] Particle.PlayOnObject returned null attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + pos.ToString());
+            Print("[EoH_TownReward][SMOKE][WARN] All particle attempts returned null attempt=" + m_EoH_SmokeAttempts.ToString() + " pos=" + smokePos.ToString());
     }
 
     void ~EoH_RewardSmokeMarker()
