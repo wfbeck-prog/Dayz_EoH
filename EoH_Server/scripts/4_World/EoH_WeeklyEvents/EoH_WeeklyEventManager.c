@@ -1,15 +1,12 @@
-enum EoH_WeeklyEventState
-{
-    EOH_WEEKLY_EVENT_IDLE = 0,
-    EOH_WEEKLY_EVENT_WARNING,
-    EOH_WEEKLY_EVENT_ACTIVE,
-    EOH_WEEKLY_EVENT_SUCCESS,
-    EOH_WEEKLY_EVENT_FAILED
-}
-
 class EoH_WeeklyEventManager
 {
     protected static ref EoH_WeeklyEventManager s_Instance;
+
+    static const int STATE_IDLE = 0;
+    static const int STATE_WARNING = 1;
+    static const int STATE_ACTIVE = 2;
+    static const int STATE_SUCCESS = 3;
+    static const int STATE_FAILED = 4;
 
     protected ref EoH_WeeklyEventConfig m_Config;
     protected int m_LastTick;
@@ -29,7 +26,7 @@ class EoH_WeeklyEventManager
     {
         m_Config = EoH_WeeklyEventConfig.Load();
         m_LastTick = 0;
-        m_State = EOH_WEEKLY_EVENT_IDLE;
+        m_State = STATE_IDLE;
         m_ActiveRelayTower = null;
         m_StateStart = 0;
 
@@ -50,20 +47,12 @@ class EoH_WeeklyEventManager
 
         m_LastTick = now;
 
-        switch (m_State)
-        {
-            case EOH_WEEKLY_EVENT_IDLE:
-                HandleIdle();
-                break;
-
-            case EOH_WEEKLY_EVENT_WARNING:
-                HandleWarning();
-                break;
-
-            case EOH_WEEKLY_EVENT_ACTIVE:
-                HandleActive();
-                break;
-        }
+        if (m_State == STATE_IDLE)
+            HandleIdle();
+        else if (m_State == STATE_WARNING)
+            HandleWarning();
+        else if (m_State == STATE_ACTIVE)
+            HandleActive();
     }
 
     void HandleIdle()
@@ -85,7 +74,7 @@ class EoH_WeeklyEventManager
         if (!m_ActiveRelayTower)
             return;
 
-        m_State = EOH_WEEKLY_EVENT_WARNING;
+        m_State = STATE_WARNING;
         m_StateStart = GetGame().GetTime();
 
         string msg = "Emergency Broadcast: " + m_ActiveRelayTower.DisplayName + " has gone dark. Signal degradation detected across South Zagoria.";
@@ -110,7 +99,7 @@ class EoH_WeeklyEventManager
         if (!m_ActiveRelayTower)
             return;
 
-        m_State = EOH_WEEKLY_EVENT_ACTIVE;
+        m_State = STATE_ACTIVE;
         m_StateStart = GetGame().GetTime();
 
         string msg = "Relay collapse escalation detected at " + m_ActiveRelayTower.DisplayName + ". Hostile movement reported around the relay sector.";
@@ -135,7 +124,7 @@ class EoH_WeeklyEventManager
         if (!m_ActiveRelayTower)
             return;
 
-        m_State = EOH_WEEKLY_EVENT_SUCCESS;
+        m_State = STATE_SUCCESS;
 
         EoH_Notifications.SendToAll("RELAY STABILIZED", "Relay communications at " + m_ActiveRelayTower.DisplayName + " have been restored.");
         EoH_MarkerService.RemoveFromAll(GetRelayMarkerId());
@@ -147,7 +136,7 @@ class EoH_WeeklyEventManager
 
     void ResetEvent()
     {
-        m_State = EOH_WEEKLY_EVENT_IDLE;
+        m_State = STATE_IDLE;
         m_ActiveRelayTower = null;
         m_StateStart = GetGame().GetTime();
     }
