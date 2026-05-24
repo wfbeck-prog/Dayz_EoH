@@ -1,6 +1,7 @@
 class EoH_IntelManager
 {
     static ref EoH_IntelManager s_Instance;
+    static bool s_ManualTownIntelAllowed;
 
     ref map<string, vector> m_IntelLocations;
     ref map<string, int> m_PlayerIntelUses;
@@ -18,6 +19,16 @@ class EoH_IntelManager
             s_Instance = new EoH_IntelManager();
 
         return s_Instance;
+    }
+
+    static void BeginManualTownIntel()
+    {
+        s_ManualTownIntelAllowed = true;
+    }
+
+    static void EndManualTownIntel()
+    {
+        s_ManualTownIntelAllowed = false;
     }
 
     void InitIntel()
@@ -45,11 +56,20 @@ class EoH_IntelManager
 
     void RevealIntel(PlayerBase player)
     {
-        RevealTownRiskReport(player);
+        RevealTownIntel(player);
     }
 
     void RevealTownIntel(PlayerBase player)
     {
+        if (!s_ManualTownIntelAllowed)
+        {
+            if (player && player.GetIdentity())
+                Print("[EoH_Intel][BLOCKED] Automatic town intel trigger blocked player=" + player.GetIdentity().GetName());
+            else
+                Print("[EoH_Intel][BLOCKED] Automatic town intel trigger blocked no valid player");
+            return;
+        }
+
         RevealTownRiskReport(player);
     }
 
