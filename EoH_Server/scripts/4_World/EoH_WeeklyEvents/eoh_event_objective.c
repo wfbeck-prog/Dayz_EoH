@@ -1,0 +1,45 @@
+class EoH_EventObjective
+{
+    string Id;
+    string DisplayName;
+    vector Position;
+    string ObjectiveType;
+    string SpawnObject;
+    int RecommendedPlayers;
+    int LootTier;
+    bool EnableAIBandits;
+    bool EnableInfected;
+    bool EnableMarker;
+    bool EnableSmoke;
+
+    void EoH_EventObjective()
+    {
+        Id = "";
+        DisplayName = "Unknown Objective";
+        Position = "0 0 0";
+        ObjectiveType = "signal";
+        SpawnObject = "";
+        RecommendedPlayers = 4;
+        LootTier = 1;
+        EnableAIBandits = true;
+        EnableInfected = true;
+        EnableMarker = true;
+        EnableSmoke = true;
+    }
+}
+
+class EoH_EventObjectiveRuntime
+{
+    ref EoH_EventObjective Config;
+    Object SpawnedObject;
+    bool Active;
+    int StartTime;
+
+    void EoH_EventObjectiveRuntime(EoH_EventObjective cfg)
+    {
+        Config = cfg;
+        SpawnedObject = null;
+        Active = false;
+        StartTime = 0;
+    }
+}
