@@ -23,17 +23,23 @@ class EoH_EventObjectiveManager
 
     void RegisterDefaults()
     {
-        EoH_EventObjective signalSite = new EoH_EventObjective();
-        signalSite.Id = "signal_nwaf";
-        signalSite.DisplayName = "Abandoned Military Signal Site";
-        signalSite.Position = "4780 0 10320";
-        signalSite.ObjectiveType = "signal";
-        signalSite.SpawnObject = "Land_Tisy_Radar";
-        signalSite.RecommendedPlayers = 6;
-        signalSite.LootTier = 4;
+        // PRIMARY LIVE EVENT
+        EoH_EventObjective altarTowers = new EoH_EventObjective();
+        altarTowers.Id = "altar_relay_towers";
+        altarTowers.DisplayName = "Altar Relay Towers";
+        altarTowers.Position = "8132.95068359375 492.1257629394531 9093.74609375";
+        altarTowers.ObjectiveType = "relay_tower";
+        altarTowers.SpawnObject = "Land_Tisy_Radar";
+        altarTowers.RecommendedPlayers = 8;
+        altarTowers.LootTier = 4;
+        altarTowers.EnableAIBandits = true;
+        altarTowers.EnableInfected = true;
+        altarTowers.EnableMarker = true;
+        altarTowers.EnableSmoke = true;
 
-        m_Objectives.Insert(signalSite);
+        m_Objectives.Insert(altarTowers);
 
+        // SECONDARY FALLBACK EVENT
         EoH_EventObjective convoy = new EoH_EventObjective();
         convoy.Id = "convoy_blackmountain";
         convoy.DisplayName = "Destroyed Relay Convoy";
