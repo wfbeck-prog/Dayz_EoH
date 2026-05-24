@@ -50,7 +50,6 @@ class EoH_Scheduler
         RegisterTask("weekly_events", 60000);
         RegisterTask("town_ai", 60000);
         RegisterTask("town_capture", 30000);
-        RegisterTask("roaming_traders", 30000);
         RegisterTask("group_markers", 120000);
 
         Print("[EoH_Scheduler] Initialized centralized scheduler");
@@ -82,7 +81,6 @@ class EoH_Scheduler
         RunTask("weekly_events", now);
         RunTask("town_ai", now);
         RunTask("town_capture", now);
-        RunTask("roaming_traders", now);
     }
 
     void RunTask(string id, int now)
@@ -107,10 +105,6 @@ class EoH_Scheduler
         else if (id == "town_capture")
         {
             EoH_CaptureManager.Get().Tick();
-        }
-        else if (id == "roaming_traders")
-        {
-            EoH_RoamingTraderManager.Get().Tick();
         }
 
         Print("[EoH_Scheduler] Executed task=" + id + " at=" + now.ToString());
