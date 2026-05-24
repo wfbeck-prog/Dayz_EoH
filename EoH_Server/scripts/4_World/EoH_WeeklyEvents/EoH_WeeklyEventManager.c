@@ -11,7 +11,7 @@ class EoH_WeeklyEventManager
     protected ref EoH_WeeklyEventConfig m_Config;
     protected int m_LastTick;
     protected int m_State;
-    protected ref EoH_WeeklyRelayTowerLocation m_ActiveRelayTower;
+    protected ref EoH_WeeklyRelayTowerLocation m_ActiveObjective;
     protected int m_StateStart;
 
     static EoH_WeeklyEventManager Get()
@@ -27,10 +27,10 @@ class EoH_WeeklyEventManager
         m_Config = EoH_WeeklyEventConfig.Load();
         m_LastTick = 0;
         m_State = STATE_IDLE;
-        m_ActiveRelayTower = null;
+        m_ActiveObjective = null;
         m_StateStart = 0;
 
-        Print("[EoH_WeeklyEvents] Manager initialized");
+        Print("[EoH_WeeklyEvents] Manager initialized using standalone event objectives");
     }
 
     void Tick()
@@ -60,29 +60,29 @@ class EoH_WeeklyEventManager
         if (!m_Config.RelayCollapseEnabled)
             return;
 
-        if (!m_ActiveRelayTower)
-            m_ActiveRelayTower = PickRandomRelayTower();
+        if (!m_ActiveObjective)
+            m_ActiveObjective = PickRandomObjective();
 
-        if (!m_ActiveRelayTower)
+        if (!m_ActiveObjective)
             return;
 
-        StartRelayWarning();
+        StartObjectiveWarning();
     }
 
-    void StartRelayWarning()
+    void StartObjectiveWarning()
     {
-        if (!m_ActiveRelayTower)
+        if (!m_ActiveObjective)
             return;
 
         m_State = STATE_WARNING;
         m_StateStart = GetGame().GetTime();
 
-        string msg = "Emergency Broadcast: " + m_ActiveRelayTower.DisplayName + " has gone dark. Signal degradation detected across South Zagoria.";
+        string msg = "Emergency Broadcast: unusual signal activity detected near " + m_ActiveObjective.DisplayName + ". Investigate immediately.";
 
-        EoH_Notifications.SendToAll("RELAY COLLAPSE", msg);
-        BroadcastRelayMarker("WARNING");
+        EoH_Notifications.SendToAll("WEEKEND EVENT", msg);
+        BroadcastObjectiveMarker("WARNING");
 
-        Print("[EoH_WeeklyEvents] Relay Collapse warning started tower=" + m_ActiveRelayTower.Id + " pos=" + m_ActiveRelayTower.Position.ToString());
+        Print("[EoH_WeeklyEvents] Event warning started objective=" + m_ActiveObjective.Id + " pos=" + m_ActiveObjective.Position.ToString());
     }
 
     void HandleWarning()
@@ -91,23 +91,23 @@ class EoH_WeeklyEventManager
         if (elapsed < m_Config.RelayWarningMinutes * 60 * 1000)
             return;
 
-        StartRelayActive();
+        StartObjectiveActive();
     }
 
-    void StartRelayActive()
+    void StartObjectiveActive()
     {
-        if (!m_ActiveRelayTower)
+        if (!m_ActiveObjective)
             return;
 
         m_State = STATE_ACTIVE;
         m_StateStart = GetGame().GetTime();
 
-        string msg = "Relay collapse escalation detected at " + m_ActiveRelayTower.DisplayName + ". Hostile movement reported around the relay sector.";
+        string msg = "Hostile activity escalating near " + m_ActiveObjective.DisplayName + ". High-value objective confirmed.";
 
-        EoH_Notifications.SendToAll("RELAY COLLAPSE ACTIVE", msg);
-        BroadcastRelayMarker("ACTIVE");
+        EoH_Notifications.SendToAll("EVENT ACTIVE", msg);
+        BroadcastObjectiveMarker("ACTIVE");
 
-        Print("[EoH_WeeklyEvents] Relay Collapse active tower=" + m_ActiveRelayTower.Id + " pos=" + m_ActiveRelayTower.Position.ToString());
+        Print("[EoH_WeeklyEvents] Event active objective=" + m_ActiveObjective.Id + " pos=" + m_ActiveObjective.Position.ToString());
     }
 
     void HandleActive()
@@ -116,20 +116,20 @@ class EoH_WeeklyEventManager
         if (elapsed < m_Config.RelayActiveMinutes * 60 * 1000)
             return;
 
-        CompleteRelayEvent();
+        CompleteObjectiveEvent();
     }
 
-    void CompleteRelayEvent()
+    void CompleteObjectiveEvent()
     {
-        if (!m_ActiveRelayTower)
+        if (!m_ActiveObjective)
             return;
 
         m_State = STATE_SUCCESS;
 
-        EoH_Notifications.SendToAll("RELAY STABILIZED", "Relay communications at " + m_ActiveRelayTower.DisplayName + " have been restored.");
-        EoH_MarkerService.RemoveFromAll(GetRelayMarkerId());
+        EoH_Notifications.SendToAll("EVENT ENDED", "Activity near " + m_ActiveObjective.DisplayName + " has subsided.");
+        EoH_MarkerService.RemoveFromAll(GetObjectiveMarkerId());
 
-        Print("[EoH_WeeklyEvents] Relay Collapse completed tower=" + m_ActiveRelayTower.Id);
+        Print("[EoH_WeeklyEvents] Event completed objective=" + m_ActiveObjective.Id);
 
         ResetEvent();
     }
@@ -137,11 +137,11 @@ class EoH_WeeklyEventManager
     void ResetEvent()
     {
         m_State = STATE_IDLE;
-        m_ActiveRelayTower = null;
+        m_ActiveObjective = null;
         m_StateStart = GetGame().GetTime();
     }
 
-    EoH_WeeklyRelayTowerLocation PickRandomRelayTower()
+    EoH_WeeklyRelayTowerLocation PickRandomObjective()
     {
         if (!m_Config || !m_Config.RelayTowers || m_Config.RelayTowers.Count() == 0)
             return null;
@@ -149,21 +149,21 @@ class EoH_WeeklyEventManager
         return m_Config.RelayTowers.Get(Math.RandomInt(0, m_Config.RelayTowers.Count()));
     }
 
-    string GetRelayMarkerId()
+    string GetObjectiveMarkerId()
     {
-        if (!m_ActiveRelayTower)
-            return "EoH_RELAY_COLLAPSE";
+        if (!m_ActiveObjective)
+            return "EoH_WEEKLY_OBJECTIVE";
 
-        return "EoH_RELAY_COLLAPSE_" + m_ActiveRelayTower.Id;
+        return "EoH_WEEKLY_OBJECTIVE_" + m_ActiveObjective.Id;
     }
 
-    void BroadcastRelayMarker(string state)
+    void BroadcastObjectiveMarker(string state)
     {
-        if (!m_ActiveRelayTower)
+        if (!m_ActiveObjective)
             return;
 
-        EoH_MarkerData data = new EoH_MarkerData(GetRelayMarkerId(), "Relay Collapse: " + m_ActiveRelayTower.DisplayName, m_ActiveRelayTower.Position);
-        data.Category = "town";
+        EoH_MarkerData data = new EoH_MarkerData(GetObjectiveMarkerId(), "Event Objective: " + m_ActiveObjective.DisplayName, m_ActiveObjective.Position);
+        data.Category = "event";
         data.State = "alert";
         data.Icon = "Radio";
         data.Is3D = 1;
@@ -173,6 +173,6 @@ class EoH_WeeklyEventManager
         data.Normalize();
 
         EoH_MarkerService.Broadcast(data);
-        Print("[EoH_WeeklyEvents] Broadcast relay event marker state=" + state + " id=" + data.Id + " pos=" + data.Position.ToString());
+        Print("[EoH_WeeklyEvents] Broadcast objective marker state=" + state + " id=" + data.Id + " pos=" + data.Position.ToString());
     }
 }
