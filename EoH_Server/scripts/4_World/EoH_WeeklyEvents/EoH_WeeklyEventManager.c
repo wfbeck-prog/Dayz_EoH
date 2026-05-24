@@ -143,10 +143,10 @@ class EoH_WeeklyEventManager
 
     EoH_WeeklyRelayTowerLocation PickRandomObjective()
     {
-        if (!m_Config || !m_Config.RelayTowers || m_Config.RelayTowers.Count() == 0)
+        if (!m_Config || !m_Config.EventObjectives || m_Config.EventObjectives.Count() == 0)
             return null;
 
-        return m_Config.RelayTowers.Get(Math.RandomInt(0, m_Config.RelayTowers.Count()));
+        return m_Config.EventObjectives.Get(Math.RandomInt(0, m_Config.EventObjectives.Count()));
     }
 
     string GetObjectiveMarkerId()
