@@ -1,19 +1,12 @@
 modded class MissionServer
 {
-    protected int m_EoH_HeartbeatLastRun;
-    protected const int EOH_HEARTBEAT_INTERVAL_MS = 60000;
-
     override void OnUpdate(float timeslice)
     {
         super.OnUpdate(timeslice);
 
-        int now = GetGame().GetTime();
-        if (m_EoH_HeartbeatLastRun > 0 && now - m_EoH_HeartbeatLastRun < EOH_HEARTBEAT_INTERVAL_MS)
-            return;
-
-        m_EoH_HeartbeatLastRun = now;
-
-        EoH_WeeklyEventManager.Get().Tick();
+        // Centralized EoH scheduler heartbeat.
+        // All future EoH systems should migrate here instead of creating independent Tick loops.
+        EoH_Scheduler.Get().Tick();
 
         // Disabled temporarily for live-server performance recovery.
         // This scans TerritoryFlag objects and should be reworked to use cached flag registration.
