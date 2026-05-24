@@ -46,7 +46,10 @@ class ActionUseIntel: ActionSingleUseBase
         }
         else if (type == "EoH_TownIntel" || type == "EoH_Intel_Document")
         {
+            EoH_IntelManager.BeginManualTownIntel();
             EoH_IntelManager.Get().RevealTownIntel(player);
+            EoH_IntelManager.EndManualTownIntel();
+
             Print("[EoH_Intel] Manual town intel used player=" + player.GetIdentity().GetName());
         }
 
