@@ -6,5 +6,6 @@ modded class MissionServer
 
         EoH_WeeklyEventManager.Get().Tick();
         EoH_GroupFlagMarkerManager.Tick();
+        EoH_DNACrateRelocator.Get().Tick();
     }
 }
