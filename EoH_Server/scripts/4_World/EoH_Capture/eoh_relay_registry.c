@@ -26,44 +26,17 @@ class EoH_RelayRegistry
     void EoH_RelayRegistry()
     {
         m_RelayMap = new map<string, ref EoH_RelayRegistryEntry>();
-        Print("[EoH_RelayRegistry] Initializing cached relay registry");
-        BuildRelayCache();
+        Print("[EoH_RelayRegistry] Initialized cached relay registry scaffold");
     }
 
-    void BuildRelayCache()
+    void RegisterRelay(string townName, vector relayPos)
     {
-        m_RelayMap.Clear();
-
-        EoH_CaptureConfig config = EoH_CaptureConfig.Get();
-        if (!config)
-        {
-            Print("[EoH_RelayRegistry][WARN] No capture config available");
+        if (townName == "")
             return;
-        }
 
-        if (!config.Towns)
-        {
-            Print("[EoH_RelayRegistry][WARN] Capture config has no towns array");
-            return;
-        }
+        m_RelayMap.Set(townName, new EoH_RelayRegistryEntry(townName, relayPos));
 
-        foreach (EoH_CaptureTownConfig town : config.Towns)
-        {
-            if (!town)
-                continue;
-
-            string townName = town.Name;
-            vector relayPos = town.RadioRelayPosition;
-
-            if (townName == "")
-                continue;
-
-            m_RelayMap.Set(townName, new EoH_RelayRegistryEntry(townName, relayPos));
-
-            Print("[EoH_RelayRegistry] Cached relay town=" + townName + " pos=" + relayPos.ToString());
-        }
-
-        Print("[EoH_RelayRegistry] Relay cache built towns=" + m_RelayMap.Count().ToString());
+        Print("[EoH_RelayRegistry] Registered relay town=" + townName + " pos=" + relayPos.ToString());
     }
 
     bool GetRelayPosition(string townName, out vector pos)
