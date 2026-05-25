@@ -16,6 +16,8 @@ class EoH_EventWaveManager
             return;
 
         EoH_EventObjective cfg = runtime.Config;
+        string objectiveName = cfg.DisplayName;
+        string msg = "";
 
         Print("[EoH_EventWaves] Spawning wave=" + waveIndex.ToString() + " objective=" + cfg.Id);
 
@@ -24,24 +26,18 @@ class EoH_EventWaveManager
 
         if (waveIndex == 1)
         {
-            EoH_Notifications.SendToAll(
-                "EVENT ALERT",
-                "Scouting activity detected near " + cfg.DisplayName + "."
-            );
+            msg = "Scouting activity detected near " + objectiveName + ".";
+            EoH_Notifications.SendToAll("EVENT ALERT", msg);
         }
         else if (waveIndex == 2)
         {
-            EoH_Notifications.SendToAll(
-                "EVENT ALERT",
-                "Hostile reinforcements moving toward " + cfg.DisplayName + "."
-            );
+            msg = "Hostile reinforcements moving toward " + objectiveName + ".";
+            EoH_Notifications.SendToAll("EVENT ALERT", msg);
         }
         else if (waveIndex >= 3)
         {
-            EoH_Notifications.SendToAll(
-                "EVENT ALERT",
-                "Elite hostile presence confirmed near " + cfg.DisplayName + "."
-            );
+            msg = "Elite hostile presence confirmed near " + objectiveName + ".";
+            EoH_Notifications.SendToAll("EVENT ALERT", msg);
         }
     }
 }
