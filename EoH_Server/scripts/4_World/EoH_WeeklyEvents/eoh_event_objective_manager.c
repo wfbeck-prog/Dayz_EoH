@@ -55,7 +55,7 @@ class EoH_EventObjectiveManager
         altarTowers.EnableAIBandits = true;
         altarTowers.EnableInfected = true;
         altarTowers.EnableMarker = true;
-        altarTowers.EnableSmoke = true;
+        altarTowers.EnableSmoke = false;
 
         m_Objectives.Insert(altarTowers);
 
@@ -67,6 +67,7 @@ class EoH_EventObjectiveManager
         convoy.SpawnObject = "Land_Wreck_Ural";
         convoy.RecommendedPlayers = 4;
         convoy.LootTier = 3;
+        convoy.EnableSmoke = false;
 
         m_Objectives.Insert(convoy);
     }
@@ -212,11 +213,6 @@ class EoH_EventObjectiveManager
         }
 
         m_ActiveRuntime.SpawnedObject = obj;
-
-        if (cfg.EnableSmoke)
-        {
-            Particle.PlayInWorld(ParticleList.SMOKEGRENADE_RED, cfg.Position);
-        }
     }
 
     void SpawnRewardCrate()
