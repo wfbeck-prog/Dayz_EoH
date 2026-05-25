@@ -59,6 +59,15 @@ class EoH_IntelManager
         RevealTownIntel(player);
     }
 
+    vector GetAltarRelayIntelPosition()
+    {
+        vector pos;
+        pos[0] = 8132.95068359375;
+        pos[1] = 492.1257629394531;
+        pos[2] = 9093.74609375;
+        return pos;
+    }
+
     void RevealWeeklyEventIntel(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
@@ -66,17 +75,7 @@ class EoH_IntelManager
 
         TrackIntelUse(player);
 
-        vector altarPos;
-        altarPos[0] = 8132.95068359375;
-        altarPos[1] = 492.1257629394531;
-        altarPos[2] = 9093.74609375;
-
-        EoH_MarkerData data = new EoH_MarkerData(
-            "EOH_EVENT_INTEL_ALTAR_RELAY",
-            "Encrypted Relay Intel: Altar Towers",
-            altarPos
-        );
-
+        EoH_MarkerData data = new EoH_MarkerData("EOH_EVENT_INTEL_ALTAR_RELAY", "Encrypted Relay Intel: Altar Towers", GetAltarRelayIntelPosition());
         data.Category = "event";
         data.Icon = "Radio";
         data.Is3D = 1;
