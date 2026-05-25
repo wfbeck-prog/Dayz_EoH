@@ -75,12 +75,53 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime = new EoH_EventObjectiveRuntime(obj);
         m_ActiveRuntime.Active = true;
         m_ActiveRuntime.StartTime = GetGame().GetTime();
+        m_ActiveRuntime.LastTickTime = m_ActiveRuntime.StartTime;
+        m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
 
         SpawnObjectiveObject();
+        SpawnRewardCrate();
         BroadcastObjective();
+        EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 1);
+        m_ActiveRuntime.CurrentWave = 1;
 
         Print("[EoH_EventObjectives] Started objective id=" + obj.Id + " pos=" + obj.Position.ToString());
         return true;
+    }
+
+    void Tick()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
+            return;
+
+        int now = GetGame().GetTime();
+        if (m_ActiveRuntime.LastTickTime > 0 && now - m_ActiveRuntime.LastTickTime < 30000)
+            return;
+
+        m_ActiveRuntime.LastTickTime = now;
+        TickWaves(now);
+        TickRewardCrate();
+    }
+
+    void TickWaves(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Active)
+            return;
+
+        int elapsed = now - m_ActiveRuntime.StartTime;
+
+        if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= 10 * 60 * 1000)
+        {
+            EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
+            m_ActiveRuntime.CurrentWave = 2;
+            return;
+        }
+
+        if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= 20 * 60 * 1000)
+        {
+            EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 3);
+            m_ActiveRuntime.CurrentWave = 3;
+            return;
+        }
     }
 
     void SpawnObjectiveObject()
@@ -106,6 +147,40 @@ class EoH_EventObjectiveManager
         {
             Particle.PlayInWorld(ParticleList.SMOKEGRENADE_RED, cfg.Position);
         }
+    }
+
+    void SpawnRewardCrate()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config || !m_ActiveRuntime.RewardCrate)
+            return;
+
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        vector cratePos = cfg.Position + "8 0 8";
+
+        m_ActiveRuntime.RewardCrate.SetRuntime(cratePos, 25, cfg.LootTier);
+        Object crate = GetGame().CreateObject(m_ActiveRuntime.RewardCrate.CrateType, cratePos);
+        m_ActiveRuntime.RewardCrate.MarkSpawned(crate);
+
+        Print("[EoH_EventObjectives] Reward crate staged id=" + cfg.Id + " pos=" + cratePos.ToString());
+    }
+
+    void TickRewardCrate()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.RewardCrate)
+            return;
+
+        if (!m_ActiveRuntime.RewardCrate.ShouldUnlock())
+            return;
+
+        m_ActiveRuntime.RewardCrate.MarkUnlocked();
+        m_ActiveRuntime.RewardUnlocked = true;
+
+        EoH_Notifications.SendToAll(
+            "EVENT EXTRACTION",
+            "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable."
+        );
+
+        Print("[EoH_EventObjectives] Reward crate unlocked id=" + m_ActiveRuntime.Config.Id);
     }
 
     void BroadcastObjective()
@@ -149,6 +224,9 @@ class EoH_EventObjectiveManager
 
         if (m_ActiveRuntime.SpawnedObject)
             GetGame().ObjectDelete(m_ActiveRuntime.SpawnedObject);
+
+        if (m_ActiveRuntime.RewardCrate)
+            m_ActiveRuntime.RewardCrate.Cleanup();
 
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_" + cfg.Id);
 
