@@ -39,6 +39,11 @@ class ActionUseIntel: ActionSingleUseBase
             EoH_IntelManager.Get().RevealTraderIntel(player);
             Print("[EoH_Intel] Manual trader intel used player=" + player.GetIdentity().GetName());
         }
+        else if (type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel")
+        {
+            EoH_IntelManager.Get().RevealWeeklyEventIntel(player);
+            Print("[EoH_Intel] Manual weekly event intel used player=" + player.GetIdentity().GetName());
+        }
         else if (type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel")
         {
             EoH_IntelManager.Get().RevealCBDIntel(player);
@@ -59,7 +64,7 @@ class ActionUseIntel: ActionSingleUseBase
 
 bool EoH_IsIntelItem(string type)
 {
-    return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel" || type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel";
+    return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel" || type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel" || type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel";
 }
 
 modded class ItemBase
