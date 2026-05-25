@@ -32,14 +32,26 @@ class EoH_EventObjectiveRuntime
 {
     ref EoH_EventObjective Config;
     Object SpawnedObject;
+    ref EoH_EventRewardCrate RewardCrate;
     bool Active;
+    bool RevealedByIntel;
+    bool RewardUnlocked;
+    bool Completed;
     int StartTime;
+    int LastTickTime;
+    int CurrentWave;
 
     void EoH_EventObjectiveRuntime(EoH_EventObjective cfg)
     {
         Config = cfg;
         SpawnedObject = null;
+        RewardCrate = null;
         Active = false;
+        RevealedByIntel = false;
+        RewardUnlocked = false;
+        Completed = false;
         StartTime = 0;
+        LastTickTime = 0;
+        CurrentWave = -1;
     }
 }
