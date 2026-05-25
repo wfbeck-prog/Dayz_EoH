@@ -9,7 +9,7 @@ class EoH_ActionRepairEventRelayCB : ActionContinuousBaseCB
 class EoH_ActionRepairEventRelay : ActionContinuousBase
 {
     static const float REPAIR_RADIUS = 35.0;
-    static const string REQUIRED_TRANSCEIVER = "FieldTransceiver";
+    static const string REQUIRED_TRANSCEIVER = "BaseRadio";
     static const string REQUIRED_BATTERY = "CarBattery";
 
     void EoH_ActionRepairEventRelay()
@@ -52,7 +52,7 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
 
         if (!HasRequiredRepairParts(player))
         {
-            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. A Field Transceiver and Car Battery are required.");
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. A Field Transceiver/BaseRadio and Car Battery are required.");
             return;
         }
 
@@ -93,6 +93,9 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
         if (root.GetType() == typeName)
             return true;
 
+        if (!root.GetInventory())
+            return false;
+
         CargoBase cargo = root.GetInventory().GetCargo();
         if (cargo)
         {
@@ -122,9 +125,12 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
 
         if (root.GetType() == typeName)
         {
-            root.Delete();
+            GetGame().ObjectDelete(root);
             return true;
         }
+
+        if (!root.GetInventory())
+            return false;
 
         CargoBase cargo = root.GetInventory().GetCargo();
         if (cargo)
