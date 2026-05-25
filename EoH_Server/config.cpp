@@ -11,6 +11,7 @@ class CfgPatches
             "EoH_TraderIntel",
             "EoH_CBDIntel",
             "EoH_LootRoomIntel",
+            "EoH_AltarRelayIntel",
             "ExpansionTraderChem",
             "ExpansionTraderBroker"
         };
@@ -143,6 +144,13 @@ class CfgVehicles
         scope = 2;
         displayName = "Loot Cache Intel";
         descriptionShort = "Recovered notes pointing toward sealed loot caches.";
+    };
+
+    class EoH_AltarRelayIntel: EoH_Intel_Document
+    {
+        scope = 2;
+        displayName = "Altar Relay Intel";
+        descriptionShort = "Encrypted EoH signal notes identifying the Altar relay array and the field repair parts required to restore it.";
     };
 
     class ExpansionTraderChem: ExpansionTraderMirek
