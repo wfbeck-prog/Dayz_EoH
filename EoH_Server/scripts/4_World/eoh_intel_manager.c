@@ -66,7 +66,10 @@ class EoH_IntelManager
 
         TrackIntelUse(player);
 
-        vector altarPos = "8132.95068359375 492.1257629394531 9093.74609375".ToVector();
+        vector altarPos;
+        altarPos[0] = 8132.95068359375;
+        altarPos[1] = 492.1257629394531;
+        altarPos[2] = 9093.74609375;
 
         EoH_MarkerData data = new EoH_MarkerData(
             "EOH_EVENT_INTEL_ALTAR_RELAY",
