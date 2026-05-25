@@ -21,6 +21,27 @@ class EoH_EventObjectiveManager
         Print("[EoH_EventObjectives] Manager initialized objectives=" + m_Objectives.Count().ToString());
     }
 
+    bool IsIntelAvailable()
+    {
+        if (!m_ActiveRuntime)
+            return true;
+
+        if (!m_ActiveRuntime.Active)
+            return true;
+
+        return false;
+    }
+
+    bool HasActiveObjective()
+    {
+        return m_ActiveRuntime && m_ActiveRuntime.Active;
+    }
+
+    bool IsObjectiveCombatStarted()
+    {
+        return m_ActiveRuntime && m_ActiveRuntime.Active && m_ActiveRuntime.StartTime > 0;
+    }
+
     void RegisterDefaults()
     {
         EoH_EventObjective altarTowers = new EoH_EventObjective();
@@ -65,9 +86,9 @@ class EoH_EventObjectiveManager
 
     bool RevealRandomObjectiveOnly()
     {
-        if (m_ActiveRuntime && m_ActiveRuntime.Active)
+        if (!IsIntelAvailable())
         {
-            Print("[EoH_EventObjectives] Cannot reveal objective another is already active");
+            Print("[EoH_EventObjectives] Intel reveal blocked active objective already exists");
             return false;
         }
 
@@ -112,6 +133,8 @@ class EoH_EventObjectiveManager
         SpawnRewardCrate();
         EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 1);
         m_ActiveRuntime.CurrentWave = 1;
+
+        EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
 
         EoH_Notifications.SendToAll(
             "RELAY ONLINE",
@@ -264,6 +287,15 @@ class EoH_EventObjectiveManager
         EoH_MarkerService.Broadcast(data);
     }
 
+    void CompleteActiveObjective()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        m_ActiveRuntime.Completed = true;
+        EndActiveObjective();
+    }
+
     void EndActiveObjective()
     {
         if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
@@ -278,13 +310,14 @@ class EoH_EventObjectiveManager
             m_ActiveRuntime.RewardCrate.Cleanup();
 
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_" + cfg.Id);
+        EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
 
         EoH_Notifications.SendToAll(
             "WEEKEND EVENT",
-            cfg.DisplayName + " has gone silent."
+            cfg.DisplayName + " has gone silent. Intel channels are open again."
         );
 
-        Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id);
+        Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id + " intelAvailable=true");
 
         m_ActiveRuntime = null;
     }
