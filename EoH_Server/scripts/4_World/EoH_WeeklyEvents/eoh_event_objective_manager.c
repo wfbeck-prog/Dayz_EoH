@@ -136,10 +136,8 @@ class EoH_EventObjectiveManager
 
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
 
-        EoH_Notifications.SendToAll(
-            "RELAY ONLINE",
-            cfg.DisplayName + " has been restored. Hostile contact is moving toward the signal."
-        );
+        string relayMsg = cfg.DisplayName + " has been restored. Hostile contact is moving toward the signal.";
+        EoH_Notifications.SendToAll("RELAY ONLINE", relayMsg);
 
         if (player && player.GetIdentity())
             Print("[EoH_EventObjectives] Relay repaired id=" + cfg.Id + " player=" + player.GetIdentity().GetName());
@@ -247,10 +245,8 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardCrate.MarkUnlocked();
         m_ActiveRuntime.RewardUnlocked = true;
 
-        EoH_Notifications.SendToAll(
-            "EVENT EXTRACTION",
-            "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable."
-        );
+        string extractionMsg = "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable.";
+        EoH_Notifications.SendToAll("EVENT EXTRACTION", extractionMsg);
 
         Print("[EoH_EventObjectives] Reward crate unlocked id=" + m_ActiveRuntime.Config.Id);
     }
@@ -262,20 +258,13 @@ class EoH_EventObjectiveManager
 
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
 
-        EoH_Notifications.SendToAll(
-            "WEEKEND EVENT",
-            "High-value signal activity detected near " + cfg.DisplayName + ". Field repair required."
-        );
+        string eventMsg = "High-value signal activity detected near " + cfg.DisplayName + ". Field repair required.";
+        EoH_Notifications.SendToAll("WEEKEND EVENT", eventMsg);
 
         if (!cfg.EnableMarker)
             return;
 
-        EoH_MarkerData data = new EoH_MarkerData(
-            "EOH_EVENT_" + cfg.Id,
-            cfg.DisplayName,
-            cfg.Position
-        );
-
+        EoH_MarkerData data = new EoH_MarkerData("EOH_EVENT_" + cfg.Id, cfg.DisplayName, cfg.Position);
         data.Category = "event";
         data.Icon = "Radio";
         data.Is3D = 1;
@@ -312,10 +301,8 @@ class EoH_EventObjectiveManager
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_" + cfg.Id);
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
 
-        EoH_Notifications.SendToAll(
-            "WEEKEND EVENT",
-            cfg.DisplayName + " has gone silent. Intel channels are open again."
-        );
+        string endMsg = cfg.DisplayName + " has gone silent. Intel channels are open again.";
+        EoH_Notifications.SendToAll("WEEKEND EVENT", endMsg);
 
         Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id + " intelAvailable=true");
 
