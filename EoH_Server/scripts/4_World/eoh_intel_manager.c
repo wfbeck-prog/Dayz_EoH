@@ -66,7 +66,7 @@ class EoH_IntelManager
 
         TrackIntelUse(player);
 
-        vector altarPos = "8132.95068359375 492.1257629394531 9093.74609375";
+        vector altarPos = "8132.95068359375 492.1257629394531 9093.74609375".ToVector();
 
         EoH_MarkerData data = new EoH_MarkerData(
             "EOH_EVENT_INTEL_ALTAR_RELAY",
@@ -83,7 +83,7 @@ class EoH_IntelManager
         data.Normalize();
         EoH_MarkerService.Broadcast(data);
 
-        string body = "LOCATION: ALtar Relay Towers\n";
+        string body = "LOCATION: Altar Relay Towers\n";
         body += "GRID SIGNAL: 8132 / 9093\n";
         body += "STATUS: Dormant relay array detected\n\n";
         body += "FIELD REPAIR REQUIREMENTS:\n";
