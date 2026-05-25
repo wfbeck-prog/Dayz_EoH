@@ -23,7 +23,6 @@ class EoH_EventObjectiveManager
 
     void RegisterDefaults()
     {
-        // PRIMARY LIVE EVENT
         EoH_EventObjective altarTowers = new EoH_EventObjective();
         altarTowers.Id = "altar_relay_towers";
         altarTowers.DisplayName = "Altar Relay Towers";
@@ -39,7 +38,6 @@ class EoH_EventObjectiveManager
 
         m_Objectives.Insert(altarTowers);
 
-        // SECONDARY FALLBACK EVENT
         EoH_EventObjective convoy = new EoH_EventObjective();
         convoy.Id = "convoy_blackmountain";
         convoy.DisplayName = "Destroyed Relay Convoy";
@@ -62,9 +60,14 @@ class EoH_EventObjectiveManager
 
     bool StartRandomObjective()
     {
+        return RevealRandomObjectiveOnly();
+    }
+
+    bool RevealRandomObjectiveOnly()
+    {
         if (m_ActiveRuntime && m_ActiveRuntime.Active)
         {
-            Print("[EoH_EventObjectives] Cannot start objective another is already active");
+            Print("[EoH_EventObjectives] Cannot reveal objective another is already active");
             return false;
         }
 
@@ -74,23 +77,69 @@ class EoH_EventObjectiveManager
 
         m_ActiveRuntime = new EoH_EventObjectiveRuntime(obj);
         m_ActiveRuntime.Active = true;
+        m_ActiveRuntime.StartTime = 0;
+        m_ActiveRuntime.LastTickTime = GetGame().GetTime();
+        m_ActiveRuntime.RevealedByIntel = true;
+        m_ActiveRuntime.RewardCrate = null;
+        m_ActiveRuntime.CurrentWave = 0;
+
+        SpawnObjectiveObject();
+        BroadcastObjective();
+
+        Print("[EoH_EventObjectives] Revealed objective id=" + obj.Id + " awaiting field repair pos=" + obj.Position.ToString());
+        return true;
+    }
+
+    bool ActivateObjectiveFromRepair(PlayerBase player)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
+        {
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "No active relay signal is available for repair.");
+            return false;
+        }
+
+        if (m_ActiveRuntime.StartTime > 0)
+        {
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "This relay has already been restored.");
+            return false;
+        }
+
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
         m_ActiveRuntime.StartTime = GetGame().GetTime();
         m_ActiveRuntime.LastTickTime = m_ActiveRuntime.StartTime;
         m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
 
-        SpawnObjectiveObject();
         SpawnRewardCrate();
-        BroadcastObjective();
         EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 1);
         m_ActiveRuntime.CurrentWave = 1;
 
-        Print("[EoH_EventObjectives] Started objective id=" + obj.Id + " pos=" + obj.Position.ToString());
+        EoH_Notifications.SendToAll(
+            "RELAY ONLINE",
+            cfg.DisplayName + " has been restored. Hostile contact is moving toward the signal."
+        );
+
+        if (player && player.GetIdentity())
+            Print("[EoH_EventObjectives] Relay repaired id=" + cfg.Id + " player=" + player.GetIdentity().GetName());
+        else
+            Print("[EoH_EventObjectives] Relay repaired id=" + cfg.Id);
+
         return true;
+    }
+
+    bool IsPlayerNearActiveObjective(PlayerBase player, float radius)
+    {
+        if (!player || !m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
+            return false;
+
+        return vector.Distance(player.GetPosition(), m_ActiveRuntime.Config.Position) <= radius;
     }
 
     void Tick()
     {
         if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
+            return;
+
+        if (m_ActiveRuntime.StartTime <= 0)
             return;
 
         int now = GetGame().GetTime();
@@ -192,7 +241,7 @@ class EoH_EventObjectiveManager
 
         EoH_Notifications.SendToAll(
             "WEEKEND EVENT",
-            "High-value signal activity detected near " + cfg.DisplayName + "."
+            "High-value signal activity detected near " + cfg.DisplayName + ". Field repair required."
         );
 
         if (!cfg.EnableMarker)
