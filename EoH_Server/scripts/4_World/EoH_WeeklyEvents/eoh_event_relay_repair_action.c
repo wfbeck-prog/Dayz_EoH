@@ -25,9 +25,17 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
         return "Repair Relay Tower";
     }
 
+    override bool HasTarget()
+    {
+        return false;
+    }
+
     override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
     {
         if (!player || !player.IsAlive())
+            return false;
+
+        if (!item || item.GetType() != REQUIRED_TRANSCEIVER)
             return false;
 
         EoH_EventObjectiveManager mgr = EoH_EventObjectiveManager.Get();
@@ -52,7 +60,7 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
 
         if (!HasRequiredRepairParts(player))
         {
-            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. A field radio and car battery are required.");
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. Hold a field radio and carry a car battery.");
             return;
         }
 
@@ -155,7 +163,7 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
     }
 }
 
-modded class PlayerBase
+modded class BaseRadio
 {
     override void SetActions()
     {
