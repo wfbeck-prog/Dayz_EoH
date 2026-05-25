@@ -59,6 +59,54 @@ class EoH_IntelManager
         RevealTownIntel(player);
     }
 
+    void RevealWeeklyEventIntel(PlayerBase player)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
+        TrackIntelUse(player);
+
+        vector altarPos = "8132.95068359375 492.1257629394531 9093.74609375";
+
+        EoH_MarkerData data = new EoH_MarkerData(
+            "EOH_EVENT_INTEL_ALTAR_RELAY",
+            "Encrypted Relay Intel: Altar Towers",
+            altarPos
+        );
+
+        data.Category = "event";
+        data.Icon = "Radio";
+        data.Is3D = 1;
+        data.Pulse = 1;
+        data.Color = ARGB(255, 255, 120, 0);
+        data.BaseColor = data.Color;
+        data.Normalize();
+        EoH_MarkerService.Broadcast(data);
+
+        string body = "LOCATION: ALtar Relay Towers\n";
+        body += "GRID SIGNAL: 8132 / 9093\n";
+        body += "STATUS: Dormant relay array detected\n\n";
+        body += "FIELD REPAIR REQUIREMENTS:\n";
+        body += "- Field Transceiver\n";
+        body += "- Car Battery\n\n";
+        body += "OPERATION NOTES:\n";
+        body += "The tower is not transmitting. A survivor team must carry the required equipment to the relay site and complete a field repair before the signal can be restored.\n\n";
+        body += "WARNING:\n";
+        body += "Once the relay comes online, hostile contact is expected. Initial scout movement may be followed by heavier reinforcements. Do not approach alone. Bring medical supplies and an exit plan.\n\n";
+        body += "OBJECTIVE:\n";
+        body += "Repair the relay array, hold the site through hostile escalation, and secure the field cache when it becomes vulnerable.";
+
+        EoH_FieldReportData report = new EoH_FieldReportData();
+        report.Title = "ALTAR RELAY INTERCEPT";
+        report.Subtitle = "Echoes of Humanity Signal Recovery";
+        report.Body = body;
+
+        EoH_FieldReportService.OpenForPlayer(player, report);
+        EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "Altar Relay Towers marked. Bring a Field Transceiver and Car Battery.");
+
+        Print("[EoH_Intel] Weekly event intel revealed altar relay player=" + player.GetIdentity().GetName());
+    }
+
     void RevealTownIntel(PlayerBase player)
     {
         if (!s_ManualTownIntelAllowed)
