@@ -31,15 +31,24 @@ class ActionUseIntel: ActionSingleUseBase
 
         PlayerBase player = action_data.m_Player;
         ItemBase intel = action_data.m_MainItem;
-
         string type = intel.GetType();
+
+        bool isEventIntel = (type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel");
+        EoH_EventObjectiveManager eventMgr = EoH_EventObjectiveManager.Get();
+
+        if (!isEventIntel && eventMgr && !eventMgr.IsIntelAvailable())
+        {
+            EoH_Notifications.SendToPlayer(player, "INTEL LOCKED", "Intel channels are locked while an EoH weekend operation is active.");
+            Print("[EoH_Intel][BLOCKED] Non-event intel blocked by active weekly event type=" + type + " player=" + player.GetIdentity().GetName());
+            return;
+        }
 
         if (type == "EoH_TraderIntel")
         {
             EoH_IntelManager.Get().RevealTraderIntel(player);
             Print("[EoH_Intel] Manual trader intel used player=" + player.GetIdentity().GetName());
         }
-        else if (type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel")
+        else if (isEventIntel)
         {
             EoH_IntelManager.Get().RevealWeeklyEventIntel(player);
             Print("[EoH_Intel] Manual weekly event intel used player=" + player.GetIdentity().GetName());
