@@ -59,37 +59,37 @@ class EoH_IntelManager
         RevealTownIntel(player);
     }
 
-    vector GetAltarRelayIntelPosition()
-    {
-        vector pos;
-        pos[0] = 8132.95068359375;
-        pos[1] = 492.1257629394531;
-        pos[2] = 9093.74609375;
-        return pos;
-    }
-
     void RevealWeeklyEventIntel(PlayerBase player)
     {
         if (!player || !player.GetIdentity())
             return;
 
-        TrackIntelUse(player);
+        EoH_EventObjectiveManager eventMgr = EoH_EventObjectiveManager.Get();
+        if (!eventMgr)
+            return;
 
-        EoH_MarkerData data = new EoH_MarkerData("EOH_EVENT_INTEL_ALTAR_RELAY", "Encrypted Relay Intel: Altar Towers", GetAltarRelayIntelPosition());
-        data.Category = "event";
-        data.Icon = "Radio";
-        data.Is3D = 1;
-        data.Pulse = 1;
-        data.Color = ARGB(255, 255, 120, 0);
-        data.BaseColor = data.Color;
-        data.Normalize();
-        EoH_MarkerService.Broadcast(data);
+        if (!eventMgr.IsIntelAvailable())
+        {
+            EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "Another EoH weekend operation is already active.");
+            Print("[EoH_Intel][BLOCKED] Weekly event intel blocked active objective player=" + player.GetIdentity().GetName());
+            return;
+        }
+
+        bool revealed = eventMgr.RevealRandomObjectiveOnly();
+        if (!revealed)
+        {
+            EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "No dormant relay signal could be decoded.");
+            Print("[EoH_Intel][BLOCKED] Weekly event intel failed to reveal objective player=" + player.GetIdentity().GetName());
+            return;
+        }
+
+        TrackIntelUse(player);
 
         string body = "LOCATION: Altar Relay Towers\n";
         body += "GRID SIGNAL: 8132 / 9093\n";
         body += "STATUS: Dormant relay array detected\n\n";
         body += "FIELD REPAIR REQUIREMENTS:\n";
-        body += "- Field Transceiver\n";
+        body += "- Field Radio\n";
         body += "- Car Battery\n\n";
         body += "OPERATION NOTES:\n";
         body += "The tower is not transmitting. A survivor team must carry the required equipment to the relay site and complete a field repair before the signal can be restored.\n\n";
@@ -104,7 +104,7 @@ class EoH_IntelManager
         report.Body = body;
 
         EoH_FieldReportService.OpenForPlayer(player, report);
-        EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "Altar Relay Towers marked. Bring a Field Transceiver and Car Battery.");
+        EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "Altar Relay Towers marked. Bring a field radio and car battery.");
 
         Print("[EoH_Intel] Weekly event intel revealed altar relay player=" + player.GetIdentity().GetName());
     }
