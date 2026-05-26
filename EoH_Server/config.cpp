@@ -7,6 +7,7 @@ class CfgPatches
             "EoH_CaptureRelay_Base",
             "EoH_RadioRelay",
             "EoH_RelayRepairTerminal",
+            "EoH_RelayRepairActionAnchor",
             "EoH_Intel_Document",
             "EoH_TownIntel",
             "EoH_TraderIntel",
@@ -92,6 +93,7 @@ class CfgVehicles
     class Radio;
     class ItemBook;
     class bldr_prop_BaseRadio;
+    class Inventory_Base;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
@@ -114,6 +116,16 @@ class CfgVehicles
         scope = 2;
         displayName = "EoH Relay Repair Terminal";
         descriptionShort = "A damaged relay terminal used to restore the Altar tower network.";
+    };
+
+    class EoH_RelayRepairActionAnchor: Inventory_Base
+    {
+        scope = 2;
+        displayName = "Relay Repair Interface";
+        descriptionShort = "Hidden EoH interaction anchor for the Altar relay terminal.";
+        model = "\dz\gear\radio\unitra_wilga.p3d";
+        weight = 100000;
+        itemSize[] = {10,10};
     };
 
     class EoH_Intel_Document: ItemBook
