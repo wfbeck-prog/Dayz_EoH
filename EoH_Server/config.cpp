@@ -114,7 +114,6 @@ class CfgVehicles
         scope = 2;
         displayName = "EoH Relay Repair Terminal";
         descriptionShort = "A damaged relay terminal used to restore the Altar tower network.";
-        model = "\dz\gear\radio\unitra_wilga.p3d";
     };
 
     class EoH_Intel_Document: ItemBook
