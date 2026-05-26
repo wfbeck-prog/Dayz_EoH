@@ -30,19 +30,11 @@ class EoH_LiveAdvisorPerformance
         if (EoH_LiveAdvisorLogger.m_Config.LogPerformanceSamples)
         {
             string sampleMessage = "FPS=" + fps.ToString() + " Players=" + players.ToString() + " Timeslice=" + timeslice.ToString();
-
-            EoH_LiveAdvisorLogger.Log(
-                "PERFORMANCE_SAMPLE",
-                sampleMessage,
-                "info",
-                "EoH_Performance"
-            );
+            EoH_LiveAdvisorLogger.Log("PERFORMANCE_SAMPLE", sampleMessage, "info", "EoH_Performance");
         }
 
-        EoH_LiveAdvisorActivity.LogActivity(
-            "performance_monitor",
-            "FPS=" + fps.ToString() + " Players=" + players.ToString()
-        );
+        string activityMessage = "FPS=" + fps.ToString() + " Players=" + players.ToString();
+        EoH_LiveAdvisorActivity.LogActivity("performance_monitor", activityMessage);
 
         float now = GetGame().GetTime() / 1000.0;
         float cooldown = EoH_LiveAdvisorLogger.m_Config.PerformanceWarningCooldownSeconds;
