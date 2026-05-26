@@ -6,6 +6,7 @@ class CfgPatches
         {
             "EoH_CaptureRelay_Base",
             "EoH_RadioRelay",
+            "EoH_RelayRepairTerminal",
             "EoH_Intel_Document",
             "EoH_TownIntel",
             "EoH_TraderIntel",
@@ -105,6 +106,16 @@ class CfgVehicles
         scope = 2;
         displayName = "EoH Radio Relay";
         descriptionShort = "A modified radio used to broadcast nearby town intel.";
+    };
+
+    class EoH_RelayRepairTerminal: Radio
+    {
+        scope = 2;
+        displayName = "EoH Relay Repair Terminal";
+        descriptionShort = "A damaged relay terminal used to restore the Altar tower network.";
+        model = "\dz\gear\radio\unitra_wilga.p3d";
+        weight = 10000;
+        itemSize[] = {4,3};
     };
 
     class EoH_Intel_Document: ItemBook
