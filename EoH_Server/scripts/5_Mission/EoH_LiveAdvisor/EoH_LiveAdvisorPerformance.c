@@ -1,6 +1,7 @@
 class EoH_LiveAdvisorPerformance
 {
     protected static float m_LastPerformanceWarningTime;
+    protected static float m_SampleTimer;
 
     static void CheckServerPerformance(float timeslice)
     {
@@ -9,6 +10,13 @@ class EoH_LiveAdvisorPerformance
 
         if (!EoH_LiveAdvisorLogger.m_Config.EnablePerformanceMonitor)
             return;
+
+        m_SampleTimer += timeslice;
+
+        if (m_SampleTimer < EoH_LiveAdvisorLogger.m_Config.PerformanceSampleSeconds)
+            return;
+
+        m_SampleTimer = 0;
 
         float fps = 0;
 
@@ -29,20 +37,9 @@ class EoH_LiveAdvisorPerformance
         {
             m_LastPerformanceWarningTime = now;
 
-            string criticalMessage = string.Format(
-                "CRITICAL server FPS detected. FPS=%1 Timeslice=%2 ActivePlayers=%3",
-                fps.ToString(),
-                timeslice.ToString(),
-                EoH_GetPlayerCount().ToString()
-            );
+            string criticalMessage = "CRITICAL server FPS detected. FPS=" + fps.ToString() + " Timeslice=" + timeslice.ToString() + " ActivePlayers=" + EoH_GetPlayerCount().ToString();
 
-            EoH_LiveAdvisorLogger.Log(
-                "SERVER_FPS_CRITICAL",
-                criticalMessage,
-                "critical",
-                "EoH_Performance"
-            );
-
+            EoH_LiveAdvisorLogger.Log("SERVER_FPS_CRITICAL", criticalMessage, "critical", "EoH_Performance");
             return;
         }
 
@@ -50,19 +47,9 @@ class EoH_LiveAdvisorPerformance
         {
             m_LastPerformanceWarningTime = now;
 
-            string warningMessage = string.Format(
-                "Low server FPS detected. FPS=%1 Timeslice=%2 ActivePlayers=%3",
-                fps.ToString(),
-                timeslice.ToString(),
-                EoH_GetPlayerCount().ToString()
-            );
+            string warningMessage = "Low server FPS detected. FPS=" + fps.ToString() + " Timeslice=" + timeslice.ToString() + " ActivePlayers=" + EoH_GetPlayerCount().ToString();
 
-            EoH_LiveAdvisorLogger.Log(
-                "SERVER_FPS_WARNING",
-                warningMessage,
-                "warning",
-                "EoH_Performance"
-            );
+            EoH_LiveAdvisorLogger.Log("SERVER_FPS_WARNING", warningMessage, "warning", "EoH_Performance");
         }
     }
 
