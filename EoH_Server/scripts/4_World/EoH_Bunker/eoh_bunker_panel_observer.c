@@ -27,8 +27,10 @@ class EoH_BunkerPanelObserver
         m_CheckTimer = 0;
         m_Started = false;
 
-        // EoH bunker panel/loot-room area. Add more panel positions here if needed.
-        m_PanelPositions.Insert("13267.886719 19.423756 6073.476563".ToVector());
+        // Confirmed underground panel from in-game editor/COT object inspection.
+        // Object: Land_Underground_Panel
+        // Position: X 13314.428, Y 10.465, Z 6118.481
+        m_PanelPositions.Insert("13314.428 10.465 6118.481".ToVector());
         m_LastPanelTypes.Insert("");
         m_LastMissingPanelAdvisorTimes.Insert(0);
     }
@@ -64,7 +66,7 @@ class EoH_BunkerPanelObserver
                 continue;
 
             vector pos = m_PanelPositions.Get(i);
-            Object panel = FindPanelNear(pos, 8.0);
+            Object panel = FindPanelNear(pos, 12.0);
 
             if (!panel)
             {
