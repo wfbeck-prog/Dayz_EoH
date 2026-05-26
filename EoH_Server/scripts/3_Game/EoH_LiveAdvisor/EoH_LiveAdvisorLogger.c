@@ -13,16 +13,18 @@ class EoH_LiveAdvisorLogger
         MakeDirectory("$profile:EoH");
         MakeDirectory(PROFILE_FOLDER);
 
+        m_Config = new EoH_LiveAdvisorConfig();
+        m_Config.Defaults();
+
         if (!FileExist(SETTINGS_FILE))
         {
-            m_Config = new EoH_LiveAdvisorConfig();
-            m_Config.Defaults();
             JsonFileLoader<EoH_LiveAdvisorConfig>.JsonSaveFile(SETTINGS_FILE, m_Config);
         }
         else
         {
-            m_Config = new EoH_LiveAdvisorConfig();
             JsonFileLoader<EoH_LiveAdvisorConfig>.JsonLoadFile(SETTINGS_FILE, m_Config);
+            ValidateConfig();
+            JsonFileLoader<EoH_LiveAdvisorConfig>.JsonSaveFile(SETTINGS_FILE, m_Config);
         }
 
         if (!m_RecentEvents)
@@ -31,10 +33,46 @@ class EoH_LiveAdvisorLogger
         }
 
         Log("SERVER_START", "EoH Live Advisor initialized", "info");
+        Log("SELF_TEST", "Live Advisor file logging and report generation are online", "info");
+    }
+
+    static void ValidateConfig()
+    {
+        if (!m_Config)
+        {
+            m_Config = new EoH_LiveAdvisorConfig();
+            m_Config.Defaults();
+            return;
+        }
+
+        if (m_Config.ConfigVersion < 2)
+        {
+            m_Config.ConfigVersion = 2;
+        }
+
+        if (m_Config.ServerName == "")
+        {
+            m_Config.ServerName = "Echoes of Humanity Hardcore";
+        }
+
+        if (m_Config.HeartbeatSeconds < 60)
+        {
+            m_Config.HeartbeatSeconds = 60;
+        }
+
+        if (m_Config.MaxReportLines < 25)
+        {
+            m_Config.MaxReportLines = 75;
+        }
     }
 
     static void Log(string type, string message, string severity = "info", string source = "EoH_Server")
     {
+        if (m_Config && !m_Config.Enabled)
+        {
+            return;
+        }
+
         string line;
         line = string.Format("[%1] [%2] [%3] %4", severity, source, type, message);
 
@@ -83,12 +121,17 @@ class EoH_LiveAdvisorLogger
         FPrintln(report, "=== Echoes of Humanity Live Advisor Report ===");
         FPrintln(report, "Server: " + m_Config.ServerName);
         FPrintln(report, "Mode: Advisor Only");
+        FPrintln(report, "ConfigVersion: " + m_Config.ConfigVersion.ToString());
+        FPrintln(report, "MaxReportLines: " + m_Config.MaxReportLines.ToString());
         FPrintln(report, " ");
 
         foreach (string line : m_RecentEvents)
         {
             FPrintln(report, line);
         }
+
+        FPrintln(report, " ");
+        FPrintln(report, "Copy this full report into ChatGPT for EoH Live Advisor analysis.");
 
         CloseFile(report);
     }
