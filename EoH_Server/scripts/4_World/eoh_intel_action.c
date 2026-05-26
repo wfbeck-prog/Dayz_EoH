@@ -38,7 +38,7 @@ class ActionUseIntel: ActionSingleUseBase
 
         if (!isEventIntel && eventMgr && !eventMgr.IsIntelAvailable())
         {
-            EoH_Notifications.SendToPlayer(player, "INTEL LOCKED", "Intel channels are locked while an EoH weekend operation is active.");
+            EoH_Notifications.SendToPlayer(player, "INTEL CHANNELS DOWN", "The relay network is dark. Restore the tower terminal before decoding more field intel.");
             Print("[EoH_Intel][BLOCKED] Non-event intel blocked by active weekly event type=" + type + " player=" + player.GetIdentity().GetName());
             return;
         }
