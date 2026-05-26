@@ -91,6 +91,7 @@ class CfgVehicles
 {
     class Radio;
     class ItemBook;
+    class bldr_prop_BaseRadio;
     class ExpansionTraderMirek;
     class ExpansionTraderBoris;
 
@@ -108,14 +109,12 @@ class CfgVehicles
         descriptionShort = "A modified radio used to broadcast nearby town intel.";
     };
 
-    class EoH_RelayRepairTerminal: Radio
+    class EoH_RelayRepairTerminal: bldr_prop_BaseRadio
     {
         scope = 2;
         displayName = "EoH Relay Repair Terminal";
         descriptionShort = "A damaged relay terminal used to restore the Altar tower network.";
         model = "\dz\gear\radio\unitra_wilga.p3d";
-        weight = 10000;
-        itemSize[] = {4,3};
     };
 
     class EoH_Intel_Document: ItemBook
