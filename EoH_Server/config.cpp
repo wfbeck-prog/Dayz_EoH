@@ -8,6 +8,7 @@ class CfgPatches
             "EoH_RadioRelay",
             "EoH_RelayRepairTerminal",
             "EoH_RelayRepairActionAnchor",
+            "EoH_RelayRepairNode",
             "EoH_Intel_Document",
             "EoH_TownIntel",
             "EoH_TraderIntel",
@@ -109,6 +110,13 @@ class CfgVehicles
         scope = 2;
         displayName = "EoH Radio Relay";
         descriptionShort = "A modified radio used to broadcast nearby town intel.";
+    };
+
+    class EoH_RelayRepairNode: EoH_CaptureRelay_Base
+    {
+        scope = 2;
+        displayName = "EoH Relay Repair Node";
+        descriptionShort = "A hidden relay interface used to restore the Altar tower terminal.";
     };
 
     class EoH_RelayRepairTerminal: bldr_prop_BaseRadio
