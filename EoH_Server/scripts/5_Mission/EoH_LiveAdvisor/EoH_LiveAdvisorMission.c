@@ -1,7 +1,5 @@
 modded class MissionServer
 {
-    protected ref Timer m_EoHLiveAdvisorHeartbeatTimer;
-
     override void OnInit()
     {
         super.OnInit();
@@ -25,8 +23,7 @@ modded class MissionServer
             heartbeatSeconds = 60;
         }
 
-        m_EoHLiveAdvisorHeartbeatTimer = new Timer(CALL_CATEGORY_SYSTEM);
-        m_EoHLiveAdvisorHeartbeatTimer.Run(heartbeatSeconds, this, "EoH_WriteLiveAdvisorHeartbeat", NULL, true);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(EoH_WriteLiveAdvisorHeartbeat, heartbeatSeconds * 1000, true);
     }
 
     void EoH_WriteLiveAdvisorHeartbeat()
