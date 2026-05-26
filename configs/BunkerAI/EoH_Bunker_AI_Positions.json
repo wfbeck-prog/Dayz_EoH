@@ -1,10 +1,11 @@
 {
-    "ConfigVersion": 2,
-    "Name": "EoH Bunker AI Bandits Positions",
+    "ConfigVersion": 3,
+    "Name": "EoH Bunker Expansion AI Positions",
     "Notes": [
         "These are bunker AI placement positions provided for the EoH bunker.",
-        "Active AI system direction: AI Bandits / AIB_Unleashed.",
-        "Convert these positions into the active AI Bandits/AIB_Unleashed spawn configuration format used by the server."
+        "Active AI system direction: DayZ Expansion AI.",
+        "AI Bandits / AIB_Unleashed is deprecated for bunker defenders because testing showed unarmed and unkillable AI behavior.",
+        "Use these positions as the source of truth for Expansion AI bunker patrol/static spawn conversion."
     ],
     "BunkerAIPositions": [
         {
@@ -20,9 +21,9 @@
                 0.0
             ],
             "role": "Upper bunker overwatch / guard",
-            "recommendedLoadout": "Tier4_Bunker_Bandit",
-            "recommendedFaction": "AIB_BunkerHostile",
-            "aiSystem": "AI Bandits / AIB_Unleashed"
+            "recommendedLoadout": "EoH_AI_HighValue_Hard",
+            "recommendedFaction": "West",
+            "aiSystem": "DayZ Expansion AI"
         },
         {
             "name": "EoH_Bunker_AI_Lower_Guard_01",
@@ -37,22 +38,23 @@
                 0.0
             ],
             "role": "Lower bunker interior guard",
-            "recommendedLoadout": "Tier4_Bunker_Bandit",
-            "recommendedFaction": "AIB_BunkerHostile",
-            "aiSystem": "AI Bandits / AIB_Unleashed"
+            "recommendedLoadout": "EoH_AI_HighValue_Hard",
+            "recommendedFaction": "West",
+            "aiSystem": "DayZ Expansion AI"
         }
     ],
     "RecommendedBehavior": {
-        "spawnMode": "AI_Bandits_static_or_triggered_on_bunker_open",
+        "spawnMode": "Expansion_AI_static_or_triggered_on_bunker_open",
         "respawn": false,
         "despawnOnRestart": true,
         "difficulty": "hard",
         "notes": [
-            "Use AI Bandits / AIB_Unleashed for these bunker defenders.",
-            "Do not use trader guard logic for bunker AI.",
-            "These AI should be killable and hostile.",
-            "Preferred EoH behavior: spawn/activate bunker bandits when the punchcard panel is opened, then pair it with the global bunker alert.",
-            "Fallback behavior: static bunker bandits placed at these coordinates if triggered spawning is not supported by the active AI Bandits config."
+            "Use DayZ Expansion AI for bunker defenders.",
+            "Do not use AI Bandits / AIB_Unleashed for EoH bunker defenders.",
+            "Bunker AI must be armed, hostile, and killable.",
+            "Preferred EoH behavior: spawn or activate bunker defenders when the punchcard panel is opened, then pair it with the global bunker alert.",
+            "Fallback behavior: static Expansion AI bunker defenders placed at these coordinates if triggered spawning is not available yet.",
+            "Recommended loadout baseline: EoH_AI_HighValue_Hard or a dedicated EoH_Bunker_Elite loadout."
         ]
     }
 }
