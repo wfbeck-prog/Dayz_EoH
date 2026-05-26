@@ -16,15 +16,7 @@ class EoH_RelayRepairTerminal : Radio
     }
 }
 
-class EoH_ActionRepairEventRelayCB : ActionContinuousBaseCB
-{
-    override void CreateActionComponent()
-    {
-        m_ActionData.m_ActionComponent = new CAContinuousTime(12.0);
-    }
-}
-
-class EoH_ActionRepairEventRelay : ActionContinuousBase
+class EoH_ActionRepairEventRelay : ActionInteractBase
 {
     static const float REPAIR_RADIUS = 35.0;
     static const string REQUIRED_TRANSCEIVER = "BaseRadio";
@@ -32,20 +24,13 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
 
     void EoH_ActionRepairEventRelay()
     {
-        m_CallbackClass = EoH_ActionRepairEventRelayCB;
-        m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_INTERACT;
-        m_FullBody = true;
-        m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT;
+        m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_INTERACTONCE;
+        m_StanceMask = DayZPlayerConstants.STANCEMASK_ALL;
     }
 
     override string GetText()
     {
         return "Repair Tower Terminal";
-    }
-
-    override bool HasTarget()
-    {
-        return true;
     }
 
     override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
@@ -57,7 +42,11 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
             return false;
 
         Object targetObj = target.GetObject();
-        if (!targetObj || targetObj.GetType() != "EoH_RelayRepairTerminal")
+        if (!targetObj)
+            return false;
+
+        string type = targetObj.GetType();
+        if (type != "EoH_RelayRepairTerminal" && type != "EoH_RelayRepairActionAnchor")
             return false;
 
         EoH_EventObjectiveManager mgr = EoH_EventObjectiveManager.Get();
@@ -73,23 +62,58 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
         return true;
     }
 
-    override void OnFinishProgressServer(ActionData action_data)
+    override void OnStartServer(ActionData action_data)
+    {
+        EoH_HandleRelayRepair(action_data, "OnStartServer");
+    }
+
+    override void OnExecuteServer(ActionData action_data)
+    {
+        EoH_HandleRelayRepair(action_data, "OnExecuteServer");
+    }
+
+    void EoH_HandleRelayRepair(ActionData action_data, string source)
     {
         if (!action_data || !action_data.m_Player)
             return;
 
         PlayerBase player = action_data.m_Player;
 
-        if (!HasRequiredRepairParts(player))
+        if (!action_data.m_Target || !action_data.m_Target.GetObject())
         {
-            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. A Field Transceiver and car battery are required.");
+            Print("[EoH_EventRepair][DEBUG] " + source + " failed no target player=" + player.GetIdentity().GetName());
             return;
         }
 
+        Object targetObj = action_data.m_Target.GetObject();
+        string targetType = targetObj.GetType();
+        Print("[EoH_EventRepair][DEBUG] " + source + " clicked by " + player.GetIdentity().GetName() + " targetType=" + targetType + " pos=" + targetObj.GetPosition().ToString());
+
+        if (targetType != "EoH_RelayRepairTerminal" && targetType != "EoH_RelayRepairActionAnchor")
+            return;
+
         EoH_EventObjectiveManager mgr = EoH_EventObjectiveManager.Get();
-        if (!mgr || !mgr.IsPlayerNearActiveObjective(player, REPAIR_RADIUS))
+        if (!mgr || !mgr.HasActiveObjective())
+        {
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "No active tower signal is available for repair.");
+            return;
+        }
+
+        if (mgr.IsObjectiveCombatStarted())
+        {
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "The tower terminal has already been restored.");
+            return;
+        }
+
+        if (!mgr.IsPlayerNearActiveObjective(player, REPAIR_RADIUS))
         {
             EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "You are too far from the tower terminal.");
+            return;
+        }
+
+        if (!HasRequiredRepairParts(player))
+        {
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. A Field Transceiver and car battery are required.");
             return;
         }
 
@@ -182,14 +206,5 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
         }
 
         return false;
-    }
-}
-
-modded class PlayerBase
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(EoH_ActionRepairEventRelay);
     }
 }
