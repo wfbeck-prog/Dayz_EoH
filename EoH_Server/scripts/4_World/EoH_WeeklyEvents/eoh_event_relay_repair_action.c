@@ -16,6 +16,11 @@ class EoH_RelayRepairTerminal : Radio
     }
 }
 
+bool EoH_IsRelayRepairObject(string type)
+{
+    return type == "EoH_RelayRepairNode" || type == "EoH_RelayRepairTerminal" || type == "EoH_RelayRepairActionAnchor";
+}
+
 class EoH_ActionRepairEventRelay : ActionInteractBase
 {
     static const float REPAIR_RADIUS = 35.0;
@@ -46,7 +51,7 @@ class EoH_ActionRepairEventRelay : ActionInteractBase
             return false;
 
         string type = targetObj.GetType();
-        if (type != "EoH_RelayRepairTerminal" && type != "EoH_RelayRepairActionAnchor")
+        if (!EoH_IsRelayRepairObject(type))
             return false;
 
         EoH_EventObjectiveManager mgr = EoH_EventObjectiveManager.Get();
@@ -89,7 +94,7 @@ class EoH_ActionRepairEventRelay : ActionInteractBase
         string targetType = targetObj.GetType();
         Print("[EoH_EventRepair][DEBUG] " + source + " clicked by " + player.GetIdentity().GetName() + " targetType=" + targetType + " pos=" + targetObj.GetPosition().ToString());
 
-        if (targetType != "EoH_RelayRepairTerminal" && targetType != "EoH_RelayRepairActionAnchor")
+        if (!EoH_IsRelayRepairObject(targetType))
             return;
 
         EoH_EventObjectiveManager mgr = EoH_EventObjectiveManager.Get();
