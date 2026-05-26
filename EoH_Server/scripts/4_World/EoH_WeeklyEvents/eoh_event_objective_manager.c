@@ -132,6 +132,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
 
         SpawnRewardCrate();
+        SpawnEventSmoke(cfg.Position, "M18SmokeGrenade_Red");
         EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 1);
         m_ActiveRuntime.CurrentWave = 1;
 
@@ -230,6 +231,27 @@ class EoH_EventObjectiveManager
         Print("[EoH_EventObjectives] Reward crate staged id=" + cfg.Id + " pos=" + cratePos.ToString());
     }
 
+    void SpawnEventSmoke(vector pos, string smokeType)
+    {
+        if (smokeType == "")
+            smokeType = "M18SmokeGrenade_Green";
+
+        vector smokePos = pos;
+        smokePos[1] = GetGame().SurfaceY(pos[0], pos[2]);
+
+        SmokeGrenadeBase smoke = SmokeGrenadeBase.Cast(GetGame().CreateObjectEx(smokeType, smokePos, ECE_PLACE_ON_SURFACE));
+        if (!smoke)
+        {
+            Print("[EoH_EventObjectives][WARN] Failed spawning smoke type=" + smokeType + " pos=" + smokePos.ToString());
+            return;
+        }
+
+        if (smoke.GetCompEM() && smoke.GetCompEM().CanWork())
+            smoke.GetCompEM().SwitchOn();
+
+        Print("[EoH_EventObjectives] Spawned event smoke type=" + smokeType + " pos=" + smokePos.ToString());
+    }
+
     void TickRewardCrate()
     {
         if (!m_ActiveRuntime || !m_ActiveRuntime.RewardCrate)
@@ -240,6 +262,8 @@ class EoH_EventObjectiveManager
 
         m_ActiveRuntime.RewardCrate.MarkUnlocked();
         m_ActiveRuntime.RewardUnlocked = true;
+
+        SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
 
         string extractionMsg = "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable.";
         EoH_Notifications.SendToAll("EVENT EXTRACTION", extractionMsg);
