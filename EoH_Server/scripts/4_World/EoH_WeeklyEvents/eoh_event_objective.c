@@ -8,9 +8,12 @@ class EoH_EventObjective
     int RecommendedPlayers;
     int LootTier;
     bool EnableAIBandits;
+    bool EnableExpansionAI;
     bool EnableInfected;
     bool EnableMarker;
     bool EnableSmoke;
+    int DurationMinutes;
+    float Radius;
 
     void EoH_EventObjective()
     {
@@ -21,10 +24,13 @@ class EoH_EventObjective
         SpawnObject = "";
         RecommendedPlayers = 4;
         LootTier = 1;
-        EnableAIBandits = true;
+        EnableAIBandits = false;
+        EnableExpansionAI = true;
         EnableInfected = true;
         EnableMarker = true;
         EnableSmoke = true;
+        DurationMinutes = 60;
+        Radius = 250.0;
     }
 }
 
