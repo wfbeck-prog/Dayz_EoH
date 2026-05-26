@@ -4,14 +4,24 @@ modded class MissionServer
     {
         super.OnInit();
 
-        EoH_BunkerPanelObserver.Get().Start();
-        Print("[EoH_BunkerObserver] MissionServer OnInit hook registered");
+        if (EoH_LiveAdvisorLogger.m_Config && EoH_LiveAdvisorLogger.m_Config.EnableBunkerPanelObserver)
+        {
+            EoH_BunkerPanelObserver.Get().Start();
+            Print("[EoH_BunkerObserver] MissionServer OnInit hook registered");
+        }
+        else
+        {
+            Print("[EoH_BunkerObserver] Observer disabled in Live Advisor config");
+        }
     }
 
     override void OnUpdate(float timeslice)
     {
         super.OnUpdate(timeslice);
 
-        EoH_BunkerPanelObserver.Get().Update(timeslice);
+        if (EoH_LiveAdvisorLogger.m_Config && EoH_LiveAdvisorLogger.m_Config.EnableBunkerPanelObserver)
+        {
+            EoH_BunkerPanelObserver.Get().Update(timeslice);
+        }
     }
 }
