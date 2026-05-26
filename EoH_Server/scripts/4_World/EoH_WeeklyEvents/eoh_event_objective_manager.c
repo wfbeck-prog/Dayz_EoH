@@ -52,12 +52,33 @@ class EoH_EventObjectiveManager
         altarTowers.SpawnObject = "Land_Tisy_Radar";
         altarTowers.RecommendedPlayers = 8;
         altarTowers.LootTier = 4;
-        altarTowers.EnableAIBandits = true;
+        altarTowers.EnableAIBandits = false;
+        altarTowers.EnableExpansionAI = true;
         altarTowers.EnableInfected = true;
         altarTowers.EnableMarker = true;
         altarTowers.EnableSmoke = false;
+        altarTowers.DurationMinutes = 60;
+        altarTowers.Radius = 250.0;
 
         m_Objectives.Insert(altarTowers);
+
+        EoH_EventObjective purgeNight = new EoH_EventObjective();
+        purgeNight.Id = "purge_night_novy_stary";
+        purgeNight.DisplayName = "Purge Night: Central Corridor";
+        purgeNight.Position = "6600 300 7700";
+        purgeNight.ObjectiveType = "purge_night";
+        purgeNight.SpawnObject = "";
+        purgeNight.RecommendedPlayers = 12;
+        purgeNight.LootTier = 4;
+        purgeNight.EnableAIBandits = false;
+        purgeNight.EnableExpansionAI = true;
+        purgeNight.EnableInfected = true;
+        purgeNight.EnableMarker = true;
+        purgeNight.EnableSmoke = true;
+        purgeNight.DurationMinutes = 60;
+        purgeNight.Radius = 500.0;
+
+        m_Objectives.Insert(purgeNight);
 
         EoH_EventObjective convoy = new EoH_EventObjective();
         convoy.Id = "convoy_blackmountain";
@@ -67,7 +88,11 @@ class EoH_EventObjectiveManager
         convoy.SpawnObject = "Land_Wreck_Ural";
         convoy.RecommendedPlayers = 4;
         convoy.LootTier = 3;
+        convoy.EnableAIBandits = false;
+        convoy.EnableExpansionAI = true;
         convoy.EnableSmoke = false;
+        convoy.DurationMinutes = 60;
+        convoy.Radius = 250.0;
 
         m_Objectives.Insert(convoy);
     }
@@ -105,11 +130,37 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardCrate = null;
         m_ActiveRuntime.CurrentWave = 0;
 
-        SpawnObjectiveObject();
+        if (obj.ObjectiveType == "purge_night")
+            StartPurgeNightRuntime();
+        else
+        {
+            SpawnObjectiveObject();
+            BroadcastObjective();
+        }
+
+        Print("[EoH_EventObjectives] Revealed objective id=" + obj.Id + " type=" + obj.ObjectiveType + " pos=" + obj.Position.ToString());
+        return true;
+    }
+
+    void StartPurgeNightRuntime()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        m_ActiveRuntime.StartTime = GetGame().GetTime();
+        m_ActiveRuntime.LastTickTime = m_ActiveRuntime.StartTime;
+        m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
+        m_ActiveRuntime.CurrentWave = 0;
+
+        SpawnRewardCrate();
+
+        string msg = "Red Ledger purge traffic intercepted. The marked corridor is blacked out for " + cfg.DurationMinutes.ToString() + " minutes. Survivors entering the zone are on their own.";
+        EoH_Notifications.SendToAll("PURGE NIGHT", msg);
+
         BroadcastObjective();
 
-        Print("[EoH_EventObjectives] Revealed objective id=" + obj.Id + " awaiting field repair pos=" + obj.Position.ToString());
-        return true;
+        Print("[EoH_PurgeNight] Started id=" + cfg.Id + " durationMinutes=" + cfg.DurationMinutes.ToString() + " radius=" + cfg.Radius.ToString());
     }
 
     bool ActivateObjectiveFromRepair(PlayerBase player)
@@ -170,8 +221,69 @@ class EoH_EventObjectiveManager
             return;
 
         m_ActiveRuntime.LastTickTime = now;
-        TickWaves(now);
-        TickRewardCrate();
+
+        if (m_ActiveRuntime.Config.ObjectiveType == "purge_night")
+            TickPurgeNight(now);
+        else
+        {
+            TickWaves(now);
+            TickRewardCrate();
+        }
+    }
+
+    void TickPurgeNight(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        int elapsed = now - m_ActiveRuntime.StartTime;
+        int durationMs = cfg.DurationMinutes * 60 * 1000;
+
+        if (m_ActiveRuntime.CurrentWave < 1 && elapsed >= 10 * 60 * 1000)
+        {
+            EoH_Notifications.SendToAll("PURGE NIGHT", "Raider movement confirmed inside the blackout zone. Expansion AI pressure should be active where configured.");
+            m_ActiveRuntime.CurrentWave = 1;
+            Print("[EoH_PurgeNight] Phase 1 pressure notification id=" + cfg.Id);
+        }
+
+        if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= 30 * 60 * 1000)
+        {
+            EoH_Notifications.SendToAll("PURGE NIGHT", "The purge signal is intensifying. Hold the corridor or stay clear.");
+            m_ActiveRuntime.CurrentWave = 2;
+            Print("[EoH_PurgeNight] Phase 2 pressure notification id=" + cfg.Id);
+        }
+
+        if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= 50 * 60 * 1000)
+        {
+            EoH_Notifications.SendToAll("PURGE NIGHT", "Final purge window. Any cache recovery will happen soon.");
+            m_ActiveRuntime.CurrentWave = 3;
+            Print("[EoH_PurgeNight] Phase 3 final notification id=" + cfg.Id);
+        }
+
+        if (elapsed >= durationMs)
+        {
+            UnlockPurgeNightReward();
+        }
+    }
+
+    void UnlockPurgeNightReward()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config || !m_ActiveRuntime.RewardCrate)
+            return;
+
+        if (m_ActiveRuntime.RewardUnlocked)
+            return;
+
+        m_ActiveRuntime.RewardCrate.MarkUnlocked();
+        m_ActiveRuntime.RewardUnlocked = true;
+
+        SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
+
+        string msg = "The purge signal has burned out. A recovery cache is vulnerable inside the marked corridor.";
+        EoH_Notifications.SendToAll("PURGE COMPLETE", msg);
+
+        Print("[EoH_PurgeNight] Reward unlocked id=" + m_ActiveRuntime.Config.Id);
     }
 
     void TickWaves(int now)
@@ -278,7 +390,12 @@ class EoH_EventObjectiveManager
 
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
 
-        string eventMsg = "High-value signal activity detected near " + cfg.DisplayName + ". Field repair required.";
+        string eventMsg;
+        if (cfg.ObjectiveType == "purge_night")
+            eventMsg = "Red Ledger purge broadcast active near " + cfg.DisplayName + ". Fight for the corridor until the signal burns out.";
+        else
+            eventMsg = "High-value signal activity detected near " + cfg.DisplayName + ". Field repair required.";
+
         EoH_Notifications.SendToAll("WEEKEND EVENT", eventMsg);
 
         if (!cfg.EnableMarker)
