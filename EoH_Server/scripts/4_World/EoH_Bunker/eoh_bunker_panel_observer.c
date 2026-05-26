@@ -5,8 +5,10 @@ class EoH_BunkerPanelObserver
     protected ref array<vector> m_PanelPositions;
     protected ref array<int> m_TriggeredPanels;
     protected ref array<string> m_LastPanelTypes;
+    protected ref array<float> m_LastMissingPanelAdvisorTimes;
     protected float m_CheckTimer;
     protected bool m_Started;
+    protected const float MISSING_PANEL_ADVISOR_INTERVAL = 300.0;
 
     static EoH_BunkerPanelObserver Get()
     {
@@ -21,12 +23,14 @@ class EoH_BunkerPanelObserver
         m_PanelPositions = new array<vector>;
         m_TriggeredPanels = new array<int>;
         m_LastPanelTypes = new array<string>;
+        m_LastMissingPanelAdvisorTimes = new array<float>;
         m_CheckTimer = 0;
         m_Started = false;
 
         // EoH bunker panel/loot-room area. Add more panel positions here if needed.
         m_PanelPositions.Insert("13267.886719 19.423756 6073.476563".ToVector());
         m_LastPanelTypes.Insert("");
+        m_LastMissingPanelAdvisorTimes.Insert(0);
     }
 
     void Start()
@@ -36,6 +40,7 @@ class EoH_BunkerPanelObserver
 
         m_Started = true;
         Print("[EoH_BunkerObserver] Started bunker panel observer");
+        EoH_LiveAdvisorLogger.Log("BUNKER_OBSERVER_START", "Bunker panel observer started", "info", "EoH_BunkerObserver");
     }
 
     void Update(float timeslice)
@@ -63,7 +68,7 @@ class EoH_BunkerPanelObserver
 
             if (!panel)
             {
-                Print("[EoH_BunkerObserver] No underground panel found near " + pos.ToString());
+                MaybeLogMissingPanel(i, pos);
                 continue;
             }
 
@@ -71,13 +76,38 @@ class EoH_BunkerPanelObserver
             if (i < m_LastPanelTypes.Count() && m_LastPanelTypes.Get(i) != panelType)
             {
                 m_LastPanelTypes.Set(i, panelType);
-                Print("[EoH_BunkerObserver] Found bunker panel candidate near " + pos.ToString() + " type=" + panelType + " at " + panel.GetPosition().ToString());
+                string foundMessage = "Found bunker panel candidate near " + pos.ToString() + " type=" + panelType + " at " + panel.GetPosition().ToString();
+                Print("[EoH_BunkerObserver] " + foundMessage);
+                EoH_LiveAdvisorLogger.Log("BUNKER_PANEL_FOUND", foundMessage, "info", "EoH_BunkerObserver");
             }
 
             // Safe fallback: this observer now confirms the actual panel object/class without using unsupported Object animation APIs.
             // The action bridge remains the primary open-event hook. If action bridge still does not fire, use the logged class/type
             // here to build a type-specific observer against the real panel class.
         }
+    }
+
+    protected void MaybeLogMissingPanel(int index, vector pos)
+    {
+        float now = GetGame().GetTime() / 1000.0;
+
+        while (m_LastMissingPanelAdvisorTimes.Count() <= index)
+        {
+            m_LastMissingPanelAdvisorTimes.Insert(0);
+        }
+
+        float lastReport = m_LastMissingPanelAdvisorTimes.Get(index);
+
+        if (lastReport > 0 && now - lastReport < MISSING_PANEL_ADVISOR_INTERVAL)
+        {
+            return;
+        }
+
+        m_LastMissingPanelAdvisorTimes.Set(index, now);
+
+        string message = "No underground panel found near " + pos.ToString() + ". Check bunker panel coordinates or object class.";
+        Print("[EoH_BunkerObserver] " + message);
+        EoH_LiveAdvisorLogger.Log("BUNKER_PANEL_MISSING", message, "warning", "EoH_BunkerObserver");
     }
 
     protected Object FindPanelNear(vector pos, float radius)
