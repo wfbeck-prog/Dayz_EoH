@@ -9,6 +9,13 @@ modded class MissionServer
         EoH_StartLiveAdvisorHeartbeat();
     }
 
+    override void OnUpdate(float timeslice)
+    {
+        super.OnUpdate(timeslice);
+
+        EoH_LiveAdvisorPerformance.CheckServerPerformance(timeslice);
+    }
+
     void EoH_StartLiveAdvisorHeartbeat()
     {
         if (!EoH_LiveAdvisorLogger.m_Config || !EoH_LiveAdvisorLogger.m_Config.Enabled)
