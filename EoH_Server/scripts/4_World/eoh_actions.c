@@ -4,7 +4,8 @@ modded class ActionConstructor
     {
         super.RegisterActions(actions);
 
-        actions.Insert(ActionUseIntel);          // intel
-        actions.Insert(EoH_ActionCaptureRelay);  // ✅ FIXED
+        actions.Insert(ActionUseIntel);                 // intel
+        actions.Insert(EoH_ActionCaptureRelay);         // capture relay
+        actions.Insert(EoH_ActionRepairEventRelay);     // weekly event relay terminal repair
     }
 };
