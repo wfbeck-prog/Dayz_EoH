@@ -30,11 +30,7 @@ class EoH_LiveAdvisorActivity
 
         m_LastActivityLogTimes.Set(systemName, now);
 
-        EoH_LiveAdvisorLogger.Log(
-            "SYSTEM_ACTIVITY",
-            "System=" + systemName + " " + message,
-            "info",
-            "EoH_Activity"
-        );
+        string activityMessage = "System=" + systemName + " " + message;
+        EoH_LiveAdvisorLogger.Log("SYSTEM_ACTIVITY", activityMessage, "info", "EoH_Activity");
     }
 }
