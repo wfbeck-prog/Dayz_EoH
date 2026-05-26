@@ -1,4 +1,4 @@
-class EoH_RelayRepairTerminal : ItemBase
+class EoH_RelayRepairTerminal : Radio
 {
     override void SetActions()
     {
