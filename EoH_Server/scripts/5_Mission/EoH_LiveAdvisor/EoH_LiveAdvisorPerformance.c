@@ -25,6 +25,25 @@ class EoH_LiveAdvisorPerformance
             fps = 1.0 / timeslice;
         }
 
+        int players = EoH_GetPlayerCount();
+
+        if (EoH_LiveAdvisorLogger.m_Config.LogPerformanceSamples)
+        {
+            string sampleMessage = "FPS=" + fps.ToString() + " Players=" + players.ToString() + " Timeslice=" + timeslice.ToString();
+
+            EoH_LiveAdvisorLogger.Log(
+                "PERFORMANCE_SAMPLE",
+                sampleMessage,
+                "info",
+                "EoH_Performance"
+            );
+        }
+
+        EoH_LiveAdvisorActivity.LogActivity(
+            "performance_monitor",
+            "FPS=" + fps.ToString() + " Players=" + players.ToString()
+        );
+
         float now = GetGame().GetTime() / 1000.0;
         float cooldown = EoH_LiveAdvisorLogger.m_Config.PerformanceWarningCooldownSeconds;
 
@@ -37,7 +56,7 @@ class EoH_LiveAdvisorPerformance
         {
             m_LastPerformanceWarningTime = now;
 
-            string criticalMessage = "CRITICAL server FPS detected. FPS=" + fps.ToString() + " Timeslice=" + timeslice.ToString() + " ActivePlayers=" + EoH_GetPlayerCount().ToString();
+            string criticalMessage = "CRITICAL server FPS detected. FPS=" + fps.ToString() + " Timeslice=" + timeslice.ToString() + " ActivePlayers=" + players.ToString();
 
             EoH_LiveAdvisorLogger.Log("SERVER_FPS_CRITICAL", criticalMessage, "critical", "EoH_Performance");
             return;
@@ -47,7 +66,7 @@ class EoH_LiveAdvisorPerformance
         {
             m_LastPerformanceWarningTime = now;
 
-            string warningMessage = "Low server FPS detected. FPS=" + fps.ToString() + " Timeslice=" + timeslice.ToString() + " ActivePlayers=" + EoH_GetPlayerCount().ToString();
+            string warningMessage = "Low server FPS detected. FPS=" + fps.ToString() + " Timeslice=" + timeslice.ToString() + " ActivePlayers=" + players.ToString();
 
             EoH_LiveAdvisorLogger.Log("SERVER_FPS_WARNING", warningMessage, "warning", "EoH_Performance");
         }
