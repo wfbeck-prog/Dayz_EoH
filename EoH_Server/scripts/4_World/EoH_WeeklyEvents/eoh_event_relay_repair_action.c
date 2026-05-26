@@ -1,11 +1,5 @@
 class EoH_RelayRepairTerminal : Radio
 {
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(EoH_ActionRepairEventRelay);
-    }
-
     override bool CanPutInCargo(EntityAI parent)
     {
         return false;
@@ -62,8 +56,8 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
         if (!target || !target.GetObject())
             return false;
 
-        EoH_RelayRepairTerminal terminal = EoH_RelayRepairTerminal.Cast(target.GetObject());
-        if (!terminal)
+        Object targetObj = target.GetObject();
+        if (!targetObj || targetObj.GetType() != "EoH_RelayRepairTerminal")
             return false;
 
         EoH_EventObjectiveManager mgr = EoH_EventObjectiveManager.Get();
@@ -88,7 +82,7 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
 
         if (!HasRequiredRepairParts(player))
         {
-            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. A field radio and car battery are required.");
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair failed. A Field Transceiver and car battery are required.");
             return;
         }
 
@@ -188,5 +182,14 @@ class EoH_ActionRepairEventRelay : ActionContinuousBase
         }
 
         return false;
+    }
+}
+
+modded class PlayerBase
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(EoH_ActionRepairEventRelay);
     }
 }
