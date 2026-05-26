@@ -45,9 +45,9 @@ class EoH_LiveAdvisorLogger
             return;
         }
 
-        if (m_Config.ConfigVersion < 2)
+        if (m_Config.ConfigVersion < 3)
         {
-            m_Config.ConfigVersion = 2;
+            m_Config.ConfigVersion = 3;
         }
 
         if (m_Config.ServerName == "")
@@ -123,6 +123,7 @@ class EoH_LiveAdvisorLogger
         FPrintln(report, "Mode: Advisor Only");
         FPrintln(report, "ConfigVersion: " + m_Config.ConfigVersion.ToString());
         FPrintln(report, "MaxReportLines: " + m_Config.MaxReportLines.ToString());
+        FPrintln(report, "EnableBunkerPanelObserver: " + m_Config.EnableBunkerPanelObserver.ToString());
         FPrintln(report, " ");
 
         foreach (string line : m_RecentEvents)
