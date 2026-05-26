@@ -2,6 +2,73 @@
 
 All notable EoH_Server repository changes are tracked here.
 
+## 2026-05-25
+
+### Added
+- Added `EoH_AltarRelayIntel` as a dedicated weekend-event intel item.
+- Added Altar Relay Towers as the first EoH weekly/weekend event objective.
+- Added event-driven weekly objective runtime architecture.
+- Added active objective state gating so only one weekly operation can be active at a time.
+- Added intel-driven event reveal flow for Altar Relay Towers.
+- Added lore-driven Altar Relay field report.
+- Added global intel lock while a weekly operation is active.
+- Added lore-driven blocked-intel notification:
+  - `INTEL CHANNELS DOWN`
+  - `The relay network is dark. Restore the tower terminal before decoding more field intel.`
+- Added `EoH_RelayRepairTerminal` as a dedicated tower repair object.
+- Added terminal-based repair interaction:
+  - `Repair Tower Terminal`
+- Added repair requirements for the tower terminal:
+  - `BaseRadio`
+  - `CarBattery`
+- Added staged weekly event runtime phases:
+  - intel reveal
+  - terminal repair
+  - relay activation
+  - hostile wave start
+  - reward crate staging
+  - extraction unlock
+- Added M18 smoke grenade object support for event signaling.
+- Added red smoke when the relay is repaired and hostile contact begins.
+- Added green smoke when the reward cache becomes vulnerable.
+
+### Changed
+- Changed event intel so it now activates the weekly objective runtime instead of only displaying a report/marker.
+- Changed event flow so combat does not begin from intel use alone.
+- Changed event flow so Wave 1 begins only after tower terminal repair.
+- Changed reward crate timer so it starts only after tower terminal repair.
+- Changed non-event intel behavior so trader, town, and loot-cache intel are blocked while a weekly event is active.
+- Changed relay repair design from a held `BaseRadio` action to a terminal-based world interaction.
+- Changed repair wording from generic relay repair to tower terminal repair.
+- Changed event smoke implementation away from unsupported direct particle constants.
+- Changed smoke implementation to spawn real `M18SmokeGrenade_*` objects and activate them with `GetCompEM().SwitchOn()`.
+- Changed `EoH_RelayRepairTerminal` script inheritance to match its config inheritance from `Radio`.
+
+### Fixed
+- Fixed issue where trader intel could still reveal roaming traders after event intel was used.
+- Fixed issue where event intel did not create active objective runtime state.
+- Fixed issue where duplicate event marker behavior could occur from separate intel marker and objective marker paths.
+- Fixed issue where `FieldTransceiver` was used as a required class name instead of the actual `BaseRadio` class.
+- Fixed unsupported `ParticleList.SMOKEGRENADE_RED` usage by replacing it with M18 smoke grenade objects.
+- Fixed terminal script/config inheritance mismatch that allowed the repair terminal to behave like a normal movable radio.
+
+### Performance / Architecture
+- Preserved performance-first event architecture.
+- Avoided world scans for event state.
+- Kept event state runtime-driven and scheduler-safe.
+- Continued separating weekly events from town capture ownership systems.
+- Kept intel, event activation, reward unlock, and cleanup responsibilities separated.
+
+### Notes
+- Current Altar Relay Towers event test flow:
+  1. Use `EoH_AltarRelayIntel`.
+  2. Confirm Altar Relay Towers event marker appears.
+  3. Confirm other intel reports `INTEL CHANNELS DOWN` while the operation is active.
+  4. Go to the repair terminal near Altar.
+  5. Carry `BaseRadio` and `CarBattery`.
+  6. Use `Repair Tower Terminal`.
+  7. Confirm relay activation, red smoke, Wave 1, reward timer, and later green smoke on extraction unlock.
+
 ## 2026-05-19
 
 ### Added
