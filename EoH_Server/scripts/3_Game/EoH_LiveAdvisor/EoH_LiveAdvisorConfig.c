@@ -1,6 +1,6 @@
 class EoH_LiveAdvisorConfig
 {
-    int ConfigVersion = 2;
+    int ConfigVersion = 3;
     bool Enabled = true;
     bool AdvisorOnly = true;
     string ServerName = "Echoes of Humanity Hardcore";
@@ -9,10 +9,11 @@ class EoH_LiveAdvisorConfig
     bool LogDebugToRPT = true;
     bool WriteCopyPasteReport = true;
     int MaxReportLines = 75;
+    bool EnableBunkerPanelObserver = false;
 
     void Defaults()
     {
-        ConfigVersion = 2;
+        ConfigVersion = 3;
         Enabled = true;
         AdvisorOnly = true;
         ServerName = "Echoes of Humanity Hardcore";
@@ -21,5 +22,6 @@ class EoH_LiveAdvisorConfig
         LogDebugToRPT = true;
         WriteCopyPasteReport = true;
         MaxReportLines = 75;
+        EnableBunkerPanelObserver = false;
     }
 }
