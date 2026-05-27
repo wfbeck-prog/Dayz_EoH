@@ -55,17 +55,29 @@ class EoH_LiveAdvisorPerformance
 
         if (m_LastPerformanceWarningTime <= 0 || now - m_LastPerformanceWarningTime >= cooldown)
         {
-            if (avgFps <= EoH_LiveAdvisorLogger.m_Config.CriticalFpsThreshold || worstFrameFps <= EoH_LiveAdvisorLogger.m_Config.CriticalFpsThreshold)
+            if (avgFps <= EoH_LiveAdvisorLogger.m_Config.CriticalFpsThreshold)
             {
                 m_LastPerformanceWarningTime = now;
-                string criticalMessage = "CRITICAL server FPS detected. AvgFPS=" + avgFps.ToString() + " WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " ActivePlayers=" + players.ToString();
+                string criticalMessage = "CRITICAL sustained low FPS detected. AvgFPS=" + avgFps.ToString() + " WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " ActivePlayers=" + players.ToString();
                 EoH_LiveAdvisorLogger.Log("SERVER_FPS_CRITICAL", criticalMessage, "critical", "EoH_Performance");
             }
-            else if (avgFps <= EoH_LiveAdvisorLogger.m_Config.LowFpsWarningThreshold || worstFrameFps <= EoH_LiveAdvisorLogger.m_Config.LowFpsWarningThreshold)
+            else if (avgFps <= EoH_LiveAdvisorLogger.m_Config.LowFpsWarningThreshold)
             {
                 m_LastPerformanceWarningTime = now;
-                string warningMessage = "Low server FPS detected. AvgFPS=" + avgFps.ToString() + " WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " ActivePlayers=" + players.ToString();
+                string warningMessage = "Low sustained server FPS detected. AvgFPS=" + avgFps.ToString() + " WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " ActivePlayers=" + players.ToString();
                 EoH_LiveAdvisorLogger.Log("SERVER_FPS_WARNING", warningMessage, "warning", "EoH_Performance");
+            }
+            else if (m_WorstTimeslice >= EoH_LiveAdvisorLogger.m_Config.FrameHitchCriticalTimeslice)
+            {
+                m_LastPerformanceWarningTime = now;
+                string hitchCriticalMessage = "Critical frame hitch detected. WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
+                EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH_CRITICAL", hitchCriticalMessage, "critical", "EoH_Performance");
+            }
+            else if (m_WorstTimeslice >= EoH_LiveAdvisorLogger.m_Config.FrameHitchWarningTimeslice)
+            {
+                m_LastPerformanceWarningTime = now;
+                string hitchWarningMessage = "Frame hitch detected. WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
+                EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH", hitchWarningMessage, "warning", "EoH_Performance");
             }
         }
 
