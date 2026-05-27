@@ -73,6 +73,30 @@ class EoH_EventObjectiveManager
         }
     }
 
+    int GetPurgePhaseOneMs(EoH_EventObjective cfg)
+    {
+        if (EOH_FORCE_PURGE_NIGHT_TEST)
+            return 1 * 60 * 1000;
+
+        return 10 * 60 * 1000;
+    }
+
+    int GetPurgePhaseTwoMs(EoH_EventObjective cfg)
+    {
+        if (EOH_FORCE_PURGE_NIGHT_TEST)
+            return 3 * 60 * 1000;
+
+        return 30 * 60 * 1000;
+    }
+
+    int GetPurgePhaseThreeMs(EoH_EventObjective cfg)
+    {
+        if (EOH_FORCE_PURGE_NIGHT_TEST)
+            return 4 * 60 * 1000;
+
+        return 50 * 60 * 1000;
+    }
+
     void RegisterDefaults()
     {
         EoH_EventObjective altarTowers = new EoH_EventObjective();
@@ -107,6 +131,8 @@ class EoH_EventObjectiveManager
         purgeNight.EnableMarker = true;
         purgeNight.EnableSmoke = true;
         purgeNight.DurationMinutes = 60;
+        if (EOH_FORCE_PURGE_NIGHT_TEST)
+            purgeNight.DurationMinutes = 5;
         purgeNight.Radius = 500.0;
 
         m_Objectives.Insert(purgeNight);
@@ -309,22 +335,25 @@ class EoH_EventObjectiveManager
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
         int elapsed = now - m_ActiveRuntime.StartTime;
         int durationMs = cfg.DurationMinutes * 60 * 1000;
+        int phaseOneMs = GetPurgePhaseOneMs(cfg);
+        int phaseTwoMs = GetPurgePhaseTwoMs(cfg);
+        int phaseThreeMs = GetPurgePhaseThreeMs(cfg);
 
-        if (m_ActiveRuntime.CurrentWave < 1 && elapsed >= 10 * 60 * 1000)
+        if (m_ActiveRuntime.CurrentWave < 1 && elapsed >= phaseOneMs)
         {
             EoH_Notifications.SendToAll("PURGE NIGHT", "Raider movement confirmed inside the blackout zone. Expansion AI pressure should be active where configured.");
             m_ActiveRuntime.CurrentWave = 1;
             Print("[EoH_PurgeNight] Phase 1 pressure notification id=" + cfg.Id);
         }
 
-        if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= 30 * 60 * 1000)
+        if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= phaseTwoMs)
         {
             EoH_Notifications.SendToAll("PURGE NIGHT", "The purge signal is intensifying. Hold the corridor or stay clear.");
             m_ActiveRuntime.CurrentWave = 2;
             Print("[EoH_PurgeNight] Phase 2 pressure notification id=" + cfg.Id);
         }
 
-        if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= 50 * 60 * 1000)
+        if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= phaseThreeMs)
         {
             EoH_Notifications.SendToAll("PURGE NIGHT", "Final purge window. Any cache recovery will happen soon.");
             m_ActiveRuntime.CurrentWave = 3;
