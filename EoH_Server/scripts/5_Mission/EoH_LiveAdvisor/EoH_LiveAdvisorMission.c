@@ -36,7 +36,6 @@ modded class MissionServer
         }
 
         EoH_LiveAdvisorActivity.LogActivity("player_session", "client_ready name=" + playerName + " id=" + playerId + " pos=" + playerPos.ToString() + " players=" + EoH_GetLiveAdvisorPlayerCount().ToString());
-        EoH_LiveAdvisorPlayerLoad.MarkClientReady(playerName);
     }
 
     override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
