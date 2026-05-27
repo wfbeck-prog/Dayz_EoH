@@ -114,7 +114,6 @@ class EoH_EventObjectiveManager
         altarTowers.EnableSmoke = false;
         altarTowers.DurationMinutes = 60;
         altarTowers.Radius = 250.0;
-
         m_Objectives.Insert(altarTowers);
 
         EoH_EventObjective purgeNight = new EoH_EventObjective();
@@ -134,7 +133,6 @@ class EoH_EventObjectiveManager
         if (EOH_FORCE_PURGE_NIGHT_TEST)
             purgeNight.DurationMinutes = 5;
         purgeNight.Radius = 500.0;
-
         m_Objectives.Insert(purgeNight);
 
         EoH_EventObjective convoy = new EoH_EventObjective();
@@ -150,7 +148,6 @@ class EoH_EventObjectiveManager
         convoy.EnableSmoke = false;
         convoy.DurationMinutes = 60;
         convoy.Radius = 250.0;
-
         m_Objectives.Insert(convoy);
     }
 
@@ -253,9 +250,7 @@ class EoH_EventObjectiveManager
 
         string msg = "Red Ledger purge traffic intercepted. The marked corridor is blacked out for " + cfg.DurationMinutes.ToString() + " minutes. Survivors entering the zone are on their own.";
         EoH_Notifications.SendToAll("PURGE NIGHT", msg);
-
         BroadcastObjective();
-
         Print("[EoH_PurgeNight] Started id=" + cfg.Id + " durationMinutes=" + cfg.DurationMinutes.ToString() + " radius=" + cfg.Radius.ToString());
     }
 
@@ -282,17 +277,8 @@ class EoH_EventObjectiveManager
         SpawnEventSmoke(cfg.Position, "M18SmokeGrenade_Red");
         EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 1);
         m_ActiveRuntime.CurrentWave = 1;
-
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
-
-        string relayMsg = cfg.DisplayName + " has been restored. Hostile contact is moving toward the signal.";
-        EoH_Notifications.SendToAll("RELAY ONLINE", relayMsg);
-
-        if (player && player.GetIdentity())
-            Print("[EoH_EventObjectives] Relay repaired id=" + cfg.Id + " player=" + player.GetIdentity().GetName());
-        else
-            Print("[EoH_EventObjectives] Relay repaired id=" + cfg.Id);
-
+        EoH_Notifications.SendToAll("RELAY ONLINE", cfg.DisplayName + " has been restored. Hostile contact is moving toward the signal.");
         return true;
     }
 
@@ -363,9 +349,7 @@ class EoH_EventObjectiveManager
         }
 
         if (elapsed >= durationMs)
-        {
             UnlockPurgeNightReward();
-        }
     }
 
     void UnlockPurgeNightReward()
@@ -379,12 +363,16 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardCrate.MarkUnlocked();
         m_ActiveRuntime.RewardUnlocked = true;
 
-        SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
+        bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
 
         string msg = "The purge signal has burned out. A recovery cache is vulnerable inside the marked corridor.";
-        EoH_Notifications.SendToAll("PURGE COMPLETE", msg);
+        if (!smokeStarted)
+            msg += " No smoke confirmation received; use the event marker and field report coordinates.";
 
-        Print("[EoH_PurgeNight] Reward unlocked id=" + m_ActiveRuntime.Config.Id);
+        EoH_Notifications.SendToAll("PURGE COMPLETE", msg);
+        EoH_Notifications.SendToAll("RECOVERY CACHE", "The Purge Night cache is now vulnerable. Move to the marked corridor and secure the payout.");
+
+        Print("[EoH_PurgeNight] Reward unlocked id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString() + " cratePos=" + m_ActiveRuntime.RewardCrate.Position.ToString());
     }
 
     void TickWaves(int now)
@@ -393,7 +381,6 @@ class EoH_EventObjectiveManager
             return;
 
         int elapsed = now - m_ActiveRuntime.StartTime;
-
         if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= 10 * 60 * 1000)
         {
             EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
@@ -415,7 +402,6 @@ class EoH_EventObjectiveManager
             return;
 
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
-
         if (cfg.SpawnObject == "")
             return;
 
@@ -441,11 +427,10 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardCrate.SetRuntime(cratePos, 25, cfg.LootTier);
         Object crate = GetGame().CreateObject(m_ActiveRuntime.RewardCrate.CrateType, cratePos);
         m_ActiveRuntime.RewardCrate.MarkSpawned(crate);
-
         Print("[EoH_EventObjectives] Reward crate staged id=" + cfg.Id + " pos=" + cratePos.ToString() + " surfaceY=" + cratePos[1].ToString());
     }
 
-    void SpawnEventSmoke(vector pos, string smokeType)
+    bool SpawnEventSmoke(vector pos, string smokeType)
     {
         if (smokeType == "")
             smokeType = "M18SmokeGrenade_Green";
@@ -457,13 +442,14 @@ class EoH_EventObjectiveManager
         if (!smoke)
         {
             Print("[EoH_EventObjectives][WARN] Failed spawning smoke type=" + smokeType + " pos=" + smokePos.ToString());
-            return;
+            return false;
         }
 
         if (smoke.GetCompEM() && smoke.GetCompEM().CanWork())
             smoke.GetCompEM().SwitchOn();
 
         Print("[EoH_EventObjectives] Spawned event smoke type=" + smokeType + " pos=" + smokePos.ToString());
+        return true;
     }
 
     void TickRewardCrate()
@@ -476,13 +462,9 @@ class EoH_EventObjectiveManager
 
         m_ActiveRuntime.RewardCrate.MarkUnlocked();
         m_ActiveRuntime.RewardUnlocked = true;
-
-        SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
-
-        string extractionMsg = "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable.";
-        EoH_Notifications.SendToAll("EVENT EXTRACTION", extractionMsg);
-
-        Print("[EoH_EventObjectives] Reward crate unlocked id=" + m_ActiveRuntime.Config.Id);
+        bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
+        EoH_Notifications.SendToAll("EVENT EXTRACTION", "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable. Smoke active=" + smokeStarted.ToString());
+        Print("[EoH_EventObjectives] Reward crate unlocked id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString());
     }
 
     void BroadcastObjective()
@@ -491,7 +473,6 @@ class EoH_EventObjectiveManager
             return;
 
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
-
         string eventMsg;
         if (cfg.ObjectiveType == "purge_night")
             eventMsg = "Red Ledger purge broadcast active near " + cfg.DisplayName + ". Fight for the corridor until the signal burns out.";
@@ -511,7 +492,6 @@ class EoH_EventObjectiveManager
         data.Color = ARGB(255, 255, 80, 0);
         data.BaseColor = data.Color;
         data.Normalize();
-
         EoH_MarkerService.Broadcast(data);
     }
 
@@ -530,21 +510,15 @@ class EoH_EventObjectiveManager
             return;
 
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
-
         if (m_ActiveRuntime.SpawnedObject)
             GetGame().ObjectDelete(m_ActiveRuntime.SpawnedObject);
-
         if (m_ActiveRuntime.RewardCrate)
             m_ActiveRuntime.RewardCrate.Cleanup();
 
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_" + cfg.Id);
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
-
-        string endMsg = cfg.DisplayName + " has gone silent. Intel channels are open again.";
-        EoH_Notifications.SendToAll("WEEKEND EVENT", endMsg);
-
+        EoH_Notifications.SendToAll("WEEKEND EVENT", cfg.DisplayName + " has gone silent. Intel channels are open again.");
         Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id + " intelAvailable=true");
-
         m_ActiveRuntime = null;
     }
 }
