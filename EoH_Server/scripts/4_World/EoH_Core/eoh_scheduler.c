@@ -53,6 +53,7 @@ class EoH_Scheduler
         RegisterTask("group_markers", 120000);
 
         Print("[EoH_Scheduler] Initialized centralized scheduler");
+        EoH_LiveAdvisorActivity.LogActivity("scheduler", "initialized centralized scheduler");
     }
 
     void RegisterTask(string id, int intervalMs)
@@ -65,6 +66,7 @@ class EoH_Scheduler
 
         m_Tasks.Set(id, new EoH_SchedulerTask(id, intervalMs));
         Print("[EoH_Scheduler] Registered task id=" + id + " intervalMs=" + intervalMs.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("scheduler", "registered task=" + id + " intervalMs=" + intervalMs.ToString());
     }
 
     void Tick()
@@ -94,6 +96,8 @@ class EoH_Scheduler
 
         task.MarkRun(now);
 
+        int startTime = GetGame().GetTime();
+
         if (id == "weekly_events")
         {
             EoH_WeeklyEventManager.Get().Tick();
@@ -107,6 +111,9 @@ class EoH_Scheduler
             EoH_CaptureManager.Get().Tick();
         }
 
-        Print("[EoH_Scheduler] Executed task=" + id + " at=" + now.ToString());
+        int elapsed = GetGame().GetTime() - startTime;
+
+        Print("[EoH_Scheduler] Executed task=" + id + " at=" + now.ToString() + " elapsedMs=" + elapsed.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("scheduler", "executed task=" + id + " elapsedMs=" + elapsed.ToString() + " at=" + now.ToString());
     }
 }
