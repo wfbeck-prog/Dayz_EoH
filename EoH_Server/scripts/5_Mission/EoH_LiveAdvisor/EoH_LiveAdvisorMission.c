@@ -16,6 +16,83 @@ modded class MissionServer
         EoH_LiveAdvisorPerformance.CheckServerPerformance(timeslice);
     }
 
+    override void OnClientReadyEvent(PlayerIdentity identity, PlayerBase player)
+    {
+        super.OnClientReadyEvent(identity, player);
+
+        string playerName = "unknown";
+        string playerId = "unknown";
+        vector playerPos = "0 0 0";
+
+        if (identity)
+        {
+            playerName = identity.GetName();
+            playerId = identity.GetId();
+        }
+
+        if (player)
+        {
+            playerPos = player.GetPosition();
+        }
+
+        EoH_LiveAdvisorActivity.LogActivity("player_session", "client_ready name=" + playerName + " id=" + playerId + " pos=" + playerPos.ToString() + " players=" + EoH_GetLiveAdvisorPlayerCount().ToString());
+    }
+
+    override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
+    {
+        super.InvokeOnConnect(player, identity);
+
+        string playerName = "unknown";
+        string playerId = "unknown";
+        vector playerPos = "0 0 0";
+
+        if (identity)
+        {
+            playerName = identity.GetName();
+            playerId = identity.GetId();
+        }
+
+        if (player)
+        {
+            playerPos = player.GetPosition();
+        }
+
+        EoH_LiveAdvisorActivity.LogActivity("player_session", "connect name=" + playerName + " id=" + playerId + " pos=" + playerPos.ToString() + " players=" + EoH_GetLiveAdvisorPlayerCount().ToString());
+    }
+
+    override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
+    {
+        super.PlayerDisconnected(player, identity, uid);
+
+        string playerName = "unknown";
+        string playerId = uid;
+        vector playerPos = "0 0 0";
+
+        if (identity)
+        {
+            playerName = identity.GetName();
+            playerId = identity.GetId();
+        }
+
+        if (player)
+        {
+            playerPos = player.GetPosition();
+        }
+
+        EoH_LiveAdvisorActivity.LogActivity("player_session", "disconnect name=" + playerName + " id=" + playerId + " pos=" + playerPos.ToString() + " players=" + EoH_GetLiveAdvisorPlayerCount().ToString());
+    }
+
+    int EoH_GetLiveAdvisorPlayerCount()
+    {
+        array<Man> players = new array<Man>;
+        GetGame().GetPlayers(players);
+
+        if (!players)
+            return 0;
+
+        return players.Count();
+    }
+
     void EoH_StartLiveAdvisorHeartbeat()
     {
         if (!EoH_LiveAdvisorLogger.m_Config || !EoH_LiveAdvisorLogger.m_Config.Enabled)
@@ -40,16 +117,7 @@ modded class MissionServer
             return;
         }
 
-        int playerCount = 0;
-
-        array<Man> players = new array<Man>;
-        GetGame().GetPlayers(players);
-
-        if (players)
-        {
-            playerCount = players.Count();
-        }
-
+        int playerCount = EoH_GetLiveAdvisorPlayerCount();
         string message = string.Format("Server heartbeat. Players online: %1", playerCount);
         EoH_LiveAdvisorLogger.Log("SERVER_HEARTBEAT", message, "info", "MissionServer");
     }
