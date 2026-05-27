@@ -1,9 +1,11 @@
 class EoH_EventObjectiveManager
 {
     protected static ref EoH_EventObjectiveManager s_Instance;
+    static const bool EOH_FORCE_PURGE_NIGHT_TEST = true;
 
     protected ref array<ref EoH_EventObjective> m_Objectives;
     protected ref EoH_EventObjectiveRuntime m_ActiveRuntime;
+    protected ref array<string> m_UsedWeekendEvents;
 
     static EoH_EventObjectiveManager Get()
     {
@@ -16,6 +18,7 @@ class EoH_EventObjectiveManager
     void EoH_EventObjectiveManager()
     {
         m_Objectives = new array<ref EoH_EventObjective>();
+        m_UsedWeekendEvents = new array<string>();
         RegisterDefaults();
 
         Print("[EoH_EventObjectives] Manager initialized objectives=" + m_Objectives.Count().ToString());
@@ -40,6 +43,26 @@ class EoH_EventObjectiveManager
     bool IsObjectiveCombatStarted()
     {
         return m_ActiveRuntime && m_ActiveRuntime.Active && m_ActiveRuntime.StartTime > 0;
+    }
+
+    bool WasUsedThisWeekend(string eventId)
+    {
+        if (!m_UsedWeekendEvents || eventId == "")
+            return false;
+
+        return m_UsedWeekendEvents.Find(eventId) >= 0;
+    }
+
+    void MarkUsedThisWeekend(string eventId)
+    {
+        if (!m_UsedWeekendEvents || eventId == "")
+            return;
+
+        if (m_UsedWeekendEvents.Find(eventId) < 0)
+        {
+            m_UsedWeekendEvents.Insert(eventId);
+            Print("[EoH_EventObjectives] Marked weekend event used id=" + eventId);
+        }
     }
 
     void RegisterDefaults()
@@ -97,12 +120,49 @@ class EoH_EventObjectiveManager
         m_Objectives.Insert(convoy);
     }
 
+    EoH_EventObjective FindObjectiveById(string eventId)
+    {
+        if (!m_Objectives || eventId == "")
+            return null;
+
+        foreach (EoH_EventObjective obj : m_Objectives)
+        {
+            if (obj && obj.Id == eventId)
+                return obj;
+        }
+
+        return null;
+    }
+
     EoH_EventObjective PickRandomObjective()
     {
         if (!m_Objectives || m_Objectives.Count() == 0)
             return null;
 
-        return m_Objectives.Get(Math.RandomInt(0, m_Objectives.Count()));
+        if (EOH_FORCE_PURGE_NIGHT_TEST)
+        {
+            EoH_EventObjective purge = FindObjectiveById("purge_night_novy_stary");
+            if (purge && !WasUsedThisWeekend(purge.Id))
+            {
+                Print("[EoH_EventObjectives] Force test selected Purge Night");
+                return purge;
+            }
+        }
+
+        ref array<ref EoH_EventObjective> available = new array<ref EoH_EventObjective>();
+        foreach (EoH_EventObjective candidate : m_Objectives)
+        {
+            if (candidate && !WasUsedThisWeekend(candidate.Id))
+                available.Insert(candidate);
+        }
+
+        if (available.Count() == 0)
+        {
+            Print("[EoH_EventObjectives] No unused weekend events remain for this server session");
+            return null;
+        }
+
+        return available.Get(Math.RandomInt(0, available.Count()));
     }
 
     bool StartRandomObjective()
@@ -121,6 +181,8 @@ class EoH_EventObjectiveManager
         EoH_EventObjective obj = PickRandomObjective();
         if (!obj)
             return false;
+
+        MarkUsedThisWeekend(obj.Id);
 
         m_ActiveRuntime = new EoH_EventObjectiveRuntime(obj);
         m_ActiveRuntime.Active = true;
