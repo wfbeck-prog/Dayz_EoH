@@ -1,6 +1,6 @@
 class EoH_LiveAdvisorConfig
 {
-    int ConfigVersion = 5;
+    int ConfigVersion = 6;
     bool Enabled = true;
     bool AdvisorOnly = true;
     string ServerName = "Echoes of Humanity Hardcore";
@@ -16,6 +16,8 @@ class EoH_LiveAdvisorConfig
     int PerformanceSampleSeconds = 30;
     float LowFpsWarningThreshold = 10.0;
     float CriticalFpsThreshold = 5.0;
+    float FrameHitchWarningTimeslice = 0.1;
+    float FrameHitchCriticalTimeslice = 0.3;
     int PerformanceWarningCooldownSeconds = 300;
 
     bool EnableActivityCorrelation = true;
@@ -23,7 +25,7 @@ class EoH_LiveAdvisorConfig
 
     void Defaults()
     {
-        ConfigVersion = 5;
+        ConfigVersion = 6;
         Enabled = true;
         AdvisorOnly = true;
         ServerName = "Echoes of Humanity Hardcore";
@@ -39,6 +41,8 @@ class EoH_LiveAdvisorConfig
         PerformanceSampleSeconds = 30;
         LowFpsWarningThreshold = 10.0;
         CriticalFpsThreshold = 5.0;
+        FrameHitchWarningTimeslice = 0.1;
+        FrameHitchCriticalTimeslice = 0.3;
         PerformanceWarningCooldownSeconds = 300;
 
         EnableActivityCorrelation = true;
