@@ -339,25 +339,27 @@ class EoH_EventObjectiveManager
         int phaseTwoMs = GetPurgePhaseTwoMs(cfg);
         int phaseThreeMs = GetPurgePhaseThreeMs(cfg);
 
+        Print("[EoH_PurgeNight][TICK] id=" + cfg.Id + " elapsedMs=" + elapsed.ToString() + " durationMs=" + durationMs.ToString() + " wave=" + m_ActiveRuntime.CurrentWave.ToString() + " p1=" + phaseOneMs.ToString() + " p2=" + phaseTwoMs.ToString() + " p3=" + phaseThreeMs.ToString());
+
         if (m_ActiveRuntime.CurrentWave < 1 && elapsed >= phaseOneMs)
         {
             EoH_Notifications.SendToAll("PURGE NIGHT", "Raider movement confirmed inside the blackout zone. Expansion AI pressure should be active where configured.");
             m_ActiveRuntime.CurrentWave = 1;
-            Print("[EoH_PurgeNight] Phase 1 pressure notification id=" + cfg.Id);
+            Print("[EoH_PurgeNight] Phase 1 pressure notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
         }
 
         if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= phaseTwoMs)
         {
             EoH_Notifications.SendToAll("PURGE NIGHT", "The purge signal is intensifying. Hold the corridor or stay clear.");
             m_ActiveRuntime.CurrentWave = 2;
-            Print("[EoH_PurgeNight] Phase 2 pressure notification id=" + cfg.Id);
+            Print("[EoH_PurgeNight] Phase 2 pressure notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
         }
 
         if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= phaseThreeMs)
         {
             EoH_Notifications.SendToAll("PURGE NIGHT", "Final purge window. Any cache recovery will happen soon.");
             m_ActiveRuntime.CurrentWave = 3;
-            Print("[EoH_PurgeNight] Phase 3 final notification id=" + cfg.Id);
+            Print("[EoH_PurgeNight] Phase 3 final notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
         }
 
         if (elapsed >= durationMs)
@@ -434,12 +436,13 @@ class EoH_EventObjectiveManager
 
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
         vector cratePos = cfg.Position + "8 0 8";
+        cratePos[1] = GetGame().SurfaceY(cratePos[0], cratePos[2]);
 
         m_ActiveRuntime.RewardCrate.SetRuntime(cratePos, 25, cfg.LootTier);
         Object crate = GetGame().CreateObject(m_ActiveRuntime.RewardCrate.CrateType, cratePos);
         m_ActiveRuntime.RewardCrate.MarkSpawned(crate);
 
-        Print("[EoH_EventObjectives] Reward crate staged id=" + cfg.Id + " pos=" + cratePos.ToString());
+        Print("[EoH_EventObjectives] Reward crate staged id=" + cfg.Id + " pos=" + cratePos.ToString() + " surfaceY=" + cratePos[1].ToString());
     }
 
     void SpawnEventSmoke(vector pos, string smokeType)
