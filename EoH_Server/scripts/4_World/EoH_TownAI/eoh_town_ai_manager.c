@@ -89,7 +89,9 @@ class EoH_TownAIManager
         if (!m_Config.Enabled)
             return;
 
+        int monitorStart = GetGame().GetTime();
         MonitorOwnerFriendlyPlayers();
+        int monitorElapsed = GetGame().GetTime() - monitorStart;
 
         int now = GetGame().GetTime();
         int intervalMs = Math.Max(10, m_Config.TickSeconds) * 1000;
@@ -97,7 +99,14 @@ class EoH_TownAIManager
             return;
 
         m_LastTick = now;
+
+        EoH_LiveAdvisorActivity.LogActivity("town_ai", "tick_start towns=" + m_Config.Towns.Count().ToString() + " active=" + m_ActiveTowns.Count().ToString() + " monitorElapsedMs=" + monitorElapsed.ToString());
+
+        int evalStart = GetGame().GetTime();
         EvaluateTownAI();
+        int evalElapsed = GetGame().GetTime() - evalStart;
+
+        EoH_LiveAdvisorActivity.LogActivity("town_ai", "tick_end elapsedMs=" + evalElapsed.ToString() + " active=" + m_ActiveTowns.Count().ToString());
     }
 
     void MonitorOwnerFriendlyPlayers()
@@ -146,9 +155,13 @@ class EoH_TownAIManager
         if (!m_Config || !m_Config.Towns)
             return;
 
+        int evaluateStart = GetGame().GetTime();
         ref array<ref EoH_TownAITownConfig> ordered = BuildPriorityTownList();
         int activeEligible = 0;
+        int skippedNoPlayer = 0;
         ref array<string> eligibleNames = new array<string>();
+
+        EoH_LiveAdvisorActivity.LogActivity("town_ai", "evaluate_start towns=" + m_Config.Towns.Count().ToString() + " ordered=" + ordered.Count().ToString() + " active=" + m_ActiveTowns.Count().ToString());
 
         foreach (EoH_TownAITownConfig townCfg : ordered)
         {
@@ -159,6 +172,7 @@ class EoH_TownAIManager
             bool playerNearby = IsPlayerNearPosition(townPos, m_Config.ActivationRadius);
             if (m_Config.RequirePlayerNearby && !playerNearby)
             {
+                skippedNoPlayer++;
                 Print("[EoH_TownAI][PROXIMITY] Skipping town=" + townCfg.TownName + " no players within " + m_Config.ActivationRadius.ToString() + "m");
                 continue;
             }
@@ -191,7 +205,9 @@ class EoH_TownAIManager
         }
 
         CleanupInactiveTowns(eligibleNames);
+        int evaluateElapsed = GetGame().GetTime() - evaluateStart;
         Print("[EoH_TownAI][DRYRUN] Eligible active towns this tick=" + activeEligible.ToString() + " max=" + m_Config.MaxActiveTowns.ToString() + " tracked=" + m_ActiveTowns.Count().ToString());
+        EoH_LiveAdvisorActivity.LogActivity("town_ai", "evaluate_end eligible=" + activeEligible.ToString() + " skippedNoPlayer=" + skippedNoPlayer.ToString() + " tracked=" + m_ActiveTowns.Count().ToString() + " elapsedMs=" + evaluateElapsed.ToString());
     }
 
     bool IsPlayerNearPosition(vector pos, float radius)
@@ -349,6 +365,7 @@ class EoH_TownAIManager
         eAIGroup group = EoH_TownAISpawnAdapter.CreateTownPatrolGroup(center);
 
         Print("[EoH_TownAI][SPAWN] Spawning patrol town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " owner=" + active.OwnerGroupName + " count=" + count.ToString() + " loadout=" + loadout);
+        EoH_LiveAdvisorActivity.LogActivity("town_ai", "spawn_patrol town=" + townCfg.TownName + " tier=" + townCfg.Tier.ToString() + " count=" + count.ToString() + " loadout=" + loadout);
 
         for (int i = 0; i < count; i++)
         {
@@ -425,6 +442,7 @@ class EoH_TownAIManager
 
         m_ActiveTowns.Remove(townName);
         Print("[EoH_TownAI][TRACK] town=" + townName + " removed from active tracking.");
+        EoH_LiveAdvisorActivity.LogActivity("town_ai", "cleanup_town town=" + townName);
     }
 
     string GetTownOwner(string townName)
