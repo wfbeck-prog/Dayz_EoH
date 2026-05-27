@@ -52,6 +52,7 @@ class EoH_LiveAdvisorPerformance
 
         float now = GetGame().GetTime() / 1000.0;
         float cooldown = EoH_LiveAdvisorLogger.m_Config.PerformanceWarningCooldownSeconds;
+        bool inLoadGrace = EoH_LiveAdvisorPlayerLoad.IsInLoadInGraceWindow();
 
         if (m_LastPerformanceWarningTime <= 0 || now - m_LastPerformanceWarningTime >= cooldown)
         {
@@ -70,14 +71,32 @@ class EoH_LiveAdvisorPerformance
             else if (m_WorstTimeslice >= EoH_LiveAdvisorLogger.m_Config.FrameHitchCriticalTimeslice)
             {
                 m_LastPerformanceWarningTime = now;
-                string hitchCriticalMessage = "Critical frame hitch detected. WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
-                EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH_CRITICAL", hitchCriticalMessage, "critical", "EoH_Performance");
+
+                if (inLoadGrace)
+                {
+                    string loadinCriticalMessage = "Critical frame hitch during player load-in. Player=" + EoH_LiveAdvisorPlayerLoad.GetLastClientReadyName() + " SecondsSinceReady=" + EoH_LiveAdvisorPlayerLoad.GetSecondsSinceClientReady().ToString() + " WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
+                    EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH_DURING_PLAYER_LOADIN", loadinCriticalMessage, "warning", "EoH_Performance");
+                }
+                else
+                {
+                    string hitchCriticalMessage = "Critical frame hitch detected. WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
+                    EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH_CRITICAL", hitchCriticalMessage, "critical", "EoH_Performance");
+                }
             }
             else if (m_WorstTimeslice >= EoH_LiveAdvisorLogger.m_Config.FrameHitchWarningTimeslice)
             {
                 m_LastPerformanceWarningTime = now;
-                string hitchWarningMessage = "Frame hitch detected. WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
-                EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH", hitchWarningMessage, "warning", "EoH_Performance");
+
+                if (inLoadGrace)
+                {
+                    string loadinWarningMessage = "Frame hitch during player load-in. Player=" + EoH_LiveAdvisorPlayerLoad.GetLastClientReadyName() + " SecondsSinceReady=" + EoH_LiveAdvisorPlayerLoad.GetSecondsSinceClientReady().ToString() + " WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
+                    EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH_DURING_PLAYER_LOADIN", loadinWarningMessage, "warning", "EoH_Performance");
+                }
+                else
+                {
+                    string hitchWarningMessage = "Frame hitch detected. WorstFrameFPS=" + worstFrameFps.ToString() + " WorstTimeslice=" + m_WorstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " ActivePlayers=" + players.ToString();
+                    EoH_LiveAdvisorLogger.Log("SERVER_FRAME_HITCH", hitchWarningMessage, "warning", "EoH_Performance");
+                }
             }
         }
 
