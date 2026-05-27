@@ -24,6 +24,14 @@ class EoH_EventObjectiveManager
         Print("[EoH_EventObjectives] Manager initialized objectives=" + m_Objectives.Count().ToString());
     }
 
+    EoH_EventObjective GetActiveObjectiveConfig()
+    {
+        if (!m_ActiveRuntime)
+            return null;
+
+        return m_ActiveRuntime.Config;
+    }
+
     bool IsIntelAvailable()
     {
         if (!m_ActiveRuntime)
