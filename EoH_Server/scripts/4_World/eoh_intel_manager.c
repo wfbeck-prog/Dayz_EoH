@@ -78,18 +78,68 @@ class EoH_IntelManager
         bool revealed = eventMgr.RevealRandomObjectiveOnly();
         if (!revealed)
         {
-            EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "No dormant relay signal could be decoded.");
+            EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "No unused weekend operation could be decoded.");
             Print("[EoH_Intel][BLOCKED] Weekly event intel failed to reveal objective player=" + player.GetIdentity().GetName());
             return;
         }
 
         TrackIntelUse(player);
 
+        EoH_EventObjective activeObj = eventMgr.GetActiveObjectiveConfig();
+        if (activeObj && activeObj.ObjectiveType == "purge_night")
+            SendPurgeNightReport(player, activeObj);
+        else
+            SendAltarRelayReport(player, activeObj);
+    }
+
+    void SendPurgeNightReport(PlayerBase player, EoH_EventObjective obj)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
+        string displayName = "Central Corridor";
+        string durationText = "60";
+        string gridText = "6600 / 7700";
+
+        if (obj)
+        {
+            displayName = obj.DisplayName;
+            durationText = obj.DurationMinutes.ToString();
+            gridText = Math.Round(obj.Position[0]).ToString() + " / " + Math.Round(obj.Position[2]).ToString();
+        }
+
+        string body = "LOCATION: " + displayName + "\n";
+        body += "GRID SIGNAL: " + gridText + "\n";
+        body += "STATUS: Red Ledger purge broadcast active\n";
+        body += "DURATION: " + durationText + " minutes\n\n";
+        body += "OPERATION NOTES:\n";
+        body += "EoH has intercepted hostile Red Ledger traffic. The marked corridor is entering a blackout window. Relay coverage is unstable and recovery teams are not being dispatched until the signal burns out.\n\n";
+        body += "COMBAT DIRECTIVE:\n";
+        body += "This is a faction fight zone. Survivors entering the area should expect PvP contact, opportunistic raiders, and collapsing security conditions. Work as a team, bring medical supplies, and keep an exit route open.\n\n";
+        body += "OBJECTIVE:\n";
+        body += "Fight for control of the marked corridor until the purge signal ends. When the broadcast burns out, a recovery cache will become vulnerable and green smoke will mark the payout.";
+
+        EoH_FieldReportData report = new EoH_FieldReportData();
+        report.Title = "PURGE NIGHT INTERCEPT";
+        report.Subtitle = "Red Ledger Blackout Signal";
+        report.Body = body;
+
+        EoH_FieldReportService.OpenForPlayer(player, report);
+        EoH_Notifications.SendToPlayer(player, "PURGE NIGHT", displayName + " marked. Hold the corridor until the signal burns out.");
+
+        Print("[EoH_Intel] Weekly event intel revealed purge night player=" + player.GetIdentity().GetName());
+    }
+
+    void SendAltarRelayReport(PlayerBase player, EoH_EventObjective obj)
+    {
+        if (!player || !player.GetIdentity())
+            return;
+
         string body = "LOCATION: Altar Relay Towers\n";
         body += "GRID SIGNAL: 8132 / 9093\n";
         body += "STATUS: Dormant relay array detected\n\n";
         body += "FIELD REPAIR REQUIREMENTS:\n";
-        body += "- Field Radio\n";
+        body += "- Field Transceiver\n";
         body += "- Car Battery\n\n";
         body += "OPERATION NOTES:\n";
         body += "The tower is not transmitting. A survivor team must carry the required equipment to the relay site and complete a field repair before the signal can be restored.\n\n";
@@ -104,7 +154,7 @@ class EoH_IntelManager
         report.Body = body;
 
         EoH_FieldReportService.OpenForPlayer(player, report);
-        EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "Altar Relay Towers marked. Bring a field radio and car battery.");
+        EoH_Notifications.SendToPlayer(player, "EVENT INTEL", "Altar Relay Towers marked. Bring a Field Transceiver and car battery.");
 
         Print("[EoH_Intel] Weekly event intel revealed altar relay player=" + player.GetIdentity().GetName());
     }
