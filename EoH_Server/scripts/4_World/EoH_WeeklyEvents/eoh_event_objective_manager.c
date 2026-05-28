@@ -2,6 +2,7 @@ class EoH_EventObjectiveManager
 {
     protected static ref EoH_EventObjectiveManager s_Instance;
     static const bool EOH_FORCE_PURGE_NIGHT_TEST = true;
+    static const string EOH_PARTICLEPOINT_REWARD_SMOKE = "SmokePoint_3";
 
     protected ref array<ref EoH_EventObjective> m_Objectives;
     protected ref EoH_EventObjectiveRuntime m_ActiveRuntime;
@@ -439,16 +440,30 @@ class EoH_EventObjectiveManager
         smokePos[1] = GetGame().SurfaceY(pos[0], pos[2]);
 
         SmokeGrenadeBase smoke = SmokeGrenadeBase.Cast(GetGame().CreateObjectEx(smokeType, smokePos, ECE_PLACE_ON_SURFACE));
-        if (!smoke)
+        if (smoke)
         {
-            Print("[EoH_EventObjectives][WARN] Failed spawning smoke type=" + smokeType + " pos=" + smokePos.ToString());
+            if (smoke.GetCompEM() && smoke.GetCompEM().CanWork())
+                smoke.GetCompEM().SwitchOn();
+
+            Print("[EoH_EventObjectives] Spawned event grenade smoke type=" + smokeType + " pos=" + smokePos.ToString());
+            return true;
+        }
+
+        Print("[EoH_EventObjectives][WARN] Grenade smoke failed type=" + smokeType + " pos=" + smokePos.ToString() + " trying ParticlePoints=" + EOH_PARTICLEPOINT_REWARD_SMOKE);
+        return SpawnParticlePointSmoke(smokePos);
+    }
+
+    bool SpawnParticlePointSmoke(vector smokePos)
+    {
+        smokePos[1] = GetGame().SurfaceY(smokePos[0], smokePos[2]);
+        Object smokePoint = GetGame().CreateObjectEx(EOH_PARTICLEPOINT_REWARD_SMOKE, smokePos, ECE_PLACE_ON_SURFACE);
+        if (!smokePoint)
+        {
+            Print("[EoH_EventObjectives][WARN] ParticlePoints smoke failed class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
             return false;
         }
 
-        if (smoke.GetCompEM() && smoke.GetCompEM().CanWork())
-            smoke.GetCompEM().SwitchOn();
-
-        Print("[EoH_EventObjectives] Spawned event smoke type=" + smokeType + " pos=" + smokePos.ToString());
+        Print("[EoH_EventObjectives] Spawned ParticlePoints smoke class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
         return true;
     }
 
