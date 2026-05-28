@@ -379,6 +379,7 @@ class EoH_EventObjectiveManager
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
         vector cratePos = cfg.Position + "8 0 8";
         cratePos[1] = GetGame().SurfaceY(cratePos[0], cratePos[2]);
+        CleanupRewardObjects(cratePos, 15.0);
         m_ActiveRuntime.RewardCrate.SetRuntime(cratePos, 25, cfg.LootTier);
         Object crate = GetGame().CreateObject(m_ActiveRuntime.RewardCrate.CrateType, cratePos);
         m_ActiveRuntime.RewardCrate.MarkSpawned(crate);
@@ -391,11 +392,13 @@ class EoH_EventObjectiveManager
             smokeType = "M18SmokeGrenade_Green";
         vector smokePos = pos;
         smokePos[1] = GetGame().SurfaceY(pos[0], pos[2]);
+        CleanupRewardSmoke(smokePos, 15.0);
         SmokeGrenadeBase smoke = SmokeGrenadeBase.Cast(GetGame().CreateObjectEx(smokeType, smokePos, ECE_PLACE_ON_SURFACE));
         if (smoke)
         {
             if (smoke.GetCompEM() && smoke.GetCompEM().CanWork())
                 smoke.GetCompEM().SwitchOn();
+            smoke.SetLifetime(1800);
             Print("[EoH_EventObjectives] Spawned event grenade smoke type=" + smokeType + " pos=" + smokePos.ToString());
             return true;
         }
@@ -406,14 +409,52 @@ class EoH_EventObjectiveManager
     bool SpawnParticlePointSmoke(vector smokePos)
     {
         smokePos[1] = GetGame().SurfaceY(smokePos[0], smokePos[2]);
+        CleanupRewardSmoke(smokePos, 15.0);
         Object smokePoint = GetGame().CreateObjectEx(EOH_PARTICLEPOINT_REWARD_SMOKE, smokePos, ECE_PLACE_ON_SURFACE);
         if (!smokePoint)
         {
             Print("[EoH_EventObjectives][WARN] ParticlePoints smoke failed class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
             return false;
         }
+        smokePoint.SetLifetime(1800);
         Print("[EoH_EventObjectives] Spawned ParticlePoints smoke class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
         return true;
+    }
+
+    void CleanupRewardObjects(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        array<CargoBase> cargos = new array<CargoBase>();
+        GetGame().GetObjectsAtPosition(pos, radius, objects, cargos);
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+            string type = obj.GetType();
+            if (type == "SeaChest" || type == "WoodenCrate" || type == "AmmoBox" || type.Contains("M18SmokeGrenade") || type == EOH_PARTICLEPOINT_REWARD_SMOKE || type == "EoH_RewardSmokeMarker")
+            {
+                Print("[EoH_EventObjectives] Cleanup reward object type=" + type + " pos=" + obj.GetPosition().ToString());
+                GetGame().ObjectDelete(obj);
+            }
+        }
+    }
+
+    void CleanupRewardSmoke(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        array<CargoBase> cargos = new array<CargoBase>();
+        GetGame().GetObjectsAtPosition(pos, radius, objects, cargos);
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+            string type = obj.GetType();
+            if (type.Contains("M18SmokeGrenade") || type == EOH_PARTICLEPOINT_REWARD_SMOKE || type == "EoH_RewardSmokeMarker")
+            {
+                Print("[EoH_EventObjectives] Cleanup reward smoke type=" + type + " pos=" + obj.GetPosition().ToString());
+                GetGame().ObjectDelete(obj);
+            }
+        }
     }
 
     void TickRewardCrate()
@@ -470,10 +511,11 @@ class EoH_EventObjectiveManager
             GetGame().ObjectDelete(m_ActiveRuntime.SpawnedObject);
         if (m_ActiveRuntime.RewardCrate)
             m_ActiveRuntime.RewardCrate.Cleanup();
+        CleanupRewardObjects(cfg.Position, cfg.Radius);
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_" + cfg.Id);
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
         EoH_Notifications.SendToAll("WEEKEND EVENT", cfg.DisplayName + " has gone silent. Intel channels are open again.");
-        Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id + " intelAvailable=true");
+        Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id + " intelAvailable=true cleanupRadius=" + cfg.Radius.ToString());
         m_ActiveRuntime = null;
     }
 }
