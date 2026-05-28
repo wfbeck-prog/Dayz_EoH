@@ -512,7 +512,6 @@ class EoH_EventObjectiveManager
             Print("[EoH_EventObjectives][WARN] ParticlePoints smoke failed class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
             return false;
         }
-        smokePoint.SetLifetime(1800);
         Print("[EoH_EventObjectives] Spawned ParticlePoints smoke class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
         return true;
     }
