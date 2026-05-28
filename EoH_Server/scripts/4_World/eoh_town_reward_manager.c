@@ -176,7 +176,6 @@ class EoH_TownRewardManager
 
         particleSmoke.SetPosition(smokePos);
         particleSmoke.PlaceOnSurface();
-        particleSmoke.SetLifetime(900);
 
         Print("[EoH_TownReward] Spawned ParticlePoints smoke town=" + townName + " class=" + PARTICLEPOINT_SMOKE + " pos=" + smokePos.ToString());
     }
