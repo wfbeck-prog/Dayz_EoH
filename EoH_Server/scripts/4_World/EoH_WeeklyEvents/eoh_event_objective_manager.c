@@ -1,7 +1,7 @@
 class EoH_EventObjectiveManager
 {
     protected static ref EoH_EventObjectiveManager s_Instance;
-    static const bool EOH_FORCE_PURGE_NIGHT_TEST = true;
+    static const bool EOH_FORCE_PURGE_NIGHT_TEST = false;
     static const string EOH_PARTICLEPOINT_REWARD_SMOKE = "SmokePoint_3";
 
     protected ref array<ref EoH_EventObjective> m_Objectives;
