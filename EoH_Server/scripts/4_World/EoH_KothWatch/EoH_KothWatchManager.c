@@ -3,13 +3,16 @@ class EoH_KothWatchManager
     protected static ref EoH_KothWatchManager s_Instance;
     protected ref EoH_KothWatchConfig m_Config;
     protected float m_LastPlayerCheckTime;
+    protected float m_LastHeartbeatTime;
 
     protected const string CONFIG_DIR = "$profile:EoH";
     protected const string CONFIG_PATH = "$profile:EoH/KothWatchConfig.json";
+    protected const float HEARTBEAT_SECONDS = 120.0;
 
     void EoH_KothWatchManager()
     {
         m_LastPlayerCheckTime = 0;
+        m_LastHeartbeatTime = 0;
         LoadConfig();
     }
 
@@ -78,11 +81,42 @@ class EoH_KothWatchManager
             return;
 
         float now = GetGame().GetTime() / 1000.0;
+        WriteHeartbeat(now);
+
         if (m_LastPlayerCheckTime > 0 && now - m_LastPlayerCheckTime < m_Config.PlayerCheckSeconds)
             return;
 
         m_LastPlayerCheckTime = now;
         CheckPlayersNearZones();
+    }
+
+    void WriteHeartbeat(float now)
+    {
+        if (!m_Config)
+            return;
+
+        if (m_LastHeartbeatTime > 0 && now - m_LastHeartbeatTime < HEARTBEAT_SECONDS)
+            return;
+
+        m_LastHeartbeatTime = now;
+
+        int playersOnline = GetPlayerCount();
+        int zones = 0;
+        if (m_Config.Zones)
+            zones = m_Config.Zones.Count();
+
+        EoH_LiveAdvisorActivity.LogActivity("koth_watch", "heartbeat enabled=" + m_Config.Enabled.ToString() + " zones=" + zones.ToString() + " players=" + playersOnline.ToString() + " checkSeconds=" + m_Config.PlayerCheckSeconds.ToString());
+    }
+
+    int GetPlayerCount()
+    {
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        if (!players)
+            return 0;
+
+        return players.Count();
     }
 
     void CheckPlayersNearZones()
