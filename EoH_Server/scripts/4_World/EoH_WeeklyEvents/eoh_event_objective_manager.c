@@ -83,21 +83,19 @@ class EoH_EventObjectiveManager
     {
         if (EOH_FORCE_PURGE_NIGHT_TEST)
             return 3 * 60 * 1000;
-        return 30 * 60 * 1000;
+        return 20 * 60 * 1000;
     }
 
     int GetPurgePhaseThreeMs(EoH_EventObjective cfg)
     {
         if (EOH_FORCE_PURGE_NIGHT_TEST)
             return 4 * 60 * 1000;
-        return 50 * 60 * 1000;
+        return 25 * 60 * 1000;
     }
 
     int GetPurgeRewardCleanupMs()
     {
-        if (EOH_FORCE_PURGE_NIGHT_TEST)
-            return 10 * 60 * 1000;
-        return 30 * 60 * 1000;
+        return 10 * 60 * 1000;
     }
 
     void RegisterDefaults()
@@ -132,7 +130,7 @@ class EoH_EventObjectiveManager
         purgeNight.EnableInfected = true;
         purgeNight.EnableMarker = true;
         purgeNight.EnableSmoke = true;
-        purgeNight.DurationMinutes = 60;
+        purgeNight.DurationMinutes = 30;
         if (EOH_FORCE_PURGE_NIGHT_TEST)
             purgeNight.DurationMinutes = 5;
         purgeNight.Radius = 500.0;
@@ -415,7 +413,7 @@ class EoH_EventObjectiveManager
         if (!smokeStarted)
             msg += " No smoke confirmation received; use the event marker and field report coordinates.";
         EoH_Notifications.SendToAll("PURGE COMPLETE", msg);
-        EoH_Notifications.SendToAll("RECOVERY CACHE", "The Purge Night cache has spawned and is vulnerable for 10 minutes in test mode. Move to the marked corridor and secure the payout.");
+        EoH_Notifications.SendToAll("RECOVERY CACHE", "The Purge Night cache has spawned and is vulnerable for 10 minutes. Move to the marked corridor and secure the payout.");
         Print("[EoH_PurgeNight] Reward spawned id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString() + " cleanupMs=" + GetPurgeRewardCleanupMs().ToString() + " cratePos=" + m_ActiveRuntime.RewardCrate.Position.ToString());
     }
 
