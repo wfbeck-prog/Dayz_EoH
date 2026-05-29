@@ -8,6 +8,7 @@ class EoH_EventObjectiveManager
     protected ref EoH_EventObjectiveRuntime m_ActiveRuntime;
     protected ref array<string> m_UsedWeekendEvents;
     protected ref array<Object> m_PurgeNightAI;
+    protected int m_PurgeNightRewardUnlockTime;
 
     static EoH_EventObjectiveManager Get()
     {
@@ -22,6 +23,7 @@ class EoH_EventObjectiveManager
         m_Objectives = new array<ref EoH_EventObjective>();
         m_UsedWeekendEvents = new array<string>();
         m_PurgeNightAI = new array<Object>();
+        m_PurgeNightRewardUnlockTime = 0;
         RegisterDefaults();
         Print("[EoH_EventObjectives] Manager initialized objectives=" + m_Objectives.Count().ToString());
     }
@@ -89,6 +91,13 @@ class EoH_EventObjectiveManager
         if (EOH_FORCE_PURGE_NIGHT_TEST)
             return 4 * 60 * 1000;
         return 50 * 60 * 1000;
+    }
+
+    int GetPurgeRewardCleanupMs()
+    {
+        if (EOH_FORCE_PURGE_NIGHT_TEST)
+            return 10 * 60 * 1000;
+        return 30 * 60 * 1000;
     }
 
     void RegisterDefaults()
@@ -207,6 +216,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RevealedByIntel = true;
         m_ActiveRuntime.RewardCrate = null;
         m_ActiveRuntime.CurrentWave = 0;
+        m_PurgeNightRewardUnlockTime = 0;
         CleanupPurgeNightAI();
         if (obj.ObjectiveType == "purge_night")
             StartPurgeNightRuntime();
@@ -228,6 +238,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.LastTickTime = m_ActiveRuntime.StartTime;
         m_ActiveRuntime.RewardCrate = null;
         m_ActiveRuntime.CurrentWave = 0;
+        m_PurgeNightRewardUnlockTime = 0;
         string msg = "Red Ledger purge traffic intercepted. The marked corridor is blacked out for " + cfg.DurationMinutes.ToString() + " minutes. Survivors entering the zone are on their own.";
         EoH_Notifications.SendToAll("PURGE NIGHT", msg);
         BroadcastObjective();
@@ -319,6 +330,17 @@ class EoH_EventObjectiveManager
         }
         if (elapsed >= durationMs)
             UnlockPurgeNightReward();
+        if (m_ActiveRuntime && m_ActiveRuntime.RewardUnlocked && m_PurgeNightRewardUnlockTime > 0)
+        {
+            int cleanupElapsed = now - m_PurgeNightRewardUnlockTime;
+            int cleanupMs = GetPurgeRewardCleanupMs();
+            Print("[EoH_PurgeNight][CLEANUP] rewardElapsedMs=" + cleanupElapsed.ToString() + " cleanupMs=" + cleanupMs.ToString());
+            if (cleanupElapsed >= cleanupMs)
+            {
+                EoH_Notifications.SendToAll("PURGE NIGHT", "The recovery window has closed. Remaining cache markers are being cleared.");
+                EndActiveObjective();
+            }
+        }
     }
 
     void SpawnPurgeNightWave(int wave)
@@ -387,13 +409,14 @@ class EoH_EventObjectiveManager
             return;
         m_ActiveRuntime.RewardCrate.MarkUnlocked();
         m_ActiveRuntime.RewardUnlocked = true;
+        m_PurgeNightRewardUnlockTime = GetGame().GetTime();
         bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
         string msg = "The purge signal has burned out. A recovery cache is now exposed inside the marked corridor.";
         if (!smokeStarted)
             msg += " No smoke confirmation received; use the event marker and field report coordinates.";
         EoH_Notifications.SendToAll("PURGE COMPLETE", msg);
-        EoH_Notifications.SendToAll("RECOVERY CACHE", "The Purge Night cache has spawned and is vulnerable. Move to the marked corridor and secure the payout.");
-        Print("[EoH_PurgeNight] Reward spawned id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString() + " cratePos=" + m_ActiveRuntime.RewardCrate.Position.ToString());
+        EoH_Notifications.SendToAll("RECOVERY CACHE", "The Purge Night cache has spawned and is vulnerable for 10 minutes in test mode. Move to the marked corridor and secure the payout.");
+        Print("[EoH_PurgeNight] Reward spawned id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString() + " cleanupMs=" + GetPurgeRewardCleanupMs().ToString() + " cratePos=" + m_ActiveRuntime.RewardCrate.Position.ToString());
     }
 
     void TickWaves(int now)
@@ -608,6 +631,7 @@ class EoH_EventObjectiveManager
             m_ActiveRuntime.RewardCrate.Cleanup();
         CleanupRewardObjects(cfg.Position, cfg.Radius);
         CleanupPurgeNightAI();
+        m_PurgeNightRewardUnlockTime = 0;
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_" + cfg.Id);
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
         EoH_Notifications.SendToAll("WEEKEND EVENT", cfg.DisplayName + " has gone silent. Intel channels are open again.");
