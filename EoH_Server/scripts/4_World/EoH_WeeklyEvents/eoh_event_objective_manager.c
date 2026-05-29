@@ -2,6 +2,7 @@ class EoH_EventObjectiveManager
 {
     protected static ref EoH_EventObjectiveManager s_Instance;
     static const bool EOH_FORCE_PURGE_NIGHT_TEST = false;
+    static const bool EOH_FORCE_ALTAR_RELAY_TEST = true;
     static const string EOH_PARTICLEPOINT_REWARD_SMOKE = "SmokePoint_3";
 
     protected ref array<ref EoH_EventObjective> m_Objectives;
@@ -105,7 +106,7 @@ class EoH_EventObjectiveManager
         altarTowers.DisplayName = "Altar Relay Towers";
         altarTowers.Position = "8132.95068359375 492.1257629394531 9093.74609375";
         altarTowers.ObjectiveType = "relay_tower";
-        altarTowers.SpawnObject = "Land_Tisy_Radar";
+        altarTowers.SpawnObject = "";
         altarTowers.RecommendedPlayers = 8;
         altarTowers.LootTier = 4;
         altarTowers.EnableAIBandits = false;
@@ -135,21 +136,6 @@ class EoH_EventObjectiveManager
             purgeNight.DurationMinutes = 5;
         purgeNight.Radius = 500.0;
         m_Objectives.Insert(purgeNight);
-
-        EoH_EventObjective convoy = new EoH_EventObjective();
-        convoy.Id = "convoy_blackmountain";
-        convoy.DisplayName = "Destroyed Relay Convoy";
-        convoy.Position = "11100 0 2550";
-        convoy.ObjectiveType = "convoy";
-        convoy.SpawnObject = "Land_Wreck_Ural";
-        convoy.RecommendedPlayers = 4;
-        convoy.LootTier = 3;
-        convoy.EnableAIBandits = false;
-        convoy.EnableExpansionAI = true;
-        convoy.EnableSmoke = false;
-        convoy.DurationMinutes = 60;
-        convoy.Radius = 250.0;
-        m_Objectives.Insert(convoy);
     }
 
     EoH_EventObjective FindObjectiveById(string eventId)
@@ -168,6 +154,17 @@ class EoH_EventObjectiveManager
     {
         if (!m_Objectives || m_Objectives.Count() == 0)
             return null;
+
+        if (EOH_FORCE_ALTAR_RELAY_TEST)
+        {
+            EoH_EventObjective altar = FindObjectiveById("altar_relay_towers");
+            if (altar && !WasUsedThisWeekend(altar.Id))
+            {
+                Print("[EoH_EventObjectives] Force test selected Altar Relay");
+                return altar;
+            }
+        }
+
         if (EOH_FORCE_PURGE_NIGHT_TEST)
         {
             EoH_EventObjective purge = FindObjectiveById("purge_night_novy_stary");
