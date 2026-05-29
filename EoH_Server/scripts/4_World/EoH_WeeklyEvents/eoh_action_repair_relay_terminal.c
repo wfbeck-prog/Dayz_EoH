@@ -8,6 +8,8 @@ class ActionRepairAltarRelayTerminalCB : ActionContinuousBaseCB
 
 class ActionRepairAltarRelayTerminal : ActionContinuousBase
 {
+    protected int m_LastDebugLogTime;
+
     void ActionRepairAltarRelayTerminal()
     {
         m_CallbackClass = ActionRepairAltarRelayTerminalCB;
@@ -15,6 +17,7 @@ class ActionRepairAltarRelayTerminal : ActionContinuousBase
         m_FullBody = true;
         m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH;
         m_Text = "Repair Relay Terminal";
+        m_LastDebugLogTime = 0;
     }
 
     override void CreateConditionComponents()
@@ -30,21 +33,118 @@ class ActionRepairAltarRelayTerminal : ActionContinuousBase
 
         Object targetObject = target.GetObject();
         if (!targetObject)
+        {
+            DebugBlocked("no_target_object", player, null, null, false, false);
             return false;
+        }
 
-        if (targetObject.GetType() != "EoH_RelayRepairTerminal")
-            return false;
+        Object parentObject = null;
+        EntityAI targetEntity = EntityAI.Cast(targetObject);
+        if (targetEntity)
+            parentObject = targetEntity.GetHierarchyParent();
+
+        bool validTarget = IsRelayTerminalTarget(targetObject);
+        if (!validTarget && parentObject)
+            validTarget = IsRelayTerminalTarget(parentObject);
 
         EoH_EventObjective active = EoH_EventObjectiveManager.Get().GetActiveObjectiveConfig();
-        if (!active || active.Id != "altar_relay_towers")
+        bool altarActive = active && active.Id == "altar_relay_towers";
+        bool combatStarted = EoH_EventObjectiveManager.Get().IsObjectiveCombatStarted();
+        bool hasRadio = FindRadio(player) != null;
+        bool hasBattery = FindItemOnPlayer(player, "CarBattery") != null;
+
+        if (!validTarget)
+        {
+            DebugBlocked("bad_target", player, targetObject, parentObject, hasRadio, hasBattery);
+            return false;
+        }
+
+        if (!altarActive)
+        {
+            DebugBlocked("altar_not_active", player, targetObject, parentObject, hasRadio, hasBattery);
+            return false;
+        }
+
+        if (combatStarted)
+        {
+            DebugBlocked("already_repaired", player, targetObject, parentObject, hasRadio, hasBattery);
+            return false;
+        }
+
+        if (!hasRadio || !hasBattery)
+        {
+            DebugBlocked("missing_items", player, targetObject, parentObject, hasRadio, hasBattery);
+            return false;
+        }
+
+        DebugAllowed(player, targetObject, parentObject, hasRadio, hasBattery);
+        return true;
+    }
+
+    bool IsRelayTerminalTarget(Object obj)
+    {
+        if (!obj)
             return false;
 
-        if (EoH_EventObjectiveManager.Get().IsObjectiveCombatStarted())
+        string type = obj.GetType();
+        if (type == "EoH_RelayRepairTerminal")
+            return true;
+
+        if (obj.IsKindOf("EoH_RelayRepairTerminal"))
+            return true;
+
+        if (type.Contains("RelayRepairTerminal"))
+            return true;
+
+        if (type.Contains("RepairTerminal"))
+            return true;
+
+        return false;
+    }
+
+    void DebugBlocked(string reason, PlayerBase player, Object targetObject, Object parentObject, bool hasRadio, bool hasBattery)
+    {
+        if (!ShouldDebug())
+            return;
+
+        string targetType = "null";
+        string parentType = "null";
+        string activeId = "none";
+
+        if (targetObject)
+            targetType = targetObject.GetType();
+        if (parentObject)
+            parentType = parentObject.GetType();
+
+        EoH_EventObjective active = EoH_EventObjectiveManager.Get().GetActiveObjectiveConfig();
+        if (active)
+            activeId = active.Id;
+
+        Print("[EoH_RelayAction][DEBUG] blocked=" + reason + " targetType=" + targetType + " parentType=" + parentType + " activeObjective=" + activeId + " hasRadio=" + hasRadio.ToString() + " hasBattery=" + hasBattery.ToString());
+    }
+
+    void DebugAllowed(PlayerBase player, Object targetObject, Object parentObject, bool hasRadio, bool hasBattery)
+    {
+        if (!ShouldDebug())
+            return;
+
+        string targetType = "null";
+        string parentType = "null";
+        if (targetObject)
+            targetType = targetObject.GetType();
+        if (parentObject)
+            parentType = parentObject.GetType();
+
+        Print("[EoH_RelayAction][DEBUG] allowed targetType=" + targetType + " parentType=" + parentType + " hasRadio=" + hasRadio.ToString() + " hasBattery=" + hasBattery.ToString());
+    }
+
+    bool ShouldDebug()
+    {
+        int now = GetGame().GetTime();
+        if (m_LastDebugLogTime > 0 && now - m_LastDebugLogTime < 3000)
             return false;
 
-        if (!HasRequiredRepairItems(player))
-            return false;
-
+        m_LastDebugLogTime = now;
         return true;
     }
 
