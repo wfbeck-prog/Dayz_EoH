@@ -6,6 +6,7 @@ modded class MissionServer
 
         EoH_LiveAdvisorLogger.Init();
         EoH_LiveAdvisorLogger.Log("MISSION_INIT", "MissionServer initialized Live Advisor", "info", "MissionServer");
+        EoH_KothWatchManager.Get();
         EoH_StartLiveAdvisorHeartbeat();
     }
 
@@ -14,6 +15,7 @@ modded class MissionServer
         super.OnUpdate(timeslice);
 
         EoH_LiveAdvisorPerformance.CheckServerPerformance(timeslice);
+        EoH_KothWatchManager.Get().Tick();
     }
 
     override void OnClientReadyEvent(PlayerIdentity identity, PlayerBase player)
@@ -36,6 +38,7 @@ modded class MissionServer
         }
 
         EoH_LiveAdvisorActivity.LogActivity("player_session", "client_ready name=" + playerName + " id=" + playerId + " pos=" + playerPos.ToString() + " players=" + EoH_GetLiveAdvisorPlayerCount().ToString());
+        EoH_KothWatchManager.Get().OnClientReady(player, identity);
     }
 
     override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
@@ -80,6 +83,7 @@ modded class MissionServer
         }
 
         EoH_LiveAdvisorActivity.LogActivity("player_session", "disconnect name=" + playerName + " id=" + playerId + " pos=" + playerPos.ToString() + " players=" + EoH_GetLiveAdvisorPlayerCount().ToString());
+        EoH_KothWatchManager.Get().OnDisconnect(player, identity, uid);
     }
 
     int EoH_GetLiveAdvisorPlayerCount()
