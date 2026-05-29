@@ -23,7 +23,7 @@ class EoH_DNACacheMarkerHelper
 		string body = GetOpenedBody(tier);
 		EoH_Notifications.SendToAll(title, body);
 
-		Print("[EoH_DNAIntel] Cache opened marker broadcast tier=" + tier + " pos=" + position.ToString());
+		Print("[EoH_DNAIntel] Cache breached marker broadcast tier=" + tier + " pos=" + position.ToString());
 	}
 
 	static void RemoveCacheOpenedMarker(string tier, vector position)
@@ -62,15 +62,15 @@ class EoH_DNACacheMarkerHelper
 	static string GetMarkerLabel(string tier)
 	{
 		if (tier == EoH_DNACacheTier.RED)
-			return "T4 Cache Opened";
+			return "T4 Cache Discovered";
 
 		if (tier == EoH_DNACacheTier.BLUE)
-			return "T3 Cache Opened";
+			return "T3 Cache Discovered";
 
 		if (tier == EoH_DNACacheTier.GREEN)
-			return "T2 Cache Opened";
+			return "T2 Cache Discovered";
 
-		return "T1 Cache Opened";
+		return "T1 Cache Discovered";
 	}
 
 	static string GetOpenedTitle(string tier)
@@ -90,15 +90,15 @@ class EoH_DNACacheMarkerHelper
 	static string GetOpenedBody(string tier)
 	{
 		if (tier == EoH_DNACacheTier.RED)
-			return "A high-value cache signal has activated. Expect survivor movement toward the zone.";
+			return "A high-value cache has been breached. Expect survivor movement toward the zone.";
 
 		if (tier == EoH_DNACacheTier.BLUE)
-			return "A military-grade cache signal has activated.";
+			return "A military-grade cache has been breached.";
 
 		if (tier == EoH_DNACacheTier.GREEN)
-			return "A field cache signal has activated.";
+			return "A field cache has been breached.";
 
-		return "A low-tier cache signal has activated.";
+		return "A low-tier cache has been breached.";
 	}
 
 	static int GetTierColor(string tier)
