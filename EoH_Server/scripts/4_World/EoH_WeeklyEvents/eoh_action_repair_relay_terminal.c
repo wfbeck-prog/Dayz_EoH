@@ -87,6 +87,12 @@ class ActionRepairAltarRelayTerminal : ActionContinuousBase
             return false;
 
         string type = obj.GetType();
+        if (type == "EoH_RelayRepairNode")
+            return true;
+
+        if (obj.IsKindOf("EoH_RelayRepairNode"))
+            return true;
+
         if (type == "EoH_RelayRepairActionAnchor")
             return true;
 
@@ -97,6 +103,9 @@ class ActionRepairAltarRelayTerminal : ActionContinuousBase
             return true;
 
         if (obj.IsKindOf("EoH_RelayRepairTerminal"))
+            return true;
+
+        if (type.Contains("RelayRepairNode"))
             return true;
 
         if (type.Contains("RelayRepairActionAnchor"))
