@@ -7,6 +7,7 @@ modded class MissionServer
         EoH_LiveAdvisorLogger.Init();
         EoH_LiveAdvisorLogger.Log("MISSION_INIT", "MissionServer initialized Live Advisor", "info", "MissionServer");
         EoH_KothWatchManager.Get();
+        EoH_AdvisorRecommendationManager.Get();
         EoH_StartLiveAdvisorHeartbeat();
     }
 
@@ -16,6 +17,7 @@ modded class MissionServer
 
         EoH_LiveAdvisorPerformance.CheckServerPerformance(timeslice);
         EoH_KothWatchManager.Get().Tick();
+        EoH_AdvisorRecommendationManager.Get().Tick();
     }
 
     override void OnClientReadyEvent(PlayerIdentity identity, PlayerBase player)
