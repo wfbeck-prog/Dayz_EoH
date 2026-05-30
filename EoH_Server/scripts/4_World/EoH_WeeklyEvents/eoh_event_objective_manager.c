@@ -4,6 +4,7 @@ class EoH_EventObjectiveManager
     static const bool EOH_FORCE_PURGE_NIGHT_TEST = false;
     static const bool EOH_FORCE_ALTAR_RELAY_TEST = true;
     static const string EOH_PARTICLEPOINT_REWARD_SMOKE = "SmokePoint_3";
+    static const float EOH_ALTAR_REPAIR_RADIUS = 5.0;
 
     protected ref array<ref EoH_EventObjective> m_Objectives;
     protected ref EoH_EventObjectiveRuntime m_ActiveRuntime;
@@ -276,8 +277,13 @@ class EoH_EventObjectiveManager
     {
         if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
             return;
+
         if (m_ActiveRuntime.StartTime <= 0)
+        {
+            TickAltarRelayRepairProximity();
             return;
+        }
+
         int now = GetGame().GetTime();
         if (m_ActiveRuntime.LastTickTime > 0 && now - m_ActiveRuntime.LastTickTime < 30000)
             return;
@@ -289,6 +295,88 @@ class EoH_EventObjectiveManager
             TickWaves(now);
             TickRewardCrate();
         }
+    }
+
+    void TickAltarRelayRepairProximity()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
+            return;
+
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        if (cfg.Id != "altar_relay_towers")
+            return;
+
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player)
+                continue;
+
+            float dist = vector.Distance(player.GetPosition(), cfg.Position);
+            if (dist > EOH_ALTAR_REPAIR_RADIUS)
+                continue;
+
+            EntityAI radio = FindAltarRepairRadio(player);
+            EntityAI battery = FindItemOnPlayer(player, "CarBattery");
+
+            Print("[EoH_AltarRepair][PROXIMITY] player=" + player.GetIdentity().GetName() + " dist=" + dist.ToString() + " hasRadio=" + (radio != null).ToString() + " hasBattery=" + (battery != null).ToString());
+
+            if (!radio || !battery)
+            {
+                EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "The relay terminal is dormant. A Field Transceiver and Car Battery are required.");
+                continue;
+            }
+
+            GetGame().ObjectDelete(radio);
+            GetGame().ObjectDelete(battery);
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Field Transceiver and Car Battery consumed. Relay uplink restored.");
+            ActivateObjectiveFromRepair(player);
+            return;
+        }
+    }
+
+    EntityAI FindAltarRepairRadio(PlayerBase player)
+    {
+        EntityAI radio = FindItemOnPlayer(player, "FieldTransceiver");
+        if (radio)
+            return radio;
+
+        radio = FindItemOnPlayer(player, "PersonalRadio");
+        if (radio)
+            return radio;
+
+        radio = FindItemOnPlayer(player, "BaseRadio");
+        if (radio)
+            return radio;
+
+        radio = FindItemOnPlayer(player, "EoH_FieldRadio");
+        if (radio)
+            return radio;
+
+        return null;
+    }
+
+    EntityAI FindItemOnPlayer(PlayerBase player, string className)
+    {
+        if (!player || className == "")
+            return null;
+
+        array<EntityAI> items = new array<EntityAI>();
+        player.GetInventory().EnumerateInventory(InventoryTraversalType.PREORDER, items);
+
+        foreach (EntityAI item : items)
+        {
+            if (!item)
+                continue;
+
+            if (item.GetType() == className || item.IsKindOf(className))
+                return item;
+        }
+
+        return null;
     }
 
     void TickPurgeNight(int now)
