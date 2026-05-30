@@ -34,7 +34,7 @@ class EoH_KothWatchZone
 
 class EoH_KothWatchConfig
 {
-    int ConfigVersion = 1;
+    int ConfigVersion = 2;
     bool Enabled = true;
     bool WarnOnly = true;
     bool LogPlayerProximity = true;
@@ -42,6 +42,12 @@ class EoH_KothWatchConfig
     bool LogConnectsNearZones = true;
     float PlayerCheckSeconds = 30.0;
     float DisconnectRiskRadius = 750.0;
+
+    bool EnableKothSafeMode = false;
+    bool DisableTownAINearKoth = false;
+    bool SuppressEoHMarkersNearKoth = false;
+    float SafeModeRadius = 750.0;
+
     ref array<ref EoH_KothWatchZone> Zones;
 
     void EoH_KothWatchConfig()
@@ -51,7 +57,7 @@ class EoH_KothWatchConfig
 
     void Defaults()
     {
-        ConfigVersion = 1;
+        ConfigVersion = 2;
         Enabled = true;
         WarnOnly = true;
         LogPlayerProximity = true;
@@ -59,6 +65,11 @@ class EoH_KothWatchConfig
         LogConnectsNearZones = true;
         PlayerCheckSeconds = 30.0;
         DisconnectRiskRadius = 750.0;
+
+        EnableKothSafeMode = false;
+        DisableTownAINearKoth = false;
+        SuppressEoHMarkersNearKoth = false;
+        SafeModeRadius = 750.0;
 
         Zones = new array<ref EoH_KothWatchZone>();
         AddDefaultElektroZone();
