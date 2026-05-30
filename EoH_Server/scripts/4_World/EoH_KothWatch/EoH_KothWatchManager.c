@@ -41,6 +41,8 @@ class EoH_KothWatchManager
             NormalizeConfig();
             EoH_LiveAdvisorActivity.LogActivity("koth_watch", "loaded_config enabled=" + m_Config.Enabled.ToString() + " zones=" + m_Config.Zones.Count().ToString() + " warnOnly=" + m_Config.WarnOnly.ToString());
         }
+
+        LogSafeModeState("startup");
     }
 
     void NormalizeConfig()
@@ -59,6 +61,9 @@ class EoH_KothWatchManager
 
         if (m_Config.DisconnectRiskRadius <= 0)
             m_Config.DisconnectRiskRadius = 750.0;
+
+        if (m_Config.SafeModeRadius <= 0)
+            m_Config.SafeModeRadius = 750.0;
     }
 
     void EnsureConfigDir()
@@ -106,6 +111,15 @@ class EoH_KothWatchManager
             zones = m_Config.Zones.Count();
 
         EoH_LiveAdvisorActivity.LogActivity("koth_watch", "heartbeat enabled=" + m_Config.Enabled.ToString() + " zones=" + zones.ToString() + " players=" + playersOnline.ToString() + " checkSeconds=" + m_Config.PlayerCheckSeconds.ToString());
+        LogSafeModeState("heartbeat");
+    }
+
+    void LogSafeModeState(string source)
+    {
+        if (!m_Config)
+            return;
+
+        EoH_LiveAdvisorActivity.LogActivity("koth_watch", "safe_mode_state source=" + source + " enabled=" + m_Config.EnableKothSafeMode.ToString() + " disableTownAI=" + m_Config.DisableTownAINearKoth.ToString() + " suppressMarkers=" + m_Config.SuppressEoHMarkersNearKoth.ToString() + " radius=" + m_Config.SafeModeRadius.ToString());
     }
 
     int GetPlayerCount()
