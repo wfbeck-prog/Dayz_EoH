@@ -1,4 +1,4 @@
-modded class EoH_RelayRepairActionAnchor
+class EoH_RelayRepairActionAnchor : ItemBase
 {
     override void SetActions()
     {
