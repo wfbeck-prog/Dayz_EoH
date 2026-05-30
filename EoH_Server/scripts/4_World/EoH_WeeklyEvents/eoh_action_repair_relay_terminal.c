@@ -2,7 +2,8 @@ class ActionRepairAltarRelayTerminalCB : ActionContinuousBaseCB
 {
     override void CreateActionComponent()
     {
-        m_ActionData.m_ActionComponent = new CAContinuousTime(10.0);
+        float repairSeconds = EoH_WeeklyEventConfigManager.Get().GetAltarRepairDurationSeconds();
+        m_ActionData.m_ActionComponent = new CAContinuousTime(repairSeconds);
     }
 }
 
@@ -153,7 +154,7 @@ class ActionRepairAltarRelayTerminal : ActionContinuousBase
         if (parentObject)
             parentType = parentObject.GetType();
 
-        Print("[EoH_RelayAction][DEBUG] allowed targetType=" + targetType + " parentType=" + parentType + " hasRadio=" + hasRadio.ToString() + " hasBattery=" + hasBattery.ToString());
+        Print("[EoH_RelayAction][DEBUG] allowed targetType=" + targetType + " parentType=" + parentType + " hasRadio=" + hasRadio.ToString() + " hasBattery=" + hasBattery.ToString() + " repairSeconds=" + EoH_WeeklyEventConfigManager.Get().GetAltarRepairDurationSeconds().ToString());
     }
 
     bool ShouldDebug()
