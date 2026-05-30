@@ -33,7 +33,6 @@ class EoH_Scheduler
     protected int m_LastHeartbeat;
 
     static const int HEARTBEAT_INTERVAL_MS = 5000;
-    static const bool EOH_USE_NEW_WEEKLY_EVENT_OBJECTIVES = true;
 
     static EoH_Scheduler Get()
     {
@@ -101,15 +100,8 @@ class EoH_Scheduler
 
         if (id == "weekly_events")
         {
-            if (EOH_USE_NEW_WEEKLY_EVENT_OBJECTIVES)
-            {
-                EoH_EventObjectiveManager.Get().Tick();
-                Print("[EoH_Scheduler] Routed weekly_events to EoH_EventObjectiveManager");
-            }
-            else
-            {
-                EoH_WeeklyEventManager.Get().Tick();
-            }
+            EoH_EventObjectiveManager.Get().Tick();
+            Print("[EoH_Scheduler] Routed weekly_events to EoH_EventObjectiveManager");
         }
         else if (id == "town_ai")
         {
