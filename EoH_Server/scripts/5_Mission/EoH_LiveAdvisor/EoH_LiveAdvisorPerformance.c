@@ -50,6 +50,8 @@ class EoH_LiveAdvisorPerformance
         string activityMessage = "AvgFPS=" + avgFps.ToString() + " WorstFrameFPS=" + worstFrameFps.ToString() + " Players=" + players.ToString();
         EoH_LiveAdvisorActivity.LogActivity("performance_monitor", activityMessage);
 
+        EoH_AdvisorRecommendationManager.Get().ObservePerformanceSample(m_WorstTimeslice, avgFps, players);
+
         float now = GetGame().GetTime() / 1000.0;
         float cooldown = EoH_LiveAdvisorLogger.m_Config.PerformanceWarningCooldownSeconds;
 
