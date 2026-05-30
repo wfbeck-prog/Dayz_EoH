@@ -105,7 +105,7 @@ class EoH_EventObjectiveManager
         EoH_EventObjective altarTowers = new EoH_EventObjective();
         altarTowers.Id = "altar_relay_towers";
         altarTowers.DisplayName = "Altar Relay Towers";
-        altarTowers.Position = "8132.95068359375 492.1257629394531 9093.74609375";
+        altarTowers.Position = "8130.686035 492.125732 9085.325195";
         altarTowers.ObjectiveType = "relay_tower";
         altarTowers.SpawnObject = "";
         altarTowers.RecommendedPlayers = 8;
