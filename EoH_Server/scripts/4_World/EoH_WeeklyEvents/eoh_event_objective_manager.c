@@ -229,9 +229,11 @@ class EoH_EventObjectiveManager
 
     void StartAltarRepairWatcher()
     {
+        int intervalMs = EoH_WeeklyEventConfigManager.Get().GetAltarRepairWatcherIntervalMs();
+        float radius = EoH_WeeklyEventConfigManager.Get().GetAltarRepairProximityRadius();
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(TickAltarRelayRepairProximity);
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(TickAltarRelayRepairProximity, 5000, true);
-        Print("[EoH_AltarRepair] Started dedicated proximity watcher intervalMs=5000 radius=" + EOH_ALTAR_REPAIR_RADIUS.ToString());
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(TickAltarRelayRepairProximity, intervalMs, true);
+        Print("[EoH_AltarRepair] Started dedicated proximity watcher intervalMs=" + intervalMs.ToString() + " radius=" + radius.ToString() + " autoRepair=" + EoH_WeeklyEventConfigManager.Get().IsAltarProximityAutoRepairEnabled().ToString());
     }
 
     void StopAltarRepairWatcher()
@@ -328,9 +330,12 @@ class EoH_EventObjectiveManager
             return;
         }
 
+        float repairRadius = EoH_WeeklyEventConfigManager.Get().GetAltarRepairProximityRadius();
+        bool autoRepair = EoH_WeeklyEventConfigManager.Get().IsAltarProximityAutoRepairEnabled();
+
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
-        Print("[EoH_AltarRepair][WATCH] players=" + players.Count().ToString() + " radius=" + EOH_ALTAR_REPAIR_RADIUS.ToString() + " pos=" + cfg.Position.ToString());
+        Print("[EoH_AltarRepair][WATCH] players=" + players.Count().ToString() + " radius=" + repairRadius.ToString() + " autoRepair=" + autoRepair.ToString() + " pos=" + cfg.Position.ToString());
 
         foreach (Man man : players)
         {
@@ -345,17 +350,23 @@ class EoH_EventObjectiveManager
             float dist = vector.Distance(player.GetPosition(), cfg.Position);
             Print("[EoH_AltarRepair][CHECK] player=" + playerName + " dist=" + dist.ToString() + " playerPos=" + player.GetPosition().ToString());
 
-            if (dist > EOH_ALTAR_REPAIR_RADIUS)
+            if (dist > repairRadius)
                 continue;
 
             EntityAI radio = FindAltarRepairRadio(player);
             EntityAI battery = FindItemOnPlayer(player, "CarBattery");
 
-            Print("[EoH_AltarRepair][PROXIMITY] player=" + playerName + " dist=" + dist.ToString() + " hasRadio=" + (radio != null).ToString() + " hasBattery=" + (battery != null).ToString());
+            Print("[EoH_AltarRepair][PROXIMITY] player=" + playerName + " dist=" + dist.ToString() + " hasRadio=" + (radio != null).ToString() + " hasBattery=" + (battery != null).ToString() + " autoRepair=" + autoRepair.ToString());
 
             if (!radio || !battery)
             {
                 EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "The relay terminal is dormant. A Field Transceiver and Car Battery are required.");
+                continue;
+            }
+
+            if (!autoRepair)
+            {
+                EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Repair equipment detected. Use the relay terminal action to restore the uplink.");
                 continue;
             }
 
