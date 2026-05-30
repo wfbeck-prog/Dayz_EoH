@@ -220,9 +220,24 @@ class EoH_EventObjectiveManager
         {
             SpawnObjectiveObject();
             BroadcastObjective();
+            if (obj.Id == "altar_relay_towers")
+                StartAltarRepairWatcher();
         }
         Print("[EoH_EventObjectives] Revealed objective id=" + obj.Id + " type=" + obj.ObjectiveType + " pos=" + obj.Position.ToString());
         return true;
+    }
+
+    void StartAltarRepairWatcher()
+    {
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(TickAltarRelayRepairProximity);
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(TickAltarRelayRepairProximity, 5000, true);
+        Print("[EoH_AltarRepair] Started dedicated proximity watcher intervalMs=5000 radius=" + EOH_ALTAR_REPAIR_RADIUS.ToString());
+    }
+
+    void StopAltarRepairWatcher()
+    {
+        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(TickAltarRelayRepairProximity);
+        Print("[EoH_AltarRepair] Stopped dedicated proximity watcher");
     }
 
     void StartPurgeNightRuntime()
@@ -253,6 +268,7 @@ class EoH_EventObjectiveManager
             EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "This relay has already been restored.");
             return false;
         }
+        StopAltarRepairWatcher();
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
         m_ActiveRuntime.StartTime = GetGame().GetTime();
         m_ActiveRuntime.LastTickTime = m_ActiveRuntime.StartTime;
@@ -306,8 +322,15 @@ class EoH_EventObjectiveManager
         if (cfg.Id != "altar_relay_towers")
             return;
 
+        if (m_ActiveRuntime.StartTime > 0)
+        {
+            StopAltarRepairWatcher();
+            return;
+        }
+
         array<Man> players = new array<Man>();
         GetGame().GetPlayers(players);
+        Print("[EoH_AltarRepair][WATCH] players=" + players.Count().ToString() + " radius=" + EOH_ALTAR_REPAIR_RADIUS.ToString() + " pos=" + cfg.Position.ToString());
 
         foreach (Man man : players)
         {
@@ -315,14 +338,20 @@ class EoH_EventObjectiveManager
             if (!player)
                 continue;
 
+            string playerName = "unknown";
+            if (player.GetIdentity())
+                playerName = player.GetIdentity().GetName();
+
             float dist = vector.Distance(player.GetPosition(), cfg.Position);
+            Print("[EoH_AltarRepair][CHECK] player=" + playerName + " dist=" + dist.ToString() + " playerPos=" + player.GetPosition().ToString());
+
             if (dist > EOH_ALTAR_REPAIR_RADIUS)
                 continue;
 
             EntityAI radio = FindAltarRepairRadio(player);
             EntityAI battery = FindItemOnPlayer(player, "CarBattery");
 
-            Print("[EoH_AltarRepair][PROXIMITY] player=" + player.GetIdentity().GetName() + " dist=" + dist.ToString() + " hasRadio=" + (radio != null).ToString() + " hasBattery=" + (battery != null).ToString());
+            Print("[EoH_AltarRepair][PROXIMITY] player=" + playerName + " dist=" + dist.ToString() + " hasRadio=" + (radio != null).ToString() + " hasBattery=" + (battery != null).ToString());
 
             if (!radio || !battery)
             {
@@ -707,6 +736,7 @@ class EoH_EventObjectiveManager
     {
         if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
             return;
+        StopAltarRepairWatcher();
         EoH_EventObjective cfg = m_ActiveRuntime.Config;
         if (m_ActiveRuntime.SpawnedObject)
             GetGame().ObjectDelete(m_ActiveRuntime.SpawnedObject);
