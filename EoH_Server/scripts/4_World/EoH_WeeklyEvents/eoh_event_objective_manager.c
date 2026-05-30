@@ -587,22 +587,19 @@ class EoH_EventObjectiveManager
     {
         if (!crate)
             return;
-        AddRewardItem(crate, "SingleUsePunchedCard", 1);
+        AddRewardItem(crate, "PunchedCard", 1);
         AddRewardItem(crate, "DNA_Keycard_Red", 1);
-        AddRewardItem(crate, "My_DF_Weapons_Rifles_M4A1", 1);
-        AddRewardItem(crate, "My_DF_Weapons_Rifles_K416", 1);
-        AddRewardItem(crate, "My_DF_Weapons_DMR_SR25", 1);
-        AddRewardItem(crate, "My_DF_Weapons_Rifles_SCARH", 1);
-        AddRewardItem(crate, "Mag_CMAG_30Rnd_Black", 4);
-        AddRewardItem(crate, "My_DF_Weapons_Rifles_K416_30RndMag", 4);
-        AddRewardItem(crate, "My_DF_Weapons_DMR_SR25_20RndMag", 3);
-        AddRewardItem(crate, "My_DF_Weapons_Rifles_SCARH_20RndMag", 3);
-        AddRewardItem(crate, "My_DF_Gear_Rigs_Raider", 1);
-        AddRewardItem(crate, "My_DF_Gear_Backpacks_Tactical", 1);
-        AddRewardItem(crate, "My_DF_Gear_Heads_DICH", 1);
+        AddRewardItem(crate, "M4A1", 1);
+        AddRewardItem(crate, "AKM", 1);
+        AddRewardItem(crate, "Mag_STANAG_30Rnd", 4);
+        AddRewardItem(crate, "Mag_AKM_30Rnd", 4);
+        AddRewardItem(crate, "Ammo_556x45", 4);
+        AddRewardItem(crate, "Ammo_762x39", 4);
+        AddRewardItem(crate, "PlateCarrierVest", 1);
+        AddRewardItem(crate, "NVGoggles", 1);
         AddRewardItem(crate, "EoH_TownIntel", 2);
         AddRewardItem(crate, "EoH_TraderIntel", 1);
-        Print("[EoH_PurgeNight][Reward] Filled high-tier cache");
+        Print("[EoH_PurgeNight][Reward] Filled high-tier cache with validated fallback items");
     }
 
     void AddRewardItem(EntityAI container, string className, int count)
