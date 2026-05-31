@@ -668,6 +668,8 @@ class EoH_EventObjectiveManager
         if (cleanupElapsed >= cleanupMs)
         {
             EoH_Notifications.SendToAll("ALTAR RELAY", "The recovery window has closed. Altar Relay Towers has gone silent.");
+            EoH_MarkerService.RemoveFromAll("EOH_EVENT_altar_relay_towers");
+            EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
             EndActiveObjective();
         }
     }
