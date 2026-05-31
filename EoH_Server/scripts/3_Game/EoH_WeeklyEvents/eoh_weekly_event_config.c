@@ -1,6 +1,6 @@
 class EoH_WeeklyEventConfig
 {
-    int ConfigVersion = 2;
+    int ConfigVersion = 3;
     bool Enabled = true;
 
     float AltarRepairDurationSeconds = 60.0;
@@ -11,12 +11,16 @@ class EoH_WeeklyEventConfig
     bool StartAltarAIOnRepairStart = true;
     int AltarAIRounds = 5;
     int AltarRewardWave = 5;
+    int AltarWave2DelaySeconds = 240;
+    int AltarWave3DelaySeconds = 480;
+    int AltarWave4DelaySeconds = 720;
+    int AltarWave5DelaySeconds = 960;
     bool ResetAltarRepairWhenGroupLeavesZone = true;
     bool ConsumeAltarRepairItemsAtCompletion = true;
 
     void Defaults()
     {
-        ConfigVersion = 2;
+        ConfigVersion = 3;
         Enabled = true;
 
         AltarRepairDurationSeconds = 60.0;
@@ -27,6 +31,10 @@ class EoH_WeeklyEventConfig
         StartAltarAIOnRepairStart = true;
         AltarAIRounds = 5;
         AltarRewardWave = 5;
+        AltarWave2DelaySeconds = 240;
+        AltarWave3DelaySeconds = 480;
+        AltarWave4DelaySeconds = 720;
+        AltarWave5DelaySeconds = 960;
         ResetAltarRepairWhenGroupLeavesZone = true;
         ConsumeAltarRepairItemsAtCompletion = true;
     }
@@ -68,7 +76,7 @@ class EoH_WeeklyEventConfigManager
         {
             JsonFileLoader<EoH_WeeklyEventConfig>.JsonLoadFile(CONFIG_PATH, m_Config);
             NormalizeConfig();
-            Print("[EoH_WeeklyEventConfig] Loaded config repairSeconds=" + m_Config.AltarRepairDurationSeconds.ToString() + " startRadius=" + m_Config.AltarRepairProximityRadius.ToString() + " maintainRadius=" + m_Config.AltarRepairMaintainRadius.ToString() + " autoRepair=" + m_Config.EnableAltarProximityAutoRepair.ToString() + " aiRounds=" + m_Config.AltarAIRounds.ToString() + " rewardWave=" + m_Config.AltarRewardWave.ToString());
+            Print("[EoH_WeeklyEventConfig] Loaded config repairSeconds=" + m_Config.AltarRepairDurationSeconds.ToString() + " startRadius=" + m_Config.AltarRepairProximityRadius.ToString() + " maintainRadius=" + m_Config.AltarRepairMaintainRadius.ToString() + " autoRepair=" + m_Config.EnableAltarProximityAutoRepair.ToString() + " aiRounds=" + m_Config.AltarAIRounds.ToString() + " rewardWave=" + m_Config.AltarRewardWave.ToString() + " wave2=" + m_Config.AltarWave2DelaySeconds.ToString() + " wave3=" + m_Config.AltarWave3DelaySeconds.ToString() + " wave4=" + m_Config.AltarWave4DelaySeconds.ToString() + " wave5=" + m_Config.AltarWave5DelaySeconds.ToString());
         }
     }
 
@@ -81,8 +89,8 @@ class EoH_WeeklyEventConfigManager
             return;
         }
 
-        if (m_Config.ConfigVersion < 2)
-            m_Config.ConfigVersion = 2;
+        if (m_Config.ConfigVersion < 3)
+            m_Config.ConfigVersion = 3;
 
         if (m_Config.AltarRepairDurationSeconds <= 0)
             m_Config.AltarRepairDurationSeconds = 60.0;
@@ -101,6 +109,18 @@ class EoH_WeeklyEventConfigManager
 
         if (m_Config.AltarRewardWave <= 0)
             m_Config.AltarRewardWave = 5;
+
+        if (m_Config.AltarWave2DelaySeconds <= 0)
+            m_Config.AltarWave2DelaySeconds = 240;
+
+        if (m_Config.AltarWave3DelaySeconds <= 0)
+            m_Config.AltarWave3DelaySeconds = 480;
+
+        if (m_Config.AltarWave4DelaySeconds <= 0)
+            m_Config.AltarWave4DelaySeconds = 720;
+
+        if (m_Config.AltarWave5DelaySeconds <= 0)
+            m_Config.AltarWave5DelaySeconds = 960;
     }
 
     void EnsureConfigDir()
@@ -163,6 +183,33 @@ class EoH_WeeklyEventConfigManager
         if (!m_Config || m_Config.AltarRewardWave <= 0)
             return 5;
         return m_Config.AltarRewardWave;
+    }
+
+    int GetAltarWaveDelaySeconds(int waveIndex)
+    {
+        if (!m_Config)
+        {
+            if (waveIndex == 2)
+                return 240;
+            if (waveIndex == 3)
+                return 480;
+            if (waveIndex == 4)
+                return 720;
+            if (waveIndex >= 5)
+                return 960;
+            return 0;
+        }
+
+        if (waveIndex == 2)
+            return m_Config.AltarWave2DelaySeconds;
+        if (waveIndex == 3)
+            return m_Config.AltarWave3DelaySeconds;
+        if (waveIndex == 4)
+            return m_Config.AltarWave4DelaySeconds;
+        if (waveIndex >= 5)
+            return m_Config.AltarWave5DelaySeconds;
+
+        return 0;
     }
 
     bool ShouldResetAltarRepairWhenGroupLeavesZone()
