@@ -64,15 +64,9 @@ class EoH_WeekendEventWindow
         return "Weekend event intel is encrypted. Signals open Friday 6 PM Eastern and close Sunday 11 PM Eastern.";
     }
 
-    static bool CanUseWeekendIntel(PlayerBase player)
+    static bool CanUseWeekendIntel()
     {
-        if (IsWeekendEventWindowOpen())
-            return true;
-
-        if (player)
-            EoH_Notifications.SendToPlayer(player, "WEEKEND EVENTS", GetClosedMessage());
-
-        return false;
+        return IsWeekendEventWindowOpen();
     }
 
     static bool CanStartWeekendEvent()
