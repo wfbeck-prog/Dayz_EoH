@@ -74,6 +74,18 @@ class EoH_WeekendEventWindow
         return IsWeekendEventWindowOpen();
     }
 
+    static int ModInt(int value, int divisor)
+    {
+        if (divisor == 0)
+            return 0;
+
+        int result = value - ((value / divisor) * divisor);
+        if (result < 0)
+            result += divisor;
+
+        return result;
+    }
+
     static int GetEasternUtcOffsetHours(int year, int month, int day, int utcHour)
     {
         if (IsEasternDaylightTime(year, month, day, utcHour))
@@ -159,11 +171,11 @@ class EoH_WeekendEventWindow
 
     static bool IsLeapYear(int year)
     {
-        if (year % 400 == 0)
+        if (ModInt(year, 400) == 0)
             return true;
-        if (year % 100 == 0)
+        if (ModInt(year, 100) == 0)
             return false;
-        return year % 4 == 0;
+        return ModInt(year, 4) == 0;
     }
 
     static int GetDayOfWeek(int year, int month, int day)
@@ -177,9 +189,9 @@ class EoH_WeekendEventWindow
             y--;
         }
 
-        int k = y % 100;
+        int k = ModInt(y, 100);
         int j = y / 100;
-        int h = (day + Math.Floor((13 * (m + 1)) / 5) + k + Math.Floor(k / 4) + Math.Floor(j / 4) + (5 * j)) % 7;
+        int h = ModInt(day + Math.Floor((13 * (m + 1)) / 5) + k + Math.Floor(k / 4) + Math.Floor(j / 4) + (5 * j), 7);
 
         int dow = h - 1;
         if (dow < 0)
