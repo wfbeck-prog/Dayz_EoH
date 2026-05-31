@@ -590,4 +590,470 @@ class EoH_EventObjectiveManager
             if (!player || !player.IsAlive())
                 continue;
 
-        ...
+            if (!IsSameAltarRepairGroup(player))
+                continue;
+
+            if (vector.Distance(player.GetPosition(), m_ActiveRuntime.Config.Position) <= radius)
+                count++;
+        }
+
+        return count;
+    }
+
+    PlayerBase FindRepairGroupMemberWithComponents()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return null;
+
+        float radius = EoH_WeeklyEventConfigManager.Get().GetAltarRepairMaintainRadius();
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.IsAlive())
+                continue;
+
+            if (!IsSameAltarRepairGroup(player))
+                continue;
+
+            if (vector.Distance(player.GetPosition(), m_ActiveRuntime.Config.Position) > radius)
+                continue;
+
+            if (FindAltarRepairRadio(player) && FindItemOnPlayer(player, "CarBattery"))
+                return player;
+        }
+
+        return null;
+    }
+
+    void SpawnAltarRewardPhase()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        if (m_ActiveRuntime.AltarRewardSpawned)
+            return;
+
+        if (!m_ActiveRuntime.RewardCrate)
+            m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
+
+        SpawnRewardCrate();
+        m_ActiveRuntime.AltarRewardSpawned = true;
+        m_ActiveRuntime.RewardUnlocked = true;
+
+        bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.Config.Position, "M18SmokeGrenade_Red");
+        EoH_Notifications.SendToAll("ALTAR CACHE DROPPED", "Round 5 has deployed the recovery cache at Altar Relay Towers. Red smoke active=" + smokeStarted.ToString());
+        Print("[EoH_AltarRepair] Reward phase spawned on wave=" + m_ActiveRuntime.CurrentWave.ToString() + " smokeStarted=" + smokeStarted.ToString());
+    }
+
+    EntityAI FindAltarRepairRadio(PlayerBase player)
+    {
+        EntityAI radio = FindItemOnPlayer(player, "FieldTransceiver");
+        if (radio)
+            return radio;
+
+        radio = FindItemOnPlayer(player, "PersonalRadio");
+        if (radio)
+            return radio;
+
+        radio = FindItemOnPlayer(player, "BaseRadio");
+        if (radio)
+            return radio;
+
+        radio = FindItemOnPlayer(player, "EoH_FieldRadio");
+        if (radio)
+            return radio;
+
+        return null;
+    }
+
+    EntityAI FindItemOnPlayer(PlayerBase player, string className)
+    {
+        if (!player || className == "")
+            return null;
+
+        array<EntityAI> items = new array<EntityAI>();
+        player.GetInventory().EnumerateInventory(InventoryTraversalType.PREORDER, items);
+
+        foreach (EntityAI item : items)
+        {
+            if (!item)
+                continue;
+
+            if (item.GetType() == className || item.IsKindOf(className))
+                return item;
+        }
+
+        return null;
+    }
+
+    void TickPurgeNight(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        int elapsed = now - m_ActiveRuntime.StartTime;
+        int durationMs = cfg.DurationMinutes * 60 * 1000;
+        int phaseOneMs = GetPurgePhaseOneMs(cfg);
+        int phaseTwoMs = GetPurgePhaseTwoMs(cfg);
+        int phaseThreeMs = GetPurgePhaseThreeMs(cfg);
+        Print("[EoH_PurgeNight][TICK] id=" + cfg.Id + " elapsedMs=" + elapsed.ToString() + " durationMs=" + durationMs.ToString() + " wave=" + m_ActiveRuntime.CurrentWave.ToString() + " p1=" + phaseOneMs.ToString() + " p2=" + phaseTwoMs.ToString() + " p3=" + phaseThreeMs.ToString());
+        if (m_ActiveRuntime.CurrentWave < 1 && elapsed >= phaseOneMs)
+        {
+            SpawnPurgeNightWave(1);
+            EoH_Notifications.SendToAll("PURGE NIGHT", "Raider movement confirmed inside the blackout zone. Hold the corridor or stay clear.");
+            m_ActiveRuntime.CurrentWave = 1;
+            Print("[EoH_PurgeNight] Phase 1 pressure notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
+        }
+        if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= phaseTwoMs)
+        {
+            SpawnPurgeNightWave(2);
+            EoH_Notifications.SendToAll("PURGE NIGHT", "The purge signal is intensifying. Teams still inside the corridor are now committed.");
+            m_ActiveRuntime.CurrentWave = 2;
+            Print("[EoH_PurgeNight] Phase 2 pressure notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
+        }
+        if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= phaseThreeMs)
+        {
+            SpawnPurgeNightWave(3);
+            EoH_Notifications.SendToAll("PURGE NIGHT", "Final purge window. Recovery cache exposure is imminent.");
+            m_ActiveRuntime.CurrentWave = 3;
+            Print("[EoH_PurgeNight] Phase 3 final notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
+        }
+        if (elapsed >= durationMs)
+            UnlockPurgeNightReward();
+        if (m_ActiveRuntime && m_ActiveRuntime.RewardUnlocked && m_PurgeNightRewardUnlockTime > 0)
+        {
+            int cleanupElapsed = now - m_PurgeNightRewardUnlockTime;
+            int cleanupMs = GetPurgeRewardCleanupMs();
+            Print("[EoH_PurgeNight][CLEANUP] rewardElapsedMs=" + cleanupElapsed.ToString() + " cleanupMs=" + cleanupMs.ToString());
+            if (cleanupElapsed >= cleanupMs)
+            {
+                EoH_Notifications.SendToAll("PURGE NIGHT", "The recovery window has closed. Remaining cache markers are being cleared.");
+                EndActiveObjective();
+            }
+        }
+    }
+
+    void SpawnPurgeNightWave(int wave)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        int count = 3;
+        string loadout = "EoH_AI_Patrol_Assault_DF";
+        if (wave == 2)
+        {
+            count = 4;
+            loadout = "EoH_AI_Patrol_Marksman_DF";
+        }
+        else if (wave >= 3)
+        {
+            count = 5;
+            loadout = "EoH_AI_HighValue_Hard";
+        }
+        eAIGroup group = EoH_TownAISpawnAdapter.CreateTownPatrolGroup(cfg.Position);
+        for (int i = 0; i < count; i++)
+        {
+            vector spawnPos = GetPurgeNightSpawnPosition(cfg.Position, 80.0, Math.Min(260.0, cfg.Radius));
+            Object obj = EoH_TownAISpawnAdapter.SpawnTownPatrolUnit("Purge Night", spawnPos, cfg.Position, loadout, group);
+            if (obj)
+                m_PurgeNightAI.Insert(obj);
+        }
+        Print("[EoH_PurgeNight][AI] Spawned wave=" + wave.ToString() + " count=" + count.ToString() + " loadout=" + loadout + " trackedAI=" + m_PurgeNightAI.Count().ToString());
+    }
+
+    vector GetPurgeNightSpawnPosition(vector center, float minRadius, float maxRadius)
+    {
+        float angle = Math.RandomFloat(0, 6.28318);
+        float dist = Math.RandomFloat(minRadius, maxRadius);
+        vector pos = center;
+        pos[0] = center[0] + Math.Cos(angle) * dist;
+        pos[2] = center[2] + Math.Sin(angle) * dist;
+        pos[1] = GetGame().SurfaceY(pos[0], pos[2]) + 0.1;
+        return pos;
+    }
+
+    void CleanupPurgeNightAI()
+    {
+        if (!m_PurgeNightAI)
+            m_PurgeNightAI = new array<Object>();
+        for (int i = m_PurgeNightAI.Count() - 1; i >= 0; i--)
+        {
+            Object obj = m_PurgeNightAI.Get(i);
+            if (obj)
+                GetGame().ObjectDelete(obj);
+            m_PurgeNightAI.Remove(i);
+        }
+        Print("[EoH_PurgeNight][AI] Cleanup complete");
+    }
+
+    void UnlockPurgeNightReward()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+        if (m_ActiveRuntime.RewardUnlocked)
+            return;
+        if (!m_ActiveRuntime.RewardCrate)
+            m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
+        SpawnRewardCrate();
+        if (!m_ActiveRuntime.RewardCrate)
+            return;
+        m_ActiveRuntime.RewardCrate.MarkUnlocked();
+        m_ActiveRuntime.RewardUnlocked = true;
+        m_PurgeNightRewardUnlockTime = GetGame().GetTime();
+        bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
+        string msg = "The purge signal has burned out. A recovery cache is now exposed inside the marked corridor.";
+        if (!smokeStarted)
+            msg += " No smoke confirmation received; use the event marker and field report coordinates.";
+        EoH_Notifications.SendToAll("PURGE COMPLETE", msg);
+        EoH_Notifications.SendToAll("RECOVERY CACHE", "The Purge Night cache has spawned and is vulnerable for 10 minutes. Move to the marked corridor and secure the payout.");
+        Print("[EoH_PurgeNight] Reward spawned id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString() + " cleanupMs=" + GetPurgeRewardCleanupMs().ToString() + " cratePos=" + m_ActiveRuntime.RewardCrate.Position.ToString());
+    }
+
+    void TickWaves(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Active)
+            return;
+
+        int elapsed = now - m_ActiveRuntime.StartTime;
+
+        if (m_ActiveRuntime.Config && m_ActiveRuntime.Config.Id == "altar_relay_towers")
+        {
+            int totalRounds = EoH_WeeklyEventConfigManager.Get().GetAltarAIRounds();
+            int rewardWave = EoH_WeeklyEventConfigManager.Get().GetAltarRewardWave();
+
+            if (m_ActiveRuntime.CurrentWave < 2 && totalRounds >= 2 && elapsed >= EoH_WeeklyEventConfigManager.Get().GetAltarWaveDelaySeconds(2) * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
+                m_ActiveRuntime.CurrentWave = 2;
+                if (rewardWave == 2)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            if (m_ActiveRuntime.CurrentWave < 3 && totalRounds >= 3 && elapsed >= EoH_WeeklyEventConfigManager.Get().GetAltarWaveDelaySeconds(3) * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 3);
+                m_ActiveRuntime.CurrentWave = 3;
+                if (rewardWave == 3)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            if (m_ActiveRuntime.CurrentWave < 4 && totalRounds >= 4 && elapsed >= EoH_WeeklyEventConfigManager.Get().GetAltarWaveDelaySeconds(4) * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 4);
+                m_ActiveRuntime.CurrentWave = 4;
+                if (rewardWave == 4)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            if (m_ActiveRuntime.CurrentWave < 5 && totalRounds >= 5 && elapsed >= EoH_WeeklyEventConfigManager.Get().GetAltarWaveDelaySeconds(5) * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 5);
+                m_ActiveRuntime.CurrentWave = 5;
+                if (rewardWave == 5)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            return;
+        }
+
+        if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= 10 * 60 * 1000)
+        {
+            EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
+            m_ActiveRuntime.CurrentWave = 2;
+            return;
+        }
+        if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= 20 * 60 * 1000)
+        {
+            EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 3);
+            m_ActiveRuntime.CurrentWave = 3;
+            return;
+        }
+    }
+
+    void SpawnObjectiveObject()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        if (cfg.SpawnObject == "")
+            return;
+        Object obj = GetGame().CreateObject(cfg.SpawnObject, cfg.Position);
+        if (!obj)
+        {
+            Print("[EoH_EventObjectives][WARN] Failed spawning objective object type=" + cfg.SpawnObject);
+            return;
+        }
+        m_ActiveRuntime.SpawnedObject = obj;
+    }
+
+    void SpawnRewardCrate()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config || !m_ActiveRuntime.RewardCrate)
+            return;
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        vector cratePos = cfg.Position + "8 0 8";
+        cratePos[1] = GetGame().SurfaceY(cratePos[0], cratePos[2]);
+        CleanupRewardObjects(cratePos, 15.0);
+        m_ActiveRuntime.RewardCrate.SetRuntime(cratePos, 25, cfg.LootTier);
+        Object crate = GetGame().CreateObject(m_ActiveRuntime.RewardCrate.CrateType, cratePos);
+        m_ActiveRuntime.RewardCrate.MarkSpawned(crate);
+        EntityAI crateAI = EntityAI.Cast(crate);
+        if (crateAI)
+            EoH_WeeklyEventRewardConfigManager.Get().FillRewardCrate(crateAI, cfg.Id);
+        Print("[EoH_EventObjectives] Reward crate spawned id=" + cfg.Id + " pos=" + cratePos.ToString() + " surfaceY=" + cratePos[1].ToString());
+    }
+
+    void AddRewardItem(EntityAI container, string className, int count)
+    {
+        if (!container || className == "" || count <= 0)
+            return;
+        for (int i = 0; i < count; i++)
+        {
+            EntityAI item = container.GetInventory().CreateInInventory(className);
+            if (!item)
+                Print("[EoH_PurgeNight][Reward][WARN] Failed to add item=" + className);
+        }
+    }
+
+    bool SpawnEventSmoke(vector pos, string smokeType)
+    {
+        if (smokeType == "")
+            smokeType = "M18SmokeGrenade_Green";
+        vector smokePos = pos;
+        smokePos[1] = GetGame().SurfaceY(pos[0], pos[2]);
+        CleanupRewardSmoke(smokePos, 15.0);
+        SmokeGrenadeBase smoke = SmokeGrenadeBase.Cast(GetGame().CreateObjectEx(smokeType, smokePos, ECE_PLACE_ON_SURFACE));
+        if (smoke)
+        {
+            if (smoke.GetCompEM() && smoke.GetCompEM().CanWork())
+                smoke.GetCompEM().SwitchOn();
+            smoke.SetLifetime(1800);
+            Print("[EoH_EventObjectives] Spawned event grenade smoke type=" + smokeType + " pos=" + smokePos.ToString());
+            return true;
+        }
+        Print("[EoH_EventObjectives][WARN] Grenade smoke failed type=" + smokeType + " pos=" + smokePos.ToString() + " trying ParticlePoints=" + EOH_PARTICLEPOINT_REWARD_SMOKE);
+        return SpawnParticlePointSmoke(smokePos);
+    }
+
+    bool SpawnParticlePointSmoke(vector smokePos)
+    {
+        smokePos[1] = GetGame().SurfaceY(smokePos[0], smokePos[2]);
+        CleanupRewardSmoke(smokePos, 15.0);
+        Object smokePoint = GetGame().CreateObjectEx(EOH_PARTICLEPOINT_REWARD_SMOKE, smokePos, ECE_PLACE_ON_SURFACE);
+        if (!smokePoint)
+        {
+            Print("[EoH_EventObjectives][WARN] ParticlePoints smoke failed class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
+            return false;
+        }
+        Print("[EoH_EventObjectives] Spawned ParticlePoints smoke class=" + EOH_PARTICLEPOINT_REWARD_SMOKE + " pos=" + smokePos.ToString());
+        return true;
+    }
+
+    void CleanupRewardObjects(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        array<CargoBase> cargos = new array<CargoBase>();
+        GetGame().GetObjectsAtPosition(pos, radius, objects, cargos);
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+            string type = obj.GetType();
+            if (type == "SeaChest" || type == "WoodenCrate" || type == "AmmoBox" || type.Contains("M18SmokeGrenade") || type == EOH_PARTICLEPOINT_REWARD_SMOKE || type == "EoH_RewardSmokeMarker")
+            {
+                Print("[EoH_EventObjectives] Cleanup reward object type=" + type + " pos=" + obj.GetPosition().ToString());
+                GetGame().ObjectDelete(obj);
+            }
+        }
+    }
+
+    void CleanupRewardSmoke(vector pos, float radius)
+    {
+        array<Object> objects = new array<Object>();
+        array<CargoBase> cargos = new array<CargoBase>();
+        GetGame().GetObjectsAtPosition(pos, radius, objects, cargos);
+        foreach (Object obj : objects)
+        {
+            if (!obj)
+                continue;
+            string type = obj.GetType();
+            if (type.Contains("M18SmokeGrenade") || type == EOH_PARTICLEPOINT_REWARD_SMOKE || type == "EoH_RewardSmokeMarker")
+            {
+                Print("[EoH_EventObjectives] Cleanup reward smoke type=" + type + " pos=" + obj.GetPosition().ToString());
+                GetGame().ObjectDelete(obj);
+            }
+        }
+    }
+
+    void TickRewardCrate()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.RewardCrate)
+            return;
+        if (!m_ActiveRuntime.RewardCrate.ShouldUnlock())
+            return;
+        m_ActiveRuntime.RewardCrate.MarkUnlocked();
+        m_ActiveRuntime.RewardUnlocked = true;
+        bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
+        EoH_Notifications.SendToAll("EVENT EXTRACTION", "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable. Smoke active=" + smokeStarted.ToString());
+        Print("[EoH_EventObjectives] Reward crate unlocked id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString());
+    }
+
+    void BroadcastObjective()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        string eventMsg;
+        if (cfg.ObjectiveType == "purge_night")
+            eventMsg = "Red Ledger purge broadcast active near " + cfg.DisplayName + ". Fight for the corridor until the signal burns out.";
+        else
+            eventMsg = "High-value signal activity detected near " + cfg.DisplayName + ". Field repair required.";
+        EoH_Notifications.SendToAll("WEEKEND EVENT", eventMsg);
+        if (!cfg.EnableMarker)
+            return;
+        EoH_MarkerData data = new EoH_MarkerData("EOH_EVENT_" + cfg.Id, cfg.DisplayName, cfg.Position);
+        data.Category = "event";
+        data.Icon = "Radio";
+        data.Is3D = 1;
+        data.Pulse = 1;
+        data.Color = ARGB(255, 255, 80, 0);
+        data.BaseColor = data.Color;
+        data.Normalize();
+        EoH_MarkerService.Broadcast(data);
+    }
+
+    void CompleteActiveObjective()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+        m_ActiveRuntime.Completed = true;
+        EndActiveObjective();
+    }
+
+    void EndActiveObjective()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+        StopAltarRepairWatcher();
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        if (m_ActiveRuntime.SpawnedObject)
+            GetGame().ObjectDelete(m_ActiveRuntime.SpawnedObject);
+        if (m_ActiveRuntime.RewardCrate)
+            m_ActiveRuntime.RewardCrate.Cleanup();
+        CleanupRewardObjects(cfg.Position, cfg.Radius);
+        CleanupPurgeNightAI();
+        m_PurgeNightRewardUnlockTime = 0;
+        EoH_MarkerService.RemoveFromAll("EOH_EVENT_" + cfg.Id);
+        EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
+        EoH_Notifications.SendToAll("WEEKEND EVENT", cfg.DisplayName + " has gone silent. Intel channels are open again.");
+        Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id + " intelAvailable=true cleanupRadius=" + cfg.Radius.ToString());
+        m_ActiveRuntime = null;
+    }
+}
