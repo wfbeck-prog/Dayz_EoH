@@ -313,7 +313,7 @@ class EoH_EventObjectiveManager
         }
 
         EoH_Notifications.SendToAll("ALTAR RELAY BREACH", cfg.DisplayName + " repair has started. Hostile contact is moving toward the signal.");
-        EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Signal tether active. Keep at least one repair-team member within 75m. Components will be consumed at 100%.");
+        EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Signal tether active. Keep at least one repair-team member within 75m. Components will be consumed at 100%." );
         SendAltarRepairProgressToGroup("RPC_Show", "Signal tether active. Hold the 75m relay zone.", false, false);
         Print("[EoH_AltarRepair] Started repair attempt group=" + m_ActiveRuntime.AltarRepairGroupId + " by=" + m_ActiveRuntime.AltarRepairStartedByName);
         return true;
@@ -556,18 +556,14 @@ class EoH_EventObjectiveManager
 
     string GetAltarRepairGroupId(PlayerBase player)
     {
-        if (!player || !player.GetIdentity())
-            return "solo:unknown";
+        string groupId = EoH_GroupHelper.GetGroupID(player);
+        if (groupId != "")
+            return groupId;
 
-        string playerId = player.GetIdentity().GetId();
+        if (player && player.GetIdentity())
+            return "SOLO_" + player.GetIdentity().GetId();
 
-        #ifdef EXPANSIONMODGROUPS
-        ExpansionPartyData party = ExpansionPartyData.Get(player);
-        if (party)
-            return "party:" + party.GetPartyID().ToString();
-        #endif
-
-        return "solo:" + playerId;
+        return "SOLO_unknown";
     }
 
     bool IsSameAltarRepairGroup(PlayerBase player)
