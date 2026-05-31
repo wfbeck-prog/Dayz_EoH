@@ -52,6 +52,9 @@ class EoH_AdvisorRecommendationManager
         if (!m_Config)
             return;
 
+        if (m_Config.EmptyServerExtremeHitchTimeslice <= 0)
+            m_Config.EmptyServerExtremeHitchTimeslice = 0.5;
+
         if (m_Config.RepeatedHitchTimeslice <= 0)
             m_Config.RepeatedHitchTimeslice = 0.25;
 
@@ -96,7 +99,7 @@ class EoH_AdvisorRecommendationManager
         if (!m_Config)
             return;
 
-        EoH_LiveAdvisorActivity.LogActivity("advisor", "recommendation_engine_ready performance=" + m_Config.EnablePerformanceRecommendations.ToString() + " koth=" + m_Config.EnableKothRecommendations.ToString() + " townAI=" + m_Config.EnableTownAIRecommendations.ToString() + " scheduler=" + m_Config.EnableSchedulerRecommendations.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("advisor", "recommendation_engine_ready performance=" + m_Config.EnablePerformanceRecommendations.ToString() + " koth=" + m_Config.EnableKothRecommendations.ToString() + " townAI=" + m_Config.EnableTownAIRecommendations.ToString() + " scheduler=" + m_Config.EnableSchedulerRecommendations.ToString() + " ignoreEmptyServerHitches=" + m_Config.IgnoreEmptyServerHitches.ToString() + " emptyServerExtreme=" + m_Config.EmptyServerExtremeHitchTimeslice.ToString());
     }
 
     void WriteHeartbeat(float now)
@@ -108,13 +111,20 @@ class EoH_AdvisorRecommendationManager
             return;
 
         m_LastHeartbeatTime = now;
-        EoH_LiveAdvisorActivity.LogActivity("advisor", "heartbeat enabled=" + m_Config.Enabled.ToString() + " repeatedHitches=" + m_RepeatedHitchCount.ToString() + " cooldownSeconds=" + m_Config.RecommendationCooldownSeconds.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("advisor", "heartbeat enabled=" + m_Config.Enabled.ToString() + " repeatedHitches=" + m_RepeatedHitchCount.ToString() + " cooldownSeconds=" + m_Config.RecommendationCooldownSeconds.ToString() + " ignoreEmpty=" + m_Config.IgnoreEmptyServerHitches.ToString());
     }
 
     void ObservePerformanceSample(float worstTimeslice, float avgFps, int players)
     {
         if (!IsEnabled() || !m_Config.EnablePerformanceRecommendations)
             return;
+
+        if (ShouldIgnoreEmptyServerHitch(worstTimeslice, players))
+        {
+            if (m_RepeatedHitchCount > 0)
+                m_RepeatedHitchCount = 0;
+            return;
+        }
 
         if (worstTimeslice >= m_Config.RepeatedHitchTimeslice)
         {
@@ -131,6 +141,23 @@ class EoH_AdvisorRecommendationManager
             Recommend("performance", "Repeated frame hitches detected. WorstTimeslice=" + worstTimeslice.ToString() + " AvgFPS=" + avgFps.ToString() + " Players=" + players.ToString() + ". Review recent KOTH, AI, cleanup, or scheduler activity around the same timestamp.");
             m_RepeatedHitchCount = 0;
         }
+    }
+
+    bool ShouldIgnoreEmptyServerHitch(float worstTimeslice, int players)
+    {
+        if (!m_Config)
+            return false;
+
+        if (!m_Config.IgnoreEmptyServerHitches)
+            return false;
+
+        if (players > 0)
+            return false;
+
+        if (worstTimeslice >= m_Config.EmptyServerExtremeHitchTimeslice)
+            return false;
+
+        return true;
     }
 
     void ObserveTownAI(int activeTowns, int monitorElapsedMs)
