@@ -1,6 +1,6 @@
 class EoH_AdvisorRecommendationConfig
 {
-    int ConfigVersion = 1;
+    int ConfigVersion = 2;
     bool Enabled = true;
     bool WarnOnly = true;
 
@@ -8,6 +8,9 @@ class EoH_AdvisorRecommendationConfig
     bool EnablePerformanceRecommendations = true;
     bool EnableTownAIRecommendations = true;
     bool EnableSchedulerRecommendations = true;
+
+    bool IgnoreEmptyServerHitches = true;
+    float EmptyServerExtremeHitchTimeslice = 0.5;
 
     float RepeatedHitchTimeslice = 0.25;
     int RepeatedHitchCountThreshold = 3;
@@ -18,7 +21,7 @@ class EoH_AdvisorRecommendationConfig
 
     void Defaults()
     {
-        ConfigVersion = 1;
+        ConfigVersion = 2;
         Enabled = true;
         WarnOnly = true;
 
@@ -26,6 +29,9 @@ class EoH_AdvisorRecommendationConfig
         EnablePerformanceRecommendations = true;
         EnableTownAIRecommendations = true;
         EnableSchedulerRecommendations = true;
+
+        IgnoreEmptyServerHitches = true;
+        EmptyServerExtremeHitchTimeslice = 0.5;
 
         RepeatedHitchTimeslice = 0.25;
         RepeatedHitchCountThreshold = 3;
