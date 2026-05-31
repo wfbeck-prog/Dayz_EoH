@@ -1,7 +1,7 @@
 FrameWidgetClass Root
 {
-    position 0.34 0.62
-    size 0.32 0.16
+    position 0.04 0.18
+    size 0.30 0.115
     visible 1
     clipchildren 0
     color 0 0 0 0
@@ -11,72 +11,72 @@ FrameWidgetClass Root
             position 0 0
             size 1 1
             visible 1
-            color 0 0 0 0.68
+            color 0 0 0 0.72
         }
         TextWidgetClass TitleText
         {
-            position 0.04 0.06
-            size 0.92 0.17
+            position 0.04 0.07
+            size 0.92 0.18
             text "ALTAR RELAY REPAIR"
             font "gui/fonts/sdf_MetronBook24"
             color 1 0.72 0.18 1
             exacttext 1
-            textsize 20
-            align center
+            textsize 17
+            align left
             valign center
         }
         TextWidgetClass StatusText
         {
-            position 0.04 0.25
-            size 0.92 0.14
+            position 0.04 0.27
+            size 0.92 0.16
             text "Signal tether active."
             font "gui/fonts/sdf_MetronBook24"
             color 1 1 1 1
-            exacttext 1
-            textsize 15
-            align center
-            valign center
-        }
-        ProgressBarWidgetClass ProgressBar
-        {
-            position 0.06 0.45
-            size 0.88 0.16
-            visible 1
-            current 0
-        }
-        TextWidgetClass ProgressText
-        {
-            position 0.06 0.45
-            size 0.88 0.16
-            text "0%"
-            font "gui/fonts/sdf_MetronBook24"
-            color 1 1 1 1
-            exacttext 1
-            textsize 13
-            align center
-            valign center
-        }
-        TextWidgetClass MembersText
-        {
-            position 0.06 0.68
-            size 0.42 0.15
-            text "Repair team in zone: 0"
-            font "gui/fonts/sdf_MetronBook24"
-            color 0.82 0.95 1 1
             exacttext 1
             textsize 12
             align left
             valign center
         }
-        TextWidgetClass RadiusText
+        ProgressBarWidgetClass ProgressBar
         {
-            position 0.52 0.68
-            size 0.42 0.15
-            text "Maintain radius: 75m"
+            position 0.04 0.50
+            size 0.74 0.13
+            visible 1
+            current 0
+        }
+        TextWidgetClass ProgressText
+        {
+            position 0.80 0.47
+            size 0.16 0.18
+            text "0%"
+            font "gui/fonts/sdf_MetronBook24"
+            color 1 1 1 1
+            exacttext 1
+            textsize 13
+            align right
+            valign center
+        }
+        TextWidgetClass MembersText
+        {
+            position 0.04 0.72
+            size 0.44 0.16
+            text "Team: 0"
             font "gui/fonts/sdf_MetronBook24"
             color 0.82 0.95 1 1
             exacttext 1
-            textsize 12
+            textsize 11
+            align left
+            valign center
+        }
+        TextWidgetClass RadiusText
+        {
+            position 0.52 0.72
+            size 0.44 0.16
+            text "Radius: 75m"
+            font "gui/fonts/sdf_MetronBook24"
+            color 0.82 0.95 1 1
+            exacttext 1
+            textsize 11
             align right
             valign center
         }
