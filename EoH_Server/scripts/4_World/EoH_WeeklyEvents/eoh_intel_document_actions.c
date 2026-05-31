@@ -1,8 +1,9 @@
-modded class EoH_Intel_Document
+modded class ItemBase
 {
     override void SetActions()
     {
         super.SetActions();
+
         AddAction(ActionUseWeekendEventIntel);
         AddAction(ActionUseAltarRelayIntel);
     }
