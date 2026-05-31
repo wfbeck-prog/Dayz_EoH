@@ -119,18 +119,15 @@ class EoH_EventWaveManager
             if (obj)
             {
                 spawned++;
-                Print("[EoH_AltarRelay][AI] Spawned wave=" + waveIndex.ToString() + " unit=" + obj.GetType() + " pos=" + spawnPos.ToString() + " loadout=" + loadout);
-                EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_unit_spawned wave=" + waveIndex.ToString() + " unit=" + obj.GetType() + " pos=" + spawnPos.ToString() + " loadout=" + loadout);
             }
             else
             {
                 failed++;
                 Print("[EoH_AltarRelay][AI][WARN] Failed unit spawn wave=" + waveIndex.ToString() + " loadout=" + loadout + " pos=" + spawnPos.ToString());
-                EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_unit_failed wave=" + waveIndex.ToString() + " pos=" + spawnPos.ToString() + " loadout=" + loadout);
             }
         }
 
-        Print("[EoH_AltarRelay][AI] Wave complete wave=" + waveIndex.ToString() + " requested=" + count.ToString() + " spawned=" + spawned.ToString() + " loadout=" + loadout);
+        Print("[EoH_AltarRelay][AI] Wave complete wave=" + waveIndex.ToString() + " requested=" + count.ToString() + " spawned=" + spawned.ToString() + " failed=" + failed.ToString() + " loadout=" + loadout);
         EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_wave_complete wave=" + waveIndex.ToString() + " requested=" + count.ToString() + " spawned=" + spawned.ToString() + " failed=" + failed.ToString() + " loadout=" + loadout);
 
         if (spawned <= 0)
