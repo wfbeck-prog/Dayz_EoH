@@ -1,6 +1,6 @@
 FrameWidgetClass Root
 {
-    position 0.04 0.18
+    position 0.35 0.08
     size 0.30 0.115
     visible 1
     clipchildren 0
@@ -22,7 +22,7 @@ FrameWidgetClass Root
             color 1 0.72 0.18 1
             exacttext 1
             textsize 17
-            align left
+            align center
             valign center
         }
         TextWidgetClass StatusText
@@ -34,7 +34,7 @@ FrameWidgetClass Root
             color 1 1 1 1
             exacttext 1
             textsize 12
-            align left
+            align center
             valign center
         }
         ProgressBarWidgetClass ProgressBar
