@@ -47,6 +47,16 @@ class EoH_EventObjectiveRuntime
     int LastTickTime;
     int CurrentWave;
 
+    bool AltarRepairInProgress;
+    bool AltarRelayOnline;
+    bool AltarRewardSpawned;
+    float AltarRepairProgress01;
+    int AltarRepairStartedAt;
+    int AltarRepairLastProgressLog;
+    string AltarRepairGroupId;
+    string AltarRepairStartedById;
+    string AltarRepairStartedByName;
+
     void EoH_EventObjectiveRuntime(EoH_EventObjective cfg)
     {
         Config = cfg;
@@ -59,5 +69,15 @@ class EoH_EventObjectiveRuntime
         StartTime = 0;
         LastTickTime = 0;
         CurrentWave = -1;
+
+        AltarRepairInProgress = false;
+        AltarRelayOnline = false;
+        AltarRewardSpawned = false;
+        AltarRepairProgress01 = 0.0;
+        AltarRepairStartedAt = 0;
+        AltarRepairLastProgressLog = 0;
+        AltarRepairGroupId = "";
+        AltarRepairStartedById = "";
+        AltarRepairStartedByName = "";
     }
 }
