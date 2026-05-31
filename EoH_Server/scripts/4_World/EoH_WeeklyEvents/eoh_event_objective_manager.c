@@ -260,27 +260,61 @@ class EoH_EventObjectiveManager
 
     bool ActivateObjectiveFromRepair(PlayerBase player)
     {
+        return StartAltarRepairAttempt(player);
+    }
+
+    bool StartAltarRepairAttempt(PlayerBase player)
+    {
         if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
         {
             EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "No active relay signal is available for repair.");
             return false;
         }
-        if (m_ActiveRuntime.StartTime > 0)
+
+        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+        if (cfg.Id != "altar_relay_towers")
+            return false;
+
+        if (m_ActiveRuntime.AltarRelayOnline)
         {
             EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "This relay has already been restored.");
             return false;
         }
-        StopAltarRepairWatcher();
-        EoH_EventObjective cfg = m_ActiveRuntime.Config;
+
+        if (m_ActiveRuntime.AltarRepairInProgress)
+        {
+            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "A repair team is already maintaining the signal tether.");
+            return false;
+        }
+
         m_ActiveRuntime.StartTime = GetGame().GetTime();
         m_ActiveRuntime.LastTickTime = m_ActiveRuntime.StartTime;
-        m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
-        SpawnRewardCrate();
-        SpawnEventSmoke(cfg.Position, "M18SmokeGrenade_Red");
-        EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 1);
-        m_ActiveRuntime.CurrentWave = 1;
+        m_ActiveRuntime.AltarRepairStartedAt = m_ActiveRuntime.StartTime;
+        m_ActiveRuntime.AltarRepairLastProgressLog = 0;
+        m_ActiveRuntime.AltarRepairProgress01 = 0.0;
+        m_ActiveRuntime.AltarRepairInProgress = true;
+        m_ActiveRuntime.AltarRelayOnline = false;
+        m_ActiveRuntime.AltarRewardSpawned = false;
+        m_ActiveRuntime.AltarRepairGroupId = GetAltarRepairGroupId(player);
+        m_ActiveRuntime.AltarRepairStartedById = "";
+        m_ActiveRuntime.AltarRepairStartedByName = "unknown";
+        if (player && player.GetIdentity())
+        {
+            m_ActiveRuntime.AltarRepairStartedById = player.GetIdentity().GetId();
+            m_ActiveRuntime.AltarRepairStartedByName = player.GetIdentity().GetName();
+        }
+
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
-        EoH_Notifications.SendToAll("RELAY ONLINE", cfg.DisplayName + " has been restored. Hostile contact is moving toward the signal.");
+
+        if (EoH_WeeklyEventConfigManager.Get().ShouldStartAltarAIOnRepairStart())
+        {
+            EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 1);
+            m_ActiveRuntime.CurrentWave = 1;
+        }
+
+        EoH_Notifications.SendToAll("ALTAR RELAY BREACH", cfg.DisplayName + " repair has started. Hostile contact is moving toward the signal.");
+        EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Signal tether active. Keep at least one repair-team member within 75m. Components will be consumed at 100%.");
+        Print("[EoH_AltarRepair] Started repair attempt group=" + m_ActiveRuntime.AltarRepairGroupId + " by=" + m_ActiveRuntime.AltarRepairStartedByName);
         return true;
     }
 
@@ -303,6 +337,10 @@ class EoH_EventObjectiveManager
         }
 
         int now = GetGame().GetTime();
+
+        if (m_ActiveRuntime.Config.Id == "altar_relay_towers" && m_ActiveRuntime.AltarRepairInProgress)
+            TickAltarRepairRuntime(now);
+
         if (m_ActiveRuntime.LastTickTime > 0 && now - m_ActiveRuntime.LastTickTime < 30000)
             return;
         m_ActiveRuntime.LastTickTime = now;
@@ -370,12 +408,195 @@ class EoH_EventObjectiveManager
                 continue;
             }
 
-            GetGame().ObjectDelete(radio);
-            GetGame().ObjectDelete(battery);
-            EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Field Transceiver and Car Battery consumed. Relay uplink restored.");
             ActivateObjectiveFromRepair(player);
             return;
         }
+    }
+
+    void TickAltarRepairRuntime(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config || !m_ActiveRuntime.AltarRepairInProgress)
+            return;
+
+        int members = CountAliveRepairGroupMembersInZone();
+        if (members <= 0 && EoH_WeeklyEventConfigManager.Get().ShouldResetAltarRepairWhenGroupLeavesZone())
+        {
+            FailAltarRepairAttempt("Repair team eliminated or pushed out of the 75m signal zone.");
+            return;
+        }
+
+        float durationMs = EoH_WeeklyEventConfigManager.Get().GetAltarRepairDurationSeconds() * 1000.0;
+        if (durationMs <= 0)
+            durationMs = 60000.0;
+
+        float elapsed = now - m_ActiveRuntime.AltarRepairStartedAt;
+        m_ActiveRuntime.AltarRepairProgress01 = Math.Clamp(elapsed / durationMs, 0.0, 1.0);
+
+        int progressPct = Math.Round(m_ActiveRuntime.AltarRepairProgress01 * 100.0);
+        if (progressPct >= m_ActiveRuntime.AltarRepairLastProgressLog + 10)
+        {
+            m_ActiveRuntime.AltarRepairLastProgressLog = progressPct;
+            Print("[EoH_AltarRepair][PROGRESS] pct=" + progressPct.ToString() + " membersInZone=" + members.ToString() + " group=" + m_ActiveRuntime.AltarRepairGroupId);
+        }
+
+        if (m_ActiveRuntime.AltarRepairProgress01 >= 1.0)
+            CompleteAltarRepair();
+    }
+
+    void FailAltarRepairAttempt(string reason)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        EoH_Notifications.SendToAll("REPAIR FAILED", reason + " Relay remains offline.");
+        Print("[EoH_AltarRepair][FAILED] " + reason + " previousGroup=" + m_ActiveRuntime.AltarRepairGroupId);
+
+        m_ActiveRuntime.AltarRepairInProgress = false;
+        m_ActiveRuntime.AltarRepairProgress01 = 0.0;
+        m_ActiveRuntime.AltarRepairStartedAt = 0;
+        m_ActiveRuntime.AltarRepairLastProgressLog = 0;
+        m_ActiveRuntime.AltarRepairGroupId = "";
+        m_ActiveRuntime.AltarRepairStartedById = "";
+        m_ActiveRuntime.AltarRepairStartedByName = "";
+        m_ActiveRuntime.StartTime = 0;
+        m_ActiveRuntime.LastTickTime = GetGame().GetTime();
+        m_ActiveRuntime.CurrentWave = 0;
+        m_ActiveRuntime.AltarRewardSpawned = false;
+        m_ActiveRuntime.RewardCrate = null;
+
+        StartAltarRepairWatcher();
+    }
+
+    void CompleteAltarRepair()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        PlayerBase payer = FindRepairGroupMemberWithComponents();
+        if (EoH_WeeklyEventConfigManager.Get().ShouldConsumeAltarRepairItemsAtCompletion())
+        {
+            if (!payer)
+            {
+                FailAltarRepairAttempt("Repair components missing from the active repair team.");
+                return;
+            }
+
+            EntityAI radio = FindAltarRepairRadio(payer);
+            EntityAI battery = FindItemOnPlayer(payer, "CarBattery");
+            if (!radio || !battery)
+            {
+                FailAltarRepairAttempt("Repair components missing from the active repair team.");
+                return;
+            }
+
+            GetGame().ObjectDelete(radio);
+            GetGame().ObjectDelete(battery);
+        }
+
+        m_ActiveRuntime.AltarRepairInProgress = false;
+        m_ActiveRuntime.AltarRelayOnline = true;
+        m_ActiveRuntime.AltarRepairProgress01 = 1.0;
+
+        EoH_Notifications.SendToAll("RELAY ONLINE", m_ActiveRuntime.Config.DisplayName + " communications restored. Hold the area until the final hostile response is contained.");
+        Print("[EoH_AltarRepair] Relay online group=" + m_ActiveRuntime.AltarRepairGroupId);
+    }
+
+    string GetAltarRepairGroupId(PlayerBase player)
+    {
+        if (!player || !player.GetIdentity())
+            return "solo:unknown";
+
+        string playerId = player.GetIdentity().GetId();
+
+        #ifdef EXPANSIONMODGROUPS
+        ExpansionPartyData party = ExpansionPartyData.Get(player);
+        if (party)
+            return "party:" + party.GetPartyID().ToString();
+        #endif
+
+        return "solo:" + playerId;
+    }
+
+    bool IsSameAltarRepairGroup(PlayerBase player)
+    {
+        if (!m_ActiveRuntime || !player)
+            return false;
+
+        return GetAltarRepairGroupId(player) == m_ActiveRuntime.AltarRepairGroupId;
+    }
+
+    int CountAliveRepairGroupMembersInZone()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return 0;
+
+        int count = 0;
+        float radius = EoH_WeeklyEventConfigManager.Get().GetAltarRepairMaintainRadius();
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.IsAlive())
+                continue;
+
+            if (!IsSameAltarRepairGroup(player))
+                continue;
+
+            if (vector.Distance(player.GetPosition(), m_ActiveRuntime.Config.Position) <= radius)
+                count++;
+        }
+
+        return count;
+    }
+
+    PlayerBase FindRepairGroupMemberWithComponents()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return null;
+
+        float radius = EoH_WeeklyEventConfigManager.Get().GetAltarRepairMaintainRadius();
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.IsAlive())
+                continue;
+
+            if (!IsSameAltarRepairGroup(player))
+                continue;
+
+            if (vector.Distance(player.GetPosition(), m_ActiveRuntime.Config.Position) > radius)
+                continue;
+
+            if (FindAltarRepairRadio(player) && FindItemOnPlayer(player, "CarBattery"))
+                return player;
+        }
+
+        return null;
+    }
+
+    void SpawnAltarRewardPhase()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        if (m_ActiveRuntime.AltarRewardSpawned)
+            return;
+
+        if (!m_ActiveRuntime.RewardCrate)
+            m_ActiveRuntime.RewardCrate = new EoH_EventRewardCrate();
+
+        SpawnRewardCrate();
+        m_ActiveRuntime.AltarRewardSpawned = true;
+        m_ActiveRuntime.RewardUnlocked = true;
+
+        bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.Config.Position, "M18SmokeGrenade_Red");
+        EoH_Notifications.SendToAll("ALTAR CACHE DROPPED", "Round 5 has deployed the recovery cache at Altar Relay Towers. Red smoke active=" + smokeStarted.ToString());
+        Print("[EoH_AltarRepair] Reward phase spawned on wave=" + m_ActiveRuntime.CurrentWave.ToString() + " smokeStarted=" + smokeStarted.ToString());
     }
 
     EntityAI FindAltarRepairRadio(PlayerBase player)
@@ -546,7 +767,53 @@ class EoH_EventObjectiveManager
     {
         if (!m_ActiveRuntime || !m_ActiveRuntime.Active)
             return;
+
         int elapsed = now - m_ActiveRuntime.StartTime;
+
+        if (m_ActiveRuntime.Config && m_ActiveRuntime.Config.Id == "altar_relay_towers")
+        {
+            int totalRounds = EoH_WeeklyEventConfigManager.Get().GetAltarAIRounds();
+            int rewardWave = EoH_WeeklyEventConfigManager.Get().GetAltarRewardWave();
+
+            if (m_ActiveRuntime.CurrentWave < 2 && totalRounds >= 2 && elapsed >= 4 * 60 * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
+                m_ActiveRuntime.CurrentWave = 2;
+                if (rewardWave == 2)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            if (m_ActiveRuntime.CurrentWave < 3 && totalRounds >= 3 && elapsed >= 8 * 60 * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 3);
+                m_ActiveRuntime.CurrentWave = 3;
+                if (rewardWave == 3)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            if (m_ActiveRuntime.CurrentWave < 4 && totalRounds >= 4 && elapsed >= 12 * 60 * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 4);
+                m_ActiveRuntime.CurrentWave = 4;
+                if (rewardWave == 4)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            if (m_ActiveRuntime.CurrentWave < 5 && totalRounds >= 5 && elapsed >= 16 * 60 * 1000)
+            {
+                EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 5);
+                m_ActiveRuntime.CurrentWave = 5;
+                if (rewardWave == 5)
+                    SpawnAltarRewardPhase();
+                return;
+            }
+
+            return;
+        }
+
         if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= 10 * 60 * 1000)
         {
             EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
