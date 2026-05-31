@@ -1,22 +1,34 @@
 class EoH_WeeklyEventConfig
 {
-    int ConfigVersion = 1;
+    int ConfigVersion = 2;
     bool Enabled = true;
 
-    float AltarRepairDurationSeconds = 10.0;
+    float AltarRepairDurationSeconds = 60.0;
     float AltarRepairProximityRadius = 5.0;
-    int AltarRepairWatcherIntervalMs = 5000;
+    float AltarRepairMaintainRadius = 75.0;
+    int AltarRepairWatcherIntervalMs = 1000;
     bool EnableAltarProximityAutoRepair = false;
+    bool StartAltarAIOnRepairStart = true;
+    int AltarAIRounds = 5;
+    int AltarRewardWave = 5;
+    bool ResetAltarRepairWhenGroupLeavesZone = true;
+    bool ConsumeAltarRepairItemsAtCompletion = true;
 
     void Defaults()
     {
-        ConfigVersion = 1;
+        ConfigVersion = 2;
         Enabled = true;
 
-        AltarRepairDurationSeconds = 10.0;
+        AltarRepairDurationSeconds = 60.0;
         AltarRepairProximityRadius = 5.0;
-        AltarRepairWatcherIntervalMs = 5000;
+        AltarRepairMaintainRadius = 75.0;
+        AltarRepairWatcherIntervalMs = 1000;
         EnableAltarProximityAutoRepair = false;
+        StartAltarAIOnRepairStart = true;
+        AltarAIRounds = 5;
+        AltarRewardWave = 5;
+        ResetAltarRepairWhenGroupLeavesZone = true;
+        ConsumeAltarRepairItemsAtCompletion = true;
     }
 }
 
@@ -56,7 +68,7 @@ class EoH_WeeklyEventConfigManager
         {
             JsonFileLoader<EoH_WeeklyEventConfig>.JsonLoadFile(CONFIG_PATH, m_Config);
             NormalizeConfig();
-            Print("[EoH_WeeklyEventConfig] Loaded config repairSeconds=" + m_Config.AltarRepairDurationSeconds.ToString() + " proximityRadius=" + m_Config.AltarRepairProximityRadius.ToString() + " autoRepair=" + m_Config.EnableAltarProximityAutoRepair.ToString());
+            Print("[EoH_WeeklyEventConfig] Loaded config repairSeconds=" + m_Config.AltarRepairDurationSeconds.ToString() + " startRadius=" + m_Config.AltarRepairProximityRadius.ToString() + " maintainRadius=" + m_Config.AltarRepairMaintainRadius.ToString() + " autoRepair=" + m_Config.EnableAltarProximityAutoRepair.ToString() + " aiRounds=" + m_Config.AltarAIRounds.ToString() + " rewardWave=" + m_Config.AltarRewardWave.ToString());
         }
     }
 
@@ -69,14 +81,26 @@ class EoH_WeeklyEventConfigManager
             return;
         }
 
+        if (m_Config.ConfigVersion < 2)
+            m_Config.ConfigVersion = 2;
+
         if (m_Config.AltarRepairDurationSeconds <= 0)
-            m_Config.AltarRepairDurationSeconds = 10.0;
+            m_Config.AltarRepairDurationSeconds = 60.0;
 
         if (m_Config.AltarRepairProximityRadius <= 0)
             m_Config.AltarRepairProximityRadius = 5.0;
 
+        if (m_Config.AltarRepairMaintainRadius <= 0)
+            m_Config.AltarRepairMaintainRadius = 75.0;
+
         if (m_Config.AltarRepairWatcherIntervalMs <= 0)
-            m_Config.AltarRepairWatcherIntervalMs = 5000;
+            m_Config.AltarRepairWatcherIntervalMs = 1000;
+
+        if (m_Config.AltarAIRounds <= 0)
+            m_Config.AltarAIRounds = 5;
+
+        if (m_Config.AltarRewardWave <= 0)
+            m_Config.AltarRewardWave = 5;
     }
 
     void EnsureConfigDir()
@@ -87,34 +111,29 @@ class EoH_WeeklyEventConfigManager
 
     float GetAltarRepairDurationSeconds()
     {
-        if (!m_Config)
-            return 10.0;
-
-        if (m_Config.AltarRepairDurationSeconds <= 0)
-            return 10.0;
-
+        if (!m_Config || m_Config.AltarRepairDurationSeconds <= 0)
+            return 60.0;
         return m_Config.AltarRepairDurationSeconds;
     }
 
     float GetAltarRepairProximityRadius()
     {
-        if (!m_Config)
+        if (!m_Config || m_Config.AltarRepairProximityRadius <= 0)
             return 5.0;
-
-        if (m_Config.AltarRepairProximityRadius <= 0)
-            return 5.0;
-
         return m_Config.AltarRepairProximityRadius;
+    }
+
+    float GetAltarRepairMaintainRadius()
+    {
+        if (!m_Config || m_Config.AltarRepairMaintainRadius <= 0)
+            return 75.0;
+        return m_Config.AltarRepairMaintainRadius;
     }
 
     int GetAltarRepairWatcherIntervalMs()
     {
-        if (!m_Config)
-            return 5000;
-
-        if (m_Config.AltarRepairWatcherIntervalMs <= 0)
-            return 5000;
-
+        if (!m_Config || m_Config.AltarRepairWatcherIntervalMs <= 0)
+            return 1000;
         return m_Config.AltarRepairWatcherIntervalMs;
     }
 
@@ -122,7 +141,41 @@ class EoH_WeeklyEventConfigManager
     {
         if (!m_Config)
             return false;
-
         return m_Config.EnableAltarProximityAutoRepair;
+    }
+
+    bool ShouldStartAltarAIOnRepairStart()
+    {
+        if (!m_Config)
+            return true;
+        return m_Config.StartAltarAIOnRepairStart;
+    }
+
+    int GetAltarAIRounds()
+    {
+        if (!m_Config || m_Config.AltarAIRounds <= 0)
+            return 5;
+        return m_Config.AltarAIRounds;
+    }
+
+    int GetAltarRewardWave()
+    {
+        if (!m_Config || m_Config.AltarRewardWave <= 0)
+            return 5;
+        return m_Config.AltarRewardWave;
+    }
+
+    bool ShouldResetAltarRepairWhenGroupLeavesZone()
+    {
+        if (!m_Config)
+            return true;
+        return m_Config.ResetAltarRepairWhenGroupLeavesZone;
+    }
+
+    bool ShouldConsumeAltarRepairItemsAtCompletion()
+    {
+        if (!m_Config)
+            return true;
+        return m_Config.ConsumeAltarRepairItemsAtCompletion;
     }
 }
