@@ -1,0 +1,84 @@
+FrameWidgetClass Root
+{
+    position 0.35 0.08
+    size 0.30 0.115
+    visible 1
+    clipchildren 0
+    color 0 0 0 0
+    {
+        PanelWidgetClass Background
+        {
+            position 0 0
+            size 1 1
+            visible 1
+            color 0 0 0 0.72
+        }
+        TextWidgetClass TitleText
+        {
+            position 0.04 0.07
+            size 0.92 0.18
+            text "OBJECTIVE"
+            font "gui/fonts/sdf_MetronBook24"
+            color 1 0.72 0.18 1
+            exacttext 1
+            textsize 17
+            align center
+            valign center
+        }
+        TextWidgetClass StatusText
+        {
+            position 0.04 0.27
+            size 0.92 0.16
+            text "Objective active."
+            font "gui/fonts/sdf_MetronBook24"
+            color 1 1 1 1
+            exacttext 1
+            textsize 12
+            align center
+            valign center
+        }
+        ProgressBarWidgetClass ProgressBar
+        {
+            position 0.04 0.50
+            size 0.74 0.13
+            visible 1
+            current 0
+        }
+        TextWidgetClass ProgressText
+        {
+            position 0.80 0.47
+            size 0.16 0.18
+            text "0%"
+            font "gui/fonts/sdf_MetronBook24"
+            color 1 1 1 1
+            exacttext 1
+            textsize 13
+            align right
+            valign center
+        }
+        TextWidgetClass LeftText
+        {
+            position 0.04 0.72
+            size 0.44 0.16
+            text "Group: --"
+            font "gui/fonts/sdf_MetronBook24"
+            color 0.82 0.95 1 1
+            exacttext 1
+            textsize 11
+            align left
+            valign center
+        }
+        TextWidgetClass RightText
+        {
+            position 0.52 0.72
+            size 0.44 0.16
+            text "Status: --"
+            font "gui/fonts/sdf_MetronBook24"
+            color 0.82 0.95 1 1
+            exacttext 1
+            textsize 11
+            align right
+            valign center
+        }
+    }
+}
