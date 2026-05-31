@@ -15,6 +15,7 @@ class CfgPatches
             "EoH_CBDIntel",
             "EoH_LootRoomIntel",
             "EoH_AltarRelayIntel",
+            "EoH_WeekendEventIntel",
             "ExpansionTraderChem",
             "ExpansionTraderBroker"
         };
@@ -180,6 +181,13 @@ class CfgVehicles
         scope = 2;
         displayName = "Altar Relay Intel";
         descriptionShort = "Encrypted EoH signal notes identifying the Altar relay array and the field repair parts required to restore it.";
+    };
+
+    class EoH_WeekendEventIntel: EoH_Intel_Document
+    {
+        scope = 2;
+        displayName = "Encrypted Weekend Signal";
+        descriptionShort = "A rotating Red Ledger cipher. Can only be decoded during weekend broadcast windows.";
     };
 
     class ExpansionTraderChem: ExpansionTraderMirek
