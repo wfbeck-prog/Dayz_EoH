@@ -12,64 +12,167 @@ Primary current systems:
 - Roaming trader proximity/intel behavior.
 - Town reward smoke validation.
 - Territory flag respawn and private group flag markers.
-- Weekly Relay Collapse event scaffold.
+- Weekly Event Objective framework.
+- Altar Relay Towers weekend event.
+- Purge Night weekend event.
 
 ---
 
 # Latest Validation Notes
 
-## Weekly Event System / Relay Collapse Scaffold
+## Weekly Event Objective System / Altar Relay Towers
 
-Started the EoH Weekly Event framework based on the planned Relay Collapse and Purge Night design.
+The old standalone Weekly Event prototype has been retired.
 
-Added config:
+Removed legacy files / routes:
 
 ```text
 EoH_Server/scripts/4_World/EoH_WeeklyEvents/EoH_WeeklyEventConfig.c
-```
-
-Creates live profile config:
-
-```text
-$profile:EoH_Server/WeeklyEvents.json
-```
-
-Added manager scaffold:
-
-```text
 EoH_Server/scripts/4_World/EoH_WeeklyEvents/EoH_WeeklyEventManager.c
 ```
 
-Current Relay Collapse lifecycle:
+Scheduler now routes weekly events directly to:
 
 ```text
-IDLE
-WARNING
-ACTIVE
-SUCCESS
-RESET
+EoH_EventObjectiveManager.Get().Tick();
 ```
 
-Current scaffold functionality:
+Active weekly-event framework:
 
-- Weekly event config load/create.
-- Relay Collapse enable flag.
-- Purge Night placeholder flag.
-- Warning duration config.
-- Active duration config.
-- Random relay-town selection placeholder.
-- EoH global notifications for warning/active/success.
-- Debug logs for event lifecycle.
+```text
+EoH_Server/scripts/4_World/EoH_WeeklyEvents/eoh_event_objective_manager.c
+```
 
-Still needed:
+Live profile config:
 
-- Wire `EoH_WeeklyEventManager.Get().Tick();` into server heartbeat.
-- Replace placeholder town selection with real relay/live relay selection.
-- Add event markers.
-- Add AI occupation spawns.
-- Add objective/completion handling.
-- Add persistence/cooldown.
-- Add Purge Night after Relay Collapse is validated.
+```text
+$profile:EoH/WeeklyEventConfig.json
+```
+
+Important config fields:
+
+```json
+{
+  "AltarRepairDurationSeconds": 10.0,
+  "AltarRepairProximityRadius": 5.0,
+  "AltarRepairWatcherIntervalMs": 5000,
+  "EnableAltarProximityAutoRepair": true
+}
+```
+
+Current Altar event behavior:
+
+```text
+1. Player uses weekly event intel.
+2. Force-test currently selects Altar Relay Towers.
+3. Event marker broadcasts at the placed Altar relay position.
+4. Dedicated Altar repair watcher starts.
+5. Watcher checks players near relay every 5 seconds.
+6. If player has Field Transceiver + Car Battery:
+   - If EnableAltarProximityAutoRepair=true, relay auto-repairs.
+   - If false, player only receives prompt text asking for terminal action.
+7. Repair consumes radio + battery.
+8. Relay goes online.
+9. Reward crate spawns.
+10. Red smoke spawns.
+11. Wave 1 spawns.
+12. RELAY ONLINE notification broadcasts.
+```
+
+Validated live:
+
+```text
+[EoH_AltarRepair][PROXIMITY] player=Beck/wfbeck dist=<5 hasRadio=1 hasBattery=1
+[EoH_Notifications] RELAY REPAIR - Field Transceiver and Car Battery consumed. Relay uplink restored.
+[EoH_EventObjectives] Reward crate spawned id=altar_relay_towers
+[EoH_EventObjectives] Spawned event grenade smoke type=M18SmokeGrenade_Red
+[EoH_EventWaves] Spawning wave=1 objective=altar_relay_towers
+[EoH_Notifications] RELAY ONLINE - Altar Relay Towers has been restored.
+```
+
+Important note:
+
+```text
+No visible DayZ repair action is currently required or expected if auto repair is enabled.
+The action-based approach was abandoned because the placed DZE terminal is a static/builder object and action registration did not fire reliably.
+```
+
+Current required server-side setting:
+
+```text
+$profile:EoH/WeeklyEventConfig.json
+EnableAltarProximityAutoRepair=true
+```
+
+If this value is false, the logs will show:
+
+```text
+autoRepair=false
+Repair equipment detected. Use the relay terminal action to restore the uplink.
+```
+
+and the event will not start automatically.
+
+## Altar Relay Position Fix
+
+The original Altar event position was several meters away from the actual placed relay object.
+
+Old position:
+
+```text
+8132.95068359375 492.1257629394531 9093.74609375
+```
+
+Updated position:
+
+```text
+8130.686035 492.125732 9085.325195
+```
+
+This position was validated from live player position while standing directly at the placed item.
+
+## Altar / Purge Reward Crate Notes
+
+Reward crate and smoke spawn successfully for Altar repair.
+
+Several prior reward classnames failed and were replaced with safer fallback items:
+
+```text
+PunchedCard
+DNA_Keycard_Red
+M4A1
+AKM
+Mag_STANAG_30Rnd
+Mag_AKM_30Rnd
+Ammo_556x45
+Ammo_762x39
+PlateCarrierVest
+NVGoggles
+EoH_TownIntel
+EoH_TraderIntel
+```
+
+Need to validate the exact desired modded reward classnames later before reintroducing My Delta Force/SNAFU-specific items.
+
+## Purge Night Event Status
+
+Purge Night event loop has been built and previously validated for:
+
+- Reward crate spawn.
+- Green smoke spawn using grenade/ParticlePoints fallback path.
+- Reward crate cleanup.
+- Marker cleanup.
+- Intel marker behavior.
+- AI spawn working after loadout updates.
+- Live weekend timing design:
+
+```text
+Event duration: 30 minutes
+Reward window: 10 minutes
+Total event lifecycle: about 40 minutes
+```
+
+Need to revalidate after latest weekly-event cleanup.
 
 ## Town Respawn / Terje Start Screen
 
@@ -138,33 +241,14 @@ Confirmed live during Chernogorsk capture test:
 
 ## Reward Smoke Status
 
-Still under validation:
+Town reward smoke was eventually validated for Purge Night reward after ParticlePoints mod path was installed and integrated.
 
-- Reward crate spawns.
-- Reward smoke marker object has spawned in prior tests.
-- Visible smoke is still not reliable.
-- Reward smoke marker now retries client-side particle startup at multiple timings:
+Still worth revalidating:
 
-```text
-250ms
-1s
-2.5s
-5s
-```
-
-Updated file:
-
-```text
-EoH_Server/scripts/4_World/EoH_TownReward/eoh_reward_smoke_marker.c
-```
-
-Expected smoke debug logs:
-
-```text
-[EoH_TownReward][SMOKE] Client started reward smoke particle
-[EoH_TownReward][SMOKE][WARN] Particle.PlayOnObject returned null
-[EoH_TownReward][SMOKE][WARN] Reward smoke marker client has invalid position
-```
+- Town capture reward smoke.
+- Altar red repair smoke.
+- Purge green reward smoke.
+- Cleanup of smoke grenade/ParticlePoint objects.
 
 ## Territory Flag / Group Marker Progress
 
@@ -204,13 +288,9 @@ EoH_GroupFlagMarkerManager.Tick();
 EoH_Server/scripts/4_World/EoH_Core/eoh_notifications.c
 ```
 
-- Standardized global EoH alerts to use the same Expansion notification pattern proven by MerkZone KOTH:
+- Standardized global EoH alerts to use the same Expansion notification pattern proven by MerkZone KOTH.
 
-```text
-ExpansionNotification(title, message, "Territory", COLOR_EXPANSION_NOTIFICATION_MISSION, duration).Create();
-```
-
-- EoH systems should now use:
+EoH systems should use:
 
 ```text
 EoH_Notifications.SendToAll(title, message)
@@ -232,6 +312,7 @@ EoH_Notifications.SendToPlayer(player, title, message)
 - Book manager framework started.
 - Trader intel now supports inactive roaming trader route reveal.
 - Trader intel no longer depends on a spawned trader object.
+- Weekly event intel now reveals Altar Relay Towers during force-test mode.
 
 ## AI / Combat Systems
 
@@ -284,14 +365,30 @@ Not raidable: walls, floors, foundations, roofs, stairs, pillars, windows
 
 # Current Known Issues / Validation Needed
 
-## Weekly Event Framework
+## Weekly Event Objective Framework
 
 Need to validate:
 
-- WeeklyEvents.json generates under `$profile:EoH_Server`.
-- Relay Collapse notifications fire correctly after heartbeat wiring.
-- Event state transitions work without rapid looping.
-- Placeholder relay-town selection should be replaced with live relay data.
+- `EnableAltarProximityAutoRepair=true` on live profile config.
+- Altar event starts automatically after proximity check.
+- Altar Wave 1 AI spawns and engages.
+- Altar Waves 2 and 3 arrive on schedule.
+- Altar reward crate inventory contains intended items.
+- Altar event cleanup at end of duration.
+- Purge Night still works after legacy weekly manager removal.
+
+## Reward Loot Classnames
+
+Need to audit exact classnames for:
+
+- Single-use punch card.
+- DNA red keycard.
+- My Delta Force weapons.
+- SNAFU weapons.
+- My Delta Force gear.
+- Correct magazine/ammo classnames.
+
+Current fallback crate rewards are intentionally conservative until classnames are confirmed.
 
 ## Terje Respawn Remaining Work
 
@@ -319,17 +416,6 @@ Need to add/test:
 ```text
 EoH_GroupFlagMarkerManager.Tick();
 ```
-
-## Reward Smoke
-
-Town reward smoke remains the most visible unresolved issue.
-
-Need to confirm with latest PBO:
-
-- Does client print smoke startup log?
-- Does `Particle.PlayOnObject` return null?
-- Does marker object exist client-side?
-- Should the next implementation use a dedicated client RPC instead of relying on marker object lifecycle?
 
 ## Expansion AI Inventory Exceptions
 
@@ -381,13 +467,13 @@ Need to validate that the actual relay spawner honors this flag.
 
 # Recommended Next Session Priorities
 
-1. Wire `EoH_WeeklyEventManager.Get().Tick()` into server heartbeat.
-2. Validate WeeklyEvents.json creation and Relay Collapse notification lifecycle.
-3. Wire `EoH_GroupFlagMarkerManager.Tick()` into an existing heartbeat.
-4. Continue debugging town reward smoke with the new retry logs.
-5. Add Relay Collapse event marker.
-6. Replace placeholder event town picker with live relay data.
-7. Add Relay Collapse AI occupation spawns.
-8. Add contested-town and enemy-nearby respawn lockouts.
-9. Validate trader intel performance after removing immediate forced spawn.
+1. Set and confirm `$profile:EoH/WeeklyEventConfig.json` has `EnableAltarProximityAutoRepair=true`.
+2. Retest Altar Relay full loop: intel -> proximity repair -> item consumption -> crate/smoke -> waves -> cleanup.
+3. Validate Purge Night still works after removal of legacy WeeklyEventManager.
+4. Audit reward crate classnames and reintroduce correct SNAFU/MDF/punchcard/keycard rewards.
+5. Wire `EoH_GroupFlagMarkerManager.Tick()` into an existing heartbeat.
+6. Continue validating town capture reward smoke and cleanup.
+7. Add or polish the next weekend event.
+8. Validate trader intel performance after removing immediate forced spawn.
+9. Add contested-town and enemy-nearby respawn lockouts.
 10. Resume high-quality handcrafted quest generation.
