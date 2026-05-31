@@ -314,6 +314,7 @@ class EoH_EventObjectiveManager
 
         EoH_Notifications.SendToAll("ALTAR RELAY BREACH", cfg.DisplayName + " repair has started. Hostile contact is moving toward the signal.");
         EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Signal tether active. Keep at least one repair-team member within 75m. Components will be consumed at 100%.");
+        SendAltarRepairProgressToGroup("RPC_Show", "Signal tether active. Hold the 75m relay zone.", false, false);
         Print("[EoH_AltarRepair] Started repair attempt group=" + m_ActiveRuntime.AltarRepairGroupId + " by=" + m_ActiveRuntime.AltarRepairStartedByName);
         return true;
     }
@@ -439,6 +440,8 @@ class EoH_EventObjectiveManager
             Print("[EoH_AltarRepair][PROGRESS] pct=" + progressPct.ToString() + " membersInZone=" + members.ToString() + " group=" + m_ActiveRuntime.AltarRepairGroupId);
         }
 
+        SendAltarRepairProgressToGroup("RPC_Update", "Signal tether active. Hold the 75m relay zone.", false, false);
+
         if (m_ActiveRuntime.AltarRepairProgress01 >= 1.0)
             CompleteAltarRepair();
     }
@@ -449,6 +452,7 @@ class EoH_EventObjectiveManager
             return;
 
         EoH_Notifications.SendToAll("REPAIR FAILED", reason + " Relay remains offline.");
+        SendAltarRepairProgressToGroup("RPC_Update", "REPAIR FAILED - " + reason, false, true);
         Print("[EoH_AltarRepair][FAILED] " + reason + " previousGroup=" + m_ActiveRuntime.AltarRepairGroupId);
 
         m_ActiveRuntime.AltarRepairInProgress = false;
@@ -498,7 +502,56 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.AltarRepairProgress01 = 1.0;
 
         EoH_Notifications.SendToAll("RELAY ONLINE", m_ActiveRuntime.Config.DisplayName + " communications restored. Hold the area until the final hostile response is contained.");
+        SendAltarRepairProgressToGroup("RPC_Update", "RELAY ONLINE - Communications restored.", true, false);
         Print("[EoH_AltarRepair] Relay online group=" + m_ActiveRuntime.AltarRepairGroupId);
+    }
+
+    EoH_AltarRepairProgressData BuildAltarRepairProgressData(string status, bool complete, bool failed)
+    {
+        EoH_AltarRepairProgressData data = new EoH_AltarRepairProgressData();
+
+        if (!m_ActiveRuntime)
+            return data;
+
+        data.Progress01 = m_ActiveRuntime.AltarRepairProgress01;
+        data.ProgressPercent = Math.Round(data.Progress01 * 100.0);
+        data.MembersInZone = CountAliveRepairGroupMembersInZone();
+        data.MaintainRadius = EoH_WeeklyEventConfigManager.Get().GetAltarRepairMaintainRadius();
+        data.Title = "ALTAR RELAY REPAIR";
+        data.Status = status;
+        data.Complete = complete;
+        data.Failed = failed;
+
+        if (data.ProgressPercent < 0)
+            data.ProgressPercent = 0;
+        if (data.ProgressPercent > 100)
+            data.ProgressPercent = 100;
+
+        return data;
+    }
+
+    void SendAltarRepairProgressToGroup(string rpcName, string status, bool complete, bool failed)
+    {
+        if (!m_ActiveRuntime || m_ActiveRuntime.AltarRepairGroupId == "")
+            return;
+
+        EoH_AltarRepairProgressData data = BuildAltarRepairProgressData(status, complete, failed);
+        Param1<EoH_AltarRepairProgressData> param = new Param1<EoH_AltarRepairProgressData>(data);
+
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.GetIdentity())
+                continue;
+
+            if (!IsSameAltarRepairGroup(player))
+                continue;
+
+            GetRPCManager().SendRPC("EoH_AltarRepairProgress", rpcName, param, true, player.GetIdentity());
+        }
     }
 
     string GetAltarRepairGroupId(PlayerBase player)
