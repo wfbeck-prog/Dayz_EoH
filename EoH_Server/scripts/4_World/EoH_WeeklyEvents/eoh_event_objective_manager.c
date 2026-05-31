@@ -84,6 +84,16 @@ class EoH_EventObjectiveManager
         }
     }
 
+    void SaveWeeklyEventState()
+    {
+        EoH_WeeklyEventPersistenceManager.Get().SaveActive(m_ActiveRuntime);
+    }
+
+    void SaveWeeklyEventIdleState()
+    {
+        EoH_WeeklyEventPersistenceManager.Get().SaveIdle();
+    }
+
     int GetPurgePhaseOneMs(EoH_EventObjective cfg)
     {
         if (EOH_FORCE_PURGE_NIGHT_TEST)
@@ -284,6 +294,7 @@ class EoH_EventObjectiveManager
                 StartAltarRepairWatcher();
         }
 
+        SaveWeeklyEventState();
         Print("[EoH_EventObjectives] Revealed objective id=" + obj.Id + " type=" + obj.ObjectiveType + " pos=" + obj.Position.ToString());
     }
 
@@ -372,6 +383,7 @@ class EoH_EventObjectiveManager
             m_ActiveRuntime.CurrentWave = 1;
         }
 
+        SaveWeeklyEventState();
         EoH_Notifications.SendToAll("ALTAR RELAY BREACH", cfg.DisplayName + " repair has started. Hostile response is beginning. Survive all 5 waves to secure the cache.");
         EoH_Notifications.SendToPlayer(player, "RELAY REPAIR", "Signal tether active. Maintain control within 75m until repair completes. Hostile response continues for 5 waves.");
         SendAltarRepairProgressToGroup("RPC_Show", "Hold 75m until repair completes. 5-wave hostile response active.", false, false);
@@ -499,6 +511,7 @@ class EoH_EventObjectiveManager
         {
             m_ActiveRuntime.AltarRepairLastProgressLog = progressPct;
             Print("[EoH_AltarRepair][PROGRESS] pct=" + progressPct.ToString() + " membersInZone=" + members.ToString() + " group=" + m_ActiveRuntime.AltarRepairGroupId);
+            SaveWeeklyEventState();
         }
 
         SendAltarRepairProgressToGroup("RPC_Update", "Repairing relay. Hostile response continues for 5 waves.", false, false);
@@ -529,6 +542,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.AltarRewardSpawned = false;
         m_ActiveRuntime.RewardCrate = null;
 
+        SaveWeeklyEventState();
         StartAltarRepairWatcher();
     }
 
@@ -562,6 +576,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.AltarRelayOnline = true;
         m_ActiveRuntime.AltarRepairProgress01 = 1.0;
 
+        SaveWeeklyEventState();
         EoH_Notifications.SendToAll("RELAY ONLINE", m_ActiveRuntime.Config.DisplayName + " communications restored. The fight is not over. Survive all 5 waves to secure the cache.");
         SendAltarRepairProgressToGroup("RPC_Update", "RELAY ONLINE - Survive all 5 waves to secure the cache.", true, false);
         Print("[EoH_AltarRepair] Relay online group=" + m_ActiveRuntime.AltarRepairGroupId);
@@ -705,6 +720,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardUnlocked = true;
         m_PurgeNightRewardUnlockTime = GetGame().GetTime();
 
+        SaveWeeklyEventState();
         bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.Config.Position, "M18SmokeGrenade_Red");
         EoH_Notifications.SendToAll("ALTAR CACHE DROPPED", "Round 5 has deployed the recovery cache at Altar Relay Towers. Red smoke active=" + smokeStarted.ToString() + ". Recovery window closes in 10 minutes.");
         Print("[EoH_AltarRepair] Reward phase spawned on wave=" + m_ActiveRuntime.CurrentWave.ToString() + " smokeStarted=" + smokeStarted.ToString());
@@ -791,6 +807,7 @@ class EoH_EventObjectiveManager
             SpawnPurgeNightWave(1);
             EoH_Notifications.SendToAll("PURGE NIGHT", "Raider movement confirmed inside the blackout zone. Hold the corridor or stay clear.");
             m_ActiveRuntime.CurrentWave = 1;
+            SaveWeeklyEventState();
             Print("[EoH_PurgeNight] Phase 1 pressure notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
         }
         if (m_ActiveRuntime.CurrentWave < 2 && elapsed >= phaseTwoMs)
@@ -798,6 +815,7 @@ class EoH_EventObjectiveManager
             SpawnPurgeNightWave(2);
             EoH_Notifications.SendToAll("PURGE NIGHT", "The purge signal is intensifying. Teams still inside the corridor are now committed.");
             m_ActiveRuntime.CurrentWave = 2;
+            SaveWeeklyEventState();
             Print("[EoH_PurgeNight] Phase 2 pressure notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
         }
         if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= phaseThreeMs)
@@ -805,6 +823,7 @@ class EoH_EventObjectiveManager
             SpawnPurgeNightWave(3);
             EoH_Notifications.SendToAll("PURGE NIGHT", "Final purge window. Recovery cache exposure is imminent.");
             m_ActiveRuntime.CurrentWave = 3;
+            SaveWeeklyEventState();
             Print("[EoH_PurgeNight] Phase 3 final notification id=" + cfg.Id + " elapsedMs=" + elapsed.ToString());
         }
         if (elapsed >= durationMs)
@@ -889,6 +908,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardCrate.MarkUnlocked();
         m_ActiveRuntime.RewardUnlocked = true;
         m_PurgeNightRewardUnlockTime = GetGame().GetTime();
+        SaveWeeklyEventState();
         bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
         string msg = "The purge signal has burned out. A recovery cache is now exposed inside the marked corridor.";
         if (!smokeStarted)
@@ -914,6 +934,7 @@ class EoH_EventObjectiveManager
             {
                 EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
                 m_ActiveRuntime.CurrentWave = 2;
+                SaveWeeklyEventState();
                 if (rewardWave == 2)
                     SpawnAltarRewardPhase();
                 return;
@@ -923,6 +944,7 @@ class EoH_EventObjectiveManager
             {
                 EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 3);
                 m_ActiveRuntime.CurrentWave = 3;
+                SaveWeeklyEventState();
                 if (rewardWave == 3)
                     SpawnAltarRewardPhase();
                 return;
@@ -932,6 +954,7 @@ class EoH_EventObjectiveManager
             {
                 EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 4);
                 m_ActiveRuntime.CurrentWave = 4;
+                SaveWeeklyEventState();
                 if (rewardWave == 4)
                     SpawnAltarRewardPhase();
                 return;
@@ -941,6 +964,7 @@ class EoH_EventObjectiveManager
             {
                 EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 5);
                 m_ActiveRuntime.CurrentWave = 5;
+                SaveWeeklyEventState();
                 if (rewardWave == 5)
                     SpawnAltarRewardPhase();
                 return;
@@ -953,12 +977,14 @@ class EoH_EventObjectiveManager
         {
             EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 2);
             m_ActiveRuntime.CurrentWave = 2;
+            SaveWeeklyEventState();
             return;
         }
         if (m_ActiveRuntime.CurrentWave < 3 && elapsed >= 20 * 60 * 1000)
         {
             EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, 3);
             m_ActiveRuntime.CurrentWave = 3;
+            SaveWeeklyEventState();
             return;
         }
     }
@@ -1086,6 +1112,7 @@ class EoH_EventObjectiveManager
             return;
         m_ActiveRuntime.RewardCrate.MarkUnlocked();
         m_ActiveRuntime.RewardUnlocked = true;
+        SaveWeeklyEventState();
         bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.RewardCrate.Position, "M18SmokeGrenade_Green");
         EoH_Notifications.SendToAll("EVENT EXTRACTION", "The secured cache at " + m_ActiveRuntime.Config.DisplayName + " is now vulnerable. Smoke active=" + smokeStarted.ToString());
         Print("[EoH_EventObjectives] Reward crate unlocked id=" + m_ActiveRuntime.Config.Id + " smokeStarted=" + smokeStarted.ToString());
@@ -1120,6 +1147,7 @@ class EoH_EventObjectiveManager
         if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
             return;
         m_ActiveRuntime.Completed = true;
+        SaveWeeklyEventState();
         EndActiveObjective();
     }
 
@@ -1140,6 +1168,7 @@ class EoH_EventObjectiveManager
         EoH_MarkerService.RemoveFromAll("EOH_EVENT_INTEL_ALTAR_RELAY");
         EoH_Notifications.SendToAll("WEEKEND EVENT", cfg.DisplayName + " has gone silent. Intel channels are open again.");
         Print("[EoH_EventObjectives] Ended objective id=" + cfg.Id + " intelAvailable=true cleanupRadius=" + cfg.Radius.ToString());
+        SaveWeeklyEventIdleState();
         m_ActiveRuntime = null;
     }
 }
