@@ -259,6 +259,7 @@ class EoH_CaptureManager
 
         EoH_TownMarkerManager.UpdateCapturingMarker(town, s.CapturingGroupName);
         UpdateCaptureProgressMarker(s, 0);
+        SendTownCaptureProgress(s, "RPC_Show", "Capturing town relay...", false, false);
         BroadcastCaptureMessage("TOWN CAPTURE STARTED", s.CapturingGroupName + " started capturing " + town + ". Hold the radio relay for 10 minutes.");
         Print("[EoH_Capture] Started capture town=" + town + " group=" + s.CapturingGroupName + " playerPos=" + player.GetPosition().ToString() + " relayPos=" + townPos.ToString() + " dist2D=" + dist2D.ToString());
         EoH_LiveAdvisorActivity.LogActivity("town_capture", "capture_started town=" + town + " group=" + s.CapturingGroupName + " dist2D=" + dist2D.ToString());
@@ -291,7 +292,10 @@ class EoH_CaptureManager
                 Print("[EoH_Capture][DEBUG] Session town=" + s.TownName + " group=" + s.CapturingGroupName + " present=" + s.CapturingGroupPresent.ToString() + " contested=" + s.IsContested.ToString() + " progressMs=" + s.Progress.ToString() + " delta=" + delta.ToString());
 
             if (!s.CapturingGroupPresent)
+            {
+                SendTownCaptureProgress(s, "RPC_Update", "Capture paused. Group left relay zone.", false, false);
                 continue;
+            }
 
             if (!s.IsContested)
             {
@@ -299,6 +303,8 @@ class EoH_CaptureManager
 
                 int percent = Math.Clamp(Math.Floor((s.Progress / CAPTURE_DURATION_MS) * 100.0), 0, 100);
                 int bucket = Math.Floor(percent / 10) * 10;
+
+                SendTownCaptureProgress(s, "RPC_Update", "Capturing town relay...", false, false);
 
                 if (bucket >= s.LastNotifyPercent + 10 || percent >= 100)
                 {
@@ -311,6 +317,10 @@ class EoH_CaptureManager
 
                 if (s.Progress > CAPTURE_DURATION_MS)
                     CompleteCapture(s);
+            }
+            else
+            {
+                SendTownCaptureProgress(s, "RPC_Update", "Signal contested. Capture paused.", false, false);
             }
         }
 
@@ -376,6 +386,7 @@ class EoH_CaptureManager
                 s.WasPausedNoPresence = true;
                 EoH_TownMarkerManager.UpdatePausedMarker(s.TownName, s.CapturingGroupName);
                 BroadcastCaptureMessage("TOWN CAPTURE PAUSED", s.TownName + " capture paused. Capturing group left the radio relay.");
+                SendTownCaptureProgress(s, "RPC_Update", "Capture paused. Group left relay zone.", false, false);
                 Print("[EoH_Capture] Paused no presence town=" + s.TownName + " group=" + s.CapturingGroupName);
                 EoH_LiveAdvisorActivity.LogActivity("town_capture", "paused_no_presence town=" + s.TownName + " group=" + s.CapturingGroupName);
             }
@@ -387,6 +398,7 @@ class EoH_CaptureManager
             s.WasPausedNoPresence = false;
             EoH_TownMarkerManager.UpdateCapturingMarker(s.TownName, s.CapturingGroupName);
             BroadcastCaptureMessage("TOWN CAPTURE RESUMED", s.TownName + " capture has resumed.");
+            SendTownCaptureProgress(s, "RPC_Update", "Capturing town relay...", false, false);
             Print("[EoH_Capture] Resumed presence town=" + s.TownName + " group=" + s.CapturingGroupName);
             EoH_LiveAdvisorActivity.LogActivity("town_capture", "resumed_presence town=" + s.TownName + " group=" + s.CapturingGroupName);
         }
@@ -397,6 +409,7 @@ class EoH_CaptureManager
             if (!wasContested)
             {
                 BroadcastCaptureMessage("TOWN CONTESTED", s.TownName + " is contested. Capture progress paused.");
+                SendTownCaptureProgress(s, "RPC_Update", "Signal contested. Capture paused.", false, false);
                 EoH_LiveAdvisorActivity.LogActivity("town_capture", "contested town=" + s.TownName + " group=" + s.CapturingGroupName);
             }
         }
@@ -404,6 +417,7 @@ class EoH_CaptureManager
         {
             EoH_TownMarkerManager.UpdateCapturingMarker(s.TownName, s.CapturingGroupName);
             BroadcastCaptureMessage("TOWN CAPTURE RESUMED", s.TownName + " capture has resumed.");
+            SendTownCaptureProgress(s, "RPC_Update", "Capturing town relay...", false, false);
             EoH_LiveAdvisorActivity.LogActivity("town_capture", "resumed_after_contest town=" + s.TownName + " group=" + s.CapturingGroupName);
         }
     }
@@ -418,6 +432,80 @@ class EoH_CaptureManager
         EoH_MarkerService.Broadcast(data);
     }
 
+    EoH_ObjectiveProgressData BuildTownCaptureProgressData(EoH_CaptureSession s, string status, bool complete, bool failed)
+    {
+        EoH_ObjectiveProgressData data = new EoH_ObjectiveProgressData();
+        if (!s)
+            return data;
+
+        data.Channel = "town_capture_" + s.TownName;
+        data.Title = "RELAY CONTROL: " + s.TownName;
+        data.Status = status;
+        data.Progress01 = s.Progress / CAPTURE_DURATION_MS;
+        data.LeftLabel = "Group: " + s.CapturingGroupName;
+
+        if (complete)
+            data.RightLabel = "Complete";
+        else if (s.IsContested)
+            data.RightLabel = "Contested: Yes";
+        else if (!s.CapturingGroupPresent)
+            data.RightLabel = "Holding: No";
+        else
+            data.RightLabel = "Contested: No";
+
+        data.Complete = complete;
+        data.Failed = failed;
+        data.Contested = s.IsContested;
+        data.Normalize();
+        return data;
+    }
+
+    void SendTownCaptureProgress(EoH_CaptureSession s, string rpcName, string status, bool complete, bool failed)
+    {
+        if (!s || s.CapturingGroupID == "")
+            return;
+
+        EoH_ObjectiveProgressData data = BuildTownCaptureProgressData(s, status, complete, failed);
+        Param1<EoH_ObjectiveProgressData> param = new Param1<EoH_ObjectiveProgressData>(data);
+
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.GetIdentity())
+                continue;
+
+            if (EoH_GroupHelper.GetGroupID(player) != s.CapturingGroupID)
+                continue;
+
+            GetRPCManager().SendRPC("EoH_ObjectiveProgress", rpcName, param, true, player.GetIdentity());
+        }
+    }
+
+    void HideTownCaptureProgress(EoH_CaptureSession s)
+    {
+        if (!s || s.CapturingGroupID == "")
+            return;
+
+        Param1<string> param = new Param1<string>("town_capture_" + s.TownName);
+        array<Man> players = new array<Man>();
+        GetGame().GetPlayers(players);
+
+        foreach (Man man : players)
+        {
+            PlayerBase player = PlayerBase.Cast(man);
+            if (!player || !player.GetIdentity())
+                continue;
+
+            if (EoH_GroupHelper.GetGroupID(player) != s.CapturingGroupID)
+                continue;
+
+            GetRPCManager().SendRPC("EoH_ObjectiveProgress", "RPC_Hide", param, true, player.GetIdentity());
+        }
+    }
+
     void BroadcastCaptureMessage(string title, string msg)
     {
         EoH_Notifications.SendToAll(title, msg);
@@ -428,8 +516,10 @@ class EoH_CaptureManager
         vector relayPos = GetTownPos(s.TownName);
         EoH_WorldStateManager.Get().SetTownOwner(s.TownName, s.CapturingGroupID, s.CapturingGroupName);
         EoH_TownRewardManager.SpawnCaptureReward(s.TownName, s.CapturingGroupName, relayPos);
+        SendTownCaptureProgress(s, "RPC_Update", "Town captured.", true, false);
         BroadcastCaptureMessage("TOWN CAPTURED", s.CapturingGroupName + " captured " + s.TownName + ".");
         EoH_TownMarkerManager.UpdateTownMarker(s.TownName, s.CapturingGroupName);
+        HideTownCaptureProgress(s);
         Print("[EoH_Capture] Complete town=" + s.TownName + " owner=" + s.CapturingGroupName + " relayPos=" + relayPos.ToString());
         EoH_LiveAdvisorActivity.LogActivity("town_capture", "capture_complete town=" + s.TownName + " group=" + s.CapturingGroupName);
         m_Sessions.Remove(s.TownName);
