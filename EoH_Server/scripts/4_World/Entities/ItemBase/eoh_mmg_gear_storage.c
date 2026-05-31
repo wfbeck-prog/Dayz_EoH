@@ -12,7 +12,7 @@ class EoH_MMG_GearStorageRules
 {
     static bool DebugEnabled()
     {
-        return false;
+        return true;
     }
 
     static bool StartsWith(string value, string prefix)
@@ -29,8 +29,6 @@ class EoH_MMG_GearStorageRules
             return false;
 
         string type = container.GetType();
-
-        // MMG base storage classnames are all mmg_* in the provided list.
         return StartsWith(type, "mmg_");
     }
 
@@ -120,11 +118,9 @@ class EoH_MMG_GearStorageRules
         if (!container || !item)
             return false;
 
-        // Main request: full vests / rigs inside backpacks.
         if (IsBackpackContainer(container) && IsVestOrRig(item))
             return true;
 
-        // MMG base storage should accept wearable gear, including modded ALV / Delta gear.
         if (IsMMGBaseStorage(container) && IsWearableGear(item))
             return true;
 
@@ -139,7 +135,7 @@ modded class ItemBase
         if (EoH_MMG_GearStorageRules.ShouldForceAllowCargo(this, item))
         {
             if (EoH_MMG_GearStorageRules.DebugEnabled() && item)
-                Print("[EoH_MMG_GearStorage] Force allow cargo: container=" + GetType() + " item=" + item.GetType());
+                Print("[EoH_MMG_GearStorage] ItemBase CanReceiveItemIntoCargo allow: container=" + GetType() + " item=" + item.GetType());
 
             return true;
         }
@@ -147,16 +143,45 @@ modded class ItemBase
         return super.CanReceiveItemIntoCargo(item);
     }
 
+    override bool CanLoadItemIntoCargo(EntityAI item)
+    {
+        if (EoH_MMG_GearStorageRules.ShouldForceAllowCargo(this, item))
+        {
+            if (EoH_MMG_GearStorageRules.DebugEnabled() && item)
+                Print("[EoH_MMG_GearStorage] ItemBase CanLoadItemIntoCargo allow: container=" + GetType() + " item=" + item.GetType());
+
+            return true;
+        }
+
+        return super.CanLoadItemIntoCargo(item);
+    }
+
     override bool CanPutInCargo(EntityAI parent)
     {
         if (EoH_MMG_GearStorageRules.ShouldForceAllowCargo(parent, this))
         {
             if (EoH_MMG_GearStorageRules.DebugEnabled() && parent)
-                Print("[EoH_MMG_GearStorage] Force allow put-in-cargo: container=" + parent.GetType() + " item=" + GetType());
+                Print("[EoH_MMG_GearStorage] ItemBase CanPutInCargo allow: container=" + parent.GetType() + " item=" + GetType());
 
             return true;
         }
 
         return super.CanPutInCargo(parent);
+    }
+};
+
+modded class Clothing
+{
+    override bool CanPutInCargoClothingConditions(EntityAI parent)
+    {
+        if (EoH_MMG_GearStorageRules.ShouldForceAllowCargo(parent, this))
+        {
+            if (EoH_MMG_GearStorageRules.DebugEnabled() && parent)
+                Print("[EoH_MMG_GearStorage] Clothing CanPutInCargoClothingConditions allow: container=" + parent.GetType() + " item=" + GetType());
+
+            return true;
+        }
+
+        return super.CanPutInCargoClothingConditions(parent);
     }
 };
