@@ -1,0 +1,22 @@
+name: Generate File Tree
+on:
+ push:
+   branches: [ main ]
+ workflow_dispatch:
+jobs:
+ build:
+   runs-on: ubuntu-latest
+   steps:
+     - name: Checkout repository
+       uses: actions/checkout@v4
+     - name: Print Folder Tree
+       uses: jaywcjlove/github-action-folder-tree@main
+       with:
+         path: ./src
+         depth: 2
+         exclude: "node_modules|dist|.git|.husky"
+     - name: Update README.md with tree
+       uses: jaywcjlove/github-action-modify-file-content@main
+       with:
+         path: README.md
+         body: ${{ steps.tree.outputs.content }}
