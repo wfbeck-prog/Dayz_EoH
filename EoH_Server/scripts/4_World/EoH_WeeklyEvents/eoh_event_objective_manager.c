@@ -211,10 +211,59 @@ class EoH_EventObjectiveManager
             Print("[EoH_EventObjectives] Intel reveal blocked active objective already exists");
             return false;
         }
+
+        if (!EoH_WeekendEventWindow.CanStartWeekendEvent())
+        {
+            Print("[EoH_EventObjectives] Intel reveal blocked outside weekend event window");
+            return false;
+        }
+
         EoH_EventObjective obj = PickRandomObjective();
         if (!obj)
             return false;
+
         MarkUsedThisWeekend(obj.Id);
+        StartObjectiveRuntime(obj);
+        return true;
+    }
+
+    bool RevealObjectiveById(string eventId)
+    {
+        if (!IsIntelAvailable())
+        {
+            Print("[EoH_EventObjectives] Targeted intel reveal blocked active objective already exists eventId=" + eventId);
+            return false;
+        }
+
+        if (!EoH_WeekendEventWindow.CanStartWeekendEvent())
+        {
+            Print("[EoH_EventObjectives] Targeted intel reveal blocked outside weekend event window eventId=" + eventId);
+            return false;
+        }
+
+        EoH_EventObjective obj = FindObjectiveById(eventId);
+        if (!obj)
+        {
+            Print("[EoH_EventObjectives][WARN] Targeted intel reveal failed unknown eventId=" + eventId);
+            return false;
+        }
+
+        if (WasUsedThisWeekend(obj.Id))
+        {
+            Print("[EoH_EventObjectives] Targeted intel reveal blocked already used eventId=" + obj.Id);
+            return false;
+        }
+
+        MarkUsedThisWeekend(obj.Id);
+        StartObjectiveRuntime(obj);
+        return true;
+    }
+
+    protected void StartObjectiveRuntime(EoH_EventObjective obj)
+    {
+        if (!obj)
+            return;
+
         m_ActiveRuntime = new EoH_EventObjectiveRuntime(obj);
         m_ActiveRuntime.Active = true;
         m_ActiveRuntime.StartTime = 0;
@@ -224,6 +273,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.CurrentWave = 0;
         m_PurgeNightRewardUnlockTime = 0;
         CleanupPurgeNightAI();
+
         if (obj.ObjectiveType == "purge_night")
             StartPurgeNightRuntime();
         else
@@ -233,8 +283,8 @@ class EoH_EventObjectiveManager
             if (obj.Id == "altar_relay_towers")
                 StartAltarRepairWatcher();
         }
+
         Print("[EoH_EventObjectives] Revealed objective id=" + obj.Id + " type=" + obj.ObjectiveType + " pos=" + obj.Position.ToString());
-        return true;
     }
 
     void StartAltarRepairWatcher()
