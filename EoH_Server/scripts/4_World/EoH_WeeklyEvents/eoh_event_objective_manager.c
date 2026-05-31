@@ -351,6 +351,7 @@ class EoH_EventObjectiveManager
         {
             TickWaves(now);
             TickRewardCrate();
+            TickAltarRewardCleanup(now);
         }
     }
 
@@ -642,10 +643,33 @@ class EoH_EventObjectiveManager
         SpawnRewardCrate();
         m_ActiveRuntime.AltarRewardSpawned = true;
         m_ActiveRuntime.RewardUnlocked = true;
+        m_PurgeNightRewardUnlockTime = GetGame().GetTime();
 
         bool smokeStarted = SpawnEventSmoke(m_ActiveRuntime.Config.Position, "M18SmokeGrenade_Red");
-        EoH_Notifications.SendToAll("ALTAR CACHE DROPPED", "Round 5 has deployed the recovery cache at Altar Relay Towers. Red smoke active=" + smokeStarted.ToString());
+        EoH_Notifications.SendToAll("ALTAR CACHE DROPPED", "Round 5 has deployed the recovery cache at Altar Relay Towers. Red smoke active=" + smokeStarted.ToString() + ". Recovery window closes in 10 minutes.");
         Print("[EoH_AltarRepair] Reward phase spawned on wave=" + m_ActiveRuntime.CurrentWave.ToString() + " smokeStarted=" + smokeStarted.ToString());
+    }
+
+    void TickAltarRewardCleanup(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Config)
+            return;
+
+        if (m_ActiveRuntime.Config.Id != "altar_relay_towers")
+            return;
+
+        if (!m_ActiveRuntime.RewardUnlocked || m_PurgeNightRewardUnlockTime <= 0)
+            return;
+
+        int cleanupElapsed = now - m_PurgeNightRewardUnlockTime;
+        int cleanupMs = GetPurgeRewardCleanupMs();
+        Print("[EoH_AltarRepair][CLEANUP] rewardElapsedMs=" + cleanupElapsed.ToString() + " cleanupMs=" + cleanupMs.ToString());
+
+        if (cleanupElapsed >= cleanupMs)
+        {
+            EoH_Notifications.SendToAll("ALTAR RELAY", "The recovery window has closed. Altar Relay Towers has gone silent.");
+            EndActiveObjective();
+        }
     }
 
     EntityAI FindAltarRepairRadio(PlayerBase player)
