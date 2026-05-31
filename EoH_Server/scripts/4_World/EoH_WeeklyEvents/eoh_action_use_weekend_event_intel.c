@@ -49,8 +49,11 @@ class ActionUseWeekendEventIntel : ActionContinuousBase
         PlayerBase player = action_data.m_Player;
         ItemBase item = action_data.m_MainItem;
 
-        if (!EoH_WeekendEventWindow.CanUseWeekendIntel(player))
+        if (!EoH_WeekendEventWindow.CanUseWeekendIntel())
+        {
+            EoH_Notifications.SendToPlayer(player, "WEEKEND EVENTS", EoH_WeekendEventWindow.GetClosedMessage());
             return;
+        }
 
         bool started = EoH_EventObjectiveManager.Get().RevealRandomObjectiveOnly();
         if (!started)
@@ -116,8 +119,11 @@ class ActionUseAltarRelayIntel : ActionContinuousBase
         PlayerBase player = action_data.m_Player;
         ItemBase item = action_data.m_MainItem;
 
-        if (!EoH_WeekendEventWindow.CanUseWeekendIntel(player))
+        if (!EoH_WeekendEventWindow.CanUseWeekendIntel())
+        {
+            EoH_Notifications.SendToPlayer(player, "WEEKEND EVENTS", EoH_WeekendEventWindow.GetClosedMessage());
             return;
+        }
 
         bool started = EoH_EventObjectiveManager.Get().RevealObjectiveById("altar_relay_towers");
         if (!started)
