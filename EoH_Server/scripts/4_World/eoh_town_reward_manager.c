@@ -116,10 +116,30 @@ class EoH_TownRewardManager
 
         crate.SetLifetime(lifetime);
         FillRewardCrate(crate, tierCfg);
+        TryAddWeekendIntelReward(crate, townName, groupName);
         SpawnRewardSmoke(pos, townName, tierCfg);
 
         EoH_Notifications.SendToAll("TOWN REWARD DROPPED", "A smoke-marked capture cache was deployed near " + townName + " for " + groupName + ".");
         Print("[EoH_TownReward] Spawned reward crate town=" + townName + " tier=" + tier.ToString() + " type=" + containerType + " lifetime=" + lifetime.ToString() + " pos=" + pos.ToString());
+    }
+
+    static void TryAddWeekendIntelReward(EntityAI crate, string townName, string groupName)
+    {
+        if (!crate)
+            return;
+
+        EoH_WeekendIntelConfigManager intelCfg = EoH_WeekendIntelConfigManager.Get();
+        if (!intelCfg || !intelCfg.RollTownCaptureIntelReward())
+            return;
+
+        string intelClass = intelCfg.GetWeekendIntelClassName();
+        int count = intelCfg.GetTownCaptureIntelCount();
+        if (intelClass == "" || count <= 0)
+            return;
+
+        AddItem(crate, intelClass, count);
+        EoH_Notifications.SendToAll("WEEKEND INTEL FOUND", groupName + " recovered encrypted weekend-event intel from the " + townName + " capture cache.");
+        Print("[EoH_TownReward] Added weekend intel town=" + townName + " group=" + groupName + " item=" + intelClass + " count=" + count.ToString());
     }
 
     static vector FindRewardSpawnPosition(vector townPos)
@@ -310,68 +330,66 @@ class EoH_TownRewardManager
         InsertLoot(t2, "My_DF_Gear_Rigs_Assault", 1, 1, 0.25);
         InsertLoot(t2, "EoH_TownIntel", 1, 1, 0.28);
         InsertLoot(t2, "EoH_TraderIntel", 1, 1, 0.15);
-        InsertLoot(t2, "DNA_Keycard_Yellow", 1, 1, 0.10);
+        InsertLoot(t2, "DNA_Keycard_Blue", 1, 1, 0.08);
 
-        EoH_TownRewardTierConfig t3 = InsertTier(cfg, 3, "WoodenCrate", "EoH_RewardSmokeMarker", 5400);
-        InsertLoot(t3, "BandageDressing", 4, 6, 1.0);
-        InsertLoot(t3, "Epinephrine", 2, 4, 0.90);
+        EoH_TownRewardTierConfig t3 = InsertTier(cfg, 3, "SeaChest", "EoH_RewardSmokeMarker", 5400);
+        InsertLoot(t3, "Epinephrine", 2, 4, 0.85);
         InsertLoot(t3, "Morphine", 2, 4, 0.85);
-        InsertLoot(t3, "My_DF_Weapons_Ammo_556x45_M995", 2, 4, 0.75);
-        InsertLoot(t3, "My_DF_Weapons_Ammo_762x51_M80", 2, 3, 0.65);
-        InsertLoot(t3, "Mag_CMAG_30Rnd_Black", 2, 4, 0.60);
-        InsertLoot(t3, "My_DF_Weapons_Rifles_K416_30RndMag", 2, 3, 0.55);
-        InsertLoot(t3, "My_DF_Gear_Rigs_Raider", 1, 1, 0.30);
-        InsertLoot(t3, "EoH_TownIntel", 1, 2, 0.35);
+        InsertLoot(t3, "SalineBagIV", 1, 2, 0.65);
+        InsertLoot(t3, "My_DF_Weapons_Ammo_556x45_M995", 2, 5, 0.90);
+        InsertLoot(t3, "My_DF_Weapons_Ammo_762x51_M80", 2, 5, 0.75);
+        InsertLoot(t3, "My_DF_Weapons_Rifles_MK17_20RndMag", 2, 4, 0.60);
+        InsertLoot(t3, "My_DF_Gear_Helmets_Fast", 1, 1, 0.30);
+        InsertLoot(t3, "My_DF_Gear_Vests_PlateCarrier", 1, 1, 0.22);
+        InsertLoot(t3, "EoH_TownIntel", 1, 2, 0.40);
         InsertLoot(t3, "EoH_TraderIntel", 1, 1, 0.22);
-        InsertLoot(t3, "DNA_Keycard_Red", 1, 1, 0.08);
+        InsertLoot(t3, "DNA_Keycard_Red", 1, 1, 0.10);
 
         EoH_TownRewardTierConfig t4 = InsertTier(cfg, 4, "SeaChest", "EoH_RewardSmokeMarker", 7200);
-        InsertLoot(t4, "BandageDressing", 5, 8, 1.0);
-        InsertLoot(t4, "Epinephrine", 3, 5, 1.0);
-        InsertLoot(t4, "Morphine", 3, 5, 1.0);
-        InsertLoot(t4, "My_DF_Weapons_Rifles_K416", 1, 1, 0.35);
-        InsertLoot(t4, "My_DF_Weapons_DMR_SR25", 1, 1, 0.25);
-        InsertLoot(t4, "My_DF_Weapons_Rifles_SCARH", 1, 1, 0.22);
-        InsertLoot(t4, "My_DF_Weapons_Rifles_K416_30RndMag", 3, 5, 0.90);
-        InsertLoot(t4, "My_DF_Weapons_DMR_SR25_20RndMag", 2, 4, 0.75);
-        InsertLoot(t4, "My_DF_Weapons_Rifles_SCARH_20RndMag", 2, 4, 0.70);
-        InsertLoot(t4, "My_DF_Gear_Rigs_Raider", 1, 1, 0.45);
-        InsertLoot(t4, "My_DF_Gear_Backpacks_Tactical", 1, 1, 0.35);
-        InsertLoot(t4, "EoH_TownIntel", 2, 3, 0.50);
+        InsertLoot(t4, "Epinephrine", 3, 5, 0.95);
+        InsertLoot(t4, "Morphine", 3, 5, 0.95);
+        InsertLoot(t4, "SalineBagIV", 2, 3, 0.80);
+        InsertLoot(t4, "My_DF_Weapons_Ammo_338LM", 2, 5, 0.70);
+        InsertLoot(t4, "My_DF_Weapons_Ammo_556x45_M995", 3, 6, 0.90);
+        InsertLoot(t4, "My_DF_Weapons_Rifles_M110_20RndMag", 2, 4, 0.55);
+        InsertLoot(t4, "My_DF_Gear_Helmets_Altyn", 1, 1, 0.24);
+        InsertLoot(t4, "My_DF_Gear_Vests_Heavy", 1, 1, 0.18);
+        InsertLoot(t4, "EoH_TownIntel", 2, 3, 0.55);
         InsertLoot(t4, "EoH_TraderIntel", 1, 2, 0.35);
         InsertLoot(t4, "DNA_Keycard_Red", 1, 1, 0.18);
-        InsertLoot(t4, "SingleUsePunchedCard", 1, 1, 0.10);
+        InsertLoot(t4, "PunchedCard", 1, 1, 0.12);
     }
 
     static void InsertTown(EoH_TownRewardConfig cfg, string townName, int tier)
     {
-        EoH_TownRewardTownConfig townCfg = new EoH_TownRewardTownConfig();
-        townCfg.TownName = townName;
-        townCfg.Tier = tier;
-        cfg.Towns.Insert(townCfg);
+        EoH_TownRewardTownConfig town = new EoH_TownRewardTownConfig();
+        town.TownName = townName;
+        town.Tier = tier;
+        cfg.Towns.Insert(town);
     }
 
-    static EoH_TownRewardTierConfig InsertTier(EoH_TownRewardConfig cfg, int tier, string container, string smokeType, int lifetime)
+    static EoH_TownRewardTierConfig InsertTier(EoH_TownRewardConfig cfg, int tier, string container, string smoke, int lifetime)
     {
         EoH_TownRewardTierConfig tierCfg = new EoH_TownRewardTierConfig();
         tierCfg.Tier = tier;
         tierCfg.Container = container;
-        tierCfg.SmokeType = smokeType;
+        tierCfg.SmokeType = smoke;
         tierCfg.LifetimeSeconds = lifetime;
         tierCfg.Loot = new array<ref EoH_TownRewardItemConfig>();
         cfg.Tiers.Insert(tierCfg);
         return tierCfg;
     }
 
-    static void InsertLoot(EoH_TownRewardTierConfig tierCfg, string className, int minCount, int maxCount, float chance)
+    static void InsertLoot(EoH_TownRewardTierConfig tierCfg, string className, int min, int max, float chance)
     {
         if (!tierCfg || !tierCfg.Loot)
             return;
-        EoH_TownRewardItemConfig itemCfg = new EoH_TownRewardItemConfig();
-        itemCfg.ClassName = className;
-        itemCfg.Min = minCount;
-        itemCfg.Max = maxCount;
-        itemCfg.Chance = chance;
-        tierCfg.Loot.Insert(itemCfg);
+
+        EoH_TownRewardItemConfig item = new EoH_TownRewardItemConfig();
+        item.ClassName = className;
+        item.Min = min;
+        item.Max = max;
+        item.Chance = chance;
+        tierCfg.Loot.Insert(item);
     }
 }
