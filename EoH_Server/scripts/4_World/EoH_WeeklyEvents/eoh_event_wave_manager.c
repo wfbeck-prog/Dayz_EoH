@@ -13,13 +13,17 @@ class EoH_EventWaveManager
     void SpawnWave(EoH_EventObjectiveRuntime runtime, int waveIndex)
     {
         if (!runtime || !runtime.Config)
+        {
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "wave_request_failed reason=missing_runtime wave=" + waveIndex.ToString());
             return;
+        }
 
         EoH_EventObjective cfg = runtime.Config;
         string objectiveName = cfg.DisplayName;
         string msg = "";
 
         Print("[EoH_EventWaves] Spawning wave=" + waveIndex.ToString() + " objective=" + cfg.Id);
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "wave_requested objective=" + cfg.Id + " wave=" + waveIndex.ToString() + " type=" + cfg.ObjectiveType + " radius=" + cfg.Radius.ToString());
 
         if (cfg.Id == "altar_relay_towers")
         {
@@ -67,7 +71,10 @@ class EoH_EventWaveManager
     protected void SpawnAltarWaveAI(EoH_EventObjectiveRuntime runtime, int waveIndex)
     {
         if (!runtime || !runtime.Config)
+        {
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_spawn_failed reason=missing_runtime wave=" + waveIndex.ToString());
             return;
+        }
 
         EoH_EventObjective cfg = runtime.Config;
 
@@ -95,8 +102,14 @@ class EoH_EventWaveManager
             loadout = "EoH_AI_HighValue_Hard";
         }
 
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_spawn_start wave=" + waveIndex.ToString() + " requested=" + count.ToString() + " loadout=" + loadout + " center=" + cfg.Position.ToString() + " radius=" + cfg.Radius.ToString());
+
         eAIGroup group = EoH_TownAISpawnAdapter.CreateTownPatrolGroup(cfg.Position);
+        if (!group)
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_group_missing wave=" + waveIndex.ToString() + " loadout=" + loadout);
+
         int spawned = 0;
+        int failed = 0;
 
         for (int i = 0; i < count; i++)
         {
@@ -107,14 +120,23 @@ class EoH_EventWaveManager
             {
                 spawned++;
                 Print("[EoH_AltarRelay][AI] Spawned wave=" + waveIndex.ToString() + " unit=" + obj.GetType() + " pos=" + spawnPos.ToString() + " loadout=" + loadout);
+                EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_unit_spawned wave=" + waveIndex.ToString() + " unit=" + obj.GetType() + " pos=" + spawnPos.ToString() + " loadout=" + loadout);
             }
             else
             {
+                failed++;
                 Print("[EoH_AltarRelay][AI][WARN] Failed unit spawn wave=" + waveIndex.ToString() + " loadout=" + loadout + " pos=" + spawnPos.ToString());
+                EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_unit_failed wave=" + waveIndex.ToString() + " pos=" + spawnPos.ToString() + " loadout=" + loadout);
             }
         }
 
         Print("[EoH_AltarRelay][AI] Wave complete wave=" + waveIndex.ToString() + " requested=" + count.ToString() + " spawned=" + spawned.ToString() + " loadout=" + loadout);
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "altar_ai_wave_complete wave=" + waveIndex.ToString() + " requested=" + count.ToString() + " spawned=" + spawned.ToString() + " failed=" + failed.ToString() + " loadout=" + loadout);
+
+        if (spawned <= 0)
+        {
+            EoH_LiveAdvisorLogger.Log("ADVISOR_RECOMMENDATION", "Category=weekly_event Altar Relay wave requested but no AI units spawned. Wave=" + waveIndex.ToString() + " Requested=" + count.ToString() + " Loadout=" + loadout + ". Check Expansion AI availability, loadout names, spawn adapter, and surface spawn positions.", "warning", "EoH_Advisor");
+        }
     }
 
     protected vector GetAltarWaveSpawnPosition(vector center, float minRadius, float maxRadius)
