@@ -3,6 +3,7 @@ class EoH_EventObjectiveManager
     protected static ref EoH_EventObjectiveManager s_Instance;
     static const bool EOH_FORCE_PURGE_NIGHT_TEST = false;
     static const bool EOH_FORCE_ALTAR_RELAY_TEST = true;
+    static const bool EOH_ALLOW_FORCE_TEST_EVENT_REUSE = true;
     static const string EOH_PARTICLEPOINT_REWARD_SMOKE = "SmokePoint_3";
     static const float EOH_ALTAR_REPAIR_RADIUS = 5.0;
 
@@ -58,6 +59,9 @@ class EoH_EventObjectiveManager
 
     bool WasUsedThisWeekend(string eventId)
     {
+        if (EOH_ALLOW_FORCE_TEST_EVENT_REUSE && (EOH_FORCE_ALTAR_RELAY_TEST || EOH_FORCE_PURGE_NIGHT_TEST))
+            return false;
+
         if (!m_UsedWeekendEvents || eventId == "")
             return false;
         return m_UsedWeekendEvents.Find(eventId) >= 0;
@@ -65,6 +69,12 @@ class EoH_EventObjectiveManager
 
     void MarkUsedThisWeekend(string eventId)
     {
+        if (EOH_ALLOW_FORCE_TEST_EVENT_REUSE && (EOH_FORCE_ALTAR_RELAY_TEST || EOH_FORCE_PURGE_NIGHT_TEST))
+        {
+            Print("[EoH_EventObjectives] Force test reuse enabled; not marking event used id=" + eventId);
+            return;
+        }
+
         if (!m_UsedWeekendEvents || eventId == "")
             return;
         if (m_UsedWeekendEvents.Find(eventId) < 0)
