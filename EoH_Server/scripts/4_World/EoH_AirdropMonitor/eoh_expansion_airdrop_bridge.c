@@ -1,58 +1,26 @@
-modded class ExpansionMissionEventAirdrop
-{
-    protected bool m_EoH_AirdropStartPosted;
-    protected bool m_EoH_AirdropLandedPosted;
+/*
+    EoH Expansion Airdrop Bridge - DISABLED
 
-    override void Event_OnStart()
-    {
-        super.Event_OnStart();
+    Directly modding ExpansionMissionEventAirdrop causes the installed Expansion build to fail at:
 
-        if (!IsMissionHost())
-            return;
+        DayZExpansion/Missions/Scripts/4_World/dayzexpansion_missions/classes/airdrop/expansionmissioneventairdrop.c(298): Incompatible parameter 'this'
 
-        if (m_EoH_AirdropStartPosted)
-            return;
+    Root cause:
+    Expansion loads JSON into `this` with:
 
-        m_EoH_AirdropStartPosted = true;
-        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropMissionStarted(MissionName, EoH_GetDropLocationName(), EoH_GetDropLocationPosition());
-    }
+        ExpansionJsonFileParser<ExpansionMissionEventAirdrop>.Load(m_FileName, this);
 
-    override void Event_OnUpdate(float delta)
-    {
-        super.Event_OnUpdate(delta);
+    When another mod extends the same class with `modded class ExpansionMissionEventAirdrop`, that generic parser call can reject the modified runtime type.
 
-        if (!IsMissionHost())
-            return;
+    Do not re-enable this direct class override.
 
-        if (m_EoH_AirdropLandedPosted)
-            return;
+    Safe options left:
+    1. Use Expansion's built-in SocialMediaSettings/notification/webhook support if available.
+    2. Add a separate EoH poller that watches server logs for `[MissionAirdrop]` lines.
+    3. Add explicit calls from a forked/custom copy of ExpansionMissionEventAirdrop.c, if you are willing to maintain that patch.
 
-        if (m_Container && m_Container.Expansion_HasLanded())
-        {
-            m_EoH_AirdropLandedPosted = true;
-            EoH_AirdropMissionMonitor.Get().OnExpansionAirdropLanded(MissionName, EoH_GetDropLocationName(), EoH_GetDropLocationPosition());
-        }
-    }
+    The webhook-side router is still valid:
 
-    protected string EoH_GetDropLocationName()
-    {
-        if (DropLocation)
-            return DropLocation.Name;
-
-        return "";
-    }
-
-    protected vector EoH_GetDropLocationPosition()
-    {
-        if (DropLocation)
-        {
-            vector pos;
-            pos[0] = DropLocation.x;
-            pos[1] = 0;
-            pos[2] = DropLocation.z;
-            return pos;
-        }
-
-        return "0 0 0".ToVector();
-    }
-};
+        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropMissionStarted(missionName, locationName, position);
+        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropLanded(missionName, locationName, position);
+*/
