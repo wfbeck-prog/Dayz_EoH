@@ -1,33 +1,32 @@
 modded class ExpansionMissionEventAirdrop
 {
+    protected bool m_EoH_AirdropLandedPosted;
+
     override void Event_OnStart()
     {
         super.Event_OnStart();
 
-        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropMissionStarted(
-            MissionName,
-            EoH_GetDropLocationName(),
-            EoH_GetDropLocationPosition()
-        );
+        string locationName = EoH_GetDropLocationName();
+        vector locationPos = EoH_GetDropLocationPosition();
+
+        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropMissionStarted(MissionName, locationName, locationPos);
     }
 
     override void Event_OnUpdate(float delta)
     {
-        bool hadContainer = m_Container != null;
-        bool hadLanded = false;
-
-        if (m_Container)
-            hadLanded = m_Container.Expansion_HasLanded();
-
         super.Event_OnUpdate(delta);
 
-        if (!hadLanded && m_Container && m_Container.Expansion_HasLanded())
+        if (m_EoH_AirdropLandedPosted)
+            return;
+
+        if (m_Container && m_Container.Expansion_HasLanded())
         {
-            EoH_AirdropMissionMonitor.Get().OnExpansionAirdropLanded(
-                MissionName,
-                EoH_GetDropLocationName(),
-                EoH_GetDropLocationPosition()
-            );
+            m_EoH_AirdropLandedPosted = true;
+
+            string locationName = EoH_GetDropLocationName();
+            vector locationPos = EoH_GetDropLocationPosition();
+
+            EoH_AirdropMissionMonitor.Get().OnExpansionAirdropLanded(MissionName, locationName, locationPos);
         }
     }
 
@@ -42,7 +41,13 @@ modded class ExpansionMissionEventAirdrop
     protected vector EoH_GetDropLocationPosition()
     {
         if (DropLocation)
-            return Vector(DropLocation.x, 0, DropLocation.z);
+        {
+            vector pos;
+            pos[0] = DropLocation.x;
+            pos[1] = 0;
+            pos[2] = DropLocation.z;
+            return pos;
+        }
 
         return "0 0 0".ToVector();
     }
