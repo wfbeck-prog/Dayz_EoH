@@ -34,3 +34,21 @@ class EoH_TraderIntel : EoH_Intel_Document
         AddAction(EoH_ActionReadIntel);
     }
 }
+
+class EoH_AltarRelayIntel : EoH_Intel_Document
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseAltarRelayIntel);
+    }
+}
+
+class EoH_WeekendEventIntel : EoH_Intel_Document
+{
+    override void SetActions()
+    {
+        super.SetActions();
+        AddAction(ActionUseWeekendEventIntel);
+    }
+}
