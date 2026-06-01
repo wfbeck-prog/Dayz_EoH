@@ -1,0 +1,10 @@
+{
+  "name": "eoh-airdrop-log-webhook",
+  "version": "1.0.0",
+  "description": "Watches DayZ Expansion mission logs for airdrop events and posts them to Discord.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "UNLICENSED"
+}
