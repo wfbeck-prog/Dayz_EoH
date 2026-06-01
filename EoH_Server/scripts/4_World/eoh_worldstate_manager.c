@@ -199,6 +199,7 @@ class EoH_WorldStateManager
             m_State.Towns.Insert(town);
         }
 
+        string previousOwner = town.OwnerGroupName;
         int now = GetGame().GetTime();
 
         town.OwnerGroupID = groupID;
@@ -219,6 +220,7 @@ class EoH_WorldStateManager
 
         EoH_AIManager.Get().OnTownCaptured(townName, town.Tier);
         EoH_TownMarkerManager.UpdateTownMarker(townName, groupName);
+        SendTerritoryWebhook(townName, previousOwner, groupName, town.Tier);
     }
 
     void ClearTownOwner(string townName)
@@ -226,6 +228,8 @@ class EoH_WorldStateManager
         EoH_WorldStateTownState town = GetTownState(townName);
         if (!town)
             return;
+
+        string previousOwner = town.OwnerGroupName;
 
         Print("[EoH_WorldState] Town cleared: " + townName + " previousOwnerID=" + town.OwnerGroupID + " previousOwnerName=" + town.OwnerGroupName);
 
@@ -237,6 +241,7 @@ class EoH_WorldStateManager
         EoH_TownMarkerManager.RemoveMarkerFromAll(EoH_TownMarkerManager.GetMarkerId(townName));
 
         SaveState();
+        SendTerritoryWebhook(townName, previousOwner, "Unclaimed", town.Tier);
     }
 
     void TriggerBunkerOpened()
@@ -252,5 +257,23 @@ class EoH_WorldStateManager
 
         Print("[EoH_WorldState] Bunker opened. World event state updated.");
         SaveState();
+    }
+
+    protected void SendTerritoryWebhook(string townName, string previousOwner, string newOwner, int tier)
+    {
+        if (townName == "")
+            return;
+
+        if (previousOwner == newOwner)
+            return;
+
+        string title = "⚠️ TERRITORY CONTROL UPDATED";
+        string body = "Relay town: " + townName + "\n";
+        body += "Tier: " + tier.ToString() + "\n";
+        body += "Previous control: " + previousOwner + "\n";
+        body += "New control: " + newOwner + "\n";
+        body += "The old relay network has logged a new ownership state.";
+
+        EoH_DiscordWebhook.SendTerritoryConflict(title, body);
     }
 };
