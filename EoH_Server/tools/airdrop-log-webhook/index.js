@@ -24,6 +24,7 @@ const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || '';
 const RADIO_WEBHOOK_URL = process.env.RADIO_WEBHOOK_URL || '';
 const POLL_INTERVAL_MS = Number(process.env.POLL_INTERVAL_MS || 5000);
 const STATE_FILE = process.env.STATE_FILE || path.join(__dirname, 'airdrop-log-state.json');
+const SCAN_OLD_LINES_ON_FIRST_RUN = String(process.env.SCAN_OLD_LINES_ON_FIRST_RUN || '0') === '1';
 
 if (!LOG_DIR) {
   console.error('[EoH Airdrop Watcher] LOG_DIR is missing. Copy .env.example to .env and set LOG_DIR.');
@@ -62,25 +63,49 @@ function newestLogFiles(dir) {
       return { name, full, mtimeMs: stat.mtimeMs, size: stat.size };
     })
     .sort((a, b) => b.mtimeMs - a.mtimeMs)
-    .slice(0, 5);
+    .slice(0, 8);
 }
 
 function parseAirdropLine(line) {
   if (!line.includes('[MissionAirdrop]')) return null;
 
+  const timeMatch = line.match(/^(\d{2}:\d{2}:\d{2}\.\d{3})/);
   const locationMatch = line.match(/heading towards\s+"([^"]+)"/i);
-  const posMatch = line.match(/pos=<([^>]+)>/i) || line.match(/pos=([^\s]+\s+[^\s]+\s+[^\s]+)/i);
+  const posMatch = line.match(/pos=<([^>]+)>/i);
   const typeMatch = line.match(/type=([^\s\)]+)\)?/i);
   const containerMatch = line.match(/with a\s+([^\s]+)/i);
 
-  const region = locationMatch ? locationMatch[1] : 'Unknown Region';
+  const rawRegion = locationMatch ? locationMatch[1] : 'Unknown Region';
   const missionType = typeMatch ? typeMatch[1] : 'Unknown';
   const container = containerMatch ? containerMatch[1] : 'Unknown Container';
   const pos = posMatch ? posMatch[1] : '';
-  const category = resolveCategory(missionType, region, container);
+  const category = resolveCategory(missionType, rawRegion, container);
+  const region = cleanRegion(rawRegion, category);
   const threat = resolveThreat(category, region);
 
-  return { region, missionType, container, pos, category, threat, raw: line };
+  return {
+    time: timeMatch ? timeMatch[1] : '',
+    rawRegion,
+    region,
+    missionType,
+    container,
+    pos,
+    category,
+    threat,
+    raw: line
+  };
+}
+
+function cleanRegion(region, category) {
+  let clean = region || 'Unknown Region';
+  const prefixes = ['Drugs ', 'Medical ', 'BaseBuilding ', 'Base Building ', 'Supply '];
+  for (const prefix of prefixes) {
+    if (clean.toLowerCase().startsWith(prefix.toLowerCase())) {
+      clean = clean.slice(prefix.length);
+      break;
+    }
+  }
+  return clean.replace(/-/g, ' ').replace(/\s+/g, ' ').trim() || region;
 }
 
 function resolveCategory(missionType, region, container) {
@@ -115,6 +140,7 @@ function buildDiscordMessage(event) {
   msg += `Region: ${event.region}\n`;
   msg += 'Status: inbound\n';
   msg += `Threat level: ${event.threat}\n`;
+  if (event.time) msg += `Log time: ${event.time}\n`;
   if (event.missionType && event.missionType !== 'Unknown') msg += `Mission: ${event.missionType}\n`;
   if (event.container && event.container !== 'Unknown Container') msg += `Container: ${event.container}\n`;
   if (event.pos) msg += `Position: ${event.pos}\n`;
@@ -152,7 +178,7 @@ async function processLine(state, line) {
   const event = parseAirdropLine(line);
   if (!event) return;
 
-  const key = `${event.missionType}|${event.region}|${event.container}`;
+  const key = `${event.time}|${event.missionType}|${event.rawRegion}|${event.container}`;
   if (state.sent[key]) return;
 
   const message = buildDiscordMessage(event);
@@ -172,6 +198,12 @@ async function scan() {
   const files = newestLogFiles(LOG_DIR);
 
   for (const file of files) {
+    const hasSeenFile = Object.prototype.hasOwnProperty.call(state.files, file.full);
+    if (!hasSeenFile && !SCAN_OLD_LINES_ON_FIRST_RUN) {
+      state.files[file.full] = file.size;
+      continue;
+    }
+
     const previousSize = state.files[file.full] || 0;
     if (file.size < previousSize) state.files[file.full] = 0;
     const start = state.files[file.full] || 0;
@@ -201,6 +233,7 @@ async function scan() {
 
 console.log('[EoH Airdrop Watcher] Watching:', LOG_DIR);
 console.log('[EoH Airdrop Watcher] Poll interval:', POLL_INTERVAL_MS, 'ms');
+console.log('[EoH Airdrop Watcher] Scan old lines on first run:', SCAN_OLD_LINES_ON_FIRST_RUN ? 'yes' : 'no');
 
 scan().catch(err => console.error('[EoH Airdrop Watcher] Scan failed:', err.message));
 setInterval(() => {
