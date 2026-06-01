@@ -13,6 +13,21 @@ class EoH_DiscordWebhookConfig
     int EnableHighValueKillWebhook;
     string HighValueKillWebhook;
 
+    int EnableAirdropWebhook;
+    string AirdropWebhook;
+    int EnableBlackMarketWebhook;
+    string BlackMarketWebhook;
+    int EnableAIActivityWebhook;
+    string AIActivityWebhook;
+    int EnableTerritoryWebhook;
+    string TerritoryWebhook;
+    int EnableConvoyWebhook;
+    string ConvoyWebhook;
+    int EnableQuestWebhook;
+    string QuestWebhook;
+    int EnableRadioWebhook;
+    string RadioWebhook;
+
     void EoH_DiscordWebhookConfig()
     {
         EnableTraderIntelWebhook = 0;
@@ -27,6 +42,21 @@ class EoH_DiscordWebhookConfig
         ServerStatusWebhook = "";
         EnableHighValueKillWebhook = 0;
         HighValueKillWebhook = "";
+
+        EnableAirdropWebhook = 0;
+        AirdropWebhook = "";
+        EnableBlackMarketWebhook = 0;
+        BlackMarketWebhook = "";
+        EnableAIActivityWebhook = 0;
+        AIActivityWebhook = "";
+        EnableTerritoryWebhook = 0;
+        TerritoryWebhook = "";
+        EnableConvoyWebhook = 0;
+        ConvoyWebhook = "";
+        EnableQuestWebhook = 0;
+        QuestWebhook = "";
+        EnableRadioWebhook = 0;
+        RadioWebhook = "";
     }
 }
 
@@ -110,6 +140,15 @@ class EoH_DiscordWebhook
         Send(cfg.ServerStatusWebhook, content, "Server status webhook sent.");
     }
 
+    static void SendRadioBroadcast(string title, string body)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableRadioWebhook != 1 || cfg.RadioWebhook == "")
+            return;
+
+        Send(cfg.RadioWebhook, BuildMessage(title, body), "Radio broadcast webhook sent.");
+    }
+
     static void SendKillFeed(string victimName, string killerName, string weaponName, float distance)
     {
         EoH_DiscordWebhookConfig cfg = GetConfig();
@@ -171,6 +210,85 @@ class EoH_DiscordWebhook
         content += "The underground signal has awakened. Endgame loot is now in play. Expect heavy movement toward the bunker.";
 
         Send(cfg.BunkerWebhook, content, "Bunker webhook sent.");
+    }
+
+    static void SendAirdropTracking(string regionName, string status, string threatLevel = "high", bool alsoRadio = false)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg)
+            return;
+
+        string title = "📦 AIRDROP SIGNAL DETECTED";
+        if (status == "landed" || status == "impact" || status == "spawned")
+            title = "📦 AIRDROP IMPACT CONFIRMED";
+
+        string body = "A military supply beacon has been picked up by the old relay network.\n";
+        if (regionName != "")
+            body += "Approximate region: " + regionName + "\n";
+        if (status != "")
+            body += "Status: " + status + "\n";
+        if (threatLevel != "")
+            body += "Threat level: " + threatLevel + "\n";
+        body += "Expect hostile movement and survivor contact.";
+
+        if (cfg.EnableAirdropWebhook == 1 && cfg.AirdropWebhook != "")
+            Send(cfg.AirdropWebhook, BuildMessage(title, body), "Airdrop tracking webhook sent.");
+
+        if (alsoRadio && cfg.EnableRadioWebhook == 1 && cfg.RadioWebhook != "")
+            Send(cfg.RadioWebhook, BuildMessage(title, body), "Airdrop radio webhook sent.");
+    }
+
+    static void SendBlackMarketRumor(string title, string body)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableBlackMarketWebhook != 1 || cfg.BlackMarketWebhook == "")
+            return;
+
+        Send(cfg.BlackMarketWebhook, BuildMessage(title, body), "Black market webhook sent.");
+    }
+
+    static void SendAIActivity(string title, string body)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableAIActivityWebhook != 1 || cfg.AIActivityWebhook == "")
+            return;
+
+        Send(cfg.AIActivityWebhook, BuildMessage(title, body), "AI activity webhook sent.");
+    }
+
+    static void SendTerritoryConflict(string title, string body)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableTerritoryWebhook != 1 || cfg.TerritoryWebhook == "")
+            return;
+
+        Send(cfg.TerritoryWebhook, BuildMessage(title, body), "Territory conflict webhook sent.");
+    }
+
+    static void SendConvoySighting(string title, string body)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableConvoyWebhook != 1 || cfg.ConvoyWebhook == "")
+            return;
+
+        Send(cfg.ConvoyWebhook, BuildMessage(title, body), "Convoy sighting webhook sent.");
+    }
+
+    static void SendQuestContract(string title, string body)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableQuestWebhook != 1 || cfg.QuestWebhook == "")
+            return;
+
+        Send(cfg.QuestWebhook, BuildMessage(title, body), "Quest contract webhook sent.");
+    }
+
+    protected static string BuildMessage(string title, string body)
+    {
+        string content = title;
+        if (body != "")
+            content += "\n" + body;
+        return content;
     }
 
     static void Send(string webhookUrl, string content, string logMessage = "Webhook sent.")
