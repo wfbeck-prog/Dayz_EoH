@@ -4,16 +4,21 @@ class EoH_AdvisorRecommendationManager
     protected ref EoH_AdvisorRecommendationConfig m_Config;
     protected float m_LastRecommendationTime;
     protected float m_LastHeartbeatTime;
+    protected float m_LastPersistenceCheckTime;
     protected int m_RepeatedHitchCount;
 
     protected const string CONFIG_DIR = "$profile:EoH";
     protected const string CONFIG_PATH = "$profile:EoH/AdvisorRecommendations.json";
+    protected const string WEEKLY_EVENT_STATE_PATH = "$profile:EoH/WeeklyEventRuntimeState.json";
     protected const float HEARTBEAT_SECONDS = 300.0;
+    protected const float PERSISTENCE_CHECK_SECONDS = 120.0;
+    protected const int PERSISTENCE_STALE_MS = 180000;
 
     void EoH_AdvisorRecommendationManager()
     {
         m_LastRecommendationTime = 0;
         m_LastHeartbeatTime = 0;
+        m_LastPersistenceCheckTime = 0;
         m_RepeatedHitchCount = 0;
         LoadConfig();
     }
@@ -92,6 +97,7 @@ class EoH_AdvisorRecommendationManager
 
         float now = GetGame().GetTime() / 1000.0;
         WriteHeartbeat(now);
+        CheckWeeklyEventPersistence(now);
     }
 
     void WriteStartupState()
@@ -99,7 +105,7 @@ class EoH_AdvisorRecommendationManager
         if (!m_Config)
             return;
 
-        EoH_LiveAdvisorActivity.LogActivity("advisor", "recommendation_engine_ready performance=" + m_Config.EnablePerformanceRecommendations.ToString() + " koth=" + m_Config.EnableKothRecommendations.ToString() + " townAI=" + m_Config.EnableTownAIRecommendations.ToString() + " scheduler=" + m_Config.EnableSchedulerRecommendations.ToString() + " ignoreEmptyServerHitches=" + m_Config.IgnoreEmptyServerHitches.ToString() + " emptyServerExtreme=" + m_Config.EmptyServerExtremeHitchTimeslice.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("advisor", "recommendation_engine_ready performance=" + m_Config.EnablePerformanceRecommendations.ToString() + " koth=" + m_Config.EnableKothRecommendations.ToString() + " townAI=" + m_Config.EnableTownAIRecommendations.ToString() + " scheduler=" + m_Config.EnableSchedulerRecommendations.ToString() + " ignoreEmptyServerHitches=" + m_Config.IgnoreEmptyServerHitches.ToString() + " emptyServerExtreme=" + m_Config.EmptyServerExtremeHitchTimeslice.ToString() + " persistenceCheck=true");
     }
 
     void WriteHeartbeat(float now)
@@ -112,6 +118,47 @@ class EoH_AdvisorRecommendationManager
 
         m_LastHeartbeatTime = now;
         EoH_LiveAdvisorActivity.LogActivity("advisor", "heartbeat enabled=" + m_Config.Enabled.ToString() + " repeatedHitches=" + m_RepeatedHitchCount.ToString() + " cooldownSeconds=" + m_Config.RecommendationCooldownSeconds.ToString() + " ignoreEmpty=" + m_Config.IgnoreEmptyServerHitches.ToString());
+    }
+
+    void CheckWeeklyEventPersistence(float now)
+    {
+        if (!m_Config || !m_Config.EnableSchedulerRecommendations)
+            return;
+
+        if (m_LastPersistenceCheckTime > 0 && now - m_LastPersistenceCheckTime < PERSISTENCE_CHECK_SECONDS)
+            return;
+
+        m_LastPersistenceCheckTime = now;
+
+        EoH_EventObjectiveManager objectiveManager = EoH_EventObjectiveManager.Get();
+        if (!objectiveManager || !objectiveManager.HasActiveObjective())
+            return;
+
+        if (!FileExist(WEEKLY_EVENT_STATE_PATH))
+        {
+            Recommend("weekly_event_persistence", "Active weekly event exists but WeeklyEventRuntimeState.json is missing. Persistence recovery will not work until state saves successfully.");
+            return;
+        }
+
+        EoH_WeeklyEventPersistenceState state = EoH_WeeklyEventPersistenceManager.Get().GetState();
+        if (!state)
+        {
+            Recommend("weekly_event_persistence", "Active weekly event exists but persistence state could not be loaded.");
+            return;
+        }
+
+        if (!state.HasActiveObjective || state.ObjectiveId == "")
+        {
+            Recommend("weekly_event_persistence", "Active weekly event exists but persistence state is idle or missing ObjectiveId. Check SaveWeeklyEventState calls.");
+            return;
+        }
+
+        int nowMs = GetGame().GetTime();
+        int ageMs = nowMs - state.SavedAt;
+        if (state.SavedAt <= 0 || ageMs > PERSISTENCE_STALE_MS)
+        {
+            Recommend("weekly_event_persistence", "Active weekly event persistence appears stale. Objective=" + state.ObjectiveId + " Wave=" + state.CurrentWave.ToString() + " SavedAgeMs=" + ageMs.ToString() + ". Check lifecycle save hooks.");
+        }
     }
 
     void ObservePerformanceSample(float worstTimeslice, float avgFps, int players)
