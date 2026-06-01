@@ -1,54 +1,20 @@
-modded class ExpansionMissionEventAirdrop
-{
-    protected bool m_EoH_AirdropLandedPosted;
+/*
+    EoH Expansion Airdrop Bridge
 
-    override void Event_OnStart()
-    {
-        super.Event_OnStart();
+    Disabled intentionally.
 
-        string locationName = EoH_GetDropLocationName();
-        vector locationPos = EoH_GetDropLocationPosition();
+    The installed Expansion Missions build rejects directly modding ExpansionMissionEventAirdrop
+    with this bridge and throws:
 
-        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropMissionStarted(MissionName, locationName, locationPos);
-    }
+        DayZExpansion/Missions/Scripts/4_World/dayzexpansion_missions/classes/airdrop/expansionmissioneventairdrop.c(298): Incompatible parameter 'this'
 
-    override void Event_OnUpdate(float delta)
-    {
-        super.Event_OnUpdate(delta);
+    Keep this file as documentation only until the exact Expansion callback signature is matched.
+    The safe webhook-side implementation remains in:
 
-        if (m_EoH_AirdropLandedPosted)
-            return;
+        EoH_Server/scripts/4_World/EoH_AirdropMonitor/eoh_airdrop_mission_monitor.c
 
-        if (m_Container && m_Container.Expansion_HasLanded())
-        {
-            m_EoH_AirdropLandedPosted = true;
+    Once the correct Expansion event hook is confirmed, call:
 
-            string locationName = EoH_GetDropLocationName();
-            vector locationPos = EoH_GetDropLocationPosition();
-
-            EoH_AirdropMissionMonitor.Get().OnExpansionAirdropLanded(MissionName, locationName, locationPos);
-        }
-    }
-
-    protected string EoH_GetDropLocationName()
-    {
-        if (DropLocation)
-            return DropLocation.Name;
-
-        return "";
-    }
-
-    protected vector EoH_GetDropLocationPosition()
-    {
-        if (DropLocation)
-        {
-            vector pos;
-            pos[0] = DropLocation.x;
-            pos[1] = 0;
-            pos[2] = DropLocation.z;
-            return pos;
-        }
-
-        return "0 0 0".ToVector();
-    }
-};
+        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropMissionStarted(missionName, locationName, position);
+        EoH_AirdropMissionMonitor.Get().OnExpansionAirdropLanded(missionName, locationName, position);
+*/
