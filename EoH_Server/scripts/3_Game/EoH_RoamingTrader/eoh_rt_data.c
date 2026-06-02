@@ -71,6 +71,8 @@ class EoH_RT_TraderRuntime
 	bool IsSpawned;
 	bool IsMoving;
 	int LastMoveServerTime;
+	int LastWebhookMoveTime;
+	int LastWebhookRevealTime;
 	Object TraderObject;
 	ref array<Object> EscortUnits;
 	vector CurrentPosition;
@@ -82,6 +84,8 @@ class EoH_RT_TraderRuntime
 		IsSpawned = false;
 		IsMoving = false;
 		LastMoveServerTime = 0;
+		LastWebhookMoveTime = 0;
+		LastWebhookRevealTime = 0;
 		TraderObject = NULL;
 		EscortUnits = new array<Object>();
 		CurrentPosition = "0 0 0";
