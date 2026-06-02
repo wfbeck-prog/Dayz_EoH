@@ -38,10 +38,10 @@ class ActionUseIntel: ActionSingleUseBase
         bool isEventIntel = isSpecificEventIntel || isGenericWeekendEventIntel;
         EoH_EventObjectiveManager eventMgr = EoH_EventObjectiveManager.Get();
 
-        if (!isEventIntel && eventMgr && !eventMgr.IsIntelAvailable())
+        if (!isEventIntel && eventMgr && eventMgr.HasActiveObjective() && eventMgr.IsObjectiveCombatStarted())
         {
             EoH_Notifications.SendToPlayer(player, "INTEL CHANNELS DOWN", "The relay network is dark. Restore the tower terminal before decoding more field intel.");
-            Print("[EoH_Intel][BLOCKED] Non-event intel blocked by active weekly event type=" + type + " player=" + player.GetIdentity().GetName());
+            Print("[EoH_Intel][BLOCKED] Non-event intel blocked by active weekly combat objective type=" + type + " player=" + player.GetIdentity().GetName());
             return;
         }
 
