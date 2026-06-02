@@ -51,8 +51,11 @@ class EoH_ActionReadIntel : ActionSingleUseBase
         }
         else if (type == "EoH_AltarRelayIntel")
         {
-            if (!EoH_WeekendEventWindow.CanUseWeekendIntel(player))
+            if (!EoH_WeekendEventWindow.CanUseWeekendIntel())
+            {
+                EoH_Notifications.SendToPlayer(player, "WEEKEND EVENTS", EoH_WeekendEventWindow.GetClosedMessage());
                 consumed = false;
+            }
             else if (!EoH_EventObjectiveManager.Get().RevealObjectiveById("altar_relay_towers"))
             {
                 EoH_Notifications.SendToPlayer(player, "ALTAR INTEL", "The Altar relay signal failed to resolve. Another event may already be active, or Altar has already been used.");
@@ -65,8 +68,11 @@ class EoH_ActionReadIntel : ActionSingleUseBase
         }
         else if (type == "EoH_WeekendEventIntel")
         {
-            if (!EoH_WeekendEventWindow.CanUseWeekendIntel(player))
+            if (!EoH_WeekendEventWindow.CanUseWeekendIntel())
+            {
+                EoH_Notifications.SendToPlayer(player, "WEEKEND EVENTS", EoH_WeekendEventWindow.GetClosedMessage());
                 consumed = false;
+            }
             else if (!EoH_EventObjectiveManager.Get().RevealRandomObjectiveOnly())
             {
                 EoH_Notifications.SendToPlayer(player, "WEEKEND INTEL", "The cipher failed to resolve. Another event may already be active, or no valid weekend signals remain.");
