@@ -33,7 +33,9 @@ class ActionUseIntel: ActionSingleUseBase
         ItemBase intel = action_data.m_MainItem;
         string type = intel.GetType();
 
-        bool isEventIntel = (type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel");
+        bool isSpecificEventIntel = (type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel");
+        bool isGenericWeekendEventIntel = (type == "EoH_WeekendEventIntel");
+        bool isEventIntel = isSpecificEventIntel || isGenericWeekendEventIntel;
         EoH_EventObjectiveManager eventMgr = EoH_EventObjectiveManager.Get();
 
         if (!isEventIntel && eventMgr && !eventMgr.IsIntelAvailable())
@@ -48,7 +50,24 @@ class ActionUseIntel: ActionSingleUseBase
             EoH_IntelManager.Get().RevealTraderIntel(player);
             Print("[EoH_Intel] Manual trader intel used player=" + player.GetIdentity().GetName());
         }
-        else if (isEventIntel)
+        else if (type == "EoH_WeekendEventIntel")
+        {
+            if (!EoH_WeekendEventWindow.CanUseWeekendIntel())
+            {
+                EoH_Notifications.SendToPlayer(player, "WEEKEND EVENTS", EoH_WeekendEventWindow.GetClosedMessage());
+                return;
+            }
+
+            if (!eventMgr.RevealRandomObjectiveOnly())
+            {
+                EoH_Notifications.SendToPlayer(player, "WEEKEND INTEL", "The cipher failed to resolve. Another event may already be active, or no valid weekend signals remain.");
+                return;
+            }
+
+            EoH_Notifications.SendToPlayer(player, "WEEKEND INTEL", "Encrypted weekend signal decoded. A weekend objective has been marked.");
+            Print("[EoH_Intel] Manual generic weekend event intel used player=" + player.GetIdentity().GetName());
+        }
+        else if (isSpecificEventIntel)
         {
             EoH_IntelManager.Get().RevealWeeklyEventIntel(player);
             Print("[EoH_Intel] Manual weekly event intel used player=" + player.GetIdentity().GetName());
@@ -73,7 +92,7 @@ class ActionUseIntel: ActionSingleUseBase
 
 bool EoH_IsIntelItem(string type)
 {
-    return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel" || type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel" || type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel";
+    return type == "EoH_Intel_Document" || type == "EoH_TownIntel" || type == "EoH_TraderIntel" || type == "EoH_CBDIntel" || type == "EoH_LootRoomIntel" || type == "EoH_EventIntel" || type == "EoH_AltarRelayIntel" || type == "EoH_WeekendEventIntel";
 }
 
 modded class ItemBase
