@@ -63,6 +63,7 @@ class EoH_WeeklyEventPersistenceManager
     void EoH_WeeklyEventPersistenceManager()
     {
         LoadState();
+        InspectRecoveryCandidate();
     }
 
     static EoH_WeeklyEventPersistenceManager Get()
@@ -95,6 +96,27 @@ class EoH_WeeklyEventPersistenceManager
         JsonFileLoader<EoH_WeeklyEventPersistenceState>.JsonLoadFile(STATE_PATH, m_State);
         NormalizeState();
         EoH_LiveAdvisorActivity.LogActivity("weekly_event", "persistence_loaded active=" + m_State.HasActiveObjective.ToString() + " objective=" + m_State.ObjectiveId + " repaired=" + m_State.RepairCompleted.ToString() + " wave=" + m_State.CurrentWave.ToString() + " rewardUnlocked=" + m_State.RewardUnlocked.ToString());
+    }
+
+    void InspectRecoveryCandidate()
+    {
+        if (!m_State)
+        {
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_no_state reason=null_state");
+            return;
+        }
+
+        if (!m_State.HasActiveObjective || m_State.ObjectiveId == "")
+        {
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_no_candidate active=" + m_State.HasActiveObjective.ToString() + " objective=" + m_State.ObjectiveId);
+            return;
+        }
+
+        int ageMs = 0;
+        if (m_State.SavedAt > 0)
+            ageMs = GetGame().GetTime() - m_State.SavedAt;
+
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_candidate passive=true objective=" + m_State.ObjectiveId + " type=" + m_State.ObjectiveType + " repaired=" + m_State.RepairCompleted.ToString() + " completed=" + m_State.Completed.ToString() + " wave=" + m_State.CurrentWave.ToString() + " rewardUnlocked=" + m_State.RewardUnlocked.ToString() + " savedAgeMs=" + ageMs.ToString());
     }
 
     void NormalizeState()
