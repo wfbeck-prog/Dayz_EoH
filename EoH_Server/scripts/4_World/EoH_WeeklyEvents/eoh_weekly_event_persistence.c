@@ -90,6 +90,7 @@ class EoH_WeeklyEventPersistenceManager
             m_State.Defaults();
             JsonFileLoader<EoH_WeeklyEventPersistenceState>.JsonSaveFile(STATE_PATH, m_State);
             EoH_LiveAdvisorActivity.LogActivity("weekly_event", "persistence_created path=" + STATE_PATH);
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_no_candidate active=false objective= reason=created_default_state");
             return;
         }
 
