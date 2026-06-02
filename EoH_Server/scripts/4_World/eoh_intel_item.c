@@ -34,39 +34,3 @@ class EoH_TraderIntel : EoH_Intel_Document
         AddAction(EoH_ActionReadIntel);
     }
 }
-
-class EoH_CBDIntel : EoH_Intel_Document
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(EoH_ActionReadIntel);
-    }
-}
-
-class EoH_LootRoomIntel : EoH_CBDIntel
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(EoH_ActionReadIntel);
-    }
-}
-
-class EoH_AltarRelayIntel : EoH_Intel_Document
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(EoH_ActionReadIntel);
-    }
-}
-
-class EoH_WeekendEventIntel : EoH_Intel_Document
-{
-    override void SetActions()
-    {
-        super.SetActions();
-        AddAction(EoH_ActionReadIntel);
-    }
-}
