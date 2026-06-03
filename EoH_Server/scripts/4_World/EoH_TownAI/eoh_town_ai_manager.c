@@ -3,17 +3,20 @@ class EoH_TownAIManager
     protected static ref EoH_TownAIManager s_Instance;
     protected ref EoH_TownAIConfig m_Config;
     protected ref map<string, ref EoH_TownAIActiveTown> m_ActiveTowns;
+    protected ref map<string, int> m_AIWebhookLastPost;
     protected int m_LastTick;
     protected int m_HeartbeatCount;
 
     protected const string CONFIG_DIR = "$profile:EoH";
     protected const string CONFIG_PATH = "$profile:EoH/TownAIConfig.json";
+    protected const int EOH_TOWN_AI_WEBHOOK_COOLDOWN_MS = 1800000;
 
     void EoH_TownAIManager()
     {
         m_LastTick = 0;
         m_HeartbeatCount = 0;
         m_ActiveTowns = new map<string, ref EoH_TownAIActiveTown>();
+        m_AIWebhookLastPost = new map<string, int>();
         LoadConfig();
     }
 
@@ -376,6 +379,49 @@ class EoH_TownAIManager
         }
 
         Print("[EoH_TownAI][TRACK] town=" + townCfg.TownName + " owner=" + active.OwnerGroupName + " registered patrol objects=" + active.SpawnedObjects.Count().ToString());
+        MaybeSendAIActivityWebhook(active, townCfg, count, loadout);
+    }
+
+    void MaybeSendAIActivityWebhook(EoH_TownAIActiveTown active, EoH_TownAITownConfig townCfg, int count, string loadout)
+    {
+        if (!active || !townCfg)
+            return;
+
+        if (count <= 0)
+            return;
+
+        string key = townCfg.TownName;
+        int now = GetGame().GetTime();
+        int lastPost = 0;
+        m_AIWebhookLastPost.Find(key, lastPost);
+        if (lastPost > 0 && now - lastPost < EOH_TOWN_AI_WEBHOOK_COOLDOWN_MS)
+            return;
+
+        m_AIWebhookLastPost.Set(key, now);
+
+        string threat = ResolveAIThreatLevel(townCfg.Tier);
+        string title = "⚠ AI ACTIVITY DETECTED";
+        string body = "Patrol activity reported near " + townCfg.TownName + ".\n";
+        body += "Tier: " + townCfg.Tier.ToString() + "\n";
+        body += "Threat level: " + threat + "\n";
+        body += "Observed strength: " + count.ToString() + " contacts\n";
+        body += "Area control: " + active.OwnerGroupName + "\n";
+        if (loadout != "")
+            body += "Pattern: " + loadout + "\n";
+        body += "Survivors moving through this area should expect resistance.";
+
+        EoH_DiscordWebhook.SendAIActivity(title, body);
+    }
+
+    string ResolveAIThreatLevel(int tier)
+    {
+        if (tier >= 4)
+            return "extreme";
+        if (tier == 3)
+            return "high";
+        if (tier == 2)
+            return "moderate";
+        return "low";
     }
 
     string PickPatrolLoadout(EoH_TownAITierConfig tierCfg)
@@ -555,13 +601,23 @@ class EoH_TownAIManager
 
     void InsertPatrolLoadout(EoH_TownAITierConfig tierCfg, string loadout)
     {
-        if (tierCfg && tierCfg.Loadouts && loadout != "")
-            tierCfg.Loadouts.PatrolLoadouts.Insert(loadout);
+        if (!tierCfg)
+            return;
+
+        if (!tierCfg.Loadouts)
+            tierCfg.Loadouts = new EoH_TownAILoadoutPool();
+
+        tierCfg.Loadouts.PatrolLoadouts.Insert(loadout);
     }
 
     void InsertCampLoadout(EoH_TownAITierConfig tierCfg, string loadout)
     {
-        if (tierCfg && tierCfg.Loadouts && loadout != "")
-            tierCfg.Loadouts.CampLoadouts.Insert(loadout);
+        if (!tierCfg)
+            return;
+
+        if (!tierCfg.Loadouts)
+            tierCfg.Loadouts = new EoH_TownAILoadoutPool();
+
+        tierCfg.Loadouts.CampLoadouts.Insert(loadout);
     }
 };
