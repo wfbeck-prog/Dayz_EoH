@@ -8,6 +8,7 @@ modded class MissionServer
         EoH_LiveAdvisorLogger.Log("MISSION_INIT", "MissionServer initialized Live Advisor", "info", "MissionServer");
         EoH_KothWatchManager.Get();
         EoH_AdvisorRecommendationManager.Get();
+        EoH_WeeklyEventPersistenceManager.Get();
         EoH_StartLiveAdvisorHeartbeat();
     }
 
