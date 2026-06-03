@@ -1,6 +1,6 @@
 class EoH_WeeklyEventConfig
 {
-    int ConfigVersion = 3;
+    int ConfigVersion = 4;
     bool Enabled = true;
 
     float AltarRepairDurationSeconds = 60.0;
@@ -17,10 +17,12 @@ class EoH_WeeklyEventConfig
     int AltarWave5DelaySeconds = 960;
     bool ResetAltarRepairWhenGroupLeavesZone = true;
     bool ConsumeAltarRepairItemsAtCompletion = true;
+    bool EnableRecoveryGracePeriod = true;
+    int RecoveryGraceSeconds = 300;
 
     void Defaults()
     {
-        ConfigVersion = 3;
+        ConfigVersion = 4;
         Enabled = true;
 
         AltarRepairDurationSeconds = 60.0;
@@ -37,6 +39,8 @@ class EoH_WeeklyEventConfig
         AltarWave5DelaySeconds = 960;
         ResetAltarRepairWhenGroupLeavesZone = true;
         ConsumeAltarRepairItemsAtCompletion = true;
+        EnableRecoveryGracePeriod = true;
+        RecoveryGraceSeconds = 300;
     }
 }
 
@@ -76,7 +80,7 @@ class EoH_WeeklyEventConfigManager
         {
             JsonFileLoader<EoH_WeeklyEventConfig>.JsonLoadFile(CONFIG_PATH, m_Config);
             NormalizeConfig();
-            Print("[EoH_WeeklyEventConfig] Loaded config repairSeconds=" + m_Config.AltarRepairDurationSeconds.ToString() + " startRadius=" + m_Config.AltarRepairProximityRadius.ToString() + " maintainRadius=" + m_Config.AltarRepairMaintainRadius.ToString() + " autoRepair=" + m_Config.EnableAltarProximityAutoRepair.ToString() + " aiRounds=" + m_Config.AltarAIRounds.ToString() + " rewardWave=" + m_Config.AltarRewardWave.ToString() + " wave2=" + m_Config.AltarWave2DelaySeconds.ToString() + " wave3=" + m_Config.AltarWave3DelaySeconds.ToString() + " wave4=" + m_Config.AltarWave4DelaySeconds.ToString() + " wave5=" + m_Config.AltarWave5DelaySeconds.ToString());
+            Print("[EoH_WeeklyEventConfig] Loaded config repairSeconds=" + m_Config.AltarRepairDurationSeconds.ToString() + " startRadius=" + m_Config.AltarRepairProximityRadius.ToString() + " maintainRadius=" + m_Config.AltarRepairMaintainRadius.ToString() + " autoRepair=" + m_Config.EnableAltarProximityAutoRepair.ToString() + " aiRounds=" + m_Config.AltarAIRounds.ToString() + " rewardWave=" + m_Config.AltarRewardWave.ToString() + " wave2=" + m_Config.AltarWave2DelaySeconds.ToString() + " wave3=" + m_Config.AltarWave3DelaySeconds.ToString() + " wave4=" + m_Config.AltarWave4DelaySeconds.ToString() + " wave5=" + m_Config.AltarWave5DelaySeconds.ToString() + " recoveryGrace=" + m_Config.EnableRecoveryGracePeriod.ToString() + " graceSeconds=" + m_Config.RecoveryGraceSeconds.ToString());
         }
     }
 
@@ -89,8 +93,8 @@ class EoH_WeeklyEventConfigManager
             return;
         }
 
-        if (m_Config.ConfigVersion < 3)
-            m_Config.ConfigVersion = 3;
+        if (m_Config.ConfigVersion < 4)
+            m_Config.ConfigVersion = 4;
 
         if (m_Config.AltarRepairDurationSeconds <= 0)
             m_Config.AltarRepairDurationSeconds = 60.0;
@@ -121,6 +125,9 @@ class EoH_WeeklyEventConfigManager
 
         if (m_Config.AltarWave5DelaySeconds <= 0)
             m_Config.AltarWave5DelaySeconds = 960;
+
+        if (m_Config.RecoveryGraceSeconds <= 0)
+            m_Config.RecoveryGraceSeconds = 300;
     }
 
     void EnsureConfigDir()
@@ -224,5 +231,19 @@ class EoH_WeeklyEventConfigManager
         if (!m_Config)
             return true;
         return m_Config.ConsumeAltarRepairItemsAtCompletion;
+    }
+
+    bool IsRecoveryGracePeriodEnabled()
+    {
+        if (!m_Config)
+            return true;
+        return m_Config.EnableRecoveryGracePeriod;
+    }
+
+    int GetRecoveryGraceSeconds()
+    {
+        if (!m_Config || m_Config.RecoveryGraceSeconds <= 0)
+            return 300;
+        return m_Config.RecoveryGraceSeconds;
     }
 }
