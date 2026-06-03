@@ -9,6 +9,7 @@ class EoH_RT_TraderManager
 	static const float EOH_RT_RELOCATION_HOLD_RADIUS = 30.0;
 	static const float EOH_RT_PROXIMITY_REVEAL_RADIUS = 35.0;
 	static const int EOH_RT_RELOCATION_MAX_GRACE_MS = 900000;
+	static const int EOH_RT_WEBHOOK_COOLDOWN_MS = 900000;
 
 	static EoH_RT_TraderManager Get()
 	{
@@ -252,6 +253,7 @@ class EoH_RT_TraderManager
 
 		m_RevealedMarkers.Set(profile.TraderId, false);
 		m_RelocationGraceStart.Set(profile.TraderId, 0);
+		MaybeSendBlackMarketMove(profile, runtime, node, "active");
 
 		Print("[EoH_RT][PROXIMITY] Activated trader " + profile.TraderId + " at " + runtime.TraderObject.GetPosition().ToString());
 	}
@@ -350,6 +352,7 @@ class EoH_RT_TraderManager
 
 		EoH_RT_AIIntegration.SpawnEscort(profile, runtime, runtime.TraderObject.GetPosition());
 		BroadcastMoveNotification(profile, node);
+		MaybeSendBlackMarketMove(profile, runtime, node, "moved");
 
 		Print("[EoH_RT] Moved trader " + profile.TraderId + " to " + runtime.TraderObject.GetPosition().ToString());
 	}
@@ -445,7 +448,69 @@ class EoH_RT_TraderManager
 		else
 			EoH_Notifications.SendToAll("ROAMING TRADER SIGNAL", profile.DisplayName + " signal was decoded. Survivors will converge on the location.");
 
+		EoH_RT_TraderRuntime runtime = null;
+		m_Runtimes.Find(profile.TraderId, runtime);
+		MaybeSendBlackMarketReveal(profile, runtime, pos, reason, playerName);
+
 		Print("[EoH_RT] Trader revealed globally reason=" + reason + " traderId=" + profile.TraderId + " pos=" + pos.ToString() + " by=" + playerName);
+	}
+
+	void MaybeSendBlackMarketMove(EoH_RT_TraderProfile profile, EoH_RT_TraderRuntime runtime, EoH_RT_RouteNode node, string status)
+	{
+		if (!profile || !runtime || !node)
+			return;
+
+		if (!IsBlackMarketLikeTrader(profile))
+			return;
+
+		int now = GetGame().GetTime();
+		if (runtime.LastWebhookMoveTime > 0 && now - runtime.LastWebhookMoveTime < EOH_RT_WEBHOOK_COOLDOWN_MS)
+			return;
+
+		runtime.LastWebhookMoveTime = now;
+
+		string title = "⚫ BLACK MARKET RUMOR";
+		string body = "A smuggler frequency was intercepted near " + node.Name + ".\n";
+		body += "Trader: " + profile.DisplayName + "\n";
+		body += "Status: " + status + "\n";
+		body += "The signal is dirty. Location accuracy is not guaranteed.";
+
+		EoH_DiscordWebhook.SendBlackMarketRumor(title, body);
+	}
+
+	void MaybeSendBlackMarketReveal(EoH_RT_TraderProfile profile, EoH_RT_TraderRuntime runtime, vector pos, string reason, string playerName)
+	{
+		if (!profile)
+			return;
+
+		if (!IsBlackMarketLikeTrader(profile))
+			return;
+
+		if (runtime)
+		{
+			int now = GetGame().GetTime();
+			if (runtime.LastWebhookRevealTime > 0 && now - runtime.LastWebhookRevealTime < EOH_RT_WEBHOOK_COOLDOWN_MS)
+				return;
+			runtime.LastWebhookRevealTime = now;
+		}
+
+		string title = "⚫ BLACK MARKET CONTACT CONFIRMED";
+		string body = profile.DisplayName + " has been confirmed by " + playerName + ".\n";
+		body += "Signal source: " + reason + "\n";
+		body += "Expect survivors, guards, and opportunists to converge on the area.";
+
+		EoH_DiscordWebhook.SendBlackMarketRumor(title, body);
+	}
+
+	bool IsBlackMarketLikeTrader(EoH_RT_TraderProfile profile)
+	{
+		if (!profile)
+			return false;
+
+		string source = profile.TraderId + " " + profile.DisplayName + " " + profile.MarkerLabel + " " + profile.ExpansionTraderUID;
+		source.ToLower();
+
+		return source.Contains("black") || source.Contains("market") || source.Contains("drug") || source.Contains("smuggler") || source.Contains("cem");
 	}
 
 	void SendAllMarkersToPlayer(PlayerBase player)
@@ -516,36 +581,5 @@ class EoH_RT_TraderManager
 		m_RevealedMarkers.Set(traderId, false);
 		ClearMarkerForAllPlayers(traderId);
 		Print("[EoH_RT] Trader marker hidden and reveal state reset traderId=" + traderId);
-	}
-
-	void ClearMarkerForAllPlayers(string traderId)
-	{
-		if (!GetGame().IsServer() || traderId == "")
-			return;
-
-		array<string> markerIds = new array<string>();
-		markerIds.Insert(traderId);
-		markerIds.Insert("EoH_RT_" + traderId);
-		markerIds.Insert("EoH_TRADER_" + traderId);
-		markerIds.Insert("EoH_MARKER_" + traderId);
-
-		foreach (string markerId : markerIds)
-		{
-			EoH_MarkerService.RemoveFromAll(markerId);
-			Print("[EoH_RT] Requested marker removal id=" + markerId);
-		}
-	}
-
-	void BroadcastMoveNotification(EoH_RT_TraderProfile profile, EoH_RT_RouteNode node)
-	{
-		if (!m_Config || !m_Config.AnnounceMoves || !profile || !node)
-			return;
-
-		string msg = profile.AnnouncementTemplate;
-		msg.Replace("%TRADER%", profile.DisplayName);
-		msg.Replace("%LOCATION%", node.Name);
-
-		EoH_Notifications.SendToAll("ROAMING TRADER MOVED", msg);
-		Print("[EoH_RT] Move notification sent: " + msg);
 	}
 };
