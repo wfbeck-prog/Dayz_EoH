@@ -57,6 +57,13 @@ class EoH_EventObjectiveRuntime
     string AltarRepairStartedById;
     string AltarRepairStartedByName;
 
+    bool RecoveryRestored;
+    bool RecoveryPassiveMode;
+    bool RecoveryGraceActive;
+    int RecoveryGraceStartedAt;
+    int RecoveryGraceEndsAt;
+    bool RecoveryGraceExpiredLogged;
+
     void EoH_EventObjectiveRuntime(EoH_EventObjective cfg)
     {
         Config = cfg;
@@ -79,5 +86,12 @@ class EoH_EventObjectiveRuntime
         AltarRepairGroupId = "";
         AltarRepairStartedById = "";
         AltarRepairStartedByName = "";
+
+        RecoveryRestored = false;
+        RecoveryPassiveMode = false;
+        RecoveryGraceActive = false;
+        RecoveryGraceStartedAt = 0;
+        RecoveryGraceEndsAt = 0;
+        RecoveryGraceExpiredLogged = false;
     }
 }
