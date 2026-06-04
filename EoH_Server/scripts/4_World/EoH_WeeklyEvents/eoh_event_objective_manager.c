@@ -29,6 +29,7 @@ class EoH_EventObjectiveManager
         m_PurgeNightRewardUnlockTime = 0;
         RegisterDefaults();
         Print("[EoH_EventObjectives] Manager initialized objectives=" + m_Objectives.Count().ToString());
+        TryRebuildRuntimeFromPersistence();
     }
 
     EoH_EventObjective GetActiveObjectiveConfig()
@@ -92,6 +93,83 @@ class EoH_EventObjectiveManager
     void SaveWeeklyEventIdleState()
     {
         EoH_WeeklyEventPersistenceManager.Get().SaveIdle();
+    }
+
+    bool TryRebuildRuntimeFromPersistence()
+    {
+        if (m_ActiveRuntime && m_ActiveRuntime.Active)
+            return false;
+
+        EoH_WeeklyEventPersistenceState state = EoH_WeeklyEventPersistenceManager.Get().GetState();
+        if (!state || !state.HasActiveObjective || state.ObjectiveId == "")
+            return false;
+
+        EoH_EventObjective cfg = FindObjectiveById(state.ObjectiveId);
+        if (!cfg)
+        {
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_runtime_rebuild_failed reason=unknown_objective objective=" + state.ObjectiveId);
+            return false;
+        }
+
+        m_ActiveRuntime = new EoH_EventObjectiveRuntime(cfg);
+        m_ActiveRuntime.Active = true;
+        m_ActiveRuntime.RevealedByIntel = state.RevealedByIntel;
+        m_ActiveRuntime.Completed = state.Completed;
+        m_ActiveRuntime.RewardUnlocked = state.RewardUnlocked;
+        m_ActiveRuntime.StartTime = state.StartTime;
+        m_ActiveRuntime.LastTickTime = GetGame().GetTime();
+        m_ActiveRuntime.CurrentWave = state.CurrentWave;
+        m_ActiveRuntime.RewardCrate = null;
+
+        if (cfg.Id == "altar_relay_towers")
+        {
+            m_ActiveRuntime.AltarRepairInProgress = false;
+            m_ActiveRuntime.AltarRelayOnline = state.RepairCompleted;
+            m_ActiveRuntime.AltarRepairProgress01 = 1.0;
+            m_ActiveRuntime.AltarRepairStartedAt = state.StartTime;
+            m_ActiveRuntime.AltarRewardSpawned = state.RewardUnlocked;
+        }
+
+        m_ActiveRuntime.RecoveryRestored = true;
+        m_ActiveRuntime.RecoveryPassiveMode = true;
+
+        if (EoH_WeeklyEventConfigManager.Get().IsRecoveryGracePeriodEnabled())
+        {
+            int now = GetGame().GetTime();
+            int graceMs = EoH_WeeklyEventConfigManager.Get().GetRecoveryGraceSeconds() * 1000;
+            m_ActiveRuntime.RecoveryGraceActive = true;
+            m_ActiveRuntime.RecoveryGraceStartedAt = now;
+            m_ActiveRuntime.RecoveryGraceEndsAt = now + graceMs;
+            m_ActiveRuntime.RecoveryGraceExpiredLogged = false;
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_grace_active objective=" + cfg.Id + " seconds=" + EoH_WeeklyEventConfigManager.Get().GetRecoveryGraceSeconds().ToString());
+        }
+
+        BroadcastObjective();
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_runtime_rebuilt objective=" + cfg.Id + " repaired=" + state.RepairCompleted.ToString() + " wave=" + state.CurrentWave.ToString() + " rewardUnlocked=" + state.RewardUnlocked.ToString() + " passive=true");
+        return true;
+    }
+
+    bool IsRecoveryGraceActive(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.RecoveryGraceActive)
+            return false;
+
+        if (now < m_ActiveRuntime.RecoveryGraceEndsAt)
+            return true;
+
+        m_ActiveRuntime.RecoveryGraceActive = false;
+        if (!m_ActiveRuntime.RecoveryGraceExpiredLogged)
+        {
+            m_ActiveRuntime.RecoveryGraceExpiredLogged = true;
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_grace_expired objective=" + m_ActiveRuntime.Config.Id);
+        }
+
+        return false;
+    }
+
+    void TickRecoveryGrace(int now)
+    {
+        IsRecoveryGraceActive(now);
     }
 
     int GetPurgePhaseOneMs(EoH_EventObjective cfg)
@@ -410,6 +488,10 @@ class EoH_EventObjectiveManager
         }
 
         int now = GetGame().GetTime();
+        TickRecoveryGrace(now);
+
+        if (m_ActiveRuntime.RecoveryPassiveMode)
+            return;
 
         if (m_ActiveRuntime.Config.Id == "altar_relay_towers" && m_ActiveRuntime.AltarRepairInProgress)
             TickAltarRepairRuntime(now);
@@ -493,6 +575,9 @@ class EoH_EventObjectiveManager
             return;
 
         int members = CountAliveRepairGroupMembersInZone();
+        if (members <= 0 && IsRecoveryGraceActive(now))
+            return;
+
         if (members <= 0 && EoH_WeeklyEventConfigManager.Get().ShouldResetAltarRepairWhenGroupLeavesZone())
         {
             FailAltarRepairAttempt("Repair team eliminated or pushed out of the 75m signal zone.");
