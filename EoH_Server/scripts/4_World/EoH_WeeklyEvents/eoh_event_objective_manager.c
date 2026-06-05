@@ -107,6 +107,7 @@ class EoH_EventObjectiveManager
         EoH_EventObjective cfg = FindObjectiveById(state.ObjectiveId);
         if (!cfg)
         {
+            Print("[EoH_Recovery] runtime_rebuild_failed reason=unknown_objective objective=" + state.ObjectiveId);
             EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_runtime_rebuild_failed reason=unknown_objective objective=" + state.ObjectiveId);
             return false;
         }
@@ -136,15 +137,18 @@ class EoH_EventObjectiveManager
         if (EoH_WeeklyEventConfigManager.Get().IsRecoveryGracePeriodEnabled())
         {
             int now = GetGame().GetTime();
-            int graceMs = EoH_WeeklyEventConfigManager.Get().GetRecoveryGraceSeconds() * 1000;
+            int graceSeconds = EoH_WeeklyEventConfigManager.Get().GetRecoveryGraceSeconds();
+            int graceMs = graceSeconds * 1000;
             m_ActiveRuntime.RecoveryGraceActive = true;
             m_ActiveRuntime.RecoveryGraceStartedAt = now;
             m_ActiveRuntime.RecoveryGraceEndsAt = now + graceMs;
             m_ActiveRuntime.RecoveryGraceExpiredLogged = false;
-            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_grace_active objective=" + cfg.Id + " seconds=" + EoH_WeeklyEventConfigManager.Get().GetRecoveryGraceSeconds().ToString());
+            Print("[EoH_Recovery] grace_active objective=" + cfg.Id + " seconds=" + graceSeconds.ToString());
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_grace_active objective=" + cfg.Id + " seconds=" + graceSeconds.ToString());
         }
 
         BroadcastObjective();
+        Print("[EoH_Recovery] runtime_rebuilt objective=" + cfg.Id + " repaired=" + state.RepairCompleted.ToString() + " wave=" + state.CurrentWave.ToString() + " rewardUnlocked=" + state.RewardUnlocked.ToString() + " passive=true");
         EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_runtime_rebuilt objective=" + cfg.Id + " repaired=" + state.RepairCompleted.ToString() + " wave=" + state.CurrentWave.ToString() + " rewardUnlocked=" + state.RewardUnlocked.ToString() + " passive=true");
         return true;
     }
@@ -161,6 +165,7 @@ class EoH_EventObjectiveManager
         if (!m_ActiveRuntime.RecoveryGraceExpiredLogged)
         {
             m_ActiveRuntime.RecoveryGraceExpiredLogged = true;
+            Print("[EoH_Recovery] grace_expired objective=" + m_ActiveRuntime.Config.Id);
             EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_grace_expired objective=" + m_ActiveRuntime.Config.Id);
         }
 
