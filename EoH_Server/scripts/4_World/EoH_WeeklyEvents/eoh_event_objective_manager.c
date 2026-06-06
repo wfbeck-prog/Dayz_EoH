@@ -513,6 +513,7 @@ class EoH_EventObjectiveManager
             return;
 
         TickAltarRecoveryPressure();
+        TickAltarRewardCatchup(now);
 
         if (m_ActiveRuntime.Config.Id == "altar_relay_towers" && m_ActiveRuntime.AltarRepairInProgress)
             TickAltarRepairRuntime(now);
@@ -560,6 +561,50 @@ class EoH_EventObjectiveManager
 
         Print("[EoH_Recovery] recovery_pressure_spawned objective=altar_relay_towers wave=" + m_ActiveRuntime.CurrentWave.ToString());
         EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_pressure_spawned objective=altar_relay_towers wave=" + m_ActiveRuntime.CurrentWave.ToString());
+    }
+
+    void TickAltarRewardCatchup(int now)
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
+            return;
+
+        if (m_ActiveRuntime.Config.Id != "altar_relay_towers")
+            return;
+
+        if (!m_ActiveRuntime.AltarRelayOnline)
+            return;
+
+        if (m_ActiveRuntime.RecoveryPassiveMode || m_ActiveRuntime.RecoveryGraceActive)
+            return;
+
+        if (m_ActiveRuntime.RewardUnlocked || m_ActiveRuntime.AltarRewardSpawned)
+            return;
+
+        int rewardWave = EoH_WeeklyEventConfigManager.Get().GetAltarRewardWave();
+        int totalRounds = EoH_WeeklyEventConfigManager.Get().GetAltarAIRounds();
+
+        if (rewardWave <= 0 || totalRounds < rewardWave)
+            return;
+
+        int elapsed = now - m_ActiveRuntime.StartTime;
+        int rewardDelayMs = EoH_WeeklyEventConfigManager.Get().GetAltarWaveDelaySeconds(rewardWave) * 1000;
+
+        if (elapsed < rewardDelayMs)
+            return;
+
+        if (m_ActiveRuntime.CurrentWave < rewardWave)
+        {
+            EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, rewardWave);
+            m_ActiveRuntime.CurrentWave = rewardWave;
+            SaveWeeklyEventState();
+            Print("[EoH_Recovery] reward_catchup_wave_spawned objective=altar_relay_towers wave=" + rewardWave.ToString());
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "reward_catchup_wave_spawned objective=altar_relay_towers wave=" + rewardWave.ToString());
+        }
+
+        SpawnAltarRewardPhase();
+
+        Print("[EoH_Recovery] reward_catchup_spawned objective=altar_relay_towers wave=" + m_ActiveRuntime.CurrentWave.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "reward_catchup_spawned objective=altar_relay_towers wave=" + m_ActiveRuntime.CurrentWave.ToString());
     }
 
     void TickAltarRelayRepairProximity()
