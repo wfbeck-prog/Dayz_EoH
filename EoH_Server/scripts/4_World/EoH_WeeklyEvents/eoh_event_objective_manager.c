@@ -493,6 +493,7 @@ class EoH_EventObjectiveManager
         }
 
         int now = GetGame().GetTime();
+        EoH_WeeklyEventStateDebug.LogRuntime(m_ActiveRuntime, now);
         TickRecoveryGrace(now);
 
         if (m_ActiveRuntime.RecoveryPassiveMode)
