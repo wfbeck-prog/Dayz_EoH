@@ -27,6 +27,8 @@ class EoH_DiscordWebhookConfig
     string QuestWebhook;
     int EnableRadioWebhook;
     string RadioWebhook;
+    int EnableWeekendEventWebhook;
+    string WeekendEventWebhook;
 
     void EoH_DiscordWebhookConfig()
     {
@@ -57,6 +59,8 @@ class EoH_DiscordWebhookConfig
         QuestWebhook = "";
         EnableRadioWebhook = 0;
         RadioWebhook = "";
+        EnableWeekendEventWebhook = 0;
+        WeekendEventWebhook = "";
     }
 }
 
@@ -147,6 +151,15 @@ class EoH_DiscordWebhook
             return;
 
         Send(cfg.RadioWebhook, BuildMessage(title, body), "Radio broadcast webhook sent.");
+    }
+
+    static void SendWeekendEvent(string title, string body)
+    {
+        EoH_DiscordWebhookConfig cfg = GetConfig();
+        if (!cfg || cfg.EnableWeekendEventWebhook != 1 || cfg.WeekendEventWebhook == "")
+            return;
+
+        Send(cfg.WeekendEventWebhook, BuildMessage(title, body), "Weekend event webhook sent.");
     }
 
     static void SendKillFeed(string victimName, string killerName, string weaponName, float distance)
