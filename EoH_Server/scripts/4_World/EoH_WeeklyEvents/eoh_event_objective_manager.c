@@ -12,6 +12,7 @@ class EoH_EventObjectiveManager
     protected ref array<string> m_UsedWeekendEvents;
     protected ref array<Object> m_PurgeNightAI;
     protected int m_PurgeNightRewardUnlockTime;
+    protected bool m_AltarRecoveryPressureSpawned;
 
     static EoH_EventObjectiveManager Get()
     {
@@ -27,6 +28,7 @@ class EoH_EventObjectiveManager
         m_UsedWeekendEvents = new array<string>();
         m_PurgeNightAI = new array<Object>();
         m_PurgeNightRewardUnlockTime = 0;
+        m_AltarRecoveryPressureSpawned = false;
         RegisterDefaults();
         Print("[EoH_EventObjectives] Manager initialized objectives=" + m_Objectives.Count().ToString());
         TryRebuildRuntimeFromPersistence();
@@ -375,6 +377,7 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.RewardCrate = null;
         m_ActiveRuntime.CurrentWave = 0;
         m_PurgeNightRewardUnlockTime = 0;
+        m_AltarRecoveryPressureSpawned = false;
         CleanupPurgeNightAI();
 
         if (obj.ObjectiveType == "purge_night")
@@ -509,6 +512,8 @@ class EoH_EventObjectiveManager
         if (m_ActiveRuntime.RecoveryPassiveMode)
             return;
 
+        TickAltarRecoveryPressure();
+
         if (m_ActiveRuntime.Config.Id == "altar_relay_towers" && m_ActiveRuntime.AltarRepairInProgress)
             TickAltarRepairRuntime(now);
 
@@ -523,6 +528,38 @@ class EoH_EventObjectiveManager
             TickRewardCrate();
             TickAltarRewardCleanup(now);
         }
+    }
+
+    void TickAltarRecoveryPressure()
+    {
+        if (!m_ActiveRuntime || !m_ActiveRuntime.Active || !m_ActiveRuntime.Config)
+            return;
+
+        if (m_ActiveRuntime.Config.Id != "altar_relay_towers")
+            return;
+
+        if (!m_ActiveRuntime.RecoveryRestored)
+            return;
+
+        if (m_ActiveRuntime.RecoveryPassiveMode || m_ActiveRuntime.RecoveryGraceActive)
+            return;
+
+        if (m_ActiveRuntime.RewardUnlocked || m_ActiveRuntime.AltarRewardSpawned)
+            return;
+
+        if (m_AltarRecoveryPressureSpawned)
+            return;
+
+        int rewardWave = EoH_WeeklyEventConfigManager.Get().GetAltarRewardWave();
+
+        if (m_ActiveRuntime.CurrentWave < 2 || m_ActiveRuntime.CurrentWave >= rewardWave)
+            return;
+
+        EoH_EventWaveManager.Get().SpawnWave(m_ActiveRuntime, m_ActiveRuntime.CurrentWave);
+        m_AltarRecoveryPressureSpawned = true;
+
+        Print("[EoH_Recovery] recovery_pressure_spawned objective=altar_relay_towers wave=" + m_ActiveRuntime.CurrentWave.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_pressure_spawned objective=altar_relay_towers wave=" + m_ActiveRuntime.CurrentWave.ToString());
     }
 
     void TickAltarRelayRepairProximity()
