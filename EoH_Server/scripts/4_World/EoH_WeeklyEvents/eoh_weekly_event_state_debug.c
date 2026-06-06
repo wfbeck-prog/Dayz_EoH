@@ -23,16 +23,17 @@ class EoH_WeeklyEventStateDebug
             return;
         }
 
-        string stateMsg = "state active=" + runtime.Active.ToString()
-            + " objective=" + runtime.Config.Id
-            + " startTime=" + runtime.StartTime.ToString()
-            + " wave=" + runtime.CurrentWave.ToString()
-            + " repaired=" + runtime.AltarRelayOnline.ToString()
-            + " repairInProgress=" + runtime.AltarRepairInProgress.ToString()
-            + " rewardUnlocked=" + runtime.RewardUnlocked.ToString()
-            + " passive=" + runtime.RecoveryPassiveMode.ToString()
-            + " restored=" + runtime.RecoveryRestored.ToString()
-            + " grace=" + runtime.RecoveryGraceActive.ToString();
+        string stateMsg = "state";
+        stateMsg += " active=" + runtime.Active.ToString();
+        stateMsg += " objective=" + runtime.Config.Id;
+        stateMsg += " startTime=" + runtime.StartTime.ToString();
+        stateMsg += " wave=" + runtime.CurrentWave.ToString();
+        stateMsg += " repaired=" + runtime.AltarRelayOnline.ToString();
+        stateMsg += " repairInProgress=" + runtime.AltarRepairInProgress.ToString();
+        stateMsg += " rewardUnlocked=" + runtime.RewardUnlocked.ToString();
+        stateMsg += " passive=" + runtime.RecoveryPassiveMode.ToString();
+        stateMsg += " restored=" + runtime.RecoveryRestored.ToString();
+        stateMsg += " grace=" + runtime.RecoveryGraceActive.ToString();
 
         Print("[EoH_WeeklyEventState] " + stateMsg);
         EoH_LiveAdvisorActivity.LogActivity("weekly_event", stateMsg);
