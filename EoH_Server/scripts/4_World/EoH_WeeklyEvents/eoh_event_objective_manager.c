@@ -162,6 +162,16 @@ class EoH_EventObjectiveManager
             return true;
 
         m_ActiveRuntime.RecoveryGraceActive = false;
+
+        if (m_ActiveRuntime.RecoveryPassiveMode)
+        {
+            m_ActiveRuntime.RecoveryPassiveMode = false;
+            m_ActiveRuntime.LastTickTime = now;
+
+            Print("[EoH_Recovery] passive_released objective=" + m_ActiveRuntime.Config.Id + " wave=" + m_ActiveRuntime.CurrentWave.ToString());
+            EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_passive_released objective=" + m_ActiveRuntime.Config.Id + " wave=" + m_ActiveRuntime.CurrentWave.ToString());
+        }
+
         if (!m_ActiveRuntime.RecoveryGraceExpiredLogged)
         {
             m_ActiveRuntime.RecoveryGraceExpiredLogged = true;
