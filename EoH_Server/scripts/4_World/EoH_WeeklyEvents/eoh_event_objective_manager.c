@@ -123,13 +123,14 @@ class EoH_EventObjectiveManager
         m_ActiveRuntime.LastTickTime = GetGame().GetTime();
         m_ActiveRuntime.CurrentWave = state.CurrentWave;
         m_ActiveRuntime.RewardCrate = null;
+        RebaseRecoveredStartTimeIfNeeded(state.StartTime, cfg);
 
         if (cfg.Id == "altar_relay_towers")
         {
             m_ActiveRuntime.AltarRepairInProgress = false;
             m_ActiveRuntime.AltarRelayOnline = state.RepairCompleted;
             m_ActiveRuntime.AltarRepairProgress01 = 1.0;
-            m_ActiveRuntime.AltarRepairStartedAt = state.StartTime;
+            m_ActiveRuntime.AltarRepairStartedAt = m_ActiveRuntime.StartTime;
             m_ActiveRuntime.AltarRewardSpawned = state.RewardUnlocked;
         }
 
@@ -153,6 +154,31 @@ class EoH_EventObjectiveManager
         Print("[EoH_Recovery] runtime_rebuilt objective=" + cfg.Id + " repaired=" + state.RepairCompleted.ToString() + " wave=" + state.CurrentWave.ToString() + " rewardUnlocked=" + state.RewardUnlocked.ToString() + " passive=true");
         EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_runtime_rebuilt objective=" + cfg.Id + " repaired=" + state.RepairCompleted.ToString() + " wave=" + state.CurrentWave.ToString() + " rewardUnlocked=" + state.RewardUnlocked.ToString() + " passive=true");
         return true;
+    }
+
+    void RebaseRecoveredStartTimeIfNeeded(int oldStartTime, EoH_EventObjective cfg)
+    {
+        if (!m_ActiveRuntime || !cfg)
+            return;
+
+        if (cfg.Id != "altar_relay_towers")
+            return;
+
+        int now = GetGame().GetTime();
+        if (oldStartTime <= now)
+            return;
+
+        int restoredWave = Math.Max(m_ActiveRuntime.CurrentWave, 1);
+        int restoredElapsedSeconds = 0;
+
+        if (restoredWave > 1)
+            restoredElapsedSeconds = EoH_WeeklyEventConfigManager.Get().GetAltarWaveDelaySeconds(restoredWave);
+
+        m_ActiveRuntime.StartTime = now - (restoredElapsedSeconds * 1000);
+        m_ActiveRuntime.LastTickTime = now;
+
+        Print("[EoH_Recovery] start_time_rebased objective=" + cfg.Id + " oldStart=" + oldStartTime.ToString() + " newStart=" + m_ActiveRuntime.StartTime.ToString() + " now=" + now.ToString() + " wave=" + restoredWave.ToString() + " restoredElapsedSeconds=" + restoredElapsedSeconds.ToString());
+        EoH_LiveAdvisorActivity.LogActivity("weekly_event", "recovery_start_time_rebased objective=" + cfg.Id + " oldStart=" + oldStartTime.ToString() + " newStart=" + m_ActiveRuntime.StartTime.ToString() + " now=" + now.ToString() + " wave=" + restoredWave.ToString() + " restoredElapsedSeconds=" + restoredElapsedSeconds.ToString());
     }
 
     bool IsRecoveryGraceActive(int now)
